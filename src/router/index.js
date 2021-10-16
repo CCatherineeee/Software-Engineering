@@ -3,13 +3,11 @@ import VueRouter from 'vue-router'
 
 import Home from '../views/home/Home.vue'
 import UserAccount from '../views/home/user/account.vue'
+import ModifyAccount from '../views/home/user/modifyAccount.vue'
 
 import Login from '../views/login/Login.vue'
 import Register from '../views/login/Register.vue'
 
-
-import Test from '../views/test.vue'
-import Test1 from '../views/test1.vue'
 
 Vue.use(VueRouter)
 
@@ -30,21 +28,10 @@ const routes = [
     component: Home,
     children: [
       { path: '/home/user/account', name: '/home/user/account', component: UserAccount },
+      { path: '/home/user/modifyAccount', name: '/home/user/modifyAccount', component: ModifyAccount },
     ]
   },
 
-
-
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test,
-  },
-  {
-    path: '/test1',
-    name: 'Test1',
-    component: Test1,
-  },
 ]
 
 
