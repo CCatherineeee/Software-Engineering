@@ -1,16 +1,25 @@
 module.exports = {
+    // 配置跨域代理
     devServer: {
+        // Paths
+        // host: 'localhost',
+        // port: '8080',
+        // https: false,
+        open: true,
         proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:5000/',
-                // 在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求的数据，这样服务端和服务端进行数据的交互就不会有跨域问题
-                changeOrigin: true,
-                ws: true,
-                pathRewrite: {
-                    '^/api': 'http://127.0.0.1:5000/'
-                        // 替换target中的请求地址，也就是说以后你在请求http://api.jisuapi.com/XXXXX这个地址的时候直接写成/api即可
+            '/api': { // 匹配所有以 '/api'开头的请求路径
+                target: 'http://39.107.51.181:5000', // 代理目标的基础路径
+                changeOrigin: true, // 支持跨域
+                pathRewrite: { // 重写路径: 去掉路径中开头的'/api'
+                    '^/api': ''
                 }
             }
+        },
+        /*
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin-Type': '*',
         }
+        */
     }
-}
+};

@@ -104,22 +104,17 @@ export default {
       } else if (this.ruleForm.password === "") {
         this.$message("请输入密码！");
       } else {
-        //this.axios.defaults.baseURL = 'http://127.0.0.1:5000/'
-        this.axios({
-          methods: "GET",
-          // baseURL:'http://127.0.0.1:5000/',
-          url: "/api/get/",
-          changeOrigin: true, // 是否跨域
-          data: JSON.stringify({
-            //这里是发送给后台的数据
-            userID: this.ruleForm.userID,
-            password: this.ruleForm.password,
-          }),
-        }).then((response) => {
+        let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+        this.axios.post('/api/login/',{
+          params:{
+            releForm:this.releForm
+          }
+        },config).then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
         });
-        console.log();
       }
     },
     toRegister() {
