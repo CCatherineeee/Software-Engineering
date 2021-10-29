@@ -26,8 +26,12 @@ const routes = [
     name: 'Home',
     component: Home,
     children: [
+      //账户
       { path: '/home/user/account', component: () => import('../views/home/user/account.vue') },
       { path: '/home/user/modifyAccount', component: () => import('../views/home/user/modifyAccount.vue') },
+      { path: '/home/user/passwordModify', component: () => import('../views/home/user/passwordModify.vue') },
+
+      //课程
       { path: '/home/course', component: () => import('../views/home/course/course.vue') },
     ]
   },

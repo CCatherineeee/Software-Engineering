@@ -1,32 +1,34 @@
 <template>
   <div>
     <el-card>
-      <el-button type="info" @click="handleDetail">手动导入</el-button>
-      <el-button type="info" @click="handleExcel">表格导入</el-button>
+      <el-button type="info" @click="handleDetailS">手动添加学生</el-button>
+      <el-button type="info" @click="handleDetailT">手动添加教师</el-button>
+      <el-button type="info" @click="handleExcelS">表格导入学生</el-button>
+      <el-button type="info" @click="handleExcelT">表格导入老师</el-button>
 
-      <el-dialog :visible.sync="dialogFormVisible" title="请输入信息">
+      <el-dialog :visible.sync="dialogFormVisibleS" title="请输入学生信息">
         <el-form
-          :model="form"
-          ref="form"
+          :model="formS"
+          ref="formS"
           style="margin: 40px 65px 0px 25px"
           label-width="80px"
         >
           <el-form-item
             label="姓名"
-            :rules="nameRules"
+            :required="true"
             prop="name"
             status-icon="true"
           >
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="formS.name" autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item
             label="学号"
-            :rules="sidRules"
+            :required="true"
             prop="sid"
             status-icon="true"
           >
-            <el-input v-model="form.sid"></el-input>
+            <el-input v-model="formS.sid"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -35,16 +37,56 @@
             status-icon="true"
             :required="true"
           >
-            <el-input type="email" v-model="form.email"></el-input>
+            <el-input type="email" v-model="formS.email"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="addFromDetail()">确定</el-button>
+          <el-button @click="dialogFormVisibleS = false">取消</el-button>
+          <el-button type="primary" @click="addFromDetailS()">确定</el-button>
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="dialogExcelVisible" title="请选择文件">
+      <el-dialog :visible.sync="dialogFormVisibleT" title="请输入教师信息">
+        <el-form
+          :model="formT"
+          ref="formT"
+          style="margin: 40px 65px 0px 25px"
+          label-width="80px"
+        >
+          <el-form-item
+            label="姓名"
+            :required="true"
+            prop="name"
+            status-icon="true"
+          >
+            <el-input v-model="formT.name" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="学号"
+            :required="true"
+            prop="sid"
+            status-icon="true"
+          >
+            <el-input v-model="formT.sid"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="邮箱"
+            prop="email"
+            status-icon="true"
+            :required="true"
+          >
+            <el-input type="email" v-model="formT.email"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisibleT = false">取消</el-button>
+          <el-button type="primary" @click="addFromDetailT()">确定</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog :visible.sync="dialogExcelVisibleS" title="请选择文件">
         <el-upload
           class="upload-import"
           ref="uploadImport"
@@ -53,7 +95,7 @@
           :on-remove="handleRemove"
           :on-change="handleChange"
           :before-remove="beforeRemove"
-          :file-list="fileList"
+          :file-list="fileListS"
           :multiple="true"
           :auto-upload="false"
           accept="application/vnd.ms-excel,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
@@ -62,8 +104,31 @@
           <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
         </el-upload>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogExcelVisible = false">取消</el-button>
-          <el-button type="success" @click="addFromExcel()">上传</el-button>
+          <el-button @click="dialogExcelVisibleS = false">取消</el-button>
+          <el-button type="success" @click="addFromExcelS()">上传</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog :visible.sync="dialogExcelVisibleT" title="请选择文件">
+        <el-upload
+          class="upload-import"
+          ref="uploadImport"
+          action="https://baidu.com/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-change="handleChange"
+          :before-remove="beforeRemove"
+          :file-list="fileListT"
+          :multiple="true"
+          :auto-upload="false"
+          accept="application/vnd.ms-excel,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
+        >
+          <el-button type="primary">选取文件</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
+        </el-upload>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogExcelVisibleT = false">取消</el-button>
+          <el-button type="success" @click="addFromExcelT()">上传</el-button>
         </div>
       </el-dialog>
 
@@ -140,32 +205,28 @@ import axios from "axios";
 export default {
   data() {
     return {
-      dialogFormVisible: false,
-      dialogExcelVisible: false,
+      dialogFormVisibleS: false,
+      dialogExcelVisibleS: false,
+      dialogFormVisibleT: false,
+      dialogExcelVisibleT: false,
 
-      /*手动导入数据*/
-      form: {
+      /*手动导入学生数据*/
+      formS: {
         name: "",
         sid: "",
+        email: "",
       },
-      nameRules: [
-        {
-          required: true,
-          message: "请输入姓名",
-          trigger: "blur",
-        },
-      ],
-      sidRules: [
-        {
-          type: "number",
-          required: true,
-          message: "请输入学号",
-          trigger: "blur",
-        },
-      ],
+      /*手动导入教师数据*/
+      formT: {
+        name: "",
+        sid: "",
+        email: "",
+      },
+
       /**/
 
-      fileList: [],
+      fileListS: [],
+      fileListT: [],
 
       currentPage: 1,
       pagesize: 6,
@@ -204,50 +265,74 @@ export default {
     };
   },
   methods: {
-    handleDetail() {
-      this.form = {
+    handleDetailS() {
+      /*this.formS = {
+        name: "",
+        sid: "",
+        email: "",
+      };*/
+      this.dialogFormVisibleS = true;
+    },
+
+    handleExcelS() {
+      this.dialogExcelVisibleS = true;
+    },
+
+    handleDetailT() {
+      this.formT = {
         name: "",
         sid: "",
         email: "",
       };
-      this.dialogFormVisible = true;
+      this.dialogFormVisibleT = true;
     },
 
-    handleExcel() {
-      this.dialogExcelVisible = true;
+    handleExcelT() {
+      this.dialogExcelVisibleT = true;
     },
 
     handlePreview(file) {
       console.log(file);
     },
 
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    handleRemove(file, fileListS) {
+      console.log(file, fileListS);
     },
 
     handleChange(file) {
       console.log(file);
-      this.fileList.push(file);
-      console.log(this.fileList);
+      this.fileListS.push(file);
+      console.log(this.fileListS);
     },
 
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
 
-    addFromDetail() {
+    addFromDetailS() {
+      //手动增加学生
       this.axios
-        .post("/api/addUserManually/", JSON.stringify(this.form))
+        .post("/api/addStudentManually/", JSON.stringify(this.formS))
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
         });
-      this.dialogFormVisible = false;
+      this.dialogFormVisibleS = false;
     },
 
-    addFromExcel() {
+    addFromDetailT() {
+      this.axios
+        .post("/api/addUserManually/", JSON.stringify(this.formT))
+        .then((response) => {
+          //这里使用了ES6的语法
+          console.log(response); //请求成功返回的数据
+        });
+      this.dialogFormVisibleT = false;
+    },
+
+    addFromExcelS() {
       let fdParams = new FormData();
-      this.fileList.forEach((file) => {
+      this.fileListS.forEach((file) => {
         console.log(file);
         fdParams.append("file", file.raw);
       });
@@ -263,7 +348,28 @@ export default {
         })
         .catch({});
 
-      this.dialogExcelVisible = false;
+      this.dialogExcelVisibleS = false;
+    },
+
+    addFromExcelT() {
+      let fdParams = new FormData();
+      this.fileListT.forEach((file) => {
+        console.log(file);
+        fdParams.append("file", file.raw);
+      });
+      fdParams.append("userID", "123");
+
+      this.axios
+        .post("/api/file/addUser/", fdParams, {
+          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+          timeout: 20000,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch({});
+
+      this.dialogExcelVisibleT = false;
     },
 
     handleSizeChange: function (val) {

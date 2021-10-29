@@ -5,7 +5,7 @@
       <el-button @click="toggleSelection()">取消选择</el-button>
 
       <el-table
-        ref="filterTable"
+        ref="multipleTable"
         row-key="date"
         :data="
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
@@ -64,7 +64,10 @@
             <el-button size="small" @click="handleCheck(scope.row)"
               >查看</el-button
             >
-            <el-button size="small" type="danger" @click="handleCheckCancel"
+            <el-button
+              size="small"
+              type="danger"
+              @click="handleCheckCancel(scope.row)"
               >注销</el-button
             >
           </template>
@@ -85,11 +88,13 @@
 </template>
 
 <script >
+import axios from "axios";
 export default {
   data() {
     return {
       currentPage: 1,
       pagesize: 6,
+      multipleSelection: [],
       tableData: [
         {
           name: "Tom",
@@ -149,11 +154,21 @@ export default {
       this.multipleSelection = val;
     },
     toggleSelection() {
-      this.$refs.filterTable.clearSelection();
+      this.$refs.multipleTable.clearSelection();
     },
 
-    cancelAccount() {
+    cancelAccount(row) {
       //注销账户
+      axios
+        .post("", {
+          sid: row.sid,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
 
     handleCheckCancel() {

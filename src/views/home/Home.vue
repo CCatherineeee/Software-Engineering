@@ -20,7 +20,9 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="/home/user/account">个人资料</el-menu-item>
-                <el-menu-item index="2">设置</el-menu-item>
+                <el-menu-item index="/home/user/passwordModify"
+                  >修改密码</el-menu-item
+                >
                 <el-menu-item index="3">通知</el-menu-item>
                 <el-menu-item index="3">文件</el-menu-item>
               </el-menu-item-group>
