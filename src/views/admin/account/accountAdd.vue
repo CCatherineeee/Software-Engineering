@@ -1,0 +1,296 @@
+<template>
+  <div>
+    <el-card>
+      <el-button type="info" @click="handleDetail">手动导入</el-button>
+      <el-button type="info" @click="handleExcel">表格导入</el-button>
+
+      <el-dialog :visible.sync="dialogFormVisible" title="请输入信息">
+        <el-form
+          :model="form"
+          ref="form"
+          style="margin: 40px 65px 0px 25px"
+          label-width="80px"
+        >
+          <el-form-item
+            label="姓名"
+            :rules="nameRules"
+            prop="name"
+            status-icon="true"
+          >
+            <el-input v-model="form.name" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="学号"
+            :rules="sidRules"
+            prop="sid"
+            status-icon="true"
+          >
+            <el-input v-model="form.sid"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="邮箱"
+            prop="email"
+            status-icon="true"
+            :required="true"
+          >
+            <el-input type="email" v-model="form.email"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="addFromDetail()">确定</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog :visible.sync="dialogExcelVisible" title="请选择文件">
+        <el-upload
+          class="upload-import"
+          ref="uploadImport"
+          action="https://baidu.com/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-change="handleChange"
+          :before-remove="beforeRemove"
+          :file-list="fileList"
+          :multiple="true"
+          :auto-upload="false"
+          accept="application/vnd.ms-excel,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
+        >
+          <el-button type="primary">选取文件</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
+        </el-upload>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogExcelVisible = false">取消</el-button>
+          <el-button type="success" @click="addFromExcel()">上传</el-button>
+        </div>
+      </el-dialog>
+
+      <el-table
+        ref="filterTable"
+        row-key="date"
+        :data="
+          userData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
+        "
+        style="width: 100%"
+      >
+        <el-table-column prop="name" label="姓名" sortable />
+        <el-table-column prop="id" label="学号" sortable />
+        <el-table-column
+          prop="identity"
+          label="身份权限"
+          sortable
+          :filters="[
+            { text: '学生', value: 'student' },
+            { text: '助教', value: 'assistant' },
+            { text: '教师', value: 'professor' },
+            { text: '责任教师', value: 'mainProfessor' },
+          ]"
+          :filter-method="filterIdentity"
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.identity === 'student'">学生</span>
+            <span v-if="scope.row.identity === 'assistant'">助教</span>
+            <span v-if="scope.row.identity === 'professor'">教师</span>
+            <span v-if="scope.row.identity === 'mainProfessor'">责任教师</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          prop="state"
+          label="状态"
+          sortable
+          :filters="[
+            { text: '激活', value: 'activate' },
+            { text: '非激活', value: 'nonactivate' },
+          ]"
+          :filter-method="filterState"
+          filter-placement="bottom-end"
+        >
+          <template #default="scope">
+            <el-tag
+              :type="scope.row.state === 'activate' ? 'success' : 'danger'"
+              disable-transitions
+              ><span v-if="scope.row.state === 'activate'">激活</span>
+              <span v-if="scope.row.state === 'nonactivate'"
+                >非激活</span
+              ></el-tag
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="userData.length"
+      >
+      </el-pagination>
+    </el-card>
+  </div>
+</template>
+
+<script >
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      dialogFormVisible: false,
+      dialogExcelVisible: false,
+
+      /*手动导入数据*/
+      form: {
+        name: "",
+        sid: "",
+      },
+      nameRules: [
+        {
+          required: true,
+          message: "请输入姓名",
+          trigger: "blur",
+        },
+      ],
+      sidRules: [
+        {
+          type: "number",
+          required: true,
+          message: "请输入学号",
+          trigger: "blur",
+        },
+      ],
+      /**/
+
+      fileList: [],
+
+      currentPage: 1,
+      pagesize: 6,
+      userData: [
+        {
+          name: "Tom",
+          id: "1",
+          identity: "student",
+          state: "activate",
+        },
+        {
+          name: "Tomy",
+          id: "2",
+          identity: "assistant",
+          state: "activate",
+        },
+        {
+          name: "Ann",
+          id: "3",
+          identity: "professor",
+          state: "activate",
+        },
+        {
+          name: "Jim",
+          id: "4",
+          identity: "mainProfessor",
+          state: "activate",
+        },
+        {
+          name: "kim",
+          id: "5",
+          identity: "mainProfessor",
+          state: "nonactivate",
+        },
+      ],
+    };
+  },
+  methods: {
+    handleDetail() {
+      this.form = {
+        name: "",
+        sid: "",
+        email: "",
+      };
+      this.dialogFormVisible = true;
+    },
+
+    handleExcel() {
+      this.dialogExcelVisible = true;
+    },
+
+    handlePreview(file) {
+      console.log(file);
+    },
+
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+
+    handleChange(file) {
+      console.log(file);
+      this.fileList.push(file);
+      console.log(this.fileList);
+    },
+
+    beforeRemove(file) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    addFromDetail() {
+      this.axios
+        .post("/api/addUserManually/", JSON.stringify(this.form))
+        .then((response) => {
+          //这里使用了ES6的语法
+          console.log(response); //请求成功返回的数据
+        });
+      this.dialogFormVisible = false;
+    },
+
+    addFromExcel() {
+      let fdParams = new FormData();
+      this.fileList.forEach((file) => {
+        console.log(file);
+        fdParams.append("file", file.raw);
+      });
+      fdParams.append("userID", "123");
+
+      this.axios
+        .post("/api/file/addUser/", fdParams, {
+          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+          timeout: 20000,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch({});
+
+      this.dialogExcelVisible = false;
+    },
+
+    handleSizeChange: function (val) {
+      this.pagesize = val;
+    },
+    handleCurrentChange: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    filterState(value, row) {
+      return row.state === value;
+    },
+    filterIdentity(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
+    },
+  },
+  mounted() {
+    //获取所有用户所有信息
+    axios
+      .get("url", {
+        //params: { userData: "value" },
+        crossDomain: true,
+      })
+      .then((response) => (this.userData = response.data))
+      .catch(function (error) {
+        console(error);
+      });
+  },
+};
+</script>

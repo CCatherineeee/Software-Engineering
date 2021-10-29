@@ -26,7 +26,7 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-menu-item index="2">
+            <el-menu-item index="/home/course">
               <i class="el-icon-school"></i>
               <span>课程</span>
             </el-menu-item>
@@ -54,7 +54,6 @@
 
 <script>
 export default {
-  name: "main",
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

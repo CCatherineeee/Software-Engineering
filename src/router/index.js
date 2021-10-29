@@ -2,56 +2,55 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '../views/home/Home.vue'
-import UserAccount from '../views/home/user/account.vue'
-import ModifyAccount from '../views/home/user/modifyAccount.vue'
+import AdminHome from '../views/admin/adminHome'
 
 import Login from '../views/login/Login.vue'
 import Register from '../views/login/Register.vue'
-import AdminLogin from '../views/login/AdminLogin'
-import backHome from '../views/backManage/backHome'
-import addUser from '../views/backManage/addUser'
 
 
 Vue.use(VueRouter)
 
-const routes = [{
-        path: '/login',
-        name: 'Login',
-        component: Login,
-    },
-    {
-        path: '/register',
-        name: 'Register',
-        component: Register,
-    },
-    {
-        path: '/AdminLogin',
-        name: 'AdminLogin',
-        component: AdminLogin
-    },
-    {
-        path: '/home',
-        name: 'Home',
-        component: Home,
-        children: [
-            { path: '/home/user/account', name: '/home/user/account', component: UserAccount },
-            { path: '/home/user/modifyAccount', name: '/home/user/modifyAccount', component: ModifyAccount },
-        ]
-    },
-    {
-        path: '/backHome',
-        name: 'backHome',
-        component: backHome,
-        children: [
-            { component: addUser, path: '/addUser', name: '/addUser' },
-        ]
-    },
+const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    children: [
+      { path: '/home/user/account', component: () => import('../views/home/user/account.vue') },
+      { path: '/home/user/modifyAccount', component: () => import('../views/home/user/modifyAccount.vue') },
+      { path: '/home/course', component: () => import('../views/home/course/course.vue') },
+    ]
+  },
+  {
+    path: '/adminHome',
+    name: 'AdminHome',
+    component: AdminHome,
+    children: [
+
+      { path: '/adminHome/accountAdd', component: () => import('../views/admin/account/accountAdd.vue') },
+      { path: '/adminHome/accountCheck', component: () => import('../views/admin/account/accountCheck.vue') },
+      { path: '/adminHome/accountInfo', component: () => import('../views/admin/account/accountInfo.vue') },
+      { path: '/adminHome/accountModify', component: () => import('../views/admin/account/accountModify.vue') },
+      { path: '/adminHome/accountCancel', component: () => import('../views/admin/account/accountCancel.vue') },
+
+    ]
+  },
 
 ]
 
 
 const router = new VueRouter({
-    routes
+  routes
 })
 
 export default router

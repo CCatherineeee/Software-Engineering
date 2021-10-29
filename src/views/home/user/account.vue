@@ -8,8 +8,8 @@
             style="
               margin: 40px 0px 0px 0px;
               padding-top: 20px;
-              color: white;
-              font: 32px Microsoft YaHei;
+              color: black;
+              font: 18px;
               text-align: center;
             "
           >
@@ -27,7 +27,15 @@
             </tr>
             <tr>
               <p>邮箱 ：</p>
-              <td>{{ mail }}</td>
+              <td>{{ email }}</td>
+            </tr>
+            <tr>
+              <p>手机 ：</p>
+              <td>{{ phone }}</td>
+            </tr>
+            <tr>
+              <p>性别 ：</p>
+              <td>{{ gender }}</td>
             </tr>
             <tr>
               <p></p>
@@ -53,7 +61,9 @@ export default {
       userID: 1951104,
       name: "xzq",
       colleague: "",
-      mail: "1442391739@qq.com",
+      email: "1442391739@qq.com",
+      phone: 10086,
+      gender: "女",
     };
   },
   methods: {

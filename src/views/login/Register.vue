@@ -23,7 +23,6 @@
             注册账号
           </p>
           <el-form
-            @keyup.enter.native="register"
             style="margin: 40px 65px 0px 25px"
             ref="form"
             :model="form"
@@ -31,7 +30,6 @@
           >
             <el-form-item
               label="姓名"
-              :required= true
               :rules="nameRules"
               prop="name"
               status-icon="true"
@@ -41,29 +39,22 @@
 
             <el-form-item
               label="学号"
-              :required = true
               :rules="sidRules"
               prop="sid"
               status-icon="true"
-              style="color: white"
             >
-              <el-input v-model="form.sid" ></el-input>
+              <el-input v-model="form.sid"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码" :required= true status-icon="true">
+            <el-form-item label="密码" :required="true" status-icon="true">
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
 
-            <el-form-item label="再次输入" :required= true status-icon="true">
+            <el-form-item label="再次输入" :required="true" status-icon="true">
               <el-input type="password" v-model="form.passwordC"></el-input>
             </el-form-item>
 
-            <el-form-item
-              label="学院"
-              :required= true
-              status-icon="true"
-              style="color: white"
-            >
+            <el-form-item label="学院" :required="true" status-icon="true">
               <el-select
                 v-model="form.college"
                 style="width: 100%"
@@ -79,19 +70,19 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="邮箱" status-icon=true style="color: white">
-              <el-input v-model="form.email"></el-input>
+            <el-form-item label="手机" style="color: white">
+              <el-input v-model="form.phone"></el-input>
             </el-form-item>
 
             <el-form-item label="性别">
               <el-radio-group v-model="form.gender">
-                <el-radio label="男" form.gender=0></el-radio>
-                <el-radio label="女" form.gender=1></el-radio>
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
               </el-radio-group>
             </el-form-item>
 
             <el-form-item style="text-align: center">
-              <el-button type="primary" @click="submitRegisterForm()"
+              <el-button type="primary" @click="submitLoginForm()"
                 >注册</el-button
               >
               <el-button style="margin-left: 100px" @click="back"
@@ -111,12 +102,10 @@ export default {
     return {
       form: {
         name: "",
-        sid: "",
         password: "",
         passwordC: "",
         college: "",
-        email: "",
-        gender: "",
+        phone: "",
       },
       options: [
         {
@@ -159,7 +148,7 @@ export default {
       nameRules: [{ required: true, message: "请输入姓名", trigger: "blur" }],
       sidRules: [
         {
-          type: 'number',
+          type: "number",
           required: true,
           message: "请输入学号",
           trigger: "blur",
@@ -168,18 +157,15 @@ export default {
     };
   },
   methods: {
-    submitRegisterForm() {
-      
-      console.log(JSON.stringify(this.form))
+    submitForm() {
+      console.log(JSON.stringify(this.form));
 
-     this.axios.post('/api/register/',JSON.stringify(this.form)
-        ).then((response) => {
+      this.axios
+        .post("/api/register/", JSON.stringify(this.form))
+        .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
         });
-        },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     },
     back() {
       this.$router.push("/login");

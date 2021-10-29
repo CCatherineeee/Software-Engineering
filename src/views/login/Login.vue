@@ -29,7 +29,7 @@
                   v-model="ruleForm.userID"
                   type="text"
                   autocomplete="off"
-                  placeholder="请输入学号"
+                  placeholder="请输入邮箱"
                 ></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password">
@@ -42,8 +42,6 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="text">忘记密码</el-button>
-                <el-button type="text">教师登录</el-button>
-                <el-button type="text" @click="AdminLogin()">管理员登录</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -71,7 +69,7 @@ export default {
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入学号"));
+        callback(new Error("请输入邮箱"));
       } else {
         if (this.ruleForm.userID !== "") {
           this.$refs.ruleForm.validateField("checkPass");
@@ -98,9 +96,6 @@ export default {
     };
   },
   methods: {
-    AdminLogin(){
-      this.$router.push("/AdminLogin");
-    },
     submitForm() {
       if (this.ruleForm.userID === "" && this.ruleForm.password === "") {
         this.$message("账户和密码不能为空！");
@@ -110,16 +105,22 @@ export default {
         this.$message("请输入密码！");
       } else {
         let config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-        this.axios.post('/api/login/',{
-          params:{
-            releForm:this.releForm
-          }
-        },config).then((response) => {
-          //这里使用了ES6的语法
-          console.log(response); //请求成功返回的数据
-        });
+          headers: { "Content-Type": "multipart/form-data" },
+        };
+        this.axios
+          .post(
+            "/api/login/",
+            {
+              params: {
+                releForm: this.releForm,
+              },
+            },
+            config
+          )
+          .then((response) => {
+            //这里使用了ES6的语法
+            console.log(response); //请求成功返回的数据
+          });
       }
     },
     toRegister() {
