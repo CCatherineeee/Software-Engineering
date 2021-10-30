@@ -1,0 +1,742 @@
+Traceback (most recent call last):
+  File "app.py", line 26, in <module>
+    app.register_blueprint(loginRoute)
+  File "/usr/local/lib64/python3.6/site-packages/flask/scaffold.py", line 57, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1028, in register_blueprint
+    blueprint.register(self, options)
+  File "/usr/local/lib64/python3.6/site-packages/flask/blueprints.py", line 306, in register
+    f"The name '{self_name}' is already registered for"
+ValueError: The name 'registerRoute' is already registered for a different blueprint. Use 'name=' to provide a unique name.
+ * Serving Flask app 'app' (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.20.164.36:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:02:12,823 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:02:12,823 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:02:12,829 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:02:12,829 INFO sqlalchemy.engine.Engine [generated in 0.00024s] {}
+2021-10-21 20:02:12,838 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:02:12,838 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:02:12,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:02:12,850 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,850 INFO sqlalchemy.engine.Engine [generated in 0.00031s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:02:12,855 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,855 INFO sqlalchemy.engine.Engine [cached since 0.00547s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:02:12,860 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,860 INFO sqlalchemy.engine.Engine [cached since 0.01034s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:02:12,865 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,865 INFO sqlalchemy.engine.Engine [cached since 0.01509s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:02:12,870 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,870 INFO sqlalchemy.engine.Engine [cached since 0.01987s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:02:12,874 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,874 INFO sqlalchemy.engine.Engine [cached since 0.02452s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:02:12,879 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,879 INFO sqlalchemy.engine.Engine [cached since 0.02915s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:02:12,884 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,884 INFO sqlalchemy.engine.Engine [cached since 0.0339s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:02:12,888 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,888 INFO sqlalchemy.engine.Engine [cached since 0.03865s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:02:12,893 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,893 INFO sqlalchemy.engine.Engine [cached since 0.04336s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:02:12,898 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:02:12,898 INFO sqlalchemy.engine.Engine [cached since 0.04803s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:02:12,902 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:02:12,919 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:02:12,923 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:02:12,923 INFO sqlalchemy.engine.Engine [generated in 0.00033s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:02:12,930 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:02:12,930 INFO sqlalchemy.engine.Engine [generated in 0.00032s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:02:12,934 INFO sqlalchemy.engine.Engine COMMIT
+111.187.42.103 - - [21/Oct/2021 20:02:12] "[33mPOST /loginAdmin/ HTTP/1.1[0m" 404 -
+111.187.42.103 - - [21/Oct/2021 20:02:27] "[33mPOST /loginAdmin/ HTTP/1.1[0m" 404 -
+111.187.42.103 - - [21/Oct/2021 20:02:47] "[33mPOST /registerRoute/loginAdmin/ HTTP/1.1[0m" 404 -
+111.187.42.103 - - [21/Oct/2021 20:03:00] "[33mPOST /loginAdmin/ HTTP/1.1[0m" 404 -
+111.187.42.103 - - [21/Oct/2021 20:03:17] "[33mPOST /loginRoute/ HTTP/1.1[0m" 404 -
+111.187.42.103 - - [21/Oct/2021 20:05:48] "[35m[1mPOST /adminLogin/ HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2091, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2076, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/root/SE/Routers/login.py", line 28, in login
+    if valid_login(data['username'], data['password']):
+NameError: name 'valid_login' is not defined
+ * Detected change in '/root/SE/Routers/login.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:06:15,250 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:06:15,250 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:06:15,256 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:06:15,256 INFO sqlalchemy.engine.Engine [generated in 0.00025s] {}
+2021-10-21 20:06:15,265 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:06:15,266 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:06:15,276 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:06:15,277 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,278 INFO sqlalchemy.engine.Engine [generated in 0.00031s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:06:15,282 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,283 INFO sqlalchemy.engine.Engine [cached since 0.005326s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:06:15,287 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,287 INFO sqlalchemy.engine.Engine [cached since 0.01012s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:06:15,292 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,292 INFO sqlalchemy.engine.Engine [cached since 0.01487s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:06:15,297 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,297 INFO sqlalchemy.engine.Engine [cached since 0.01971s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:06:15,301 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,301 INFO sqlalchemy.engine.Engine [cached since 0.02428s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:06:15,306 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,306 INFO sqlalchemy.engine.Engine [cached since 0.02901s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:06:15,311 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,311 INFO sqlalchemy.engine.Engine [cached since 0.03367s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:06:15,316 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,316 INFO sqlalchemy.engine.Engine [cached since 0.03845s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:06:15,320 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,320 INFO sqlalchemy.engine.Engine [cached since 0.04312s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:06:15,325 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:06:15,325 INFO sqlalchemy.engine.Engine [cached since 0.04757s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:06:15,329 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:06:15,343 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:06:15,345 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:06:15,345 INFO sqlalchemy.engine.Engine [generated in 0.00025s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:06:15,351 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:06:15,352 INFO sqlalchemy.engine.Engine [generated in 0.00026s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:06:15,356 INFO sqlalchemy.engine.Engine COMMIT
+111.187.42.103 - - [21/Oct/2021 20:06:15] "POST /adminLogin/ HTTP/1.1" 200 -
+ * Detected change in '/root/SE/Routers/login.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:07:05,558 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:07:05,558 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:07:05,564 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:07:05,564 INFO sqlalchemy.engine.Engine [generated in 0.00017s] {}
+2021-10-21 20:07:05,573 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:07:05,573 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:07:05,584 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:07:05,585 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,585 INFO sqlalchemy.engine.Engine [generated in 0.00024s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:07:05,590 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,590 INFO sqlalchemy.engine.Engine [cached since 0.005178s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:07:05,595 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,595 INFO sqlalchemy.engine.Engine [cached since 0.01004s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:07:05,599 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,599 INFO sqlalchemy.engine.Engine [cached since 0.01473s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:07:05,604 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,604 INFO sqlalchemy.engine.Engine [cached since 0.01935s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:07:05,608 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,609 INFO sqlalchemy.engine.Engine [cached since 0.0239s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:07:05,613 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,613 INFO sqlalchemy.engine.Engine [cached since 0.02856s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:07:05,618 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,618 INFO sqlalchemy.engine.Engine [cached since 0.0331s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:07:05,622 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,622 INFO sqlalchemy.engine.Engine [cached since 0.03773s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:07:05,627 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,627 INFO sqlalchemy.engine.Engine [cached since 0.04233s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:07:05,631 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:07:05,632 INFO sqlalchemy.engine.Engine [cached since 0.04688s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:07:05,636 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:07:05,649 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:07:05,652 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:07:05,652 INFO sqlalchemy.engine.Engine [generated in 0.00022s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:07:05,657 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:07:05,658 INFO sqlalchemy.engine.Engine [generated in 0.00020s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:07:05,662 INFO sqlalchemy.engine.Engine COMMIT
+111.187.42.103 - - [21/Oct/2021 20:07:05] "POST /adminLogin/ HTTP/1.1" 200 -
+ * Detected change in '/root/SE/Routers/login.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:08:01,837 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:08:01,837 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:08:01,844 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:08:01,844 INFO sqlalchemy.engine.Engine [generated in 0.00025s] {}
+2021-10-21 20:08:01,854 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:08:01,854 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:08:01,866 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:08:01,867 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,867 INFO sqlalchemy.engine.Engine [generated in 0.00032s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:08:01,873 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,873 INFO sqlalchemy.engine.Engine [cached since 0.006089s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:08:01,878 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,878 INFO sqlalchemy.engine.Engine [cached since 0.01164s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:08:01,884 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,884 INFO sqlalchemy.engine.Engine [cached since 0.01712s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:08:01,889 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,889 INFO sqlalchemy.engine.Engine [cached since 0.02251s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:08:01,894 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,895 INFO sqlalchemy.engine.Engine [cached since 0.02789s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:08:01,900 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,900 INFO sqlalchemy.engine.Engine [cached since 0.03322s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:08:01,905 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,905 INFO sqlalchemy.engine.Engine [cached since 0.03854s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:08:01,911 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,911 INFO sqlalchemy.engine.Engine [cached since 0.044s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:08:01,916 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,916 INFO sqlalchemy.engine.Engine [cached since 0.0494s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:08:01,921 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:08:01,921 INFO sqlalchemy.engine.Engine [cached since 0.05459s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:08:01,926 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:08:01,945 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:08:01,949 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:08:01,949 INFO sqlalchemy.engine.Engine [generated in 0.00034s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:08:01,956 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:08:01,956 INFO sqlalchemy.engine.Engine [generated in 0.00030s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:08:01,961 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:08:01,974 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:08:01,976 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:08:01,976 INFO sqlalchemy.engine.Engine [generated in 0.00030s] {'name_1': 'admin', 'param_1': 1}
+111.187.42.103 - - [21/Oct/2021 20:08:01] "[35m[1mPOST /adminLogin/ HTTP/1.1[0m" 500 -
+2021-10-21 20:08:24,494 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:08:24,494 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:08:24,495 INFO sqlalchemy.engine.Engine [cached since 22.52s ago] {'name_1': 'admin', 'param_1': 1}
+Traceback (most recent call last):
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2091, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2076, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/root/SE/Routers/login.py", line 28, in login
+    check = AdminLogin(data.get('username'),data.get('password'))
+  File "/root/SE/Routers/login.py", line 18, in AdminLogin
+    admin = Entity.Admin.query.filter(and_(Entity.Admin.admin_pwd == admin_pwd,Entity.Admin.name == name)).first()
+NameError: name 'and_' is not defined
+111.187.42.103 - - [21/Oct/2021 20:08:24] "[35m[1mPOST /adminLogin/ HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2091, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2076, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib64/python3.6/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/root/SE/Routers/login.py", line 28, in login
+    check = AdminLogin(data.get('username'),data.get('password'))
+  File "/root/SE/Routers/login.py", line 18, in AdminLogin
+    admin = Entity.Admin.query.filter(and_(Entity.Admin.admin_pwd == admin_pwd,Entity.Admin.name == name)).first()
+NameError: name 'and_' is not defined
+ * Detected change in '/root/SE/Routers/login.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:10:11,224 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:10:11,225 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:10:11,230 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:10:11,231 INFO sqlalchemy.engine.Engine [generated in 0.00025s] {}
+2021-10-21 20:10:11,240 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:10:11,240 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:10:11,250 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:11,251 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,251 INFO sqlalchemy.engine.Engine [generated in 0.00034s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:10:11,256 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,257 INFO sqlalchemy.engine.Engine [cached since 0.005526s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:10:11,261 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,261 INFO sqlalchemy.engine.Engine [cached since 0.01037s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:10:11,266 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,266 INFO sqlalchemy.engine.Engine [cached since 0.0152s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:10:11,271 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,271 INFO sqlalchemy.engine.Engine [cached since 0.02003s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:10:11,276 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,276 INFO sqlalchemy.engine.Engine [cached since 0.02471s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:10:11,280 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,280 INFO sqlalchemy.engine.Engine [cached since 0.02942s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:10:11,285 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,285 INFO sqlalchemy.engine.Engine [cached since 0.03417s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:10:11,290 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,290 INFO sqlalchemy.engine.Engine [cached since 0.03897s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:10:11,295 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,295 INFO sqlalchemy.engine.Engine [cached since 0.0436s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:10:11,299 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:10:11,299 INFO sqlalchemy.engine.Engine [cached since 0.04831s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:10:11,304 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:10:11,321 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:11,325 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:10:11,325 INFO sqlalchemy.engine.Engine [generated in 0.00033s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:10:11,331 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:10:11,331 INFO sqlalchemy.engine.Engine [generated in 0.00027s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:10:11,336 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:10:11,348 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:11,350 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:10:11,350 INFO sqlalchemy.engine.Engine [generated in 0.00029s] {'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:10:11,356 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:10:11,356 INFO sqlalchemy.engine.Engine [generated in 0.00026s] {'admin_pwd_1': 'admin', 'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:10:11,361 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:10:11] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:10:17,636 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:17,636 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:10:17,636 INFO sqlalchemy.engine.Engine [cached since 6.286s ago] {'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:10:17,642 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:10:17,642 INFO sqlalchemy.engine.Engine [cached since 6.286s ago] {'admin_pwd_1': '123', 'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:10:17,647 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:10:17] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:10:32,850 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:32,852 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:10:32,852 INFO sqlalchemy.engine.Engine [generated in 0.00027s] {'param_1': 1}
+2021-10-21 20:10:32,856 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:10:32] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:10:52,574 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:10:52,576 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:10:52,576 INFO sqlalchemy.engine.Engine [cached since 19.72s ago] {'param_1': 1}
+2021-10-21 20:10:52,581 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:10:52] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:12:24,478 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:12:24,479 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:12:24,479 INFO sqlalchemy.engine.Engine [cached since 111.6s ago] {'param_1': 1}
+2021-10-21 20:12:24,483 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:12:24] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:12:32,633 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:12:32,634 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:12:32,634 INFO sqlalchemy.engine.Engine [cached since 119.8s ago] {'param_1': 1}
+2021-10-21 20:12:32,638 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:12:32] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:12:35,404 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:12:35,404 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:12:35,404 INFO sqlalchemy.engine.Engine [cached since 144.1s ago] {'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:12:35,409 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:12:35,409 INFO sqlalchemy.engine.Engine [cached since 144.1s ago] {'admin_pwd_1': '123', 'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:12:35,414 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:12:35] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:12:36,330 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:12:36,331 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:12:36,331 INFO sqlalchemy.engine.Engine [cached since 145s ago] {'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:12:36,336 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:12:36,336 INFO sqlalchemy.engine.Engine [cached since 145s ago] {'admin_pwd_1': '123', 'name_1': 'admin', 'param_1': 1}
+2021-10-21 20:12:36,340 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:12:36] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:01,561 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:01,562 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:01,562 INFO sqlalchemy.engine.Engine [cached since 148.7s ago] {'param_1': 1}
+2021-10-21 20:13:01,566 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:01] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:01,884 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:01,885 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:01,885 INFO sqlalchemy.engine.Engine [cached since 149s ago] {'param_1': 1}
+2021-10-21 20:13:01,889 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:01] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:02,036 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:02,037 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:02,037 INFO sqlalchemy.engine.Engine [cached since 149.2s ago] {'param_1': 1}
+2021-10-21 20:13:02,041 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:02] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:06,891 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:06,892 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:06,892 INFO sqlalchemy.engine.Engine [cached since 154s ago] {'param_1': 1}
+2021-10-21 20:13:06,897 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:06] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:30,374 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:30,375 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:30,375 INFO sqlalchemy.engine.Engine [cached since 177.5s ago] {'param_1': 1}
+2021-10-21 20:13:30,379 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:30] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:39,068 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:39,068 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:39,068 INFO sqlalchemy.engine.Engine [cached since 186.2s ago] {'param_1': 1}
+2021-10-21 20:13:39,074 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:39] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:13:50,007 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:13:50,007 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:13:50,008 INFO sqlalchemy.engine.Engine [cached since 197.2s ago] {'param_1': 1}
+2021-10-21 20:13:50,012 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:13:50] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:14:14,040 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:14:14,041 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:14:14,041 INFO sqlalchemy.engine.Engine [cached since 221.2s ago] {'param_1': 1}
+2021-10-21 20:14:14,045 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:14:14] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:14:29,398 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:14:29,398 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:14:29,398 INFO sqlalchemy.engine.Engine [cached since 236.5s ago] {'param_1': 1}
+2021-10-21 20:14:29,403 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:14:29] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:15:48,179 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:15:48,180 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:15:48,180 INFO sqlalchemy.engine.Engine [cached since 315.3s ago] {'param_1': 1}
+2021-10-21 20:15:48,184 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:15:48] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 20:16:38,253 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:16:38,254 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:16:38,254 INFO sqlalchemy.engine.Engine [cached since 365.4s ago] {'param_1': 1}
+2021-10-21 20:16:38,258 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:16:38] "POST /adminLogin/ HTTP/1.1" 200 -
+ * Detected change in '/root/SE/Routers/login.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-491-172
+2021-10-21 20:18:59,167 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-10-21 20:18:59,167 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:18:59,173 INFO sqlalchemy.engine.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-10-21 20:18:59,173 INFO sqlalchemy.engine.Engine [generated in 0.00020s] {}
+2021-10-21 20:18:59,182 INFO sqlalchemy.engine.Engine SELECT DATABASE()
+2021-10-21 20:18:59,182 INFO sqlalchemy.engine.Engine [raw sql] {}
+2021-10-21 20:18:59,192 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:18:59,193 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,193 INFO sqlalchemy.engine.Engine [generated in 0.00024s] {'table_schema': 'Education_Management_System', 'table_name': 'user'}
+2021-10-21 20:18:59,198 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,198 INFO sqlalchemy.engine.Engine [cached since 0.004905s ago] {'table_schema': 'Education_Management_System', 'table_name': 'teacher'}
+2021-10-21 20:18:59,202 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,202 INFO sqlalchemy.engine.Engine [cached since 0.009381s ago] {'table_schema': 'Education_Management_System', 'table_name': 'admin'}
+2021-10-21 20:18:59,207 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,207 INFO sqlalchemy.engine.Engine [cached since 0.01381s ago] {'table_schema': 'Education_Management_System', 'table_name': 'class'}
+2021-10-21 20:18:59,211 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,211 INFO sqlalchemy.engine.Engine [cached since 0.01816s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment'}
+2021-10-21 20:18:59,215 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,215 INFO sqlalchemy.engine.Engine [cached since 0.02244s ago] {'table_schema': 'Education_Management_System', 'table_name': 'experiment_file'}
+2021-10-21 20:18:59,220 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,220 INFO sqlalchemy.engine.Engine [cached since 0.02688s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course'}
+2021-10-21 20:18:59,224 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,224 INFO sqlalchemy.engine.Engine [cached since 0.03167s ago] {'table_schema': 'Education_Management_System', 'table_name': 'course_file'}
+2021-10-21 20:18:59,229 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,229 INFO sqlalchemy.engine.Engine [cached since 0.03601s ago] {'table_schema': 'Education_Management_System', 'table_name': 'assignment'}
+2021-10-21 20:18:59,233 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,233 INFO sqlalchemy.engine.Engine [cached since 0.04036s ago] {'table_schema': 'Education_Management_System', 'table_name': 'exam'}
+2021-10-21 20:18:59,237 INFO sqlalchemy.engine.Engine SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s
+2021-10-21 20:18:59,237 INFO sqlalchemy.engine.Engine [cached since 0.04464s ago] {'table_schema': 'Education_Management_System', 'table_name': 'question'}
+2021-10-21 20:18:59,242 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:18:59,254 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:18:59,257 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2021-10-21 20:18:59,257 INFO sqlalchemy.engine.Engine [generated in 0.00021s] {'name_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2021-10-21 20:18:59,262 INFO sqlalchemy.engine.Engine INSERT INTO `admin` (admin_id, admin_pwd, name, email, phone_number, state) VALUES (%(admin_id)s, %(admin_pwd)s, %(name)s, %(email)s, %(phone_number)s, %(state)s)
+2021-10-21 20:18:59,262 INFO sqlalchemy.engine.Engine [generated in 0.00019s] {'admin_id': '0000000', 'admin_pwd': 'admin', 'name': 'admin', 'email': '0000000@tongji.edu.cn', 'phone_number': None, 'state': None}
+2021-10-21 20:18:59,266 INFO sqlalchemy.engine.Engine COMMIT
+2021-10-21 20:18:59,276 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 20:18:59,277 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 20:18:59,277 INFO sqlalchemy.engine.Engine [generated in 0.00019s] {'param_1': 1}
+2021-10-21 20:18:59,282 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 20:18:59] "POST /adminLogin/ HTTP/1.1" 200 -
+106.14.47.169 - - [21/Oct/2021 20:24:18] code 400, message Bad request syntax ("\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x9eá\xad°É¥ü\x89_î²ÕÛMêÔ\x19`f\x9aÌ\x91\x1dt\x17þ\x82l0öïð º\x12\x06Jï\x00rZ6À¥ïDÊ'P\x88\x8bÉa\r\x1bì;\x1eJ^ç\x8aÀd\x92\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+106.14.47.169 - - [21/Oct/2021 20:24:18] "[35m[1m  üá­°É¥ü_î²ÕÛMêÔ`fÌtþl0öïð ºJï rZ6À¥ïDÊ'PÉaì;J^çÀd >À,À0 Ì©Ì¨ÌªÀ+À/ À$À( kÀ#À' gÀ[0m" HTTPStatus.BAD_REQUEST -
+106.14.47.169 - - [21/Oct/2021 20:24:18] "GET / HTTP/1.1" 200 -
+89.248.165.76 - - [21/Oct/2021 21:00:33] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.76 - - [21/Oct/2021 21:00:33] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+2021-10-21 22:27:09,642 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 22:27:09,643 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 22:27:09,643 INFO sqlalchemy.engine.Engine [cached since 7690s ago] {'param_1': 1}
+2021-10-21 22:27:09,647 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 22:27:09] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-21 22:27:41,162 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-21 22:27:41,162 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-21 22:27:41,162 INFO sqlalchemy.engine.Engine [cached since 7722s ago] {'param_1': 1}
+2021-10-21 22:27:41,167 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [21/Oct/2021 22:27:41] "POST /adminLogin/ HTTP/1.1" 200 -
+83.97.20.34 - - [21/Oct/2021 22:50:30] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [21/Oct/2021 22:50:30] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [21/Oct/2021 22:50:30] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [21/Oct/2021 22:50:30] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [21/Oct/2021 22:50:31] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [21/Oct/2021 22:50:31] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [21/Oct/2021 22:50:40] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [21/Oct/2021 22:50:40] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [21/Oct/2021 22:50:40] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [21/Oct/2021 22:50:40] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+92.118.36.18 - - [21/Oct/2021 23:16:16] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+92.118.36.18 - - [21/Oct/2021 23:16:16] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+92.118.36.18 - - [22/Oct/2021 00:21:50] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+92.118.36.18 - - [22/Oct/2021 00:21:50] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+47.94.39.226 - - [22/Oct/2021 00:37:08] "GET / HTTP/1.0" 200 -
+89.248.165.248 - - [22/Oct/2021 01:40:49] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.248 - - [22/Oct/2021 01:40:49] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+89.248.165.24 - - [22/Oct/2021 04:07:33] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+89.248.165.24 - - [22/Oct/2021 04:07:33] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 04:20:10] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [22/Oct/2021 04:20:10] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 04:20:11] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [22/Oct/2021 04:20:11] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [22/Oct/2021 04:20:11] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 04:20:11] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [22/Oct/2021 04:20:21] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [22/Oct/2021 04:20:21] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 04:20:21] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [22/Oct/2021 04:20:21] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+209.17.96.114 - - [22/Oct/2021 05:44:00] "GET / HTTP/1.0" 200 -
+170.130.187.50 - - [22/Oct/2021 06:05:58] "GET / HTTP/1.1" 200 -
+89.248.165.82 - - [22/Oct/2021 06:09:53] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.82 - - [22/Oct/2021 06:09:53] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+89.248.172.20 - - [22/Oct/2021 06:59:12] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.172.20 - - [22/Oct/2021 06:59:12] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+209.17.97.10 - - [22/Oct/2021 08:27:59] "GET / HTTP/1.1" 200 -
+84.17.35.119 - - [22/Oct/2021 08:31:23] "GET / HTTP/1.1" 200 -
+45.9.20.97 - - [22/Oct/2021 09:32:24] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+45.9.20.97 - - [22/Oct/2021 09:32:24] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+2021-10-22 09:38:58,136 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-22 09:38:58,137 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-22 09:38:58,137 INFO sqlalchemy.engine.Engine [cached since 4.8e+04s ago] {'param_1': 1}
+2021-10-22 09:38:58,141 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [22/Oct/2021 09:38:58] "POST /adminLogin/ HTTP/1.1" 200 -
+2021-10-22 09:42:05,344 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2021-10-22 09:42:05,345 INFO sqlalchemy.engine.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name IS NULL 
+ LIMIT %(param_1)s
+2021-10-22 09:42:05,345 INFO sqlalchemy.engine.Engine [cached since 4.819e+04s ago] {'param_1': 1}
+2021-10-22 09:42:05,350 INFO sqlalchemy.engine.Engine ROLLBACK
+111.187.42.103 - - [22/Oct/2021 09:42:05] "POST /adminLogin/ HTTP/1.1" 200 -
+45.9.20.105 - - [22/Oct/2021 13:26:13] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+45.9.20.105 - - [22/Oct/2021 13:26:13] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+39.103.157.217 - - [22/Oct/2021 13:40:39] "GET / HTTP/1.0" 200 -
+39.103.157.217 - - [22/Oct/2021 13:47:14] "[33mGET /nmaplowercheck1634881633 HTTP/1.1[0m" 404 -
+39.103.157.217 - - [22/Oct/2021 13:47:14] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+39.103.157.217 - - [22/Oct/2021 13:47:16] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+39.103.157.217 - - [22/Oct/2021 13:47:23] "GET / HTTP/1.0" 200 -
+39.103.157.217 - - [22/Oct/2021 13:47:25] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+39.103.157.217 - - [22/Oct/2021 13:47:27] code 400, message Bad request syntax ("\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03ÏÖ'e")
+39.103.157.217 - - [22/Oct/2021 13:47:27] "[35m[1m  üÏÖ'e[0m" HTTPStatus.BAD_REQUEST -
+39.103.157.217 - - [22/Oct/2021 13:47:46] "GET / HTTP/1.0" 200 -
+39.103.157.217 - - [22/Oct/2021 13:47:47] "GET / HTTP/1.1" 200 -
+193.106.29.74 - - [22/Oct/2021 14:00:31] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+193.106.29.74 - - [22/Oct/2021 14:00:31] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 15:19:33] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [22/Oct/2021 15:19:33] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 15:19:33] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [22/Oct/2021 15:19:33] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [22/Oct/2021 15:19:33] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [22/Oct/2021 15:19:33] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 15:19:43] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [22/Oct/2021 15:19:43] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 15:19:43] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [22/Oct/2021 15:19:43] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+178.159.37.58 - - [22/Oct/2021 15:44:48] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+178.159.37.58 - - [22/Oct/2021 15:44:48] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+85.102.200.237 - - [22/Oct/2021 15:54:25] "GET / HTTP/1.1" 200 -
+106.15.186.63 - - [22/Oct/2021 16:22:00] code 400, message Bad request syntax ('\x16\x03\x03\x00\x88\x01\x00\x00\x84\x03\x03art¨')
+106.15.186.63 - - [22/Oct/2021 16:22:00] "[35m[1m   art¨[0m" HTTPStatus.BAD_REQUEST -
+80.82.70.217 - - [22/Oct/2021 18:10:03] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+80.82.70.217 - - [22/Oct/2021 18:10:03] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 19:21:51] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [22/Oct/2021 19:21:51] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 19:21:51] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [22/Oct/2021 19:21:51] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [22/Oct/2021 19:21:51] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [22/Oct/2021 19:21:51] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 19:22:01] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [22/Oct/2021 19:22:01] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [22/Oct/2021 19:22:01] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [22/Oct/2021 19:22:01] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+89.248.165.68 - - [22/Oct/2021 21:33:47] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.68 - - [22/Oct/2021 21:33:47] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+222.186.19.235 - - [22/Oct/2021 21:43:51] "[33mGET http://fuwu.sogou.com/404/index.html HTTP/1.1[0m" 404 -
+222.186.19.235 - - [22/Oct/2021 21:43:51] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03zS\x1c\x90Ì¬\x95OP//òâÿ3WÓt\x04C\x97°ä¤\x95i\x94ÕíóÉ£ Ø\x85O\x83a«Y\x89\x98E\x81Àþ»yT\x08Jg0X8zÿ¿ù\x90"ñ¯\x13é\x00&Ì¨Ì©À/À0À+À,À\x13À\tÀ\x14À')
+222.186.19.235 - - [22/Oct/2021 21:43:51] "[33mGET http://fuwu.sogou.com/404/index.html HTTP/1.1[0m" 404 -
+222.186.19.235 - - [22/Oct/2021 21:43:51] "[35m[1m î  êzSÌ¬OP//òâÿ3WÓtC°ä¤iÕíóÉ£ ØOa«YEÀþ»yTJg0X8zÿ¿ù"ñ¯é &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ[0m" HTTPStatus.BAD_REQUEST -
+222.186.19.235 - - [22/Oct/2021 21:43:58] code 400, message Bad request syntax ('\x05\x01\x00')
+222.186.19.235 - - [22/Oct/2021 21:43:58] "[35m[1m [0m" HTTPStatus.BAD_REQUEST -
+101.133.224.19 - - [22/Oct/2021 22:48:43] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03gßK\x7f%~4TwÃh\x8d\x9eäº@')
+101.133.224.19 - - [22/Oct/2021 22:48:43] "[35m[1m  ügßK%~4TwÃhäº@[0m" HTTPStatus.BAD_REQUEST -
+101.133.224.19 - - [22/Oct/2021 22:48:43] "GET / HTTP/1.1" 200 -
+80.82.77.227 - - [23/Oct/2021 00:20:40] "GET / HTTP/1.1" 200 -
+94.232.47.130 - - [23/Oct/2021 00:25:08] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+94.232.47.130 - - [23/Oct/2021 00:25:08] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+120.78.231.236 - - [23/Oct/2021 00:27:20] "GET / HTTP/1.0" 200 -
+94.232.47.130 - - [23/Oct/2021 00:48:35] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+94.232.47.130 - - [23/Oct/2021 00:48:35] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+80.82.70.217 - - [23/Oct/2021 02:34:16] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+80.82.70.217 - - [23/Oct/2021 02:34:16] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 02:39:52] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [23/Oct/2021 02:39:52] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 02:39:52] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [23/Oct/2021 02:39:52] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [23/Oct/2021 02:39:52] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [23/Oct/2021 02:39:52] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 02:40:02] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [23/Oct/2021 02:40:02] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 02:40:02] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [23/Oct/2021 02:40:02] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+209.17.97.114 - - [23/Oct/2021 04:56:35] "GET / HTTP/1.1" 200 -
+89.248.165.92 - - [23/Oct/2021 07:07:40] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.92 - - [23/Oct/2021 07:07:40] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+101.204.24.152 - - [23/Oct/2021 07:09:00] "GET / HTTP/1.1" 200 -
+101.204.24.152 - - [23/Oct/2021 07:43:52] "GET / HTTP/1.1" 200 -
+106.14.204.78 - - [23/Oct/2021 08:17:15] code 400, message Bad request syntax ('\x16\x03\x03\x00\x88\x01\x00\x00\x84\x03\x03asT\x8bµ\x91/p\x7f\x08KmÇ®\x18ÕásiÈ¸Í+5\x90ªÚ\x14Ò7>o\x00\x00\x16À\x14\x005À\x13\x00/À,À+À0\x00\x9dÀ/\x00\x9c\x00')
+106.14.204.78 - - [23/Oct/2021 08:17:15] "[35m[1m   asTµ/pKmÇ®ÕásiÈ¸Í+5ªÚÒ7>o  À 5À /À,À+À0 À/  [0m" HTTPStatus.BAD_REQUEST -
+101.204.24.152 - - [23/Oct/2021 08:23:52] "GET / HTTP/1.1" 200 -
+101.133.148.169 - - [23/Oct/2021 08:29:48] "GET / HTTP/1.0" 200 -
+89.248.165.248 - - [23/Oct/2021 08:31:49] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.248 - - [23/Oct/2021 08:31:49] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+101.133.148.169 - - [23/Oct/2021 08:36:24] "[33mPOST /sdk HTTP/1.1[0m" 404 -
+101.133.148.169 - - [23/Oct/2021 08:36:34] code 400, message Bad request syntax ("\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03tî¼¼io$ÚÏ`t¨0\x98\x13SMÞ¤ãb¨E\x9dëÎUÍ\x15\x92 \x06 tÅI\x9e`\x81P\x00y¾ës¾\tx\x13]^aý]\x01¼\x7fOêå±\x1e\x92r¦\x00\x9c\x13\x02\x13\x03\x13\x01\x003\x009\x005\x00/À,À0\x00£\x00\x9fÌ©Ì¨ÌªÀ¯À\xadÀ£À\x9fÀ]ÀaÀWÀSÀ+À/\x00¢\x00\x9eÀ®À¬À¢À\x9eÀ\\À`ÀVÀRÀ$À(\x00k\x00jÀsÀw\x00Ä\x00ÃÀ#À'\x00g\x00@ÀrÀv\x00¾\x00½À")
+101.133.148.169 - - [23/Oct/2021 08:36:34] "[35m[1m  ütî¼¼io$ÚÏ`t¨0SMÞ¤ãb¨EëÎUÍ  tÅI`P y¾ës¾	x]^aý]¼Oêå±r¦  3 9 5 /À,À0 £ Ì©Ì¨ÌªÀ¯À­À£ÀÀ]ÀaÀWÀSÀ+À/ ¢ À®À¬À¢ÀÀ\À`ÀVÀRÀ$À( k jÀsÀw Ä ÃÀ#À' g @ÀrÀv ¾ ½À[0m" HTTPStatus.BAD_REQUEST -
+101.133.148.169 - - [23/Oct/2021 08:36:35] "[33mGET /nmaplowercheck1634949384 HTTP/1.1[0m" 404 -
+101.133.148.169 - - [23/Oct/2021 08:36:36] "[33mGET /HNAP1 HTTP/1.1[0m" 404 -
+101.133.148.169 - - [23/Oct/2021 08:36:36] "[33mGET /evox/about HTTP/1.1[0m" 404 -
+101.133.148.169 - - [23/Oct/2021 08:36:37] "GET / HTTP/1.0" 200 -
+101.133.148.169 - - [23/Oct/2021 08:36:52] "GET / HTTP/1.0" 200 -
+101.133.148.169 - - [23/Oct/2021 08:36:52] "GET / HTTP/1.1" 200 -
+209.17.96.42 - - [23/Oct/2021 09:43:33] "GET / HTTP/1.0" 200 -
+47.100.61.51 - - [23/Oct/2021 10:53:56] code 400, message Bad request syntax ('\x16\x03\x03\x00\x88\x01\x00\x00\x84\x03\x03asyD½=]ÎÎgaB\x1a¼â')
+47.100.61.51 - - [23/Oct/2021 10:53:56] "[35m[1m   asyD½=]ÎÎgaB¼â[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 11:23:43] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [23/Oct/2021 11:23:43] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 11:23:43] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [23/Oct/2021 11:23:43] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [23/Oct/2021 11:23:44] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [23/Oct/2021 11:23:44] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 11:23:53] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [23/Oct/2021 11:23:53] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 11:23:54] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [23/Oct/2021 11:23:54] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+89.248.165.89 - - [23/Oct/2021 12:02:57] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.89 - - [23/Oct/2021 12:02:57] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
+45.155.205.127 - - [23/Oct/2021 12:37:45] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+45.155.205.127 - - [23/Oct/2021 12:37:45] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+47.102.129.210 - - [23/Oct/2021 12:38:27] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [23/Oct/2021 13:32:21] code 400, message Bad request syntax ('\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00')
+83.97.20.34 - - [23/Oct/2021 13:32:21] "[35m[1m   ¤ÿSMBr    @              @     PC NETWORK PROGRAM 1.0 MICROSOFT NETWORKS 1.03 MICROSOFT NETWORKS 3.0 LANMAN1.0 LM1.2X002 Samba NT LANMAN 1.0 NT LM 0.12 [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 13:32:21] "GET / HTTP/1.0" 200 -
+83.97.20.34 - - [23/Oct/2021 13:32:21] code 400, message Bad request version ('RTSP/1.0')
+83.97.20.34 - - [23/Oct/2021 13:32:21] "[35m[1mOPTIONS / RTSP/1.0[0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 13:32:21] "GET / HTTP/1.1" 200 -
+83.97.20.34 - - [23/Oct/2021 13:32:31] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+83.97.20.34 - - [23/Oct/2021 13:32:31] code 400, message Bad HTTP/0.9 request type ('\x00')
+83.97.20.34 - - [23/Oct/2021 13:32:31] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
+83.97.20.34 - - [23/Oct/2021 13:32:31] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+193.106.29.74 - - [23/Oct/2021 13:49:37] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+193.106.29.74 - - [23/Oct/2021 13:49:37] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+162.142.125.57 - - [23/Oct/2021 14:15:12] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x96Gèr2·E\x05ÔoÍ\x7f¦\x9e7Ô¬\x12¤à\x0fl¨\x07}n\x81\xa0M\x99\x1e«\x00\x00\x1aÀ/À+À\x11À\x07À\x13À\tÀ\x14À')
+162.142.125.57 - - [23/Oct/2021 14:15:12] "[35m[1m {  wGèr2·EÔoÍ¦7Ô¬¤àl¨}n M«  À/À+ÀÀÀÀ	ÀÀ[0m" HTTPStatus.BAD_REQUEST -
+162.142.125.57 - - [23/Oct/2021 14:15:14] "GET / HTTP/1.1" 200 -
+162.142.125.57 - - [23/Oct/2021 14:15:14] "GET / HTTP/1.1" 200 -
+47.102.123.233 - - [23/Oct/2021 14:38:20] "GET / HTTP/1.1" 200 -
+94.232.42.204 - - [23/Oct/2021 14:43:04] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+94.232.42.204 - - [23/Oct/2021 14:43:04] "[35m[1m  /*à     Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
