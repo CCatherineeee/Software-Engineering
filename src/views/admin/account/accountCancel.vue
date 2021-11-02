@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-card>
-      <el-button type="danger" @click="handleCheckCancel">批量注销</el-button>
+      <el-button type="danger" @click="handleCheckCancelS">批量注销</el-button>
       <el-button @click="toggleSelection()">取消选择</el-button>
 
       <el-table
         ref="multipleTable"
-        row-key="date"
+        row-key="id"
         :data="
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
@@ -17,44 +17,39 @@
         <el-table-column prop="name" label="姓名" sortable />
         <el-table-column prop="id" label="学号" sortable />
         <el-table-column
-          prop="identity"
+          prop="role"
           label="身份权限"
           sortable
           :filters="[
-            { text: '学生', value: 'student' },
-            { text: '助教', value: 'assistant' },
-            { text: '教师', value: 'professor' },
-            { text: '责任教师', value: 'mainProfessor' },
+            { text: '学生', value: 1 },
+
+            { text: '教师', value: 2 },
           ]"
           :filter-method="filterIdentity"
         >
           <template slot-scope="scope">
-            <span v-if="scope.row.identity === 'student'">学生</span>
-            <span v-if="scope.row.identity === 'assistant'">助教</span>
-            <span v-if="scope.row.identity === 'professor'">教师</span>
-            <span v-if="scope.row.identity === 'mainProfessor'">责任教师</span>
+            <span v-if="scope.row.role === 1">学生</span>
+            <span v-if="scope.row.role === 2">教师</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="state"
+          prop="is_active"
           label="状态"
           sortable
           :filters="[
-            { text: '激活', value: 'activate' },
-            { text: '非激活', value: 'nonactivate' },
+            { text: '激活', value: 1 },
+            { text: '非激活', value: 0 },
           ]"
           :filter-method="filterState"
           filter-placement="bottom-end"
         >
           <template #default="scope">
             <el-tag
-              :type="scope.row.state === 'activate' ? 'success' : 'danger'"
+              :type="scope.row.is_active === 1 ? 'success' : 'danger'"
               disable-transitions
-              ><span v-if="scope.row.state === 'activate'">激活</span>
-              <span v-if="scope.row.state === 'nonactivate'"
-                >非激活</span
-              ></el-tag
+              ><span v-if="scope.row.is_active === 1">激活</span>
+              <span v-if="scope.row.is_active === 0">非激活</span></el-tag
             >
           </template>
         </el-table-column>
@@ -67,7 +62,7 @@
             <el-button
               size="small"
               type="danger"
-              @click="handleCheckCancel(scope.row)"
+              @click="handleCheckCancelO(scope.row)"
               >注销</el-button
             >
           </template>
@@ -95,38 +90,7 @@ export default {
       currentPage: 1,
       pagesize: 6,
       multipleSelection: [],
-      tableData: [
-        {
-          name: "Tom",
-          id: "1",
-          identity: "student",
-          state: "activate",
-        },
-        {
-          name: "Tomy",
-          id: "2",
-          identity: "assistant",
-          state: "activate",
-        },
-        {
-          name: "Ann",
-          id: "3",
-          identity: "professor",
-          state: "activate",
-        },
-        {
-          name: "Jim",
-          id: "4",
-          identity: "mainProfessor",
-          state: "activate",
-        },
-        {
-          name: "kim",
-          id: "5",
-          identity: "mainProfessor",
-          state: "nonactivate",
-        },
-      ],
+      tableData: [],
     };
   },
   methods: {
@@ -139,7 +103,10 @@ export default {
 
     handleCheck(row) {
       console.log(row);
-      this.$router.push("/adminHome/accountInfo");
+      this.$router.push({
+        path: "/adminHome/accountInfo",
+        query: { id: row.id },
+      });
     },
 
     filterState(value, row) {
@@ -157,11 +124,13 @@ export default {
       this.$refs.multipleTable.clearSelection();
     },
 
-    cancelAccount(row) {
-      //注销账户
+    cancelOneAccount(row) {
+      //注销单个账户
       axios
-        .post("", {
-          sid: row.sid,
+        .post("/api/delete/student/", {
+          params: {
+            s_id: row.id,
+          },
         })
         .then(function (response) {
           console.log(response);
@@ -171,14 +140,49 @@ export default {
         });
     },
 
-    handleCheckCancel() {
+    cancelSomeAccount() {
+      //注销多个账户
+      axios
+        .post("", JSON.stringify(this.multipleSelection))
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
+    handleCheckCancelO(row) {
       this.$confirm("确认注销账户吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.cancelAccount();
+          this.cancelOneAccount(row);
+
+          this.$message({
+            type: "success",
+            message: "注销成功!",
+          });
+          document.execCommand("Refresh");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消注销操作",
+          });
+        });
+    },
+
+    handleCheckCancelS() {
+      this.$confirm("确认注销账户吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.cancelSomeAccount();
 
           this.$message({
             type: "success",
@@ -192,6 +196,18 @@ export default {
           });
         });
     },
+  },
+  mounted() {
+    //获取所有用户所有信息
+    axios
+      .get("/api/getUserInfo/allUser/", {
+        //params: { userData: "value" },
+        crossDomain: true,
+      })
+      .then((response) => (this.tableData = response.data))
+      .catch(function () {});
+
+    //console.log(this.userData);
   },
 };
 </script>

@@ -5,7 +5,10 @@ import Home from '../views/home/Home.vue'
 import AdminHome from '../views/admin/adminHome'
 
 import Login from '../views/login/Login.vue'
+import AdminLogin from '../views/login/AdminLogin.vue'
 import Register from '../views/login/Register.vue'
+
+import ConcreteCourse from '../views/home/course/concreteCourse.vue'
 
 
 Vue.use(VueRouter)
@@ -17,6 +20,11 @@ const routes = [
     component: Login,
   },
   {
+    path: '/AdminLogin',
+    name: '/AdminLogin',
+    component: AdminLogin,
+  },
+  {
     path: '/register',
     name: 'Register',
     component: Register,
@@ -26,13 +34,25 @@ const routes = [
     name: 'Home',
     component: Home,
     children: [
-      //账户
-      { path: '/home/user/account', component: () => import('../views/home/user/account.vue') },
-      { path: '/home/user/modifyAccount', component: () => import('../views/home/user/modifyAccount.vue') },
-      { path: '/home/user/passwordModify', component: () => import('../views/home/user/passwordModify.vue') },
+      //学生账户
+      { path: '/home/student/account', component: () => import('../views/home/student/account.vue') },
+      { path: '/home/student/modifyAccount', component: () => import('../views/home/student/modifyAccount.vue') },
+      { path: '/home/student/passwordModify', component: () => import('../views/home/student/passwordModify.vue') },
 
       //课程
       { path: '/home/course', component: () => import('../views/home/course/course.vue') },
+      { path: '/home/test', component: () => import('../views/home/course/test.vue') },
+      {
+        path: '/home/concreteCourse', component: ConcreteCourse, children: [
+          { path: '/home/concreteCourse/Ann', component: () => import('../views/home/course/courseDetail/courseAnnounce.vue') },
+          { path: '/home/concreteCourse/Exper', component: () => import('../views/home/course/courseDetail/courseExperiment.vue') },
+          { path: '/home/concreteCourse/Peo', component: () => import('../views/home/course/courseDetail/coursePeople.vue') },
+        ]
+      },
+
+
+      //通知
+      { path: '/home/announce', component: () => import('../views/home/announce/announce.vue') },
     ]
   },
   {

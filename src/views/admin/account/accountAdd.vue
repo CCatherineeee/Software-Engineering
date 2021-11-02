@@ -1,12 +1,17 @@
 <template>
   <div>
     <el-card>
+      <el-button type="info" @click="checkData()">check</el-button>
+
       <el-button type="info" @click="handleDetailS">手动添加学生</el-button>
       <el-button type="info" @click="handleDetailT">手动添加教师</el-button>
       <el-button type="info" @click="handleExcelS">表格导入学生</el-button>
       <el-button type="info" @click="handleExcelT">表格导入老师</el-button>
-
-      <el-dialog :visible.sync="dialogFormVisibleS" title="请输入学生信息">
+      <el-dialog
+        :visible.sync="dialogFormVisibleS"
+        title="请输入学生信息"
+        center
+      >
         <el-form
           :model="formS"
           ref="formS"
@@ -25,10 +30,10 @@
           <el-form-item
             label="学号"
             :required="true"
-            prop="sid"
+            prop="id"
             status-icon="true"
           >
-            <el-input v-model="formS.sid"></el-input>
+            <el-input v-model="formS.id"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -46,7 +51,11 @@
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="dialogFormVisibleT" title="请输入教师信息">
+      <el-dialog
+        :visible.sync="dialogFormVisibleT"
+        title="请输入教师信息"
+        center
+      >
         <el-form
           :model="formT"
           ref="formT"
@@ -63,12 +72,12 @@
           </el-form-item>
 
           <el-form-item
-            label="学号"
+            label="工号"
             :required="true"
-            prop="sid"
+            prop="id"
             status-icon="true"
           >
-            <el-input v-model="formT.sid"></el-input>
+            <el-input v-model="formT.id"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -86,7 +95,7 @@
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="dialogExcelVisibleS" title="请选择文件">
+      <el-dialog :visible.sync="dialogExcelVisibleS" title="请选择文件" center>
         <el-upload
           class="upload-import"
           ref="uploadImport"
@@ -109,7 +118,7 @@
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="dialogExcelVisibleT" title="请选择文件">
+      <el-dialog :visible.sync="dialogExcelVisibleT" title="请选择文件" center>
         <el-upload
           class="upload-import"
           ref="uploadImport"
@@ -134,7 +143,7 @@
 
       <el-table
         ref="filterTable"
-        row-key="date"
+        row-key="id"
         :data="
           userData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
@@ -143,44 +152,40 @@
         <el-table-column prop="name" label="姓名" sortable />
         <el-table-column prop="id" label="学号" sortable />
         <el-table-column
-          prop="identity"
+          prop="role"
           label="身份权限"
           sortable
           :filters="[
-            { text: '学生', value: 'student' },
-            { text: '助教', value: 'assistant' },
-            { text: '教师', value: 'professor' },
-            { text: '责任教师', value: 'mainProfessor' },
+            { text: '学生', value: 1 },
+
+            { text: '教师', value: 2 },
           ]"
           :filter-method="filterIdentity"
         >
           <template slot-scope="scope">
-            <span v-if="scope.row.identity === 'student'">学生</span>
-            <span v-if="scope.row.identity === 'assistant'">助教</span>
-            <span v-if="scope.row.identity === 'professor'">教师</span>
-            <span v-if="scope.row.identity === 'mainProfessor'">责任教师</span>
+            <span v-if="scope.row.role === 1">学生</span>
+
+            <span v-if="scope.row.role === 2">教师</span>
           </template>
         </el-table-column>
 
         <el-table-column
-          prop="state"
+          prop="is_active"
           label="状态"
           sortable
           :filters="[
-            { text: '激活', value: 'activate' },
-            { text: '非激活', value: 'nonactivate' },
+            { text: '激活', value: 1 },
+            { text: '非激活', value: 0 },
           ]"
           :filter-method="filterState"
           filter-placement="bottom-end"
         >
           <template #default="scope">
             <el-tag
-              :type="scope.row.state === 'activate' ? 'success' : 'danger'"
+              :type="scope.row.is_active === 1 ? 'success' : 'danger'"
               disable-transitions
-              ><span v-if="scope.row.state === 'activate'">激活</span>
-              <span v-if="scope.row.state === 'nonactivate'"
-                >非激活</span
-              ></el-tag
+              ><span v-if="scope.row.is_active === 1">激活</span>
+              <span v-if="scope.row.is_active === 0">非激活</span></el-tag
             >
           </template>
         </el-table-column>
@@ -213,13 +218,13 @@ export default {
       /*手动导入学生数据*/
       formS: {
         name: "",
-        sid: "",
+        id: "",
         email: "",
       },
       /*手动导入教师数据*/
       formT: {
         name: "",
-        sid: "",
+        id: "",
         email: "",
       },
 
@@ -230,47 +235,11 @@ export default {
 
       currentPage: 1,
       pagesize: 6,
-      userData: [
-        {
-          name: "Tom",
-          id: "1",
-          identity: "student",
-          state: "activate",
-        },
-        {
-          name: "Tomy",
-          id: "2",
-          identity: "assistant",
-          state: "activate",
-        },
-        {
-          name: "Ann",
-          id: "3",
-          identity: "professor",
-          state: "activate",
-        },
-        {
-          name: "Jim",
-          id: "4",
-          identity: "mainProfessor",
-          state: "activate",
-        },
-        {
-          name: "kim",
-          id: "5",
-          identity: "mainProfessor",
-          state: "nonactivate",
-        },
-      ],
+      userData: [],
     };
   },
   methods: {
     handleDetailS() {
-      /*this.formS = {
-        name: "",
-        sid: "",
-        email: "",
-      };*/
       this.dialogFormVisibleS = true;
     },
 
@@ -279,11 +248,6 @@ export default {
     },
 
     handleDetailT() {
-      this.formT = {
-        name: "",
-        sid: "",
-        email: "",
-      };
       this.dialogFormVisibleT = true;
     },
 
@@ -310,14 +274,16 @@ export default {
     },
 
     addFromDetailS() {
+      console.log(this.formS);
       //手动增加学生
-      this.axios
+      axios
         .post("/api/Register/addStudentManually/", JSON.stringify(this.formS))
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
         });
       this.dialogFormVisibleS = false;
+      location.reload();
     },
 
     addFromDetailT() {
@@ -328,10 +294,11 @@ export default {
           console.log(response); //请求成功返回的数据
         });
       this.dialogFormVisibleT = false;
+      location.reload();
     },
 
     addFromExcelS() {
-      let fdParams = new FormData();
+      /*let fdParams = new FormData();
       this.fileListS.forEach((file) => {
         console.log(file);
         fdParams.append("file", file.raw);
@@ -348,11 +315,11 @@ export default {
         })
         .catch({});
 
-      this.dialogExcelVisibleS = false;
+      this.dialogExcelVisibleS = false;*/
     },
 
     addFromExcelT() {
-      let fdParams = new FormData();
+      /*let fdParams = new FormData();
       this.fileListT.forEach((file) => {
         console.log(file);
         fdParams.append("file", file.raw);
@@ -369,7 +336,7 @@ export default {
         })
         .catch({});
 
-      this.dialogExcelVisibleT = false;
+      this.dialogExcelVisibleT = false;*/
     },
 
     handleSizeChange: function (val) {
@@ -384,6 +351,10 @@ export default {
     filterIdentity(value, row, column) {
       const property = column["property"];
       return row[property] === value;
+    },
+
+    checkData() {
+      console.log(this.userData);
     },
   },
   mounted() {

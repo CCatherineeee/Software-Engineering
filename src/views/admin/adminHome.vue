@@ -4,7 +4,6 @@
     <el-main>
       <el-header>
         <el-menu
-          :default-active="activeIndex2"
           mode="horizontal"
           router
           background-color="#6A76AB"

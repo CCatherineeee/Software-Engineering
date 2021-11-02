@@ -1,10 +1,14 @@
+<!-- 个人信息页面-->
 <template>
   <el-container>
     <el-main>
       <el-card>
-        <el-descriptions title="账户信息" :column="2" border>
+        <el-descriptions title="账户信息" :column="2" border size="medium">
           <template slot="extra">
-            <el-button type="primary" size="medium" @click="modifyAccount"
+            <el-button type="primary" size="medium" @click="back"
+              >返回</el-button
+            >
+            <el-button type="primary" size="medium" @click="modifyAccount()"
               >编辑</el-button
             >
           </template>
@@ -14,7 +18,7 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 学号 </template>
-            {{ userID }}
+            {{ id }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 性别 </template>
@@ -22,7 +26,7 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 手机号 </template>
-            {{ phone }}
+            {{ phone_number }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 邮箱 </template>
@@ -30,20 +34,21 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 状态 </template>
-            <el-tag size="small">{{ state }}</el-tag>
+            <el-tag
+              :type="is_active === 1 ? 'success' : 'danger'"
+              disable-transitions
+              ><span v-if="is_active === 1">激活</span>
+              <span v-if="is_active === 0">非激活</span></el-tag
+            >
           </el-descriptions-item>
 
           <el-descriptions-item>
-            <template slot="label"> 身份 </template>
-            <el-tag size="small">{{ identity }}</el-tag>
-          </el-descriptions-item>
-          <el-descriptions-item>
             <template slot="label"> 学院 </template>
-            {{ colleague }}
+            {{ department }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template slot="label"> 专业 </template>
-            {{ major }}
+            {{ major_id }}
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -56,21 +61,61 @@
 export default {
   data() {
     return {
-      name: "xzq",
-      userID: 1951104,
-      gender: "女",
-      phone: 10086,
-      email: "1@qq.com",
-      state: "激活",
-      identity: "学生",
-      colleague: "软件",
-      major: "软件",
+      name: "",
+      id: "",
+      gender: "",
+      phone_number: "",
+      email: "",
+      is_active: "",
+      //role: "",
+      department: "",
+      major_id: "",
     };
   },
   methods: {
-    modifyAccount() {
-      this.$router.push("/adminHome/accountModify");
+    getParams: function () {
+      // 取到路由带过来的参数
+      var routerParams = this.$route.query.id;
+      // 将数据放在当前组件的数据内
+      console.log("传来的参数==" + routerParams);
+      this.id = routerParams;
     },
+
+    getStuInfo() {
+      this.axios
+        .get("/api/getUserInfo/Student/", {
+          params: { s_id: this.id },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.name = response.data[0].name;
+          this.gender = response.data[0].gender;
+          this.phone_number = response.data[0].phone_number;
+          this.email = response.data[0].email;
+          this.is_active = response.data[0].is_active;
+          //this.role = response.data[0].role;
+          this.department = response.data[0].department;
+          //this.major_id;
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    },
+
+    modifyAccount() {
+      this.$router.push({
+        path: "/adminHome/accountModify",
+        query: { id: this.id },
+      });
+    },
+    back() {
+      this.$router.push("/adminHome/accountCheck");
+    },
+  },
+  mounted() {
+    this.getParams();
+    this.getStuInfo();
   },
 };
 </script>

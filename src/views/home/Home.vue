@@ -19,12 +19,12 @@
                 <span>账户</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/user/account">个人资料</el-menu-item>
-                <el-menu-item index="/home/user/passwordModify"
+                <el-menu-item index="/home/student/account"
+                  >个人资料</el-menu-item
+                >
+                <el-menu-item index="/home/student/passwordModify"
                   >修改密码</el-menu-item
                 >
-                <el-menu-item index="3">通知</el-menu-item>
-                <el-menu-item index="3">文件</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -33,7 +33,12 @@
               <span>课程</span>
             </el-menu-item>
 
-            <el-menu-item index="2">
+            <el-menu-item index="/home/test">
+              <i class="el-icon-school"></i>
+              <span>test</span>
+            </el-menu-item>
+
+            <el-menu-item index="/home/announce">
               <i class="el-icon-message"></i>
               <span>通知</span>
             </el-menu-item>

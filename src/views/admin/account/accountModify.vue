@@ -24,8 +24,8 @@
               <el-input type="text" v-model="userAccount.name"></el-input>
             </el-form-item>
 
-            <el-form-item label="学号" prop="sid">
-              <el-input v-model="userAccount.sid"></el-input>
+            <el-form-item label="学号" prop="s_id">
+              <el-input v-model="userAccount.s_id"></el-input>
             </el-form-item>
 
             <el-form-item label="性别">
@@ -35,8 +35,8 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="手机" prop="phone">
-              <el-input v-model="userAccount.phone"></el-input>
+            <el-form-item label="手机" prop="phone_number">
+              <el-input v-model="userAccount.phone_number"></el-input>
             </el-form-item>
 
             <el-form-item label="邮箱" prop="email">
@@ -67,28 +67,63 @@ export default {
     return {
       userAccount: {
         name: "",
-        sid: 111,
-        gender: "女",
-        phone: 111,
+        s_id: "",
+        gender: "",
+        phone_number: "",
         email: "",
       },
     };
   },
   methods: {
-    save() {
-      console.log(JSON.stringify(this.userAccount));
+    getParams: function () {
+      // 取到路由带过来的参数
+      var routerParams = this.$route.query.id;
+      // 将数据放在当前组件的数据内
+      console.log("传来的参数===" + routerParams);
+      this.userAccount.s_id = routerParams;
+    },
 
+    getStuInfo() {
       this.axios
-        .post("/api", JSON.stringify(this.userAccount))
+        .get("/api/getUserInfo/Student/", {
+          params: { s_id: this.userAccount.s_id },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log("拿到的信息" + JSON.stringify(response.data));
+          this.userAccount.name = response.data[0].name;
+          this.userAccount.gender = response.data[0].gender;
+          this.userAccount.phone_number = response.data[0].phone_number;
+          this.userAccount.email = response.data[0].email;
+          //this.userAccount.is_active = response.data[0].is_active;
+          //this.role = response.data[0].role;
+          //this.userAccount.department = response.data[0].department;
+          //this.major_id;
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    },
+
+    save() {
+      console.log("传输的参数" + JSON.stringify(this.userAccount));
+      this.axios
+        .post("/api/editInfo/Student/", JSON.stringify(this.userAccount))
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
         });
+      document.execCommand("Refresh");
+      //console.log(this.userAccount);
     },
 
     back() {
-      this.$router.push("/adminHome/accountInfo");
+      this.$router.push("/adminHome/accountCheck");
     },
+  },
+  mounted() {
+    this.getParams();
+    this.getStuInfo();
   },
 };
 </script>

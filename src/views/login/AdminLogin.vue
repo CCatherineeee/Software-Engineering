@@ -13,12 +13,12 @@
                 font: 32px Microsoft YaHei;
               "
             >
-              实验教学系统
+              管理员登录
             </p></el-header
           >
           <el-main>
             <el-form
-              ref="ruleForm"
+              ref="loginForm"
               :model="ruleForm"
               status-icon
               :rules="rules"
@@ -26,10 +26,10 @@
             >
               <el-form-item label="用户名" prop="userID" style="padding: auto">
                 <el-input
-                  v-model="ruleForm.userID"
+                  v-model="ruleForm.username"
                   type="text"
                   autocomplete="off"
-                  placeholder="请输入学号"
+                  placeholder="请输入用户名"
                 ></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password">
@@ -41,7 +41,7 @@
                 ></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="text" color="white">忘记密码</el-button>
+                <el-button type="text">忘记密码</el-button>
                 <el-button type="text">教师登录</el-button>
                 <el-button type="text" @click="AdminLogin()"
                   >管理员登录</el-button
@@ -71,9 +71,9 @@
 
 export default {
   data() {
-    const validatePass = (rule, value, callback) => {
+    const validateName = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入学号"));
+        callback(new Error("请输入用户名"));
       } else {
         if (this.ruleForm.userID !== "") {
           this.$refs.ruleForm.validateField("checkPass");
@@ -81,7 +81,7 @@ export default {
         callback();
       }
     };
-    const validatePass2 = (rule, value, callback) => {
+    const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
@@ -90,24 +90,24 @@ export default {
     };
     return {
       ruleForm: {
-        userID: "",
+        username: "",
         password: "",
       },
       rules: {
-        userID: [{ validator: validatePass, trigger: "blur" }],
-        password: [{ validator: validatePass2, trigger: "blur" }],
+        userName: [{ validator: validateName, trigger: "blur" }],
+        password: [{ validator: validatePass, trigger: "blur" }],
       },
     };
   },
   methods: {
     AdminLogin() {
-      this.$router.push("/AdminLogin");
+      this.$router.go(0);
     },
     submitForm() {
-      if (this.ruleForm.userID === "" && this.ruleForm.password === "") {
+      if (this.ruleForm.userName === "" && this.ruleForm.password === "") {
         this.$message("账户和密码不能为空！");
-      } else if (this.ruleForm.userID === "") {
-        this.$message("请输入账户！");
+      } else if (this.ruleForm.Name === "") {
+        this.$message("请输入用户名！");
       } else if (this.ruleForm.password === "") {
         this.$message("请输入密码！");
       } else {
@@ -116,17 +116,19 @@ export default {
         };
         this.axios
           .post(
-            "/api/login/",
+            "/api/adminLogin/",
             {
-              params: {
-                releForm: this.releForm,
-              },
+              params: this.ruleForm,
             },
             config
           )
           .then((response) => {
-            //这里使用了ES6的语法
-            console.log(response); //请求成功返回的数据
+            if (response.data == "UserNotExist");
+            if (response.data == "PasswordWrong");
+            if (response.data == "Login") {
+              this.$message("登录成功！");
+              this.$router.push("/adminHome");
+            }
           });
       }
     },
