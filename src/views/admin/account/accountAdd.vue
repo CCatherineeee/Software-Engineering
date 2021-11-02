@@ -312,7 +312,7 @@ export default {
     addFromDetailS() {
       //手动增加学生
       this.axios
-        .post("/api/addStudentManually/", JSON.stringify(this.formS))
+        .post("/api/Register/addStudentManually/", JSON.stringify(this.formS))
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
@@ -322,7 +322,7 @@ export default {
 
     addFromDetailT() {
       this.axios
-        .post("/api/addUserManually/", JSON.stringify(this.formT))
+        .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response); //请求成功返回的数据
@@ -389,7 +389,7 @@ export default {
   mounted() {
     //获取所有用户所有信息
     axios
-      .get("url", {
+      .get("/api/getUserInfo/allUser/", {
         //params: { userData: "value" },
         crossDomain: true,
       })

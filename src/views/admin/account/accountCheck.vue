@@ -80,6 +80,7 @@
 </template>
 
 <script >
+import axios from "axios";
 export default {
   data() {
     return {
@@ -144,6 +145,18 @@ export default {
       const property = column["property"];
       return row[property] === value;
     },
+  },
+  mounted() {
+    //获取所有用户所有信息
+    axios
+      .get("/api/getUserInfo/allUser/", {
+        //params: { userData: "value" },
+        crossDomain: true,
+      })
+      .then((response) => (this.userData = response.data))
+      .catch(function (error) {
+        console(error);
+      });
   },
 };
 </script>
