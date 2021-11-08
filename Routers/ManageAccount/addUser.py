@@ -1,13 +1,26 @@
+<<<<<<< HEAD
+import sys
+sys.path.append('../')
+=======
+>>>>>>> remotes/origin/myserver
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
 from Model import Model
+<<<<<<< HEAD
+# from Model import Model
+=======
+>>>>>>> remotes/origin/myserver
 from sqlalchemy import and_, or_
 import os
 import time
 import uuid
+<<<<<<< HEAD
+from .myemail.sendEmail import send_email
+=======
 
+>>>>>>> remotes/origin/myserver
 import xlrd
 import dbManage
 
@@ -24,9 +37,16 @@ def manageFile(uploadPath):
     for i in range(1, nrows):
         rowData = sheet.row_values(i)
         if not Model.Student.query.filter(Model.Student.s_id == rowData[0]).first():
+<<<<<<< HEAD
+            student = Model.Student(s_id=rowData[0], s_pwd=rowData[0], name=rowData[1], email=rowData[2])
+            dbManage.db.session.add(student)
+            dbManage.db.session.commit()
+            send_email(rowData[2],0,student)
+=======
             student = Model.Student(s_id=rowData[0], s_pwd=rowData[0], name=rowData[1], email=rowData[2],is_active=0)
             dbManage.db.session.add(student)
             dbManage.db.session.commit()
+>>>>>>> remotes/origin/myserver
     
 
 
@@ -60,9 +80,16 @@ def addStudentManually():
     if user:
         return "UserExist"
     else:
+<<<<<<< HEAD
+        student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
+        dbManage.db.session.add(student)
+        dbManage.db.session.commit()
+        send_email(email,0,student)
+=======
         student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email,is_active=0)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
+>>>>>>> remotes/origin/myserver
         return "Success"
 
 @addUserRoute.route('/Register/addTeacherManually/',methods=['POST'])  
@@ -76,7 +103,14 @@ def addTeacherManually():
     if user:
         return "UserExist"
     else:
+<<<<<<< HEAD
+        teacher = Model.Teacher(t_id=t_id, t_pwd=t_id, name=name, email=email)
+        dbManage.db.session.add(teacher)
+        dbManage.db.session.commit()
+        send_email(email,0,teacher)
+=======
         teacher = Model.Teacher(t_id=t_id, t_pwd=t_id, name=name, email=email,is_active=0)
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
+>>>>>>> remotes/origin/myserver
         return "Success"

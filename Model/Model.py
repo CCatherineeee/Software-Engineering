@@ -1,7 +1,18 @@
 from dbManage import db
 from sqlalchemy import ForeignKey
 import datetime
+<<<<<<< HEAD
+from werkzeug.security import generate_password_hash, check_password_hash  
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+from flask_login import LoginManager
+from flask_login import UserMixin
 
+login_manager = LoginManager()
+login_manager.session_protection = 'strong' #安全等级
+=======
+
+>>>>>>> remotes/origin/myserver
 """
  
  Tables
@@ -15,42 +26,152 @@ import datetime
 # TODO 联系表
 
 
+<<<<<<< HEAD
+class Student(UserMixin,db.Model):
+=======
 class Student(db.Model):
+>>>>>>> remotes/origin/myserver
     """
     类描述：学生，学生ID位7位
     """
     __tablename__ = 'student'
     s_id = db.Column(db.String(64), primary_key=True, autoincrement=False)  # 表明是主键  学生学号是7位，老师是5位
+<<<<<<< HEAD
+    s_pwd = db.Column(db.String(150))
+    name = db.Column(db.String(64))   # 名字
+    email = db.Column(db.String(64),unique=True)
+    gender = db.Column(db.String(10))  # 0女，1男
+    phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
+    is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
+=======
     s_pwd = db.Column(db.String(64))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64))
     gender = db.Column(db.String(10))  # 0女，1男
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer)  # 是否激活，0未激活，1已激活
+>>>>>>> remotes/origin/myserver
     department = db.Column(db.String(64))  # 学院
     # major = db.Column(db.String(64))  # 专业
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+<<<<<<< HEAD
+    # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
+    def __init__(self,s_id,s_pwd,name,email):  #只需要这几个参数
+        self.s_id = s_id
+        self.password = s_pwd         # 调用该方法 返回下面的self._password数值，
+        self.name = name
+        self.email = email
+
+    #创建一个学生的时候，只需要提供它初始的ID、密码、姓名和邮箱即可，其他的信息等学生登陆后再更改
+    
+    # 密码加密操作
+    @property
+    def password(self):                   # 密码取值
+        return self.s_pwd
+
+    @password.setter                      # 密码加密
+    def password(self, raw_password):
+        self.s_pwd = generate_password_hash(raw_password)
+
+    # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
+    def check_password(self, raw_password):
+        result = check_password_hash(self.password, raw_password)   # 相当于用相同的hash加密算法加密raw_password，检测与数据库中是否一致
+        return result
+
+    #生成确认令牌，过期时间为1h
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.s_id})
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.s_id:
+            return False
+        self.is_active = 1
+        db.session.add(self)
+        return True
+
+
+
+class Teacher(UserMixin,db.Model):
+=======
 
 class Teacher(db.Model):
+>>>>>>> remotes/origin/myserver
     """
     类描述：教师，教师ID为5位
     """
     __tablename__ = 'teacher'
     t_id = db.Column(db.String(64), primary_key=True, autoincrement=False) 
+<<<<<<< HEAD
+    t_pwd = db.Column(db.String(150))
+    name = db.Column(db.String(64))   # 名字
+    email = db.Column(db.String(64),unique=True)
+    gender = db.Column(db.String(64))
+    phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
+    is_active = db.Column(db.Integer,default=0)  # 是否激活，0未激活，1已激活
+=======
     t_pwd = db.Column(db.String(64))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64))
     gender = db.Column(db.String(64))
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer)  # 是否激活，0未激活，1已激活
+>>>>>>> remotes/origin/myserver
     department = db.Column(db.String(64))   # 专业
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+<<<<<<< HEAD
+        # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
+    def __init__(self,t_id,t_pwd,name,email):  #只需要这几个参数
+        self.t_id = t_id
+        self.password = t_pwd         # 调用该方法 返回下面的self._password数值，
+        self.name = name
+        self.email = email
+
+    #创建一个学生的时候，只需要提供它初始的ID、密码、姓名和邮箱即可，其他的信息等学生登陆后再更改
+    
+    # 密码加密操作
+    @property
+    def password(self):                   # 密码取值
+        return self.t_pwd
+
+    @password.setter                      # 密码加密
+    def password(self, raw_password):
+        self.t_pwd = generate_password_hash(raw_password)
+
+    # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
+    def check_password(self, raw_password):
+        result = check_password_hash(self.password, raw_password)   # 相当于用相同的hash加密算法加密raw_password，检测与数据库中是否一致
+        return result
+
+    #生成确认令牌，过期时间为1h
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.t_id})
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.t_id:
+            return False
+        self.is_active = 1
+        db.session.add(self)
+        return True
+
+
+=======
+>>>>>>> remotes/origin/myserver
 class Admin(db.Model):
     """
     类描述：管理员，管理员的ID为4位

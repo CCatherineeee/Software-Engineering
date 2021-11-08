@@ -2612,3 +2612,13 @@ WHERE student.s_id IS NULL
 83.97.20.34 - - [08/Nov/2021 08:53:19] "[35m[1m          GetClassName        [0m" HTTPStatus.BAD_REQUEST -
 83.97.20.34 - - [08/Nov/2021 08:53:19] code 400, message Bad HTTP/0.9 request type ('\x00')
 83.97.20.34 - - [08/Nov/2021 08:53:19] "[35m[1m          versionbind   [0m" HTTPStatus.BAD_REQUEST -
+192.241.210.137 - - [08/Nov/2021 09:13:14] "GET / HTTP/1.1" 200 -
+ * Detected change in '/root/SE/Model/Model.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "/root/SE/app.py", line 12, in <module>
+    from Model import Model
+  File "/root/SE/Model/Model.py", line 4
+    <<<<<<< HEAD
+     ^
+SyntaxError: invalid syntax

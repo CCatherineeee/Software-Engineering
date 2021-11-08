@@ -20,6 +20,38 @@ def AdminLogin(name, admin_pwd):
     else:
         return "Login"
 
+<<<<<<< HEAD
+@loginRoute.route('/studentLogin/',methods=['POST']) 
+def StudentLogin(s_id, s_pwd):
+    student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
+    if not student:
+        data = {'id':"",'status':400,'message':'none'}  #错误返回
+        return jsonify(data)
+    # student = Model.Student.query.filter(and_(Model.Student.query.s_pwd == s_pwd,Model.Student.s_id == s_id)).first()
+    student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
+    if student.check_password(s_pwd):
+        data = {'id':s_id,'status':200,'message':'success'}
+
+    else:
+        data = {'id':"",'status':500,'message':'wrong'}
+    return jsonify(data)
+
+
+@loginRoute.route('/teacherLogin/',methods=['POST']) 
+def TeacherLogin(t_id, t_pwd):
+    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
+    if not teacher:
+        data = {'id':"",'status':400}  #错误返回
+        return jsonify(data)
+    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
+    if teacher.check_password(t_pwd):  #检查密码
+        data = {'id':t_id,'status':200,'message':'success'}
+
+    else:
+        data = {'id':t_id,'status':500,'message':'wrong'}
+    return jsonify(data)
+
+=======
 def StudentLogin(s_id, s_pwd):
     student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
     if not student:
@@ -29,6 +61,7 @@ def StudentLogin(s_id, s_pwd):
         return "PasswordWrong"
     else:
         return "Login"
+>>>>>>> remotes/origin/myserver
 
 
 @loginRoute.route('/adminLogin/',methods=['POST']) 
@@ -39,9 +72,18 @@ def adminLogin():
     return check
 
 
+<<<<<<< HEAD
+# @loginRoute.route('/studentLogin/',methods=['POST'])  
+# def stuLogin():
+#     # 接口本身
+#     data = request.form
+#     check = StudentLogin(data.get('username'),data.get('password'))
+#     return check
+=======
 @loginRoute.route('/studentLogin/',methods=['POST'])  
 def stuLogin():
     # 接口本身
     data = request.form
     check = StudentLogin(data.get('username'),data.get('password'))
     return check
+>>>>>>> remotes/origin/myserver
