@@ -15,13 +15,13 @@
           <el-menu-item index="/home/concreteCourse/Exper">
             <span slot="title">实验</span>
           </el-menu-item>
-          <el-menu-item index="">
-            <span slot="title">评分</span>
+          <el-menu-item index="/home/concreteCourse/Perform">
+            <span slot="title">成绩</span>
           </el-menu-item>
           <el-menu-item index="/home/concreteCourse/Peo">
             <span slot="title">人员</span>
           </el-menu-item>
-          <el-menu-item index="">
+          <el-menu-item index="/home/concreteCourse/File">
             <span slot="title">文件</span>
           </el-menu-item>
           <el-menu-item index="">
@@ -51,6 +51,8 @@
 }
 .mBack {
   padding: 20px;
+  border-radius: 15px;
+  box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15);
 }
 .rBack {
   padding: 20px;

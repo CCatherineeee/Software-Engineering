@@ -11,6 +11,7 @@ import Register from '../views/login/Register.vue'
 import ConcreteCourse from '../views/home/course/concreteCourse.vue'
 
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -47,9 +48,13 @@ const routes = [
           { path: '/home/concreteCourse/Ann', component: () => import('../views/home/course/courseDetail/courseAnnounce.vue') },
           { path: '/home/concreteCourse/Exper', component: () => import('../views/home/course/courseDetail/courseExperiment.vue') },
           { path: '/home/concreteCourse/Peo', component: () => import('../views/home/course/courseDetail/coursePeople.vue') },
+          { path: '/home/concreteCourse/Perform', component: () => import('../views/home/course/courseDetail/coursePerformance.vue') },
+          { path: '/home/concreteCourse/ConExper', component: () => import('../views/home/course/experiment/experiment.vue') },
+          { path: '/home/concreteCourse/File', component: () => import('../views/home/course/courseDetail/courseFile.vue') },
+
+
         ]
       },
-
 
       //通知
       { path: '/home/announce', component: () => import('../views/home/announce/announce.vue') },

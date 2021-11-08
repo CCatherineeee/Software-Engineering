@@ -41,7 +41,7 @@
                 ></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="text" color="white">忘记密码</el-button>
+                <el-button type="text">忘记密码</el-button>
                 <el-button type="text">教师登录</el-button>
                 <el-button type="text" @click="AdminLogin()"
                   >管理员登录</el-button

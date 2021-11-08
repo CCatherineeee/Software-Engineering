@@ -79,6 +79,7 @@ export default {
   width: 370px;
   height: 250px;
   border-radius: 10px;
+  box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {

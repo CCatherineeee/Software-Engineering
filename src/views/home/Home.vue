@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container>
+    <el-container class="back">
       <el-aside width="150px">
         <div>
           <el-menu
@@ -78,12 +78,14 @@ export default {
   color: #333;
   text-align: center;
   line-height: 650px;
+  border-radius: 20px;
 }
 
 .el-main {
-  background-color: #e1e1e1;
+  background-color: #ffffff;
   color: #333;
   text-align: left;
   height: 650px;
+  border-radius: 20px;
 }
 </style>
