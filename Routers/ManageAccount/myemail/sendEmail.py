@@ -62,8 +62,8 @@ def send_email(receiver,code,user):
     msg['TO'] = Header(",".join(_to))
     # msg["Subject"] = Header(subject).encode()
     token = user.generate_confirmation_token()  
-    if len(user.t_id)==7:
-        new_content = render_template("confirm.html",user = user,s_id=user.t_id,token = token)
+    if len(user.s_id)==7:
+        new_content = render_template("confirm.html",user = user,s_id=user.s_id,token = token)
     else:
         new_content = render_template("confirm_t.html",user = user,t_id=user.t_id,token = token)
     msg = MIMEText(new_content,_subtype='html',_charset='gb2312')    #创建一个实例，这里设置为html格式邮件

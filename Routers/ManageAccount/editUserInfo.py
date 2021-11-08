@@ -7,6 +7,8 @@ from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
 import dbManage
+from flask import current_app
+import os
 
 editUserInfoRoute = Blueprint('editUserInfoRoute', __name__)
 CORS(editUserInfoRoute, resources=r'/*')	
@@ -142,3 +144,48 @@ def reset_teacher_pwd():
     data = {'result':200,'message':'重置成功'}
 
     return jsonify(data)
+
+
+@editUserInfoRoute.route('/editInfo/uploadAvatar',methods=['POST'])  
+def upload_student_avatar():
+
+    avatar = request.files['avatar']
+    userID = request.form['id']
+    if avatar is None:
+        result = {'status':400,'message':'未成功上传'}
+    else:
+        ext = os.path.splitext(avatar.filename)[1]
+        fname = os.path.splitext(avatar.filename)[0]
+        UPLOAD_FOLDER = current_app.config ["AVATAR_UPLOAD_FOLDER"]
+        ALLOWED_EXTENSIONS = [ '.png', '.jpg' , '.jpeg' , '.gif']
+        if ext not in ALLOWED_EXTENSIONS:
+            result = {'status':500,'message':'文件类型错误'}
+
+        else:
+
+            if len(userID)==5:  #是老师
+                teacher = Teacher.query.filter(Teacher.t_id==userID).first()
+                if teacher:
+                    teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
+                    dbManage.db.session.add(teacher)
+                    dbManage.db.session.commit()
+                    avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
+                    result = {'status':200,'message':'上传头像成功'}
+                else:
+                    result = {'status':501,'message':'未找到用户'}
+            elif len(userID)==7:  #是学生
+                    student = Student.query.filter(Student.s_id==userID).first()
+                    if student:
+                        student.avatar = '{}_{}'.format(userID,fname+ext)
+                        dbManage.db.session.add(student)
+                        dbManage.db.session.commit()
+                        avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
+                        result = {'status':200,'message':'上传头像成功'}
+                    else:
+                        result = {'status':501,'message':'未找到用户'}
+            else:
+                result = {'status':400,'message':'ID错误'}
+            
+    
+    return jsonify(result)
+                

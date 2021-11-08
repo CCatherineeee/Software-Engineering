@@ -35,6 +35,7 @@ class Student(UserMixin,db.Model):
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
     department = db.Column(db.String(64))  # 学院
+    avatar = db.Column(db.String(200),default=None)
     # major = db.Column(db.String(64))  # 专业
 
     def __repr__(self):

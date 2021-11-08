@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
-from flask import Blueprint
+from flask import Blueprint,current_app,make_response
 import json
 from Model.Model import Student
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
 import dbManage
+import os
 
 getUserInfoRoute = Blueprint('getUserInfoRoute', __name__)
 CORS(getUserInfoRoute, resources=r'/*')	
@@ -49,3 +50,23 @@ def getTeacherInfo():
     content = []
     content.append(temp)
     return jsonify(content)
+
+# show photo
+@getUserInfoRoute.route('/getUserInfo/Student/showAvatar/<s_id>', methods=['GET'])
+def showAvartar(s_id):
+    if request.method == 'GET':
+        student = Student.query.filter(Student.s_id==s_id).first()
+        if student is None:
+            pass
+        else:
+            filename = student.avatar
+            current_app.logger.debug('filename is %s' % filename)
+            if filename:
+                image_data = open((current_app.config['AVATAR_UPLOAD_FOLDER']+filename), "rb").read()
+                response = make_response(image_data)
+                response.headers['Content-Type'] = 'image/png'
+                return response
+            else:
+                pass
+    else:
+        pass

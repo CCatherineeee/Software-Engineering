@@ -10,7 +10,9 @@ from sqlalchemy import and_, or_
 import os
 import time
 import uuid
+import xlrd
 from .myemail.sendEmail import send_email
+import dbManage
 
 addUserRoute = Blueprint('addUserRoute', __name__)
 CORS(addUserRoute, resources=r'/*')	
@@ -52,8 +54,7 @@ def addUser():
 
 @addUserRoute.route('/Register/addStudentManually/',methods=['POST'])  
 def addStudentManually():
-    data = request.get_data()
-    data = json.loads(data.decode("utf-8"))
+    data = request.form
     name = data['name']
     s_id = data['id']
     email = data['email']
@@ -62,10 +63,16 @@ def addStudentManually():
         return "UserExist"
     else:
         student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
+        send_email(email,0,student)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
-        send_email(email,0,student)
         return "Success"
+
+
+@addUserRoute.route('/Register/addTeacherManually/',methods=['POST'])  
+def addTeacherManually():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
     name = data['name']
     t_id = data['id']
     email = data['email']
