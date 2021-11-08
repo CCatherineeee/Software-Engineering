@@ -57,7 +57,6 @@ def editTeacherInfo():
     teacher.phone_number = phone_number
 
     dbManage.db.session.commit()
-<<<<<<< HEAD
     return "Success"
 
 @editUserInfoRoute.route('/editInfo/Student/changePwd',methods=['POST'])  
@@ -143,6 +142,3 @@ def reset_teacher_pwd():
     data = {'result':200,'message':'重置成功'}
 
     return jsonify(data)
-=======
-    return "Success"
->>>>>>> remotes/origin/myserver

@@ -1,7 +1,6 @@
 from dbManage import db
 from sqlalchemy import ForeignKey
 import datetime
-<<<<<<< HEAD
 from werkzeug.security import generate_password_hash, check_password_hash  
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -10,9 +9,6 @@ from flask_login import UserMixin
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
-=======
-
->>>>>>> remotes/origin/myserver
 """
  
  Tables
@@ -26,38 +22,24 @@ login_manager.session_protection = 'strong' #安全等级
 # TODO 联系表
 
 
-<<<<<<< HEAD
 class Student(UserMixin,db.Model):
-=======
-class Student(db.Model):
->>>>>>> remotes/origin/myserver
     """
     类描述：学生，学生ID位7位
     """
     __tablename__ = 'student'
     s_id = db.Column(db.String(64), primary_key=True, autoincrement=False)  # 表明是主键  学生学号是7位，老师是5位
-<<<<<<< HEAD
     s_pwd = db.Column(db.String(150))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(10))  # 0女，1男
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
-=======
-    s_pwd = db.Column(db.String(64))
-    name = db.Column(db.String(64))   # 名字
-    email = db.Column(db.String(64))
-    gender = db.Column(db.String(10))  # 0女，1男
-    phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
-    is_active = db.Column(db.Integer)  # 是否激活，0未激活，1已激活
->>>>>>> remotes/origin/myserver
     department = db.Column(db.String(64))  # 学院
     # major = db.Column(db.String(64))  # 专业
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
-<<<<<<< HEAD
     # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
     def __init__(self,s_id,s_pwd,name,email):  #只需要这几个参数
         self.s_id = s_id
@@ -100,36 +82,22 @@ class Student(db.Model):
 
 
 class Teacher(UserMixin,db.Model):
-=======
-
-class Teacher(db.Model):
->>>>>>> remotes/origin/myserver
     """
     类描述：教师，教师ID为5位
     """
     __tablename__ = 'teacher'
     t_id = db.Column(db.String(64), primary_key=True, autoincrement=False) 
-<<<<<<< HEAD
     t_pwd = db.Column(db.String(150))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(64))
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer,default=0)  # 是否激活，0未激活，1已激活
-=======
-    t_pwd = db.Column(db.String(64))
-    name = db.Column(db.String(64))   # 名字
-    email = db.Column(db.String(64))
-    gender = db.Column(db.String(64))
-    phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
-    is_active = db.Column(db.Integer)  # 是否激活，0未激活，1已激活
->>>>>>> remotes/origin/myserver
     department = db.Column(db.String(64))   # 专业
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
-<<<<<<< HEAD
         # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
     def __init__(self,t_id,t_pwd,name,email):  #只需要这几个参数
         self.t_id = t_id
@@ -170,8 +138,6 @@ class Teacher(db.Model):
         return True
 
 
-=======
->>>>>>> remotes/origin/myserver
 class Admin(db.Model):
     """
     类描述：管理员，管理员的ID为4位

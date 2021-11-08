@@ -20,7 +20,6 @@ def AdminLogin(name, admin_pwd):
     else:
         return "Login"
 
-<<<<<<< HEAD
 @loginRoute.route('/studentLogin/',methods=['POST']) 
 def StudentLogin(s_id, s_pwd):
     student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
@@ -51,17 +50,6 @@ def TeacherLogin(t_id, t_pwd):
         data = {'id':t_id,'status':500,'message':'wrong'}
     return jsonify(data)
 
-=======
-def StudentLogin(s_id, s_pwd):
-    student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
-    if not student:
-        return "UserNotExist"
-    student = Model.query.query.filter(and_(Model.query.s_pwd == s_pwd,Model.Student.s_id == s_id)).first()
-    if not admin:
-        return "PasswordWrong"
-    else:
-        return "Login"
->>>>>>> remotes/origin/myserver
 
 
 @loginRoute.route('/adminLogin/',methods=['POST']) 
@@ -72,18 +60,9 @@ def adminLogin():
     return check
 
 
-<<<<<<< HEAD
 # @loginRoute.route('/studentLogin/',methods=['POST'])  
 # def stuLogin():
 #     # 接口本身
 #     data = request.form
 #     check = StudentLogin(data.get('username'),data.get('password'))
 #     return check
-=======
-@loginRoute.route('/studentLogin/',methods=['POST'])  
-def stuLogin():
-    # 接口本身
-    data = request.form
-    check = StudentLogin(data.get('username'),data.get('password'))
-    return check
->>>>>>> remotes/origin/myserver
