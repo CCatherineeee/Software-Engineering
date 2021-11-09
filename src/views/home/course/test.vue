@@ -1,79 +1,55 @@
 <template>
-  <el-row>
-    <el-col
-      v-for="(name, index) in courseData"
-      :key="index"
-      :span="8"
-      :offset="index > 0 ? 2 : 0"
-    >
-      <el-card shadow="hover" class="box-card">
-        <template #header>
-          <div class="card-header">
-            <span>Card name</span>
-            <el-button class="button" type="text">Operation button</el-button>
-          </div>
-        </template>
-        {{ courseData[index].name }}
-      </el-card>
-    </el-col>
-  </el-row>
+  <div class="text-center">
+    <v-dialog v-model="dialog" width="500">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="red lighten-2"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          @click="handle"
+        >
+          Click Me
+        </v-btn>
+      </template>
+
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+          Privacy Policy
+        </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialog = false"> I accept </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      courseData: [
-        {
-          name: "1",
-        },
-        {
-          name: "2",
-        },
-        {
-          name: "3",
-        },
-        {
-          name: "4",
-        },
-      ],
+      dialog: false,
     };
   },
-  methods: {},
+  methods: {
+    handle() {
+      this.dialog = true;
+    },
+  },
 };
 </script>
-
-<style scoped>
-.el-row {
-  margin-bottom: 20px;
-}
-
-.box-card {
-  width: 370px;
-  height: 250px;
-  border-radius: 10px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.time {
-  font-size: 13px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button {
-  padding: 0;
-  min-height: auto;
-}
-</style>

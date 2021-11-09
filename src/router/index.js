@@ -50,6 +50,7 @@ const routes = [
           { path: '/home/concreteCourse/Peo', component: () => import('../views/home/course/courseDetail/coursePeople.vue') },
           { path: '/home/concreteCourse/Perform', component: () => import('../views/home/course/courseDetail/coursePerformance.vue') },
           { path: '/home/concreteCourse/ConExper', component: () => import('../views/home/course/experiment/experiment.vue') },
+          { path: '/home/concreteCourse/FillExper', component: () => import('../views/home/course/experiment/experimentFill.vue') },
           { path: '/home/concreteCourse/File', component: () => import('../views/home/course/courseDetail/courseFile.vue') },
 
 
