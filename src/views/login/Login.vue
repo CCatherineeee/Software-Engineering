@@ -1,68 +1,80 @@
 <template>
-  <div style="margin: auto auto; background: rgba(27, 41, 58, 0.85)">
-    <el-container class="loginPage">
-      <el-main><img src="@/assets/logo.png" /> </el-main>
+  <div>
+    <el-button @click="printPdf">打印</el-button>
+    <el-button type="button" @click="savePdf">导出(pdf)</el-button>
+    <div
+      style="margin: auto auto; background: rgba(27, 41, 58, 0.85)"
+      id="exportPdf"
+      ref="exportPdf"
+    >
+      <el-container class="loginPage">
+        <el-main><img src="@/assets/logo.png" /> </el-main>
 
-      <el-aside width="500px" class="loginForm">
-        <el-container>
-          <el-header height="150px"
-            ><p
-              style="
-                margin: 70px auto 50px auto;
-                color: white;
-                font: 32px Microsoft YaHei;
-              "
+        <el-aside width="500px" class="loginForm">
+          <el-container>
+            <el-header height="150px"
+              ><p
+                style="
+                  margin: 70px auto 50px auto;
+                  color: white;
+                  font: 32px Microsoft YaHei;
+                "
+              >
+                实验教学系统
+              </p></el-header
             >
-              实验教学系统
-            </p></el-header
-          >
-          <el-main>
-            <el-form
-              ref="ruleForm"
-              :model="ruleForm"
-              status-icon
-              :rules="rules"
-              label-width="80px"
-            >
-              <el-form-item label="用户名" prop="userID" style="padding: auto">
-                <el-input
-                  v-model="ruleForm.userID"
-                  type="text"
-                  autocomplete="off"
-                  placeholder="请输入学号"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="密码" prop="password">
-                <el-input
-                  v-model="ruleForm.password"
-                  type="password"
-                  autocomplete="off"
-                  placeholder="请输入密码"
-                ></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="text">忘记密码</el-button>
-                <el-button type="text">教师登录</el-button>
-                <el-button type="text" @click="AdminLogin()"
-                  >管理员登录</el-button
+            <el-main>
+              <el-form
+                ref="ruleForm"
+                :model="ruleForm"
+                status-icon
+                :rules="rules"
+                label-width="80px"
+              >
+                <el-form-item
+                  label="用户名"
+                  prop="userID"
+                  style="padding: auto"
                 >
-              </el-form-item>
-              <el-form-item>
-                <el-button
-                  type="primary"
-                  @click="submitForm(ruleForm)"
-                  style="margin-right: 50px"
-                  >登陆</el-button
-                >
-                <el-button @click="toRegister" style="margin-left: 50px"
-                  >注册</el-button
-                >
-              </el-form-item>
-            </el-form>
-          </el-main>
-        </el-container>
-      </el-aside>
-    </el-container>
+                  <el-input
+                    v-model="ruleForm.userID"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="请输入学号"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                  <el-input
+                    v-model="ruleForm.password"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="请输入密码"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="text">忘记密码</el-button>
+                  <el-button type="text">教师登录</el-button>
+                  <el-button type="text" @click="AdminLogin()"
+                    >管理员登录</el-button
+                  >
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    type="primary"
+                    @click="submitForm(ruleForm)"
+                    style="margin-right: 50px"
+                    >登陆</el-button
+                  >
+                  <el-button @click="toRegister" style="margin-left: 50px"
+                    >注册</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-main>
+          </el-container>
+        </el-aside>
+      </el-container>
+    </div>
   </div>
 </template>
 
@@ -100,6 +112,13 @@ export default {
     };
   },
   methods: {
+    printPdf() {
+      console.log("1111");
+      this.$easyPrint("exportPdf", "我的文件", "portrait");
+    },
+    savePdf() {
+      this.$PDFSave(this.$refs.exportPdf, "我的文件");
+    },
     AdminLogin() {
       this.$router.push("/AdminLogin");
     },

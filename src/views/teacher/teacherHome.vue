@@ -19,19 +19,29 @@
                 <span>账户</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/student/account"
+                <el-menu-item index="/teacherHome/teacher/account"
                   >个人资料</el-menu-item
                 >
-                <el-menu-item index="/home/student/passwordModify"
+                <el-menu-item index="/teacherHome/teacher/passwordModify"
                   >修改密码</el-menu-item
                 >
               </el-menu-item-group>
             </el-submenu>
 
-            <el-menu-item index="/home/course">
-              <i class="el-icon-school"></i>
-              <span>课程</span>
-            </el-menu-item>
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-school"></i>
+                <span>课程</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="/teacherHome/course"
+                  >我的班级</el-menu-item
+                >
+                <el-menu-item index="/teacherHome/manageCourse"
+                  >我的课程</el-menu-item
+                >
+              </el-menu-item-group>
+            </el-submenu>
 
             <el-menu-item index="/home/test">
               <i class="el-icon-school"></i>
@@ -41,11 +51,6 @@
             <el-menu-item index="/home/announce">
               <i class="el-icon-message"></i>
               <span>通知</span>
-            </el-menu-item>
-
-            <el-menu-item index="2">
-              <i class="el-icon-document-copy"></i>
-              <span>小组</span>
             </el-menu-item>
 
             <el-menu-item index="/login">退出</el-menu-item>

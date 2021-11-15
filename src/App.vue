@@ -6,7 +6,8 @@
       ></el-col>
     </el-row>
     <div id="nav">
-      <router-link to="/home/announce">Home</router-link> |
+      <router-link to="/home/announce">Stuent-Home</router-link> |
+      <router-link to="/teacherHome">Teacher-Home</router-link> |
       <router-link to="/adminHome">Admin-Home</router-link> |
       <router-link to="/login">Login-test</router-link>
     </div>

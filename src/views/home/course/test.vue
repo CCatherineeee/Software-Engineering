@@ -1,54 +1,61 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-          @click="handle"
-        >
-          Click Me
-        </v-btn>
-      </template>
+  <el-form
+    ref="experForm"
+    style="margin: 40px 100px 0px 50px"
+    :model="experForm"
+    label-width="80px"
+  >
+    <el-form-item label="实验名称" prop="name">
+      <el-input v-model="experForm.name"></el-input>
+    </el-form-item>
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
+    <el-form-item label="实验目的" prop="purpose">
+      <el-input v-model="experForm.purpose"></el-input>
+    </el-form-item>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
+    <el-form-item label="实验设备" prop="equipment">
+      <el-input v-model="experForm.equipment"></el-input>
+    </el-form-item>
 
-        <v-divider></v-divider>
+    <el-form-item label="实验步骤" prop="step">
+      <el-input v-model="experForm.step"></el-input>
+    </el-form-item>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false"> I accept </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+    <el-form-item label="实验过程" prop="process">
+      <el-input v-model="experForm.process"></el-input>
+    </el-form-item>
+
+    <el-form-item label="结果分析" prop="result">
+      <el-input v-model="experForm.result"></el-input>
+    </el-form-item>
+
+    <el-form-item>
+      <el-button style="margin-left: 80px" @click="save()" type="primary"
+        >保存修改</el-button
+      >
+      <el-button style="margin-left: 100px" @click="back">取消</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      dialog: false,
+      experForm: {
+        name: "",
+        purpose: "",
+        equipment: "",
+        step: "",
+        process: "",
+        result: "",
+      },
     };
   },
   methods: {
-    handle() {
-      this.dialog = true;
+    save() {},
+    back() {
+      this.$router.push("/teacherHome/concreteCourse/Exper");
     },
   },
 };

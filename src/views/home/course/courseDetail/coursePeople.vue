@@ -3,7 +3,7 @@
     <el-tab-pane label="所有人" name="first">
       <el-input
         placeholder="请输入学号或姓名"
-        v-model="search"
+        v-model="searchP"
         style="width: 20%"
         clearable
       />
@@ -11,10 +11,10 @@
         :data="
           tableData.filter(
             (data) =>
-              !search ||
-              data.name.toLowerCase().includes(search.toLowerCase()) ||
-              data.id.toLowerCase().includes(search.toLowerCase()) ||
-              data.role.toLowerCase().includes(search.toLowerCase())
+              !searchP ||
+              data.name.toLowerCase().includes(searchP.toLowerCase()) ||
+              data.id.toLowerCase().includes(searchP.toLowerCase()) ||
+              data.role.toLowerCase().includes(searchP.toLowerCase())
           )
         "
         style="width: 100%"
@@ -43,7 +43,7 @@
     <el-tab-pane label="小组" name="second">
       <el-input
         placeholder="请输入学号或姓名"
-        v-model="search"
+        v-model="searchG"
         style="width: 20%"
         clearable
       />
@@ -80,7 +80,8 @@ export default {
   data() {
     return {
       activeName: "first",
-      search: "",
+      searcP: "",
+      searcG: "",
       tableData: [
         {
           name: "王小虎",

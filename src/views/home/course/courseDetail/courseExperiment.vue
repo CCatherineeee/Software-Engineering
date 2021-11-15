@@ -17,7 +17,10 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="small" @click="handleCheck(scope.row)"
-              >查看</el-button
+              >查看实验指导</el-button
+            >
+            <el-button size="small" @click="handleExamine()"
+              >查看我的报告</el-button
             >
           </template>
         </el-table-column>
@@ -41,6 +44,7 @@
 export default {
   data() {
     return {
+      sid: "",
       currentPage: 1,
       pagesize: 6,
       tableData: [{ name: "1", release: "2021.11.1", deadline: "2022.2.2" }],
@@ -59,6 +63,13 @@ export default {
       this.$router.push({
         path: "/home/concreteCourse/ConExper",
         query: { release: row.id },
+      });
+    },
+
+    handleExamine() {
+      this.$router.push({
+        path: "/home/concreteCourse/FillExper",
+        query: { sid: this.sid },
       });
     },
   },
