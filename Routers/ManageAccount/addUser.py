@@ -52,21 +52,27 @@ def addUser():
         os.remove(uploadPath)
     return "ok"
 
-@addUserRoute.route('/Register/addStudentManually/',methods=['POST'])  
+@addUserRoute.route('/Register/addSM/',methods=['POST'])  
 def addStudentManually():
-    data = request.form
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
     name = data['name']
     s_id = data['id']
     email = data['email']
+
     user = Model.Student.query.filter(Model.Student.s_id == s_id).first()
     if user:
-        return "UserExist"
+        return "UserIDExist"
+    user = Model.Student.query.filter(Model.Student.email == email).first()
+    if user:
+        return "UserMailExist"
     else:
         student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
-        send_email(email,0,student)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
+        send_email(email,0,student)
         return "Success"
+
 
 
 @addUserRoute.route('/Register/addTeacherManually/',methods=['POST'])  
@@ -78,9 +84,12 @@ def addTeacherManually():
     email = data['email']
     user = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
     if user:
-        return "UserExist"
+        return "UserIDExist"
+    user = Model.Teacher.query.filter(Model.Teacher.email == email).first()
+    if user:
+        return "UserMailExist"
     else:
-        teacher = Model.Teacher(t_id=t_id, t_pwd=t_id, name=name, email=email)
+        teacher = Model.Teacher(t_id=t_id,t_pwd=t_id,name=name,email=email)
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
         send_email(email,0,teacher)

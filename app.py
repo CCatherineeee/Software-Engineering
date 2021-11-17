@@ -9,8 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import json
 
-import dbManage
 import config
+import dbManage
+
 from Model import Model
 
 # from Routers.ManageAccount.register import registerRoute
@@ -58,6 +59,8 @@ def home():
 def create_app():
     login_manager = LoginManager()
     login_manager.session_protection = 'strong' #安全等级
+
+
     app = Flask(__name__)
     CORS(app, resources=r'/*')	# 注册CORS, "/*" 允许访问所有api
 
