@@ -43,7 +43,7 @@ def get_random_captcha(num):
 输入：发送人邮箱
 输入：Success/Failed(console)
 '''
-def send_email(receiver,code,user):  
+def send_email(receiver,code,user):    #这里增加一个标志位！
     _user = "1284915396@qq.com"
     _pwd  = "otxvdgxwvvqbiadg"
     _to   = receiver          

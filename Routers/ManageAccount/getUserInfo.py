@@ -47,14 +47,14 @@ def getTeacherInfo():
     if teacher:
         temp = {'t_id':teacher.t_id,'name':teacher.name,
             'phone_number':teacher.phone_number,'is_active':teacher.is_active,'email':teacher.email,'department':teacher.department,'gender':teacher.gender}
-    content = []
+    content = [] 
     content.append(temp)
     return jsonify(content)
 
 # show photo
-@getUserInfoRoute.route('/getUserInfo/Student/showAvatar/<s_id>', methods=['GET'])
+@getUserInfoRoute.route('/getUserInfo/Student/showAvatar/<s_id>', methods=['POST'])
 def showAvartar(s_id):
-    if request.method == 'GET':
+    if request.method == 'POST':
         student = Student.query.filter(Student.s_id==s_id).first()
         if student is None:
             pass
@@ -62,11 +62,15 @@ def showAvartar(s_id):
             filename = student.avatar
             current_app.logger.debug('filename is %s' % filename)
             if filename:
-                image_data = open((current_app.config['AVATAR_UPLOAD_FOLDER']+filename), "rb").read()
-                response = make_response(image_data)
-                response.headers['Content-Type'] = 'image/png'
-                return response
+                # image_data = open((current_app.config['AVATAR_UPLOAD_FOLDER']+filename), "rb").read()
+                # response = make_response(image_data)
+                # response.headers['Content-Type'] = 'image/png'
+                # return response
+                pic_url = {'url':current_app.config['AVATAR_UPLOAD_FOLDER']+filename,'status':200,'message':"Success"}
+                return jsonify(pic_url)
             else:
-                pass
+                pic_url = {'url':"",'status':400,'message':"no avatar"}
+            
+        return jsonify(pic_url)
     else:
         pass

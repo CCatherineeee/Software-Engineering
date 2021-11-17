@@ -188,21 +188,21 @@ class Course(db.Model):
     类描述：课程表，由课号前缀、开课学期、学年组成主码，并记录责任教师ID
     """
     __tablename__ = 'course'
-    course_id = db.Column(db.String(256),primary_key=True)
-    ct_prefix = db.Column(db.String(64), ForeignKey("course_type.ct_prefix")) 
-    course_semester = db.Column(db.String(64))
-    course_year = db.Column(db.String(64))
+    c_id = db.Column(db.String(256),primary_key=True)
+    prefix = db.Column(db.String(64), ForeignKey("course_type.ct_prefix")) 
+    course_semester = db.Column(db.String(64))  #春季为00  秋季为01
+    course_year = db.Column(db.String(64))  #如2019
     duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id"))
 
 class Class(db.Model):
     """
-    类描述：课程
+    类描述：班级
 
     主码应为course_id + class_number
     """
     __tablename__ = 'class'
 
-    class_id = db.Column(db.String(256),primary_key=True) 
+    class_id = db.Column(db.Integer,primary_key=True,autoincrement=True) 
     course_id = db.Column(db.String(256),ForeignKey("course.course_id"))
     class_number = db.Column(db.Integer)
     def __repr__(self):
@@ -213,7 +213,7 @@ class StudentClass(db.Model):
     类说明：学生-课程表，联系表，多对多
     """
     __tablename__ = 'student_class'
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id"),primary_key=True) 
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
     s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
 
 class TeacherClass(db.Model):
@@ -224,7 +224,7 @@ class TeacherClass(db.Model):
 
     """
     __tablename__ = 'teacher_class'
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id"),primary_key=True) 
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
     t_id = db.Column(db.String(64),ForeignKey("teacher.t_id"),primary_key=True)
 
 class ClassFile(db.Model):  #ClassFile
@@ -249,7 +249,7 @@ class Experiment(db.Model):
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -293,7 +293,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 2为戒指
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -349,7 +349,7 @@ class CourseAnnouncement(db.Model):
     title = db.Column(db.String(128))
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
