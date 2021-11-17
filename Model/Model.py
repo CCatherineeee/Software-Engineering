@@ -28,7 +28,7 @@ class Student(UserMixin,db.Model):
     """
     __tablename__ = 'student'
     s_id = db.Column(db.String(64), primary_key=True, autoincrement=False)  # 表明是主键  学生学号是7位，老师是5位
-    s_pwd = db.Column(db.String(150))
+    s_pwd = db.Column(db.String(1024))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(10))  # 0女，1男
@@ -88,7 +88,7 @@ class Teacher(UserMixin,db.Model):
     """
     __tablename__ = 'teacher'
     t_id = db.Column(db.String(64), primary_key=True, autoincrement=False) 
-    t_pwd = db.Column(db.String(150))
+    t_pwd = db.Column(db.String(1024))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(64))
@@ -181,15 +181,15 @@ class CourseType(db.Model):
     """
     __tablename__ = 'course_type'
     ct_name = db.Column(db.String(64)) # 存放课程中文名称
-    ct_prefix = db.Column(db.String(64),primary_key = True) # 存放课号前缀
+    prefix = db.Column(db.String(64),primary_key = True) # 存放课号前缀
 
 class Course(db.Model):
     """
     类描述：课程表，由课号前缀、开课学期、学年组成主码，并记录责任教师ID
     """
     __tablename__ = 'course'
-    course_id = db.Column(db.String(256),primary_key=True)
-    ct_prefix = db.Column(db.String(64), ForeignKey("course_type.ct_prefix")) 
+    c_id = db.Column(db.String(256),primary_key=True)
+    prefix = db.Column(db.String(64), ForeignKey("course_type.prefix")) 
     course_semester = db.Column(db.String(64))
     course_year = db.Column(db.String(64))
     duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id"))
@@ -202,8 +202,8 @@ class Class(db.Model):
     """
     __tablename__ = 'class'
 
-    class_id = db.Column(db.String(256),primary_key=True) 
-    course_id = db.Column(db.String(256),ForeignKey("course.course_id"))
+    class_id = db.Column(db.String(256),primary_key=True,autoincrement=False) 
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
     class_number = db.Column(db.Integer)
     def __repr__(self):
         return '<User %r>' % self.__tablename__

@@ -9,8 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import json
 
-import dbManage
 import config
+import dbManage
+
 from Model import Model
 
 # from Routers.ManageAccount.register import registerRoute
@@ -20,6 +21,9 @@ from Routers.ManageAccount.getUserInfo import getUserInfoRoute
 from Routers.ManageAccount.deleteUser import deleteUserRoute
 from Routers.ManageAccount.editUserInfo import editUserInfoRoute
 from Routers.ManageAccount.auth.authManage import auth
+from Routers.ManageAnnouncement.manageAnn import manageAnnRoute
+from Routers.ManageCourse.adminCourse import adminCourseRoute
+from Routers.ManageCourse.teacherCourse import teacherCourseRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -38,6 +42,9 @@ app.register_blueprint(getUserInfoRoute)
 app.register_blueprint(deleteUserRoute)
 app.register_blueprint(editUserInfoRoute)
 app.register_blueprint(auth)
+app.register_blueprint(manageAnnRoute)
+app.register_blueprint(adminCourseRoute)
+app.register_blueprint(teacherCourseRoute)
 
 @app.before_first_request
 def initdb():
@@ -56,6 +63,8 @@ def home():
 def create_app():
     login_manager = LoginManager()
     login_manager.session_protection = 'strong' #安全等级
+
+    """
     app = Flask(__name__)
     CORS(app, resources=r'/*')	# 注册CORS, "/*" 允许访问所有api
 
@@ -70,6 +79,7 @@ def create_app():
     app.register_blueprint(getUserInfoRoute)
     app.register_blueprint(deleteUserRoute)
     app.register_blueprint(editUserInfoRoute)
+    """
 
 
 ###########3 web 服务器 ################
