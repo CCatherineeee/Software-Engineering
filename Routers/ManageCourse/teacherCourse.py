@@ -21,6 +21,6 @@ def addCourseType():
     content = []
     for course in courses:
         coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
-        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year}
+        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "course_id":course.c_id}
         content.append(temp)
     return jsonify(content)

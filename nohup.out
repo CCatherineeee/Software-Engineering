@@ -7904,3 +7904,431 @@ Traceback (most recent call last):
 AttributeError: 'Student' object has no attribute 't_id'
 2021-11-17 19:12:28,442 INFO sqlalchemy.engine.base.Engine ROLLBACK
 111.187.13.122 - - [17/Nov/2021 19:12:28] "[35m[1mPOST /Register/addSM/ HTTP/1.1[0m" 500 -
+2021-11-17 19:15:38,520 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:15:38,520 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:15:38,520 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:15:38,524 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:15:38] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:15:45,359 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:15:45,360 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:15:45,360 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:15:45,364 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:15:45] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:20:54,416 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:20:54,417 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:20:54,417 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:20:54,421 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:20:54] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:20:56,640 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:20:56,640 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:20:56,640 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:20:56,644 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:20:56] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:20:58,953 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:20:58,954 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:20:58,954 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:20:58,958 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:20:58] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:25:32,236 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:25:32,236 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:25:32,236 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:25:32,240 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:25:32] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2021-11-17 19:30:07,295 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-11-17 19:30:07,295 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,300 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-11-17 19:30:07,300 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,308 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2021-11-17 19:30:07,308 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,315 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2021-11-17 19:30:07,315 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,320 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2021-11-17 19:30:07,320 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,324 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2021-11-17 19:30:07,324 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,328 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2021-11-17 19:30:07,328 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,338 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2021-11-17 19:30:07,339 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,343 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2021-11-17 19:30:07,343 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,348 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2021-11-17 19:30:07,348 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,353 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2021-11-17 19:30:07,353 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,357 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2021-11-17 19:30:07,357 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,362 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2021-11-17 19:30:07,362 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,366 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2021-11-17 19:30:07,366 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,370 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_class`
+2021-11-17 19:30:07,370 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,375 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2021-11-17 19:30:07,375 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,379 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2021-11-17 19:30:07,379 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,384 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment_file`
+2021-11-17 19:30:07,384 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,388 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2021-11-17 19:30:07,388 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,392 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2021-11-17 19:30:07,393 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,397 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2021-11-17 19:30:07,397 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,401 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2021-11-17 19:30:07,401 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,406 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2021-11-17 19:30:07,406 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:30:07,418 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:30:07,419 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-11-17 19:30:07,419 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2021-11-17 19:30:07,424 INFO sqlalchemy.engine.base.Engine SELECT course.c_id AS course_c_id, course.prefix AS course_prefix, course.course_semester AS course_course_semester, course.course_year AS course_course_year, course.duty_teacher AS course_duty_teacher 
+FROM course 
+WHERE course.duty_teacher = %(duty_teacher_1)s
+2021-11-17 19:30:07,424 INFO sqlalchemy.engine.base.Engine {'duty_teacher_1': '1851977'}
+2021-11-17 19:30:07,429 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.prefix = %(prefix_1)s 
+ LIMIT %(param_1)s
+2021-11-17 19:30:07,429 INFO sqlalchemy.engine.base.Engine {'prefix_1': '420342', 'param_1': 1}
+[2021-11-17 19:30:07,433] ERROR in app: Exception on /course/myDuty/ [GET]
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/SE/Routers/ManageCourse/teacherCourse.py", line 24, in addCourseType
+    temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "course_id":course.course_id}
+AttributeError: 'Course' object has no attribute 'course_id'
+2021-11-17 19:30:07,434 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.13.122 - - [17/Nov/2021 19:30:07] "[35m[1mGET /course/myDuty/?t_id=1851977 HTTP/1.1[0m" 500 -
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2021-11-17 19:31:02,111 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-11-17 19:31:02,111 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,116 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-11-17 19:31:02,116 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,123 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2021-11-17 19:31:02,123 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,130 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2021-11-17 19:31:02,130 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,134 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2021-11-17 19:31:02,134 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,138 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2021-11-17 19:31:02,138 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,141 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2021-11-17 19:31:02,141 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,151 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2021-11-17 19:31:02,151 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,155 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2021-11-17 19:31:02,155 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,159 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2021-11-17 19:31:02,159 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,163 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2021-11-17 19:31:02,163 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,167 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2021-11-17 19:31:02,167 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,171 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2021-11-17 19:31:02,171 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,175 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2021-11-17 19:31:02,175 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,179 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_class`
+2021-11-17 19:31:02,179 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,183 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2021-11-17 19:31:02,183 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,187 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2021-11-17 19:31:02,187 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,191 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment_file`
+2021-11-17 19:31:02,191 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,195 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2021-11-17 19:31:02,195 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,198 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2021-11-17 19:31:02,199 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,202 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2021-11-17 19:31:02,203 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,206 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2021-11-17 19:31:02,206 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,210 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2021-11-17 19:31:02,210 INFO sqlalchemy.engine.base.Engine {}
+2021-11-17 19:31:02,222 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:31:02,223 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-11-17 19:31:02,223 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2021-11-17 19:31:02,227 INFO sqlalchemy.engine.base.Engine SELECT course.c_id AS course_c_id, course.prefix AS course_prefix, course.course_semester AS course_course_semester, course.course_year AS course_course_year, course.duty_teacher AS course_duty_teacher 
+FROM course 
+WHERE course.duty_teacher = %(duty_teacher_1)s
+2021-11-17 19:31:02,227 INFO sqlalchemy.engine.base.Engine {'duty_teacher_1': '1851977'}
+2021-11-17 19:31:02,231 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.prefix = %(prefix_1)s 
+ LIMIT %(param_1)s
+2021-11-17 19:31:02,232 INFO sqlalchemy.engine.base.Engine {'prefix_1': '420342', 'param_1': 1}
+2021-11-17 19:31:02,235 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.prefix = %(prefix_1)s 
+ LIMIT %(param_1)s
+2021-11-17 19:31:02,235 INFO sqlalchemy.engine.base.Engine {'prefix_1': '420344', 'param_1': 1}
+2021-11-17 19:31:02,239 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.13.122 - - [17/Nov/2021 19:31:02] "[37mGET /course/myDuty/?t_id=1851977 HTTP/1.1[0m" 200 -
+2021-11-17 19:32:20,125 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:32:20,126 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:32:20,126 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:32:20,130 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:32:20] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:42:36,468 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:42:36,469 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:42:36,469 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:42:36,473 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:42:36] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:42:36,572 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:42:36,572 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:42:36,573 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:42:36,577 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:42:36] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:42:40,405 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:42:40,405 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:42:40,405 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:42:40,409 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:42:40] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:42:40,489 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:42:40,489 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:42:40,490 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:42:40,494 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:42:40] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:43:29,954 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:43:29,955 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:43:29,955 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:43:29,960 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:43:29] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:47:31,335 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:47:31,335 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:47:31,335 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:47:31,339 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:47:31] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:47:31,418 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:47:31,419 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:47:31,419 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:47:31,423 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:47:31] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:47:48,751 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:47:48,752 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:47:48,752 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:47:48,756 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:47:48] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:47:57,805 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:47:57,806 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:47:57,806 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:47:57,810 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:47:57] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:48:38,682 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:48:38,683 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:48:38,683 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:48:38,687 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:48:38] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:48:47,489 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:48:47,489 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:48:47,489 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:48:47,493 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:48:47] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:49:01,376 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:49:01,376 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:49:01,376 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:49:01,380 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:49:01] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:49:15,274 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:49:15,275 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:49:15,275 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:49:15,279 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:49:15] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:49:42,811 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:49:42,812 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:49:42,812 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:49:42,816 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:49:42] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:49:47,565 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:49:47,566 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:49:47,566 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:49:47,570 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:49:47] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:51:17,382 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:51:17,383 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:51:17,383 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:51:17,391 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:51:17] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:51:47,033 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:51:47,034 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:51:47,034 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:51:47,038 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:51:47] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:52:12,507 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:52:12,508 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:52:12,508 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:52:12,512 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:52:12] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:52:38,316 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:52:38,317 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:52:38,317 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:52:38,321 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:52:38] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:53:35,828 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:53:35,829 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:53:35,829 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:53:35,833 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:53:35] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:53:42,643 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:53:42,644 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:53:42,644 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:53:42,648 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:53:42] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:53:45,373 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:53:45,374 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:53:45,374 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:53:45,378 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:53:45] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 19:59:15,269 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 19:59:15,269 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 19:59:15,269 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 19:59:15,274 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 19:59:15] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 20:22:11,468 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 20:22:11,469 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 20:22:11,469 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 20:22:11,473 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 20:22:11] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 20:24:16,198 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 20:24:16,199 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 20:24:16,199 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 20:24:16,203 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 20:24:16] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+2021-11-17 20:24:17,218 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-17 20:24:17,219 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-17 20:24:17,219 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-17 20:24:17,223 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.61.253 - - [17/Nov/2021 20:24:17] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
