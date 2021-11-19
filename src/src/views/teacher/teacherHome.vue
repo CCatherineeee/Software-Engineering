@@ -3,40 +3,44 @@
     <el-container class="back">
       <el-aside width="15%">
         <div>
-          <el-menu
-            class="admin-aside-menu"
-            router
-            :default-active="activeIndex"
-          >
+          <el-menu class="admin-aside-menu" router>
             <img
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
+
             <el-submenu>
               <template slot="title">
                 <i class="el-icon-edit"></i>
                 <span>个人信息</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/adminHome/account"
+                <el-menu-item index="/teacherHome/account"
                   >查看个人资料</el-menu-item
                 >
-                <el-menu-item index="/adminHome/modifyPassword"
+                <el-menu-item index="/teacherHome/modifyPassword"
                   >修改密码</el-menu-item
                 >
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item index="/adminHome/userManage/accountAdd">
-              <i class="el-icon-user"></i>
-              <span slot="title">用户管理</span>
-            </el-menu-item>
-            <el-menu-item index="">
+
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-user"></i>
+                <span>课程</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="/teacherHome/course"
+                  >我的班级</el-menu-item
+                >
+                <el-menu-item index="/teacherHome/manageCourse"
+                  >我的课程</el-menu-item
+                >
+              </el-menu-item-group>
+            </el-submenu>
+            <el-menu-item index="/teacherHome/accounce">
               <i class="el-icon-reading"></i>
-              <span slot="title">课程管理</span>
-            </el-menu-item>
-            <el-menu-item index=">">
-              <i class="el-icon-postcard"></i>
-              <span slot="title">公告管理</span>
+              <span slot="title">系统公告</span>
             </el-menu-item>
           </el-menu>
         </div>
