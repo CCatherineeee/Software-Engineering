@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: auto auto; background: rgba(27, 41, 58, 0.85)">
+  <div style="margin: auto auto">
     <el-container class="loginPage">
       <el-main><img src="@/assets/logo.png" /> </el-main>
 
@@ -24,7 +24,7 @@
               :rules="rules"
               label-width="80px"
             >
-              <el-form-item label="用户名" prop="userID" style="padding: auto">
+              <el-form-item label="用户名" prop="userID">
                 <el-input
                   v-model="ruleForm.userID"
                   type="text"
@@ -41,13 +41,6 @@
                 ></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="text">忘记密码</el-button>
-                <el-button type="text">教师登录</el-button>
-                <el-button type="text" @click="AdminLogin()"
-                  >管理员登录</el-button
-                >
-              </el-form-item>
-              <el-form-item>
                 <el-button
                   type="primary"
                   @click="submitForm(ruleForm)"
@@ -57,6 +50,23 @@
                 <el-button @click="toRegister" style="margin-left: 50px"
                   >注册</el-button
                 >
+                <br />
+                <br />
+                <el-form-item>
+                  <el-row :gutter="2">
+                    <el-col :span="8"
+                      ><t class="text-button">忘记密码</t></el-col
+                    >
+                    <el-col :span="8"
+                      ><t class="text-button">教师登录</t></el-col
+                    >
+                    <el-col :span="8"
+                      ><t class="text-button" @click="AdminLogin()"
+                        >管理员登录</t
+                      ></el-col
+                    >
+                  </el-row>
+                </el-form-item>
               </el-form-item>
             </el-form>
           </el-main>
@@ -137,23 +147,24 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body > .el-container {
   margin-bottom: 40px;
 }
 
 .loginPage {
   text-align: center;
-  background: #dfd3d3;
-  color: var(--el-text-color-primary);
-  text-align: center;
   line-height: 570px;
 }
 
 .loginForm {
-  background: rgba(27, 41, 58, 0.85);
-  color: var(--el-text-color-primary);
   text-align: center;
   line-height: 570px;
+}
+.text-button {
+  color: white;
+}
+.text-button:hover {
+  color: #bbdefb;
 }
 </style>

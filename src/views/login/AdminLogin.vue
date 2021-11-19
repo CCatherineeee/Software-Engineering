@@ -41,11 +41,15 @@
                 ></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="text">忘记密码</el-button>
-                <el-button type="text">教师登录</el-button>
-                <el-button type="text" @click="AdminLogin()"
-                  >管理员登录</el-button
-                >
+                <el-row :gutter="2">
+                  <el-col :span="8"><t class="text-button">忘记密码</t></el-col>
+                  <el-col :span="8"><t class="text-button">教师登录</t></el-col>
+                  <el-col :span="8"
+                    ><t class="text-button" @click="AdminLogin()"
+                      >管理员登录</t
+                    ></el-col
+                  >
+                </el-row>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -139,7 +143,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body > .el-container {
   margin-bottom: 40px;
 }

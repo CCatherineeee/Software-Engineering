@@ -10,13 +10,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 import vuetify from './plugins/vuetify'
 //图标
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-//axios.defaults.baseURL = 'http://127.0.0.1:5000';
-//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+import vueToPdf from 'vue-to-pdf'
+import htmlToPdf from '@/components/Utils/htmlToPdf'
 
 Vue.use(VueAxios, axios)
 //让Vue使用ElementUI
 Vue.use(ElementUI)
 Vue.use(vuetify)
+Vue.use(vueToPdf);
+Vue.use(htmlToPdf)
 
 Vue.config.productionTip = false
 
