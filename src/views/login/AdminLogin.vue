@@ -44,11 +44,15 @@
                 <el-row :gutter="2">
                   <el-col :span="8"><t class="text-button">忘记密码</t></el-col>
                   <el-col :span="8"><t class="text-button">教师登录</t></el-col>
+<<<<<<< HEAD
                   <el-col :span="8"
                     ><t class="text-button" @click="AdminLogin()"
                       >管理员登录</t
                     ></el-col
                   >
+=======
+                  <el-col :span="8"><t class="text-button" @click="AdminLogin()">管理员登录</t></el-col>
+>>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
                 </el-row>
               </el-form-item>
               <el-form-item>

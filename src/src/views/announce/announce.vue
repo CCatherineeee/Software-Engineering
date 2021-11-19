@@ -98,11 +98,7 @@ export default {
 };
 </script>
 
-<<<<<<< HEAD
-<style scoped>
-=======
 <style>
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
 .table {
   margin: auto;
 }
