@@ -202,46 +202,17 @@ class Class(db.Model):
     """
     __tablename__ = 'class'
 
-    class_id = db.Column(db.Integer,primary_key=True,autoincrement=True) 
-    course_id = db.Column(db.String(256),ForeignKey("course.course_id"))
+    class_id = db.Column(db.Integer,primary_key=True) 
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
     class_number = db.Column(db.Integer)
+
+    #一对多关联
+    experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
+    exams = db.relationship('Exam', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
+    course_announcement = db.relationship('CourseAnnouncement', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
+
     def __repr__(self):
         return '<User %r>' % self.__tablename__
-
-class StudentClass(db.Model):
-    """
-    类说明：学生-课程表，联系表，多对多
-    """
-    __tablename__ = 'student_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
-
-class TeacherClass(db.Model):
-    """
-    类说明：教师-课程表，联系表，多对多
-
-    注意：该表内的教师指的是任课教师，责任教师应在course表下
-
-    """
-    __tablename__ = 'teacher_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
-    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id"),primary_key=True)
-
-class ClassFile(db.Model):  #ClassFile
-    """
-    类描述：课程文件，联系表，一对多
-    
-    指课程中由老师上传的文件资料，主码由 file_id  组成，
-    """
-    __tablename__ = 'class_file'
-
-    file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
-    file_url = db.Column(db.String(128)) # 服务器文件存放地址
-    file_name = db.Column(db.String(128))
-
-    def __repr__(self):
-        return '<course_file %r>' % self.__tablename__
 
 class Experiment(db.Model):
     """
@@ -249,7 +220,7 @@ class Experiment(db.Model):
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -263,13 +234,6 @@ class Experiment(db.Model):
 实验与实验文件的关系，对于一个实验，有多个学生提交的实验文件，一个实验文件只能是一个实验里的，因此是一对多关系
 实验文件与学生的关系，对于一个实验文件，只能是一个学生提交的，对于一个学生， 需要提交多个实验文件，因此是一对多关系
 """
-
-class StudentExperimentFile(db.Model):
-    __tablename__ = 'student_experiment_file'
-    file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    experiment_id = db.Column(db.Integer,ForeignKey("experiment.experiment_id"))  
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"))
-    score = db.Column(db.Integer)
 
 """
 class StudentExperiment(db.Model):
@@ -293,7 +257,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 2为戒指
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -312,17 +276,6 @@ class Question(db.Model):
     experiment_id = db.Column(db.Integer, ForeignKey('exam.exam_id'))
     comment = db.Column(db.String(2048))
 
-    def __repr__(self):
-        return '<User %r>' % self.__tablename__
-
-class StudentExam(db.Model):
-    """
-    类描述：学生-测验表，联系表，考试-学生关系为，一个学生对应多个考试，一个考试对应多个学生，故多对多，建立联系表
-    """
-    __tablename__ = 'student_exam'
-    exam_id = db.Column(db.Integer,ForeignKey("exam.exam_id") ,primary_key=True)
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
-    score = db.Column(db.Integer)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -349,7 +302,7 @@ class CourseAnnouncement(db.Model):
     title = db.Column(db.String(128))
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"))
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -424,3 +377,151 @@ class Assignment(db.Model):
 """
 
 
+############################联系表#################################
+
+class TeacherExperiment(db.Model):
+    """
+    类描述：教师-实验联系表  1-多
+    """
+    __tablename__ = 'teacher_experiment'
+    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id'), primary_key=True)  
+    t_id = db.Column(db.String(5), ForeignKey('teacher.t_id')) 
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+class StudentExperiment(db.Model):
+    """
+    类描述：学生-实验联系表  多-多
+    """
+    __tablename__ = 'student_experiment'
+    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id'), primary_key=True)  
+    s_id = db.Column(db.String(5), ForeignKey('student.s_id'))  # 表明是主键  学生学号是7位，老师是5位
+
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+class TeacherCourse(db.Model):
+    """
+    类描述：老师-课程联系表  多-多
+    """
+    __tablename__ = 'teacher_course'
+    course_id = db.Column(db.String(10), ForeignKey('course.c_id'), primary_key=True)  
+    t_id = db.Column(db.String(5), ForeignKey('teacher.t_id')) 
+
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+class StudentCourse(db.Model):
+    """
+    类描述：学生-课程联系表  多-多
+    """
+    __tablename__ = 'student_course'
+    course_id = db.Column(db.String(10), ForeignKey('course.c_id'), primary_key=True)  
+    s_id = db.Column(db.String(7), ForeignKey('student.s_id'))  
+
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+# class StudentAssginment(db.Model):
+#     """
+#     类描述：学生-作业联系表 多-多
+#     """
+#     __tablename__ = 'student_assginment'
+#     s_id = db.Column(db.String(7), ForeignKey('student.student_id'), primary_key=True)  
+#     assignment_id = db.Column(db.Integer, ForeignKey('assignment.assignment_id'), primary_key=True)  
+#     score =  db.Column(db.Integer)  #作业成绩
+
+#     def __repr__(self):
+#         return '<User %r>' % self.__tablename__
+
+        
+# class TeacherExam(db.Model):
+#     """
+#     类描述：教师-考试联系表 1-多
+#     """
+#     __tablename__ = 'teacher_exam'
+#     exam_id = db.Column(db.Integer, ForeignKey('exam.exam_id'),primary_key=True) 
+#     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id')) 
+#     assignment_id = db.Column(db.Integer, ForeignKey('assignment.assignment_id'), primary_key=True)  
+#     score =  db.Column(db.Integer)  #作业成绩
+
+#     def __repr__(self):
+#         return '<User %r>' % self.__tablename__
+
+class ExamQuestion(db.Model):
+    """
+    类描述：考试-问题联系表 1-多
+    """
+    __tablename__ = 'exam_question'
+    eq_id =  db.Column(db.Integer,primary_key=True)
+    exam_id = db.Column(db.Integer, ForeignKey('exam.exam_id')) 
+    question_id = db.Column(db.Integer, ForeignKey('question.question_id')) 
+
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+class StudentExamQuestion(db.Model):
+    """
+    类描述：学生-考试问题联系表 多-多
+    """
+    __tablename__ = 'student_examquestion'
+    eq_id =  db.Column(db.Integer,ForeignKey('exam_question.eq_id'),primary_key=True)
+    s_id = db.Column(db.String(7), ForeignKey('student.s_id')) 
+    spare_time = db.Column(db.DateTime)  #花费时长
+    is_correct = db.Column(db.Integer)   #0错误，1正确
+    
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
+
+class StudentClass(db.Model):
+    """
+    类说明：学生-课程表，联系表，多对多
+    """
+    __tablename__ = 'student_class'
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
+
+class TeacherClass(db.Model):
+    """
+    类说明：教师-课程表，联系表，多对多
+
+    注意：该表内的教师指的是任课教师，责任教师应在course表下
+
+    """
+    __tablename__ = 'teacher_class'
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
+    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id"),primary_key=True)
+
+class ClassFile(db.Model):  #ClassFile
+    """
+    类描述：课程文件，联系表，一对多
+    
+    指课程中由老师上传的文件资料，主码由 file_id  组成，
+    """
+    __tablename__ = 'class_file'
+
+    file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
+    file_url = db.Column(db.String(128)) # 服务器文件存放地址
+    file_name = db.Column(db.String(128))
+
+    def __repr__(self):
+        return '<course_file %r>' % self.__tablename__
+
+class StudentExperimentFile(db.Model):
+    __tablename__ = 'student_experiment_file'
+    file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    experiment_id = db.Column(db.Integer,ForeignKey("experiment.experiment_id"))  
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id"))
+    score = db.Column(db.Integer)
+
+class StudentExam(db.Model):
+    """
+    类描述：学生-测验表，联系表，考试-学生关系为，一个学生对应多个考试，一个考试对应多个学生，故多对多，建立联系表
+    """
+    __tablename__ = 'student_exam'
+    exam_id = db.Column(db.Integer,ForeignKey("exam.exam_id") ,primary_key=True)
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
+    score = db.Column(db.Integer)
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
