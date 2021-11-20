@@ -1,12 +1,37 @@
 <template>
   <div>
     <el-card>
-      <el-button type="info" style="background:#7986CB;color:white" @click="checkData()">check</el-button>
+      <el-button
+        type="info"
+        style="background: #7986cb; color: white"
+        @click="checkData()"
+        >check</el-button
+      >
 
-      <el-button type="info" style="background:#7986CB;color:white" @click="handleDetailS">手动添加学生</el-button>
-      <el-button type="info" style="background:#7986CB;color:white" @click="handleDetailT">手动添加教师</el-button>
-      <el-button type="info" style="background:#7986CB;color:white" @click="handleExcelS">表格导入学生</el-button>
-      <el-button type="info" style="background:#7986CB;color:white" @click="handleExcelT">表格导入老师</el-button>
+      <el-button
+        type="info"
+        style="background: #7986cb; color: white"
+        @click="handleDetailS"
+        >手动添加学生</el-button
+      >
+      <el-button
+        type="info"
+        style="background: #7986cb; color: white"
+        @click="handleDetailT"
+        >手动添加教师</el-button
+      >
+      <el-button
+        type="info"
+        style="background: #7986cb; color: white"
+        @click="handleExcelS"
+        >表格导入学生</el-button
+      >
+      <el-button
+        type="info"
+        style="background: #7986cb; color: white"
+        @click="handleExcelT"
+        >表格导入老师</el-button
+      >
       <el-dialog
         :visible.sync="dialogFormVisibleS"
         title="请输入学生信息"
@@ -143,7 +168,6 @@
 
       <el-table
         ref="filterTable"
-        row-key="id"
         :data="
           userData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
@@ -234,23 +258,22 @@ export default {
       fileListT: [],
 
       currentPage: 1,
-      pagesize: 6,
+      pagesize: 10,
       userData: [],
     };
   },
   methods: {
     //获取所有用户所有信息
-    getUserData()
-    {
+    getUserData() {
       axios
-          .get("/api/getUserInfo/allUser/", {
-            //params: { userData: "value" },
-            crossDomain: true,
-          })
-          .then((response) => (this.userData = response.data))
-          .catch(function (error) {
-            console(error);
-          });
+        .get("/api/getUserInfo/allUser/", {
+          //params: { userData: "value" },
+          crossDomain: true,
+        })
+        .then((response) => (this.userData = response.data))
+        .catch(function (error) {
+          console(error);
+        });
     },
     handleDetailS() {
       this.dialogFormVisibleS = true;
@@ -287,25 +310,26 @@ export default {
     },
 
     addFromDetailS() {
-      console.log(this.formS);
+      //console.log(this.formS);
       //手动增加学生
       axios
         .post("/api/Register/addSM/", JSON.stringify(this.formS))
         .then((response) => {
-          this.checkData(response.data)
+          console.log(response);
+          this.checkData(response.data);
         });
       this.dialogFormVisibleS = false;
-      //location.reload();
+      location.reload();
     },
 
     addFromDetailT() {
       this.axios
         .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
         .then((response) => {
-          this.checkData(response.data)
+          this.checkData(response.data);
         });
       this.dialogFormVisibleT = false;
-      //location.reload();
+      location.reload();
     },
 
     addFromExcelS() {
@@ -365,21 +389,15 @@ export default {
     },
 
     checkData(response) {
-      if(response == "Success")
-        this.$message('添加成功');
-      else if(response == "UserIDExist")
-        this.$message('学号/工号 已被注册');
-      else if(response == "UserMailExist")
-        this.$message('邮箱已被注册');
-      else
-        this.$message('网络错误');
+      if (response == "Success") this.$message("添加成功");
+      else if (response == "UserIDExist") this.$message("学号/工号 已被注册");
+      else if (response == "UserMailExist") this.$message("邮箱已被注册");
+      else this.$message("网络错误");
       this.getUserData();
     },
-
   },
   mounted() {
     this.getUserData();
-
   },
 };
 </script>

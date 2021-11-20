@@ -7,26 +7,10 @@
           <v-btn
             color="orange lighten-2"
             dark
-<<<<<<< HEAD
             @click="handleFile"
             style="margin-bottom: 10px"
           >
             pdf导入实验模板
-=======
-            @click="addForm"
-            style="margin-bottom: 10px"
-          >
-            手动添加实验
-          </v-btn></el-col
-        ><el-col :span="3" :offset="1">
-          <v-btn
-            color="orange lighten-2"
-            dark
-            @click="handleFile"
-            style="margin-bottom: 10px"
-          >
-            pdf导入
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
           </v-btn></el-col
         >
       </el-row>
@@ -51,7 +35,6 @@
           </template>
           <template #default="scope">
             <v-row>
-<<<<<<< HEAD
               <v-col cols="6">
                 <v-btn small dark @click="handleEdit(scope.row)"
                   >编辑实验模板</v-btn
@@ -61,13 +44,6 @@
                 <v-btn small dark @click="handleGrade(scope.row)"
                   >批改实验报告</v-btn
                 >
-=======
-              <v-col cols="3">
-                <v-btn small dark @click="handleEdit(scope.row)">编辑</v-btn>
-              </v-col>
-              <v-col cols="3">
-                <v-btn small dark @click="handleGrade(scope.row)">批改</v-btn>
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
               </v-col>
             </v-row>
           </template>
@@ -167,15 +143,6 @@ export default {
       });
     },
 
-<<<<<<< HEAD
-=======
-    addForm() {
-      this.$router.push({
-        path: "/teacherHome/concreteCourse/addExper",
-      });
-    },
-
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
     handleFile() {
       this.dialogVisible = true;
     },

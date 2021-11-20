@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-container>
-<<<<<<< HEAD
       <el-aside width="50%">
         <v-btn
           color="primary"
@@ -15,14 +14,6 @@
             <v-col v-for="(item, i) in classList" :key="i" cols="12">
               <v-card color="#385F73" dark>
                 <div>
-=======
-      <el-aside width="600px">
-        <el-scrollbar>
-          <v-row dense>
-            <v-col v-for="(item, i) in items" :key="i" cols="12">
-              <v-card color="#385F73" dark>
-                <div class="d-flex flex-no-wrap justify-space-between">
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
                   <v-card-title
                     class="text-h5"
                     v-text="item.title"
@@ -31,22 +22,12 @@
                   <v-card-subtitle v-text="item.respondTea"></v-card-subtitle>
 
                   <v-card-actions>
-<<<<<<< HEAD
                     <v-btn outlined rounded @click="handleTea">
                       设置教师
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn text @click="handleDeleteClass(item)">
                       删除班级
-=======
-                    <v-btn
-                      class="ml-2 mt-5"
-                      outlined
-                      rounded
-                      @click="handleTea"
-                    >
-                      设置责任教师
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
                     </v-btn>
                   </v-card-actions>
                 </div>
@@ -82,7 +63,6 @@
       <el-main>
         <el-scrollbar>
           <el-row>
-<<<<<<< HEAD
             <el-col :span="6">
               <v-btn dark @click="saveInfo()">保存课程信息</v-btn></el-col
             >
@@ -90,23 +70,12 @@
               <v-btn dark @click="handleFile">上传教学大纲</v-btn></el-col
             >
             <el-col :span="3"> <v-btn dark>新增实验</v-btn></el-col></el-row
-=======
-            <el-col :span="3">
-              <v-btn dark @click="saveInfo()">保存</v-btn></el-col
-            >
-            <el-col :span="3">
-              <v-btn dark @click="handleFile">上传教学大纲</v-btn></el-col
-            ></el-row
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
           >
           <el-descriptions
             :column="1"
             border
             style="margin-bottom: 10px; margin-top: 10px"
-<<<<<<< HEAD
             title="课程信息"
-=======
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
           >
             <el-descriptions-item label="课程id"
               >kooriookami</el-descriptions-item
@@ -123,7 +92,6 @@
           </el-descriptions>
           <v-textarea v-model="syllabus" color="teal" label="教学大纲" filled>
           </v-textarea>
-<<<<<<< HEAD
 
           <v-row dense>
             <v-col v-for="(item, i) in experList" :key="i" cols="6">
@@ -156,8 +124,6 @@
               </el-dialog>
             </v-col>
           </v-row>
-=======
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
         </el-scrollbar>
 
         <el-dialog :visible.sync="fileDialog" title="请选择文件" center>
@@ -192,14 +158,9 @@ export default {
     return {
       syllabus: "",
       teaDialog: false,
-<<<<<<< HEAD
       proDialog: false,
       fileDialog: false,
       classList: [
-=======
-      fileDialog: false,
-      items: [
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
         {
           title: "Supermodel",
           respondTea: "Foster the People",
@@ -207,7 +168,6 @@ export default {
         },
         {
           title: "班级",
-<<<<<<< HEAD
           respondTea: "教师",
           tid: "2",
         },
@@ -224,12 +184,6 @@ export default {
           id: "2",
         },
       ],
-=======
-          respondTea: "责任教师",
-          tid: "2",
-        },
-      ],
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
       fileList: [],
       teacherExist: [],
       timeout: null,
@@ -257,19 +211,15 @@ export default {
     handleTea() {
       this.teaDialog = true;
     },
-<<<<<<< HEAD
     handleProportion() {
       this.proDialog = true;
     },
-=======
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
     handleFile() {
       this.fileDialog = true;
     },
     addTea(row) {
       console.log(row);
       if (this.isExist(row.tid)) {
-<<<<<<< HEAD
         this.teaDialog = false;
       } else {
         this.$message("没有这个老师！");
@@ -280,14 +230,6 @@ export default {
       console.log(row);
       this.proDialog = false;
     },
-=======
-        this.dialogVisible = false;
-      } else {
-        this.$message("没有这个老师！");
-        this.dialogVisible = true;
-      }
-    },
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
     addFile() {},
     isExist(row) {
       console.log("row===" + row);
@@ -326,7 +268,6 @@ export default {
         },
       ];
     },
-<<<<<<< HEAD
 
     handleDeleteClass() {
       this.$confirm("确认删除班级吗?", "提示", {
@@ -368,8 +309,6 @@ export default {
           });
         });
     },
-=======
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
   },
   mounted() {
     this.teacherExist = this.loadAll();

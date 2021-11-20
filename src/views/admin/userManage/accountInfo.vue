@@ -105,12 +105,12 @@ export default {
 
     modifyAccount() {
       this.$router.push({
-        path: "/adminHome/accountModify",
+        path: "/adminHome/userManage/accountModify",
         query: { id: this.id },
       });
     },
     back() {
-      this.$router.push("/adminHome/accountCheck");
+      this.$router.push("/adminHome/userManage/accountCheck");
     },
   },
   mounted() {

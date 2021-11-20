@@ -31,12 +31,9 @@
           <el-button size="small" @click="handleManage(scope.row)"
             >课程管理</el-button
           >
-<<<<<<< HEAD
           <el-button size="small" @click="handleManage(scope.row)"
             >课程管理</el-button
           >
-=======
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
         </template>
       </el-table-column>
     </el-table>

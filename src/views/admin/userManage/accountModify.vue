@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -84,7 +85,7 @@ export default {
     },
 
     getStuInfo() {
-      this.axios
+      axios
         .get("/api/getUserInfo/Student/", {
           params: { s_id: this.userAccount.s_id },
           crossDomain: true,
@@ -104,12 +105,9 @@ export default {
           console(error);
         });
     },
-    checkResponse(response){
-      if(response == "Success")
-        this.$message('修改成功');
-      else
-        this.$message('错误');
-
+    checkResponse(response) {
+      if (response == "Success") this.$message("修改成功");
+      else this.$message("错误");
     },
 
     save() {
@@ -120,13 +118,16 @@ export default {
         });
       document.execCommand("Refresh");
       this.$router.push({
-        path: "/adminHome/accountInfo",
+        path: "/adminHome/userManage/accountInfo",
         query: { id: this.userAccount.s_id },
       });
     },
 
     back() {
-      this.$router.push("/adminHome/accountCheck");
+      this.$router.push({
+        path: "/adminHome/userManage/accountInfo",
+        query: { id: this.userAccount.s_id },
+      });
     },
   },
   mounted() {

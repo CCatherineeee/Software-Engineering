@@ -6,7 +6,6 @@
 
       <el-table
         ref="multipleTable"
-        row-key="id"
         :data="
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "

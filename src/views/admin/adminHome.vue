@@ -3,11 +3,7 @@
     <el-container class="back">
       <el-aside width="15%">
         <div>
-          <el-menu
-            class="admin-aside-menu"
-            router
-            :default-active="activeIndex"
-          >
+          <el-menu class="admin-aside-menu" router>
             <img
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
@@ -30,11 +26,11 @@
               <i class="el-icon-user"></i>
               <span slot="title">用户管理</span>
             </el-menu-item>
-            <el-menu-item index="">
+            <el-menu-item>
               <i class="el-icon-reading"></i>
               <span slot="title">课程管理</span>
             </el-menu-item>
-            <el-menu-item index=">">
+            <el-menu-item index="/adminHome/annManage">
               <i class="el-icon-postcard"></i>
               <span slot="title">公告管理</span>
             </el-menu-item>
@@ -64,8 +60,7 @@ export default {
 <style scoped>
 .el-main {
   background-color: #ffffff;
-  color: #333;
-  text-align: left;
+
   height: 650px;
   border-radius: 20px;
 }

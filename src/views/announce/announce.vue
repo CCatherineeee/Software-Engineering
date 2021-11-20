@@ -12,7 +12,10 @@
       </p>
       <el-table
         :data="
-          tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
+          announceData.slice(
+            (currentPage - 1) * pagesize,
+            currentPage * pagesize
+          )
         "
         style="width: 100%"
       >
@@ -45,7 +48,7 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="pagesize"
-        :total="tableData.length"
+        :total="announceData.length"
       >
       </el-pagination>
 
@@ -62,6 +65,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -70,13 +74,7 @@ export default {
       pagesize: 6,
       title: "",
       content: "",
-      tableData: [
-        {
-          time: "2021-10-30",
-          title: "test",
-          content: "content",
-        },
-      ],
+      announceData: [],
     };
   },
 
@@ -95,14 +93,24 @@ export default {
     handleCheck() {},
     checkAnnounce() {},
   },
+  mounted() {
+    axios
+      .get("/api/sys/getAnn/", {
+        //params: { userData: "value" },
+        crossDomain: true,
+      })
+      .then((response) => {
+        console.log(response);
+        this.announceData = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
 };
 </script>
 
-<<<<<<< HEAD
 <style scoped>
-=======
-<style>
->>>>>>> 5efebe30887e03bb39772a964f38cb40428e5576
 .table {
   margin: auto;
 }

@@ -52,7 +52,10 @@
 
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="small" @click="handleCheck(scope.row)"
+            <el-button
+              class="button"
+              size="small"
+              @click="handleCheck(scope.row)"
               >查看</el-button
             >
             <el-button size="small" type="danger" @click="handleEdit(scope.row)"
@@ -81,7 +84,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pagesize: 6,
+      pagesize: 10,
       tableData: [],
     };
   },
@@ -96,7 +99,7 @@ export default {
     handleCheck(row) {
       console.log(row);
       this.$router.push({
-        path: "/adminHome/accountInfo",
+        path: "/adminHome/userManage/accountInfo",
         query: { id: row.id },
       });
     },
@@ -104,7 +107,7 @@ export default {
     handleEdit(row) {
       console.log(row);
       this.$router.push({
-        path: "/adminHome/accountModify",
+        path: "/adminHome/userManage/accountModify",
         query: { id: row.id },
       });
     },
@@ -130,3 +133,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.button {
+  background: #7986cb;
+  color: white;
+}
+.button:hover {
+  color: yellow;
+}
+</style>
