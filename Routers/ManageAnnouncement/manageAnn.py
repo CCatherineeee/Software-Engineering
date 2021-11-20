@@ -4,7 +4,7 @@ from flask import Blueprint
 import json
 from Model.Model import Student
 from Model.Model import Teacher
-from Model.Model import SystemAnnouncement
+from Model.Model import SystemAnnouncement,CourseAnnouncement
 from sqlalchemy import and_, or_
 import time
 import dbManage
@@ -34,7 +34,7 @@ def getSysAnn():
         content.append(temp)
     return jsonify(content)
 
-@manageAnnRoute.route('/coutse/addAnn/',methods=['POST'])  
+@manageAnnRoute.route('/course/addAnn/',methods=['POST'])  
 def addCourseAnn():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
