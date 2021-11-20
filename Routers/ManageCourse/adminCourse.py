@@ -40,8 +40,8 @@ def getCourseType():
         content.append(temp)
     return jsonify(content)
 
-@adminCourseRoute.route('/course/addDuty/',methods=['POST'])  
-def addDuty():
+@adminCourseRoute.route('/course/addCourse/',methods=['POST'])  
+def addCourse():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     semester = data['semester']
