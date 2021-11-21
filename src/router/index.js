@@ -75,10 +75,20 @@ const routes = [
       { path: '/adminHome/modifyPassword', component: () => import('../views/admin/account/passwordModify.vue') },
       //公告
       { path: '/adminHome/annManage', component: () => import('../views/admin/annManage/annManage.vue') },
+      //课程
+      {
+        path: '/adminHome/courseManage',
+        name: 'AdminCourseManage',
+        component: () => import('../views/admin/courseManage/courseManageHome.vue'),
+        children: [
+          { path: '/adminHome/courseManage/courseType', component: () => import('../views/admin/courseManage/courseType.vue') },
+          { path: '/adminHome/courseManage/courseTea', component: () => import('../views/admin/courseManage/courseTea.vue') },
+        ]
+      },
       //用户
       {
         path: '/adminHome/userManage',
-        name: 'AdminHomeManage',
+        name: 'AdminUserManage',
         component: () => import('../views/admin/userManage/accountManageHome.vue'),
         children: [
           { path: '/adminHome/userManage/accountAdd', component: () => import('../views/admin/userManage/accountAdd.vue') },

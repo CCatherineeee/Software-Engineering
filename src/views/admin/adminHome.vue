@@ -8,7 +8,7 @@
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
-            <el-submenu>
+            <el-submenu index="">
               <template slot="title">
                 <i class="el-icon-edit"></i>
                 <span>个人信息</span>
@@ -26,7 +26,7 @@
               <i class="el-icon-user"></i>
               <span slot="title">用户管理</span>
             </el-menu-item>
-            <el-menu-item>
+            <el-menu-item index="/adminHome/courseManage/courseType">
               <i class="el-icon-reading"></i>
               <span slot="title">课程管理</span>
             </el-menu-item>

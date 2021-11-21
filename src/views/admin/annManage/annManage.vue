@@ -78,9 +78,7 @@
       </v-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addAnn">确定</el-button>
-        <el-button type="primary" @click="annCheckDialog = false"
-          >取消</el-button
-        >
+        <el-button type="primary" @click="annAddDialog = false">取消</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -141,18 +139,24 @@ export default {
         });
     },
     addAnn() {
-      this.annAddDialog = true;
-      console.log("form==" + this.form);
-      axios
-        .post("/api//sys/addAnn/", JSON.stringify(this.form))
-        .then((response) => {
-          console.log(response);
-          this.dialogFormVisibleS = false;
-          location.reload();
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (this.form.title == "") {
+        this.$message({
+          type: "warning",
+          message: "公告标题不能为空!",
         });
+      } else {
+        console.log("form==" + this.form);
+        axios
+          .post("/api//sys/addAnn/", JSON.stringify(this.form))
+          .then((response) => {
+            console.log(response);
+
+            location.reload();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
     handleCheck() {},
     checkAnnounce() {},

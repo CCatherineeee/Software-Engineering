@@ -1,83 +1,87 @@
 <template>
   <div>
-    <el-card>
-      <el-button type="danger" @click="handleCheckCancelS">批量注销</el-button>
-      <el-button @click="toggleSelection()">取消选择</el-button>
-
-      <el-table
-        ref="multipleTable"
-        :data="
-          tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
-        "
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="name" label="姓名" sortable />
-        <el-table-column prop="id" label="学号" sortable />
-        <el-table-column
-          prop="role"
-          label="身份权限"
-          sortable
-          :filters="[
-            { text: '学生', value: 1 },
-
-            { text: '教师', value: 2 },
-          ]"
-          :filter-method="filterIdentity"
+    <el-scrollbar>
+      <el-card>
+        <el-button type="danger" @click="handleCheckCancelS"
+          >批量注销</el-button
         >
-          <template slot-scope="scope">
-            <span v-if="scope.row.role === 1">学生</span>
-            <span v-if="scope.row.role === 2">教师</span>
-          </template>
-        </el-table-column>
+        <el-button @click="toggleSelection()">取消选择</el-button>
 
-        <el-table-column
-          prop="is_active"
-          label="状态"
-          sortable
-          :filters="[
-            { text: '激活', value: 1 },
-            { text: '非激活', value: 0 },
-          ]"
-          :filter-method="filterState"
-          filter-placement="bottom-end"
+        <el-table
+          ref="multipleTable"
+          :data="
+            userData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
+          "
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
         >
-          <template #default="scope">
-            <el-tag
-              :type="scope.row.is_active === 1 ? 'success' : 'danger'"
-              disable-transitions
-              ><span v-if="scope.row.is_active === 1">激活</span>
-              <span v-if="scope.row.is_active === 0">非激活</span></el-tag
-            >
-          </template>
-        </el-table-column>
+          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column prop="name" label="姓名" sortable />
+          <el-table-column prop="id" label="学号/工号" sortable />
+          <el-table-column
+            prop="role"
+            label="身份权限"
+            sortable
+            :filters="[
+              { text: '学生', value: 1 },
 
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="small" @click="handleCheck(scope.row)"
-              >查看</el-button
-            >
-            <el-button
-              size="small"
-              type="danger"
-              @click="handleCheckCancelO(scope.row)"
-              >注销</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+              { text: '教师', value: 2 },
+            ]"
+            :filter-method="filterIdentity"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.role === 1">学生</span>
+              <span v-if="scope.row.role === 2">教师</span>
+            </template>
+          </el-table-column>
 
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.length"
-      >
-      </el-pagination>
-    </el-card>
+          <el-table-column
+            prop="is_active"
+            label="状态"
+            sortable
+            :filters="[
+              { text: '激活', value: 1 },
+              { text: '非激活', value: 0 },
+            ]"
+            :filter-method="filterState"
+            filter-placement="bottom-end"
+          >
+            <template #default="scope">
+              <el-tag
+                :type="scope.row.is_active === 1 ? 'success' : 'danger'"
+                disable-transitions
+                ><span v-if="scope.row.is_active === 1">激活</span>
+                <span v-if="scope.row.is_active === 0">非激活</span></el-tag
+              >
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="small" @click="handleCheck(scope.row)"
+                >查看</el-button
+              >
+              <el-button
+                size="small"
+                type="danger"
+                @click="handleCheckCancelO(scope.row)"
+                >注销</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="userData.length"
+        >
+        </el-pagination>
+      </el-card>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -87,9 +91,9 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pagesize: 6,
+      pagesize: 10,
       multipleSelection: [],
-      tableData: [],
+      userData: [],
     };
   },
   methods: {
@@ -103,7 +107,7 @@ export default {
     handleCheck(row) {
       console.log(row);
       this.$router.push({
-        path: "/adminHome/accountInfo",
+        path: "/adminHome/userManage/accountInfo",
         query: { id: row.id },
       });
     },
@@ -158,7 +162,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.cancelOneAccount(row);
+          this.cancelOneAccount(row.id);
 
           this.$message({
             type: "success",
@@ -203,10 +207,17 @@ export default {
         //params: { userData: "value" },
         crossDomain: true,
       })
-      .then((response) => (this.tableData = response.data))
+      .then((response) => (this.userData = response.data))
       .catch(function () {});
 
     //console.log(this.userData);
   },
 };
 </script>
+
+<style scoped>
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+</style>
