@@ -307,6 +307,17 @@ class CourseAnnouncement(db.Model):
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+class TeachingAssistant(db.Model):
+    """
+    类描述：助教表，主码为学号
+    """
+    __tablename__ = 'teaching_assistant'
+    ta_id = db.Column(db.String(64), primary_key=True, autoincrement=False)  # 表明是主键  学生学号是7位，老师是5位
+    ta_pwd = db.Column(db.String(150))
+    name = db.Column(db.String(64))   # 名字
+    email = db.Column(db.String(64),unique=True)
+    is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
+
 
 """
 
@@ -525,3 +536,11 @@ class StudentExam(db.Model):
     score = db.Column(db.Integer)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
+
+class TAClass(db.Model):
+    """
+    类描述：联系表，班级助教，是多对多关系
+    """
+    __tablename__ = 'ta_class'
+    ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id") ,primary_key=True)
+    class_id = db.Column(db.String(256), ForeignKey("class.class_id"),primary_key=True)
