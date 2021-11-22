@@ -7385,7 +7385,8 @@ WHERE `admin`.name = %(name_1)s
 101.251.238.55 - - [15/Nov/2021 02:16:12] code 400, message Bad request version ("\x8cAï\x00\x008À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
 101.251.238.55 - - [15/Nov/2021 02:16:12] "[35m[1m ½  ¹×o7yº³aæêiG·ØY$Æ²6KAï  8À,À0 Ì©Ì¨ÌªÀ+À/ À$À( kÀ#À' gÀ[0m" HTTPStatus.BAD_REQUEST -
 101.251.238.55 - - [15/Nov/2021 02:16:12] code 400, message Bad request version ('R\x11_Ùèï\x9cH\x08d}\x10[ä\x00\x00\x12À')
-101.251.238.55 - - [15/Nov/2021 02:16:12] "[35m[1m c  _þOf¸ãZ»I&¶yUÀËR_ÙèïHd}[ä  À[0m" HTTPStatus.BAD_REQUEST -
+101.251.238.55 - - [15/Nov/2021 02:16:12] "[35m[1m c  _þOf¸ã
+Z»I&¶yUÀËR_ÙèïHd}[ä  À[0m" HTTPStatus.BAD_REQUEST -
 101.251.238.55 - - [15/Nov/2021 02:16:12] code 400, message Bad request version ('\x00\x00\x12À')
 101.251.238.55 - - [15/Nov/2021 02:16:12] "[35m[1m c  _·Ü¸üÐgk3?ë<ÉºxMÉÃGÅ	-Ò.-ÖÖ  À[0m" HTTPStatus.BAD_REQUEST -
 101.251.238.55 - - [15/Nov/2021 02:16:12] "[37mGET / HTTP/1.1[0m" 200 -
@@ -7562,7 +7563,8 @@ WHERE student.s_id IS NULL
 111.20.201.86 - - [17/Nov/2021 01:00:56] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00')
 111.20.201.86 - - [17/Nov/2021 01:00:56] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
 162.142.125.195 - - [17/Nov/2021 02:16:11] code 400, message Bad request version ('À\x14À')
-162.142.125.195 - - [17/Nov/2021 02:16:11] "[35m[1m {  wJÏ=wÊ	Îî  öyZk¢ónpÒ<&xítÚç¹;  À/À+ÀÀÀÀ	ÀÀ[0m" HTTPStatus.BAD_REQUEST -
+162.142.125.195 - - [17/Nov/2021 02:16:11] "[35m[1m {  wJÏ=w
+Ê	Îî  öyZk¢ónpÒ<&xítÚç¹;  À/À+ÀÀÀÀ	ÀÀ[0m" HTTPStatus.BAD_REQUEST -
 162.142.125.195 - - [17/Nov/2021 02:16:12] "[37mGET / HTTP/1.1[0m" 200 -
 162.142.125.195 - - [17/Nov/2021 02:16:13] "[37mGET / HTTP/1.1[0m" 200 -
 83.97.20.34 - - [17/Nov/2021 02:20:13] code 400, message Bad request version ('RTSP/1.0')
@@ -8332,3 +8334,80 @@ WHERE student.s_id IS NULL
 2021-11-17 20:24:17,219 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
 2021-11-17 20:24:17,223 INFO sqlalchemy.engine.base.Engine ROLLBACK
 111.187.61.253 - - [17/Nov/2021 20:24:17] "[37mGET /getUserInfo/Student/ HTTP/1.1[0m" 200 -
+Traceback (most recent call last):
+  File "app.py", line 38, in <module>
+    app.register_blueprint(loginRoute)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 98, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1168, in register_blueprint
+    blueprint.register(self, options, first_registration)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/blueprints.py", line 256, in register
+    deferred(state)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/blueprints.py", line 294, in <lambda>
+    self.record(lambda s: s.add_url_rule(rule, endpoint, view_func, **options))
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/blueprints.py", line 81, in add_url_rule
+    self.app.add_url_rule(
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 98, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1282, in add_url_rule
+    raise AssertionError(
+AssertionError: View function mapping is overwriting an existing endpoint function: loginRoute.adminLogin
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+Traceback (most recent call last):
+  File "app.py", line 86, in <module>
+    app.run(host = '0.0.0.0', port = 5000)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 990, in run
+    run_simple(host, port, self, **options)
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 1052, in run_simple
+    inner()
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 996, in inner
+    srv = make_server(
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 847, in make_server
+    return ThreadedWSGIServer(
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 740, in __init__
+    HTTPServer.__init__(self, server_address, handler)
+  File "/root/anaconda3/lib/python3.8/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/anaconda3/lib/python3.8/http/server.py", line 138, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/anaconda3/lib/python3.8/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+Traceback (most recent call last):
+  File "app.py", line 86, in <module>
+    app.run(host = '0.0.0.0', port = 5000)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 990, in run
+    run_simple(host, port, self, **options)
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 1052, in run_simple
+    inner()
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 996, in inner
+    srv = make_server(
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 847, in make_server
+    return ThreadedWSGIServer(
+  File "/root/anaconda3/lib/python3.8/site-packages/werkzeug/serving.py", line 740, in __init__
+    HTTPServer.__init__(self, server_address, handler)
+  File "/root/anaconda3/lib/python3.8/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/root/anaconda3/lib/python3.8/http/server.py", line 138, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/root/anaconda3/lib/python3.8/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
