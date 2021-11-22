@@ -74,15 +74,13 @@ def Login():
     pwd = data.get('password')
     teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
     if teacher:
-        teacher = Model.Teacher.query.filter(and_(Model.Teacher.t_pwd == pwd, Model.Teacher.t_id == uid)).first()
-        if teacher:
+        if teacher.check_password(pwd):
             return "TSuccess"
         else:
             return "TPasswordWrong"
     student = Model.Student.query.filter(Model.Student.s_id == uid).first()
     if student:
-        student = Model.Student.query.filter(and_(Model.Student.s_pwd == pwd,Model.Student.s_id == uid)).first()
-        if student:
+        if student.check_password(pwd):
             return "SSuccess"
         else:
             return "SPasswordWrong"
