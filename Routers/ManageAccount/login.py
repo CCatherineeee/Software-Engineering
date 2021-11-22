@@ -19,38 +19,6 @@ def AdminLogin(name, admin_pwd):
     else:
         return "Login"
 
-@loginRoute.route('/studentLogin/',methods=['POST']) 
-def StudentLogin(s_id, s_pwd):
-    student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
-    if not student:
-        data = {'id':"",'status':400,'message':'none'}  #错误返回
-        return jsonify(data)
-    # student = Model.Student.query.filter(and_(Model.Student.query.s_pwd == s_pwd,Model.Student.s_id == s_id)).first()
-    student = Model.Student.query.filter(Model.Student.s_id == s_id).first()
-    if student.check_password(s_pwd):
-        data = {'id':s_id,'status':200,'message':'success'}
-
-    else:
-        data = {'id':"",'status':500,'message':'wrong'}
-    return jsonify(data)
-
-
-@loginRoute.route('/teacherLogin/',methods=['POST']) 
-def TeacherLogin(t_id, t_pwd):
-    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
-    if not teacher:
-        data = {'id':"",'status':400}  #错误返回
-        return jsonify(data)
-    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
-    if teacher.check_password(t_pwd):  #检查密码
-        data = {'id':t_id,'status':200,'message':'success'}
-
-    else:
-        data = {'id':t_id,'status':500,'message':'wrong'}
-    return jsonify(data)
-
-
-
 @loginRoute.route('/adminLogin/',methods=['POST']) 
 def adminLogin():
     # 接口本身
@@ -68,20 +36,27 @@ def adminLogin():
 
 @loginRoute.route('/login/',methods=['POST']) 
 def Login():
-    # 接口本身
     data = request.form
     uid = data.get('id')
     pwd = data.get('password')
     teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
     if teacher:
+<<<<<<< HEAD
+=======
+        # teacher = Model.Teacher.query.filter(and_(Model.Teacher.t_pwd == pwd, Model.Teacher.t_id == uid)).first()
+>>>>>>> 564570936700cfc877ca62c56f275e4f936899f7
         if teacher.check_password(pwd):
             return "TSuccess"
         else:
             return "TPasswordWrong"
     student = Model.Student.query.filter(Model.Student.s_id == uid).first()
     if student:
+<<<<<<< HEAD
+=======
+        # student = Model.Student.query.filter(and_(Model.Student.s_pwd == pwd,Model.Student.s_id == uid)).first()
+>>>>>>> 564570936700cfc877ca62c56f275e4f936899f7
         if student.check_password(pwd):
             return "SSuccess"
         else:
             return "SPasswordWrong"
-    return "UserNotExist"
+    return pwd
