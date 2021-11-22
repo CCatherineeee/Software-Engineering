@@ -8411,3 +8411,306 @@ OSError: [Errno 98] Address already in use
    Use a production WSGI server instead.
  * Debug mode: off
  * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+2021-11-22 10:47:33,528 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-11-22 10:47:33,528 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,533 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-11-22 10:47:33,534 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,542 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2021-11-22 10:47:33,542 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,548 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2021-11-22 10:47:33,549 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,553 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:47:33,553 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,557 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:47:33,557 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,561 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2021-11-22 10:47:33,561 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,571 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2021-11-22 10:47:33,571 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,576 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2021-11-22 10:47:33,576 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,580 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2021-11-22 10:47:33,581 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,585 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2021-11-22 10:47:33,585 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,589 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2021-11-22 10:47:33,589 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,594 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2021-11-22 10:47:33,594 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,598 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2021-11-22 10:47:33,598 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,602 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2021-11-22 10:47:33,602 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,606 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2021-11-22 10:47:33,607 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,611 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2021-11-22 10:47:33,611 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,615 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2021-11-22 10:47:33,615 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,619 INFO sqlalchemy.engine.base.Engine DESCRIBE `teaching_assistant`
+2021-11-22 10:47:33,619 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,623 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_experiment`
+2021-11-22 10:47:33,624 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,628 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment`
+2021-11-22 10:47:33,628 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,632 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_course`
+2021-11-22 10:47:33,632 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,636 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_course`
+2021-11-22 10:47:33,636 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,641 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam_question`
+2021-11-22 10:47:33,641 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,646 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_examquestion`
+2021-11-22 10:47:33,646 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,650 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2021-11-22 10:47:33,651 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,655 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_class`
+2021-11-22 10:47:33,655 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,659 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2021-11-22 10:47:33,659 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,663 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment_file`
+2021-11-22 10:47:33,663 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,667 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2021-11-22 10:47:33,667 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,671 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_class`
+2021-11-22 10:47:33,671 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:47:33,690 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-22 10:47:33,690 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:47:33,690 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2021-11-22 10:47:33,695 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-22 10:47:33,695 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-22 10:47:33,700 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-22 10:47:33,700 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+[2021-11-22 10:47:33,704] ERROR in app: Exception on /login/ [POST]
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/root/anaconda3/lib/python3.8/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+2021-11-22 10:47:33,705 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.2.62 - - [22/Nov/2021 10:47:33] "[35m[1mPOST /login/?id=1851977&pwd=1851977 HTTP/1.1[0m" 500 -
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+2021-11-22 10:48:42,338 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-11-22 10:48:42,338 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,343 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-11-22 10:48:42,343 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,352 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2021-11-22 10:48:42,352 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,359 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2021-11-22 10:48:42,360 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,364 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:48:42,364 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,368 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:48:42,368 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,372 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2021-11-22 10:48:42,372 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,384 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2021-11-22 10:48:42,384 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,389 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2021-11-22 10:48:42,389 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,393 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2021-11-22 10:48:42,393 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,398 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2021-11-22 10:48:42,398 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,402 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2021-11-22 10:48:42,402 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,407 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2021-11-22 10:48:42,407 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,411 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2021-11-22 10:48:42,412 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,416 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2021-11-22 10:48:42,416 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,421 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2021-11-22 10:48:42,421 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,425 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2021-11-22 10:48:42,425 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,430 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2021-11-22 10:48:42,430 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,434 INFO sqlalchemy.engine.base.Engine DESCRIBE `teaching_assistant`
+2021-11-22 10:48:42,434 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,439 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_experiment`
+2021-11-22 10:48:42,439 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,443 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment`
+2021-11-22 10:48:42,443 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,447 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_course`
+2021-11-22 10:48:42,448 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,452 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_course`
+2021-11-22 10:48:42,452 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,456 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam_question`
+2021-11-22 10:48:42,456 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,461 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_examquestion`
+2021-11-22 10:48:42,461 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,465 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2021-11-22 10:48:42,465 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,470 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_class`
+2021-11-22 10:48:42,470 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,474 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2021-11-22 10:48:42,474 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,479 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment_file`
+2021-11-22 10:48:42,479 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,483 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2021-11-22 10:48:42,483 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,488 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_class`
+2021-11-22 10:48:42,488 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:48:42,507 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-22 10:48:42,508 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:48:42,509 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2021-11-22 10:48:42,514 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-22 10:48:42,514 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-22 10:48:42,519 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id IS NULL 
+ LIMIT %(param_1)s
+2021-11-22 10:48:42,519 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+2021-11-22 10:48:42,524 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.2.62 - - [22/Nov/2021 10:48:42] "[37mPOST /login/?id=1851977&pwd=1851977 HTTP/1.1[0m" 200 -
+2021-11-22 10:49:38,968 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-22 10:49:38,969 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_id = %(t_id_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:49:38,970 INFO sqlalchemy.engine.base.Engine {'t_id_1': '1851977', 'param_1': 1}
+2021-11-22 10:49:38,975 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_pwd = %(t_pwd_1)s AND teacher.t_id = %(t_id_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:49:38,975 INFO sqlalchemy.engine.base.Engine {'t_pwd_1': '1851977', 't_id_1': '1851977', 'param_1': 1}
+2021-11-22 10:49:38,979 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.2.62 - - [22/Nov/2021 10:49:38] "[37mPOST /login/?id=1851977&pwd=1851977 HTTP/1.1[0m" 200 -
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+2021-11-22 10:51:50,439 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2021-11-22 10:51:50,439 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,444 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2021-11-22 10:51:50,445 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,453 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2021-11-22 10:51:50,453 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,461 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2021-11-22 10:51:50,461 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,465 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:51:50,465 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,469 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2021-11-22 10:51:50,470 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,473 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2021-11-22 10:51:50,474 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,485 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2021-11-22 10:51:50,485 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,490 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2021-11-22 10:51:50,490 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,495 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2021-11-22 10:51:50,495 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,499 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2021-11-22 10:51:50,500 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,504 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2021-11-22 10:51:50,504 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,509 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2021-11-22 10:51:50,509 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,513 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2021-11-22 10:51:50,513 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,518 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2021-11-22 10:51:50,518 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,523 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2021-11-22 10:51:50,523 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,527 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2021-11-22 10:51:50,528 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,532 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2021-11-22 10:51:50,532 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,536 INFO sqlalchemy.engine.base.Engine DESCRIBE `teaching_assistant`
+2021-11-22 10:51:50,537 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,541 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_experiment`
+2021-11-22 10:51:50,541 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,545 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment`
+2021-11-22 10:51:50,546 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,550 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_course`
+2021-11-22 10:51:50,550 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,554 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_course`
+2021-11-22 10:51:50,554 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,559 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam_question`
+2021-11-22 10:51:50,559 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,563 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_examquestion`
+2021-11-22 10:51:50,563 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,568 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2021-11-22 10:51:50,568 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,572 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_class`
+2021-11-22 10:51:50,572 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,577 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2021-11-22 10:51:50,577 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,581 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment_file`
+2021-11-22 10:51:50,581 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,586 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2021-11-22 10:51:50,586 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,591 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_class`
+2021-11-22 10:51:50,591 INFO sqlalchemy.engine.base.Engine {}
+2021-11-22 10:51:50,610 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-22 10:51:50,611 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:51:50,611 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2021-11-22 10:51:50,617 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_id = %(t_id_1)s 
+ LIMIT %(param_1)s
+2021-11-22 10:51:50,617 INFO sqlalchemy.engine.base.Engine {'t_id_1': '1851977', 'param_1': 1}
+2021-11-22 10:51:50,710 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.2.62 - - [22/Nov/2021 10:51:50] "[37mPOST /login/?id=1851977&pwd=1851977 HTTP/1.1[0m" 200 -
+Traceback (most recent call last):
+  File "app.py", line 18, in <module>
+    from Routers.ManageAccount.login import loginRoute
+  File "/root/Software-Engineering/Routers/ManageAccount/login.py", line 52
+    if student.check_password(pwd)::
+                                   ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "app.py", line 18, in <module>
+    from Routers.ManageAccount.login import loginRoute
+  File "/root/Software-Engineering/Routers/ManageAccount/login.py", line 52
+    if student.check_password(pwd)::
+                                   ^
+SyntaxError: invalid syntax
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+89.248.165.102 - - [22/Nov/2021 10:54:07] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.165.102 - - [22/Nov/2021 10:54:07] "[35m[1m  à          [0m" HTTPStatus.BAD_REQUEST -
