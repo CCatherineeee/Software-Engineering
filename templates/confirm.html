@@ -1,0 +1,8 @@
+
+<p>亲爱的 {{ user.s_id}}{{ user.name }},</p>
+<p>欢迎来到 <b>实验教学管理系统</b>!</p>
+<p>要验证您的账号，请点击 <a href="{{ url_for('auth.confirm',user_ID=s_id, token=token, _external=True) }}">click here</a>.</p>
+<p>或者，您也可以在浏览器输入以下地址:</p>
+<p>{{  url_for('auth.confirm',user_ID=s_id, token=token, _external=True) }}</p>
+<p>Sincerely,</p>
+<p>The SE Team</p>
