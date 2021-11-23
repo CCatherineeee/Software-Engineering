@@ -30,7 +30,7 @@ def manageFile(uploadPath):
             student = Model.Student(s_id=s_id, s_pwd=s_id, name=rowData[1], email=rowData[2])
             dbManage.db.session.add(student)
             dbManage.db.session.commit()
-            #send_email(rowData[2],0,student)
+            send_email(rowData[2],0,student,0)
     
 
 
@@ -71,7 +71,7 @@ def addStudentManually():
         student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
-        send_email(email,0,student)
+        send_email(email,0,student,0)
         return "Success"
 
 
@@ -93,7 +93,7 @@ def addTeacherManually():
         teacher = Model.Teacher(t_id=t_id,t_pwd=t_id,name=name,email=email)
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
-        send_email(email,0,teacher)
+        send_email(email,0,teacher,1)
         return "Success"
 
 #手动添加助教
