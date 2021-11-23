@@ -21592,3 +21592,274 @@ FROM sys_announcement
 2021-11-23 14:39:16,363 INFO sqlalchemy.engine.base.Engine {}
 2021-11-23 14:39:16,368 INFO sqlalchemy.engine.base.Engine ROLLBACK
 111.187.35.218 - - [23/Nov/2021 14:39:16] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:39:29,197 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:39:29,198 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:39:29,198 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': 'test1', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:39:29,203 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:39:29] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:39:30,749 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:39:30,751 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:39:30,751 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:39:30,756 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:39:30] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:39:41,419 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:39:41,420 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2021-11-23 14:39:41,420 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:39:41,426 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher
+2021-11-23 14:39:41,426 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:39:41,430 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:39:41] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2021-11-23 14:39:42,563 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:39:42,564 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2021-11-23 14:39:42,564 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:39:42,569 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher
+2021-11-23 14:39:42,569 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:39:42,573 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:39:42] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2021-11-23 14:40:29,633 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:40:29,634 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2021-11-23 14:40:29,634 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:40:29,639 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher
+2021-11-23 14:40:29,639 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:40:29,644 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:40:29] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2021-11-23 14:40:32,958 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:40:32,959 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2021-11-23 14:40:32,961 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1123', 'param_1': 1}
+2021-11-23 14:40:32,966 INFO sqlalchemy.engine.base.Engine DELETE FROM student WHERE student.s_id = %(s_id)s
+2021-11-23 14:40:32,966 INFO sqlalchemy.engine.base.Engine {'s_id': '1123'}
+2021-11-23 14:40:32,970 INFO sqlalchemy.engine.base.Engine COMMIT
+2021-11-23 14:40:32,977 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:40:32,978 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2021-11-23 14:40:32,978 INFO sqlalchemy.engine.base.Engine {}
+111.187.35.218 - - [23/Nov/2021 14:40:32] "[37mPOST /delete/student/ HTTP/1.1[0m" 200 -
+2021-11-23 14:40:32,982 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher
+2021-11-23 14:40:32,982 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:40:32,986 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:40:32] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2021-11-23 14:40:38,220 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:40:38,221 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2021-11-23 14:40:38,221 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:40:38,226 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher
+2021-11-23 14:40:38,226 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:40:38,230 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:40:38] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2021-11-23 14:41:39,131 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:41:39,132 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:41:39,133 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:41:39,137 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:41:39] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:41:43,077 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:41:43,078 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:41:43,078 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '222', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:41:43,082 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:41:43] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:41:59,644 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:41:59,645 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:41:59,645 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:41:59,649 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:41:59] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:42:53,525 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:42:53,526 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:42:53,526 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:42:53,531 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:42:53] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:42:59,444 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:42:59,446 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:42:59,446 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '65', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:42:59,450 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:42:59] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:04,585 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:04,586 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:04,586 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:04,591 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:04] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:17,853 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:17,854 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:17,854 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:17,858 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:17] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:21,547 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:21,548 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:43:21,548 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '98', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:43:21,552 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:43:21] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:35,995 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:35,996 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:35,997 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:36,001 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:36] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:37,814 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:37,815 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:37,815 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:37,820 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:37] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:41,706 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:41,707 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:43:41,707 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '9', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:43:41,709 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:41,709 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:41,709 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:41,711 INFO sqlalchemy.engine.base.Engine COMMIT
+2021-11-23 14:43:41,714 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:41] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+111.187.35.218 - - [23/Nov/2021 14:43:41] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:43:45,837 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:43:45,837 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:43:45,838 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:43:45,843 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:43:45] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:17,977 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:17,978 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:44:17,978 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:44:17,983 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:44:17] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:22,239 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:22,240 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:44:22,240 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '1', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:44:22,244 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:44:22] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:22,325 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:22,325 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:44:22,325 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:44:22,330 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:44:22] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:37,258 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:37,259 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:44:37,259 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:44:37,265 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:44:37] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:48,634 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:48,634 INFO sqlalchemy.engine.base.Engine INSERT INTO sys_announcement (admin_id, title, content, create_time) VALUES (%(admin_id)s, %(title)s, %(content)s, %(create_time)s)
+2021-11-23 14:44:48,634 INFO sqlalchemy.engine.base.Engine {'admin_id': None, 'title': '2', 'content': '', 'create_time': datetime.datetime(2021, 11, 23, 14, 38, 56, 744767)}
+2021-11-23 14:44:48,638 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:44:48] "[37mPOST /sys/addAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:44:48,717 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:44:48,718 INFO sqlalchemy.engine.base.Engine SELECT sys_announcement.annoucement_id AS sys_announcement_annoucement_id, sys_announcement.admin_id AS sys_announcement_admin_id, sys_announcement.title AS sys_announcement_title, sys_announcement.content AS sys_announcement_content, sys_announcement.create_time AS sys_announcement_create_time 
+FROM sys_announcement
+2021-11-23 14:44:48,718 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:44:48,723 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:44:48] "[37mGET /sys/getAnn/ HTTP/1.1[0m" 200 -
+2021-11-23 14:45:04,913 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:45:04,914 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:45:04,914 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:45:04,918 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:45:04] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:46:40,310 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:46:40,311 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:46:40,311 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:46:40,315 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:46:40] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:48:22,694 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:48:22,696 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:48:22,696 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:48:22,701 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:48:22] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:48:53,072 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:48:53,072 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:48:53,072 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:48:53,077 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:48:53] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:49:46,936 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:49:46,937 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:49:46,937 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:49:46,941 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:49:46] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:50:46,678 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:50:46,679 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:50:46,680 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:50:46,684 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:50:46] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:14,419 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:14,420 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:51:14,420 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:14,424 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:51:14] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:31,579 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:31,580 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:51:31,580 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:31,585 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:51:31] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:35,716 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:35,717 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.prefix = %(prefix_1)s 
+ LIMIT %(param_1)s
+2021-11-23 14:51:35,717 INFO sqlalchemy.engine.base.Engine {'prefix_1': '132', 'param_1': 1}
+2021-11-23 14:51:35,721 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.ct_name = %(ct_name_1)s 
+ LIMIT %(param_1)s
+2021-11-23 14:51:35,721 INFO sqlalchemy.engine.base.Engine {'ct_name_1': '好几天', 'param_1': 1}
+2021-11-23 14:51:35,725 INFO sqlalchemy.engine.base.Engine INSERT INTO course_type (ct_name, prefix) VALUES (%(ct_name)s, %(prefix)s)
+2021-11-23 14:51:35,726 INFO sqlalchemy.engine.base.Engine {'ct_name': '好几天', 'prefix': '132'}
+2021-11-23 14:51:35,729 INFO sqlalchemy.engine.base.Engine COMMIT
+111.187.35.218 - - [23/Nov/2021 14:51:35] "[37mPOST /course/addType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:37,273 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:37,275 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:51:37,275 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:37,280 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:51:37] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:54,708 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:54,709 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:51:54,709 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:54,713 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:51:54] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:58,579 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:58,580 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2021-11-23 14:51:58,581 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type
+2021-11-23 14:51:58,582 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:58,582 INFO sqlalchemy.engine.base.Engine SELECT course.c_id AS course_c_id, course.prefix AS course_prefix, course.course_semester AS course_course_semester, course.course_year AS course_course_year, course.duty_teacher AS course_duty_teacher 
+FROM course
+2021-11-23 14:51:58,582 INFO sqlalchemy.engine.base.Engine {}
+2021-11-23 14:51:58,586 INFO sqlalchemy.engine.base.Engine ROLLBACK
+2021-11-23 14:51:58,588 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department 
+FROM teacher 
+WHERE teacher.t_id = %(t_id_1)s 
+ LIMIT %(param_1)s
+2021-11-23 14:51:58,588 INFO sqlalchemy.engine.base.Engine {'t_id_1': '1851977', 'param_1': 1}
+111.187.35.218 - - [23/Nov/2021 14:51:58] "[37mGET /course/getType/ HTTP/1.1[0m" 200 -
+2021-11-23 14:51:58,593 INFO sqlalchemy.engine.base.Engine SELECT course_type.ct_name AS course_type_ct_name, course_type.prefix AS course_type_prefix 
+FROM course_type 
+WHERE course_type.prefix = %(prefix_1)s 
+ LIMIT %(param_1)s
+2021-11-23 14:51:58,593 INFO sqlalchemy.engine.base.Engine {'prefix_1': '420342', 'param_1': 1}
+2021-11-23 14:51:58,597 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.35.218 - - [23/Nov/2021 14:51:58] "[37mGET /course/getDuty/ HTTP/1.1[0m" 200 -
