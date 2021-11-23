@@ -59,6 +59,17 @@ def adminLogin():
     check = AdminLogin(data.get('username'),data.get('password'))
     return check
 
+@loginRoute.route('/login/',methods=['POST']) 
+def adminLogin():
+    # 接口本身
+    data = request.form
+    name = data.get('username')
+    pwd = data.get('password')
+    adName  = admin = Model.Admin.query.filter(Model.Admin.name == name).first()
+    admin = Model.Admin.query.filter(and_(Model.Admin.admin_pwd == admin_pwd,Model.Admin.name == name)).first()
+    
+
+
 
 # @loginRoute.route('/studentLogin/',methods=['POST'])  
 # def stuLogin():
