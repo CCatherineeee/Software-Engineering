@@ -318,7 +318,44 @@ class TeachingAssistant(db.Model):
     email = db.Column(db.String(64),unique=True)
     is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
 
+    # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
+    def __init__(self,ta_id,ta_pwd,name,email):  #只需要这几个参数
+        self.ta_id = ta_id
+        self.password = ta_pwd         # 调用该方法 返回下面的self._password数值，
+        self.name = name
+        self.email = email
 
+    #创建一个学生的时候，只需要提供它初始的ID、密码、姓名和邮箱即可，其他的信息等学生登陆后再更改
+    
+    # 密码加密操作
+    @property
+    def password(self):                   # 密码取值
+        return self.ta_pwd
+
+    @password.setter                      # 密码加密
+    def password(self, raw_password):
+        self.s_pwd = generate_password_hash(raw_password)
+
+    # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
+    def check_password(self, raw_password):
+        result = check_password_hash(self.password, raw_password)   # 相当于用相同的hash加密算法加密raw_password，检测与数据库中是否一致
+        return result
+
+    #生成确认令牌，过期时间为1h
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.ta_id})
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.ta_id:
+            return False
+        self.is_active = 1
+        db.session.add(self)
+        return True
 """
 
 class AnnouncementCourse(db.Model):
@@ -513,8 +550,8 @@ class ClassFile(db.Model):  #ClassFile
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
-    file_url = db.Column(db.String(128)) # 服务器文件存放地址
-    file_name = db.Column(db.String(128))
+    file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
+    file_name = db.Column(db.String(128)) #文件名
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__

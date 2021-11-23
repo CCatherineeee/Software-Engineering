@@ -44,6 +44,29 @@ def addClass():
 
     return jsonify(result)
 
+#责任教师更改班级授课老师
+@manageClassRoute.route('/changeTeacher',methods=['POST'])  
+def changeTeacher():
+    
+    data = request.form
+
+    class_id = data['class_id']  #课程号前缀
+    t_id = data['t_id'] #老师工号
+
+    this_class = Class.query.filter(Class.class_id == class_id).first()
+    this_teacher = Teacher.query.filter(Teacher.t_id == t_id).first()
+
+    if this_class and this_teacher:
+        TeacherClass.query.filter_by(class_id = class_id).update({'t_id':t_id})
+        # dbManage.db.session.(teacher_class)
+        dbManage.db.session.commit()
+        result = {'status':200,'message':'更改成功'}
+    else:
+        result = {'status':400,'message':'该课程或老师不存在'}
+
+    return jsonify(result)
+
+
 #删除班级
 @manageClassRoute.route('/deleteClass',methods=['POST'])  
 def deleteClass():

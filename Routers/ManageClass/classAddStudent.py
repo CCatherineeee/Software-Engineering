@@ -59,7 +59,7 @@ def classAddStudentManually():
 
 #教师表格添加学生
 @classAddStudentRoute.route('/classAddStudentFile',methods=['POST'])  
-def classAddStudentManually():
+def classAddStudentFile():
     fileList = request.files.getlist('file')
     class_id = request.form['class_id']
 
@@ -74,11 +74,11 @@ def classAddStudentManually():
         uploadPath = os.path.join(basepath, 'userFile', newFileName)
 
         file.save(uploadPath)
-        manageStudentFile(uploadPath)
+        result = manageStudentFile(uploadPath,class_id)
         os.remove(uploadPath)
-    return "ok"
+    return result
 
-def manageStudentFile(path):
+def manageStudentFile(path,class_id):
     workbook = xlrd.open_workbook(path)
     get_sheet_name = workbook.sheet_names()[0]
     sheet = workbook.sheet_by_name(get_sheet_name)
@@ -86,15 +86,15 @@ def manageStudentFile(path):
     nrows = sheet.nrows
     for i in range(1, nrows):
         rowData = sheet.row_values(i)
-        if Student.query.filter(Student.s_id == rowData[0]).first():  #学生存在
-            student_class_item = StudentClass(class_id ='class_id', s_id=rowData[0])
+        s_id = str(int(rowData[0]))
+        if Student.query.filter(Student.s_id == s_id).first():  #学生存在
+            student_class_item = StudentClass(class_id =class_id, s_id=s_id)
             dbManage.db.session.add(student_class_item)
-        if i==nrows-1:
-            dbManage.db.session.commit()
-            result = {'status':200,'message':'添加完毕'}
-
+            if (i==nrows-1):
+                dbManage.db.session.commit()
+                result = {'status':200,'message':'添加完毕'}
         else:
-            result = {'status':400,'message':rowData[0]+'不存在'}
+            result = {'status':400,'message':s_id+'不存在'}
             break
     return jsonify(result)
     

@@ -7,3 +7,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 SECRET_KEY = '123123'
 AVATAR_UPLOAD_FOLDER = os.getcwd()+'/static/avatar/'
+CLASSFILE_UPLOAD_FOLDER = os.getcwd()+'/static/classFile/'

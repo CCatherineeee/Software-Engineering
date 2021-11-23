@@ -43,10 +43,11 @@ def get_random_captcha(num):
 输入：发送人邮箱
 输入：Success/Failed(console)
 '''
-def send_email(receiver,code,user):    #这里增加一个标志位！
+def send_email(receiver,code,user,usertype):    #这里增加一个标志位！
     _user = "1284915396@qq.com"
     _pwd  = "otxvdgxwvvqbiadg"
     _to   = receiver          
+
 
     if code==0:
         content = "您的账户已被创建，请登录平台激活"
@@ -62,9 +63,9 @@ def send_email(receiver,code,user):    #这里增加一个标志位！
     msg['TO'] = Header(",".join(_to))
     # msg["Subject"] = Header(subject).encode()
     token = user.generate_confirmation_token()  
-    if len(user.s_id)==7:
+    if usertype==0: #是学生
         new_content = render_template("confirm.html",user = user,s_id=user.s_id,token = token)
-    else:
+    elif usertype==1: #是老师
         new_content = render_template("confirm_t.html",user = user,t_id=user.t_id,token = token)
     msg = MIMEText(new_content,_subtype='html',_charset='gb2312')    #创建一个实例，这里设置为html格式邮件
     msg["Subject"] = Header(subject).encode()
