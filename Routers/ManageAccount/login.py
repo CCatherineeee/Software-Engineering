@@ -10,7 +10,6 @@ loginRoute = Blueprint('loginRoute', __name__)
 CORS(loginRoute, resources=r'/*')	# 注册CORS, "/*" 允许访问所有api
 
 def AdminLogin(name, admin_pwd):
-
     admin = Model.Admin.query.filter(Model.Admin.name == name).first()
     if not admin:
         return "UserNotExist"
@@ -77,3 +76,25 @@ def adminLogin():
 #     data = request.form
 #     check = StudentLogin(data.get('username'),data.get('password'))
 #     return check
+
+@loginRoute.route('/login/',methods=['POST']) 
+def Login():
+    # 接口本身
+    data = request.form
+    uid = data.get('id')
+    pwd = data.get('password')
+    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
+    if teacher:
+        teacher = Model.Teacher.query.filter(and_(Model.Teacher.t_pwd == pwd, Model.Teacher.t_id == uid)).first()
+        if teacher:
+            return "TSuccess"
+        else:
+            return "TPasswordWrong"
+    student = Model.Student.query.filter(Model.Student.s_id == uid).first()
+    if student:
+        student = Model.Student.query.filter(and_(Model.Student.s_pwd == pwd,Model.Student.s_id == uid)).first()
+        if student:
+            return "SSuccess"
+        else:
+            return "SPasswordWrong"
+    return "UserNotExist"

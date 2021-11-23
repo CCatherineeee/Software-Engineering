@@ -52,9 +52,11 @@ def getTeacherInfo():
     return jsonify(content)
 
 # show photo
-@getUserInfoRoute.route('/getUserInfo/Student/showAvatar/<s_id>', methods=['POST'])
-def showAvartar(s_id):
+@getUserInfoRoute.route('/getUserInfo/Student/showAvatar', methods=['POST'])
+def showAvartar():
     if request.method == 'POST':
+        data = request.form
+        s_id = data['s_id']
         student = Student.query.filter(Student.s_id==s_id).first()
         if student is None:
             pass

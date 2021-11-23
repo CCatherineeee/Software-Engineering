@@ -513,8 +513,8 @@ class ClassFile(db.Model):  #ClassFile
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
-    file_url = db.Column(db.String(128)) # 服务器文件存放地址
-    file_name = db.Column(db.String(128))
+    file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
+    file_name = db.Column(db.String(128)) #文件名
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__
