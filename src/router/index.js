@@ -109,7 +109,11 @@ const routes = [
     name: 'TeacherHome',
     component: TeacherHome,
     children: [
+<<<<<<< HEAD
       {path: '/teacherHome/control',component:()=> import('../views/teacher/Control')},
+=======
+      { path: '/teacherHome/control', component: () => import('../views/teacher/Control') },
+>>>>>>> adc2bce653832e2496fe234ef05aab9198e69a83
       //账户
       { path: '/teacherHome/account', component: () => import('../views/teacher/account/account.vue') },
       { path: '/teacherHome/modifyAccount', component: () => import('../views/teacher/account/modifyAccount.vue') },

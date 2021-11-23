@@ -323,6 +323,7 @@ export default {
     },
 
     addFromDetailT() {
+      //手动增加教师
       this.axios
         .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
         .then((response) => {

@@ -67,46 +67,70 @@ export default {
       phone_number: "",
       email: "",
       is_active: "",
-      //role: "",
       department: "",
       major_id: "",
+      role: "",
     };
   },
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
+      //var routerParams = this.$route.query.id;
       // 将数据放在当前组件的数据内
-      console.log("传来的参数==" + routerParams);
-      this.id = routerParams;
+      console.log("传来的id==" + this.$route.query.id);
+      console.log("传来的role==" + this.$route.query.role);
+      this.id = this.$route.query.id;
+      this.role = this.$route.query.role;
     },
 
     getStuInfo() {
-      this.axios
-        .get("/api/getUserInfo/Student/", {
-          params: { s_id: this.id },
-          crossDomain: true,
-        })
-        .then((response) => {
-          console.log(response.data);
-          this.name = response.data[0].name;
-          this.gender = response.data[0].gender;
-          this.phone_number = response.data[0].phone_number;
-          this.email = response.data[0].email;
-          this.is_active = response.data[0].is_active;
-          //this.role = response.data[0].role;
-          this.department = response.data[0].department;
-          //this.major_id;
-        })
-        .catch(function (error) {
-          console(error);
-        });
+      if (this.role == 1) {
+        this.axios
+          .get("/api/getUserInfo/Student/", {
+            params: { s_id: this.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.name = response.data[0].name;
+            this.gender = response.data[0].gender;
+            this.phone_number = response.data[0].phone_number;
+            this.email = response.data[0].email;
+            this.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            this.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console(error);
+          });
+      } else if (this.role == 2) {
+        this.axios
+          .get("/api/getUserInfo/Teacher/", {
+            params: { t_id: this.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.name = response.data[0].name;
+            this.gender = response.data[0].gender;
+            this.phone_number = response.data[0].phone_number;
+            this.email = response.data[0].email;
+            this.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            this.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console(error);
+          });
+      }
     },
 
     modifyAccount() {
       this.$router.push({
         path: "/adminHome/userManage/accountModify",
-        query: { id: this.id },
+        query: { id: this.id, role: this.role },
       });
     },
     back() {

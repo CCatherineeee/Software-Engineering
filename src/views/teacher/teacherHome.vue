@@ -27,7 +27,11 @@
               </el-menu-item-group>
             </el-submenu>
 
+<<<<<<< HEAD
             <el-submenu >
+=======
+            <el-submenu>
+>>>>>>> adc2bce653832e2496fe234ef05aab9198e69a83
               <template slot="title">
                 <i class="el-icon-user"></i>
                 <span>课程</span>

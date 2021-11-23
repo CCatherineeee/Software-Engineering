@@ -2,6 +2,7 @@
   <div>
     <el-container>
       <el-aside width="50%">
+        <H3>{{}}</H3>
         <v-btn
           color="primary"
           dark
@@ -267,15 +268,16 @@ export default {
         });
     },
     createClass(){
-      this.axios.post('/api/addClass/'),JSON.stringify({
+      this.axios.post('/api/addClass/',JSON.stringify({
         courseID:this.courseID
-      }).then((response) => {
+      })).then((response) => {
         console.log(response)
       })
     },
     getClasses(){
       this.courseID = this.$route.params.courseID;
-      this.axios.get('/api/showClass',{
+
+      this.axios.get('/api/showClass/',{
         params:{
           courseID : this.courseID
         }
