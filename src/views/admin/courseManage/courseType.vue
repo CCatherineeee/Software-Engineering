@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       courseAddDialog: false,
-      courseTypeData: [{ name: "111", prefix: "222" }],
+      courseTypeData: [{ name: "默认", prefix: "000" }],
       form: { name: "", prefix: "" },
     };
   },
@@ -126,7 +126,7 @@ export default {
         crossDomain: true,
       })
       .then((response) => {
-        console.log(response);
+        console.log("所有课程" + response.data);
         this.courseTypeData = response.data;
       })
       .catch(function (error) {

@@ -145,7 +145,7 @@ export default {
 
       let formData = new FormData();
       formData.append("s_id", this.id);
-      let url = "/getUserInfo/Student/showAvatar";
+      let url = "/api/getUserInfo/Student/showAvatar";
 
       formData.forEach((value, key) => {
         console.log("key %s: value %s", key, value);
@@ -192,7 +192,7 @@ export default {
     },
   },
   mounted() {
-    this.getAvatar();
+    //this.getAvatar();
   },
 };
 </script>

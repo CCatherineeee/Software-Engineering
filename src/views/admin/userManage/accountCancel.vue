@@ -187,7 +187,8 @@ export default {
             type: "success",
             message: "注销成功!",
           });
-          document.execCommand("Refresh");
+          //document.execCommand("Refresh");
+          location.reload();
         })
         .catch(() => {
           this.$message({
