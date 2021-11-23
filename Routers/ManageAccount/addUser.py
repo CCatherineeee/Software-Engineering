@@ -25,11 +25,12 @@ def manageFile(uploadPath):
     nrows = sheet.nrows
     for i in range(1, nrows):
         rowData = sheet.row_values(i)
-        if not Model.Student.query.filter(Model.Student.s_id == rowData[0]).first():
-            student = Model.Student(s_id=rowData[0], s_pwd=rowData[0], name=rowData[1], email=rowData[2])
+        s_id = str(int(rowData[0]))
+        if not Model.Student.query.filter(Model.Student.s_id == s_id).first():
+            student = Model.Student(s_id=s_id, s_pwd=s_id, name=rowData[1], email=rowData[2])
             dbManage.db.session.add(student)
             dbManage.db.session.commit()
-            send_email(rowData[2],0,student)
+            #send_email(rowData[2],0,student)
     
 
 
@@ -93,4 +94,25 @@ def addTeacherManually():
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
         send_email(email,0,teacher)
+        return "Success"
+
+#手动添加助教
+@addUserRoute.route('/Register/addTAManually',methods=['POST'])  
+def addTAManually():
+    data = request.form
+    name = data['name']
+    ta_id = data['ta_id']
+    email = data['email']
+
+    user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.ta_id == ta_id).first()
+    if user:
+        return "UserIDExist"
+    user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.email == email).first()
+    if user:
+        return "UserMailExist"
+    else:
+        ta = Model.TeachingAssistant(ta_id=ta_id, ta_pwd=ta_id, name=name, email=email)
+        dbManage.db.session.add(ta)
+        dbManage.db.session.commit()
+        #send_email(email,0,ta)
         return "Success"
