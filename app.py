@@ -23,6 +23,9 @@ from Routers.ManageAccount.editUserInfo import editUserInfoRoute
 from Routers.ManageAccount.auth.authManage import auth
 from Routers.ManageCourse.addCourse import addCourseRoute
 from Routers.ManageClass.manageClass import manageClassRoute
+from Routers.ManageCourse.teacherCourse import teacherCourseRoute
+from Routers.ManageCourse.adminCourse import adminCourseRoute
+from Routers.ManageAnnouncement.manageAnn import manageAnnRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -43,6 +46,10 @@ app.register_blueprint(editUserInfoRoute)
 app.register_blueprint(auth)
 app.register_blueprint(addCourseRoute)
 app.register_blueprint(manageClassRoute)
+app.register_blueprint(teacherCourseRoute)
+app.register_blueprint(adminCourseRoute)
+app.register_blueprint(manageAnnRoute)
+
 
 @app.before_first_request
 def initdb():
@@ -83,4 +90,4 @@ def create_app():
 
 ###########3 web 服务器 ################
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 8080)
+    app.run(host = '0.0.0.0', port = 5000)

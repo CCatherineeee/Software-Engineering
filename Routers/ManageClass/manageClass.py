@@ -13,21 +13,11 @@ CORS(manageClassRoute, resources=r'/*')
 
 
 #责任教师开班，班号为课程号+总班数   需要选择开课的年份及季节
-@manageClassRoute.route('/addClass',methods=['POST'])  
+@manageClassRoute.route('/addClass/',methods=['POST'])  
 def addClass():
-    data = request.form
-
-    prefix = data['prefix']  #课程号前缀
-    semester = data['semester']
-    year = data['year']
-    t_id = data['t_id']
-
-    if semester == '春季':  #数据库课号：前缀+年份+开课时期
-        semester = '00'
-    elif semester == '秋季':
-        semester = '01'
-
-    course_id = prefix + year + semester
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data['courseID']
 
     course = Course.query.filter(Course.c_id == course_id).first()  #找出全部的这个课程
     if course:  #课程存在
@@ -44,8 +34,22 @@ def addClass():
 
     return jsonify(result)
 
+@manageClassRoute.route('/showClass/',methods=['GET'])  
+def showClass():
+    course_id = request.args.get('courseID')
+
+    classes = Course.query.filter(Class.course_id == course_id).all()  #找出全部的这个课程
+    content = []
+    for class_ in classes:
+        course = Course.query.filter(Course.c_id == course_id).first()
+        coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
+        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id}
+        content.append(temp)
+    return jsonify(content)
+
+
 #删除班级
-@manageClassRoute.route('/deleteClass',methods=['POST'])  
+@manageClassRoute.route('/deleteClass',methods=['POST'])
 def deleteClass():
 
     data = request.form

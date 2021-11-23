@@ -48,7 +48,13 @@ def addCourse():
     year = data['year']
     prefix = data['prefix']
     t_id = data['t_id']
-    c_id = prefix + year + semester
+
+    if semester == '春季':
+        semester_ = '00'
+    elif semester == '秋季':
+        semester_ = '01'
+
+    c_id = prefix + year + semester_
     course = Course.query.filter(Course.c_id == c_id).first()
     if course:
         return "CourseExist"
