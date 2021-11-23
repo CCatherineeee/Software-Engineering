@@ -24,8 +24,8 @@
               <el-input type="text" v-model="userAccount.name"></el-input>
             </el-form-item>
 
-            <el-form-item label="学号" prop="s_id">
-              <el-input v-model="userAccount.s_id"></el-input>
+            <el-form-item label="学号" prop="id">
+              <el-input v-model="userAccount.id"></el-input>
             </el-form-item>
 
             <el-form-item label="性别">
@@ -68,65 +68,119 @@ export default {
     return {
       userAccount: {
         name: "",
-        s_id: "",
+        id: "",
         gender: "",
         phone_number: "",
         email: "",
+        role: "",
       },
     };
   },
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
+      //var routerParams = this.$route.query.id;
       // 将数据放在当前组件的数据内
-      console.log("传来的参数===" + routerParams);
-      this.userAccount.s_id = routerParams;
+      //console.log("传来的参数===" + routerParams);
+      console.log("传来的id==" + this.$route.query.id);
+      console.log("传来的role==" + this.$route.query.role);
+      this.userAccount.id = this.$route.query.id;
+      this.userAccount.role = this.$route.query.role;
     },
 
     getStuInfo() {
-      axios
-        .get("/api/getUserInfo/Student/", {
-          params: { s_id: this.userAccount.s_id },
-          crossDomain: true,
-        })
-        .then((response) => {
-          console.log("拿到的信息" + JSON.stringify(response.data));
-          this.userAccount.name = response.data[0].name;
-          this.userAccount.gender = response.data[0].gender;
-          this.userAccount.phone_number = response.data[0].phone_number;
-          this.userAccount.email = response.data[0].email;
-          //this.userAccount.is_active = response.data[0].is_active;
-          //this.role = response.data[0].role;
-          //this.userAccount.department = response.data[0].department;
-          //this.major_id;
-        })
-        .catch(function (error) {
-          console(error);
-        });
+      if (this.userAccount.role == 1) {
+        axios
+          .get("/api/getUserInfo/Student/", {
+            params: { s_id: this.userAccount.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log("拿到的信息" + JSON.stringify(response.data));
+            this.userAccount.name = response.data[0].name;
+            this.userAccount.gender = response.data[0].gender;
+            this.userAccount.phone_number = response.data[0].phone_number;
+            this.userAccount.email = response.data[0].email;
+            //this.userAccount.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            //this.userAccount.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console(error);
+          });
+      } else if (this.userAccount.role == 2) {
+        axios
+          .get("/api/getUserInfo/Teacher/", {
+            params: { t_id: this.userAccount.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log("拿到的信息" + JSON.stringify(response.data));
+            this.userAccount.name = response.data[0].name;
+            this.userAccount.gender = response.data[0].gender;
+            this.userAccount.phone_number = response.data[0].phone_number;
+            this.userAccount.email = response.data[0].email;
+            //this.userAccount.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            //this.userAccount.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console(error);
+          });
+      }
     },
+
     checkResponse(response) {
       if (response == "Success") this.$message("修改成功");
       else this.$message("错误");
     },
 
     save() {
-      this.axios
-        .post("/api/editInfo/Student/", JSON.stringify(this.userAccount))
-        .then((response) => {
-          this.checkResponse(response.data); //请求成功返回的数据
-        });
+      //保存修改
+      if (this.userAccount.role == 1) {
+        var jsons = {
+          name: this.userAccount.name,
+          s_id: this.userAccount.id,
+          gender: this.userAccount.gender,
+          phone_number: this.userAccount.phone_number,
+          email: this.userAccount.email,
+        };
+      } else if (this.userAccount.role == 2) {
+        jsons = {
+          name: this.userAccount.name,
+          t_id: this.userAccount.id,
+          gender: this.userAccount.gender,
+          phone_number: this.userAccount.phone_number,
+          email: this.userAccount.email,
+        };
+      }
+
+      if (this.userAccount.role == 1) {
+        this.axios
+          .post("/api/editInfo/Student/", JSON.stringify(jsons))
+          .then((response) => {
+            this.checkResponse(response.data); //请求成功返回的数据
+          });
+      } else if (this.userAccount.role == 2) {
+        this.axios
+          .post("/api/editInfo/Teacher/", JSON.stringify(jsons))
+          .then((response) => {
+            this.checkResponse(response.data); //请求成功返回的数据
+          });
+      }
       document.execCommand("Refresh");
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: this.userAccount.s_id },
+        query: { id: this.userAccount.id, role: this.userAccount.role },
       });
     },
 
     back() {
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: this.userAccount.s_id },
+        query: { id: this.userAccount.id, role: this.userAccount.role },
       });
     },
   },

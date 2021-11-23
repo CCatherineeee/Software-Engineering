@@ -108,7 +108,7 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: row.id },
+        query: { id: row.id, role: row.role },
       });
     },
 
@@ -129,18 +129,37 @@ export default {
 
     cancelOneAccount(row) {
       //注销单个账户
-      axios
-        .post("/api/delete/student/", {
-          params: {
-            s_id: row.id,
-          },
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      console.log("id==" + row.id);
+      if (row.role == 1) {
+        axios
+          .post(
+            "/api/delete/student/",
+            JSON.stringify({
+              s_id: row.id,
+            })
+          )
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else if (row.role == 2) {
+        axios
+          .post(
+            "/api/delete/teacher/",
+            JSON.stringify({
+              t_id: row.id,
+            })
+          )
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      //location.reload();
     },
 
     cancelSomeAccount() {
@@ -162,7 +181,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.cancelOneAccount(row.id);
+          this.cancelOneAccount(row);
 
           this.$message({
             type: "success",

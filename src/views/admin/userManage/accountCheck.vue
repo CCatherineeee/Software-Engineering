@@ -4,7 +4,6 @@
     <el-card>
       <el-table
         ref="filterTable"
-        row-key="id"
         :data="
           tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
@@ -100,7 +99,7 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: row.id },
+        query: { id: row.id, role: row.role },
       });
     },
 
@@ -108,7 +107,7 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountModify",
-        query: { id: row.id },
+        query: { id: row.id, role: row.role },
       });
     },
 
