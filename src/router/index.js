@@ -36,10 +36,11 @@ const routes = [
 
   {
     //学生界面
-    path: '/studentome',
+    path: '/studentHome',
     name: 'StudentHome',
     component: StudentHome,
     children: [
+      {path: '/studentHome/control',component: ()=> import('../views/student/Control')},
       //学生账户
       { path: '/studentHome/account', component: () => import('../views/student/account/account.vue') },
       { path: '/studentHome/modifyAccount', component: () => import('../views/student/account/modifyAccount.vue') },
@@ -108,6 +109,7 @@ const routes = [
     name: 'TeacherHome',
     component: TeacherHome,
     children: [
+      {path: '/teacherHome/control',component:()=> import('../views/teacher/Control')},
       //账户
       { path: '/teacherHome/account', component: () => import('../views/teacher/account/account.vue') },
       { path: '/teacherHome/modifyAccount', component: () => import('../views/teacher/account/modifyAccount.vue') },

@@ -18,10 +18,10 @@
         )
       "
     >
-      <el-table-column prop="id" label="课程编号" sortable />
-      <el-table-column prop="title" label="课程名称" sortable />
-      <el-table-column prop="date" label="上课时间" sortable />
-      <el-table-column prop="place" label="上课地点" sortable />
+      <el-table-column prop="course_id" label="课程编号" sortable />
+      <el-table-column prop="name" label="课程名称" sortable />
+      <el-table-column prop="semester" label="课程学年" sortable />
+      <el-table-column prop="year" label="课程学期" sortable />
 
       <el-table-column>
         <template #header>
@@ -106,6 +106,7 @@
 </template>
 
 <script >
+
 export default {
   data() {
     return {
@@ -114,30 +115,7 @@ export default {
       currentPage: 1,
       pagesize: 6,
       tableData: [
-        {
-          title: "王小虎",
-          id: "2016-05-02",
-          date: " 1",
-          place: "1",
-        },
-        {
-          id: "2016-05-04",
-          title: "王小虎",
-          date: " 1",
-          place: "1",
-        },
-        {
-          id: "2016-05-01",
-          title: "王小虎",
-          date: " 1",
-          place: "1",
-        },
-        {
-          id: "2016-05-03",
-          title: "王小虎",
-          date: " 1",
-          place: "1",
-        },
+
       ],
 
       form: {
@@ -201,19 +179,23 @@ export default {
         );
       };
     },
-
-    loadAll() {
-      return [
-        { title: "三全鲜食（北新泾店）" },
-        {
-          title: "Hot honey 首尔炸鸡（仙霞路）",
-        },
-      ];
+    getParams: function () {
+      this.id = sessionStorage.getItem('id');
+    },
+    getCourse(){
+      this.axios.get('/api/course/myDuty/',{
+        params:{
+          t_id : this.id
+        }
+      }).then((response) => {
+        this.tableData = response.data //请求成功返回的数据
+      });
     },
   },
 
   mounted() {
-    this.courseExist = this.loadAll();
+    this.getParams();
+    this.getCourse();
   },
 };
 </script>

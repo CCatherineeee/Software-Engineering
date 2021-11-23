@@ -126,14 +126,15 @@ export default {
 
     cancelOneAccount(row) {
       //注销单个账户
+      console.log(row.id)
       axios
         .post("/api/delete/student/", {
           params: {
             s_id: row.id,
           },
         })
-        .then(function (response) {
-          console.log(response);
+        .then(function () {
+          console.log(row.id);
         })
         .catch(function (error) {
           console.log(error);

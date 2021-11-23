@@ -1,17 +1,26 @@
 <template>
-  <div id="app">
-    <el-row>
-      <el-col :span="24"
-        ><div class="grid-content bg-purple-dark"></div
-      ></el-col>
-    </el-row>
-    <div id="nav">
-      <router-link to="/studentHome/account">Stuent-Home</router-link> |
-      <router-link to="/teacherHome">Teacher-Home</router-link> |
-      <router-link to="/adminHome">Admin-Home</router-link> |
-      <router-link to="/login">Login-test</router-link>
+  <div id="test">
+    <div>
+      <el-row>
+        <el-col>
+
+        </el-col>
+      </el-row>
     </div>
-    <router-view />
+    <div id="app">
+      <el-row>
+        <el-col :span="24"
+          ><div class="grid-content bg-purple-dark"></div
+        ></el-col>
+      </el-row>
+      <div id="nav">
+        <router-link to="/studentHome/account">Stuent-Home</router-link> |
+        <router-link to="/teacherHome">Teacher-Home</router-link> |
+        <router-link to="/adminHome">Admin-Home</router-link> |
+        <router-link to="/login">Login-test</router-link>
+      </div>
+      <router-view />
+    </div>
   </div>
 </template>
 

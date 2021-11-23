@@ -24,9 +24,9 @@
               :rules="rules"
               label-width="80px"
             >
-              <el-form-item label="用户名" prop="userID">
+              <el-form-item label="用户名" prop="id">
                 <el-input
-                  v-model="ruleForm.userID"
+                  v-model="ruleForm.id"
                   type="text"
                   autocomplete="off"
                   placeholder="请输入学号"
@@ -43,7 +43,7 @@
               <el-form-item>
                 <el-button
                   type="primary"
-                  @click="submitForm(ruleForm)"
+                  @click="submitForm()"
                   style="margin-right: 50px"
                   >登陆</el-button
                 >
@@ -85,7 +85,7 @@ export default {
       if (value === "") {
         callback(new Error("请输入学号"));
       } else {
-        if (this.ruleForm.userID !== "") {
+        if (this.ruleForm.id !== "") {
           this.$refs.ruleForm.validateField("checkPass");
         }
         callback();
@@ -100,12 +100,12 @@ export default {
     };
     return {
       ruleForm: {
-        userID: "",
+        id: "",
         password: "",
       },
       rules: {
-        userID: [{ validator: validatePass, trigger: "blur" }],
-        password: [{ validator: validatePass2, trigger: "blur" }],
+        id: [{ validator: validatePass, }],
+        password: [{ validator: validatePass2}],
       },
     };
   },
@@ -113,30 +113,52 @@ export default {
     AdminLogin() {
       this.$router.push("/AdminLogin");
     },
+    checkResponse(response){
+      sessionStorage.setItem('id',this.ruleForm.id);
+
+      if(response === "TSuccess") {
+        sessionStorage.setItem('role','1')
+        this.$message("登陆成功！");
+        this.$router.push("/teacherHome/control");
+      }
+      else if(response === "SSuccess"){
+        sessionStorage.setItem('role','2')
+        this.$message("登陆成功！");
+        this.$router.push("/studentHome/control");
+      }
+      else if(response === "PasswordWrong"){
+        this.$message("密码错误！");
+      }
+      else if(response === "UserNotExist"){
+        this.$message("用户不存在！");
+      }
+    },
     submitForm() {
-      if (this.ruleForm.userID === "" && this.ruleForm.password === "") {
+      if (this.ruleForm.id === "" && this.ruleForm.password === "") {
         this.$message("账户和密码不能为空！");
-      } else if (this.ruleForm.userID === "") {
+      } else if (this.ruleForm.id === "") {
         this.$message("请输入账户！");
       } else if (this.ruleForm.password === "") {
         this.$message("请输入密码！");
       } else {
-        let config = {
+        /*let config = {
           headers: { "Content-Type": "multipart/form-data" },
         };
+        */
+
+        console.log(typeof(this.ruleForm.id))
+        console.log(this.ruleForm)
         this.axios
           .post(
-            "/api/login/",
-            {
-              params: {
-                releForm: this.releForm,
-              },
-            },
-            config
+            "/api/login/",JSON.stringify({
+                id : this.ruleForm.id,
+                password : this.ruleForm.password
+              })
+
           )
           .then((response) => {
             //这里使用了ES6的语法
-            console.log(response); //请求成功返回的数据
+            this.checkResponse(response.data); //请求成功返回的数据
           });
       }
     },

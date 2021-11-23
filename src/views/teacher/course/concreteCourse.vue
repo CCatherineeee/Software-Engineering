@@ -60,3 +60,27 @@
   padding: 20px;
 }
 </style>
+
+
+<script>
+
+export default {
+  data() {
+    return {
+      id : "",
+      courseID : ""
+    };
+  },
+  methods: {
+    getParams: function () {
+      this.id = sessionStorage.getItem('id');
+      this.courseID = this.$route.params.courseID;
+    },
+
+  },
+  mounted() {
+    this.getParams();
+    this.getCourse();
+  },
+};
+</script>

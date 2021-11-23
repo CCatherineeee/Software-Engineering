@@ -74,17 +74,13 @@ export default {
   },
   methods: {
     getParams: function () {
-      // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
-      // 将数据放在当前组件的数据内
-      console.log("传来的参数==" + routerParams);
-      this.id = routerParams;
+      this.id = sessionStorage.getItem('id');
     },
 
     getTeaInfo() {
       this.axios
-        .get("", {
-          params: { s_id: this.id },
+        .get('api//getUserInfo/Teacher/', {
+          params: { t_id: this.id },
           crossDomain: true,
         })
         .then((response) => {

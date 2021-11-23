@@ -9,17 +9,16 @@
         ></v-img>
 
         <v-card-title>
-          {{ index.title }}
+          {{ index.name }}
+          {{index.prefix }}
           <v-spacer></v-spacer>
-          <v-btn class="ma-2" color="red" dark float="right">
-            {{ index.role }}
-          </v-btn>
+
         </v-card-title>
 
-        <v-card-subtitle> {{ index.place }}{{ index.time }}</v-card-subtitle>
+        <v-card-subtitle> {{ index.year }} 年  {{ index.semester }}</v-card-subtitle>
 
         <v-card-actions>
-          <v-btn color="orange lighten-2" @click="toCourse"> 查看 </v-btn>
+          <v-btn color="orange lighten-2" @click="toCourse(index)"> 查看 </v-btn>
 
           <v-spacer></v-spacer>
 
@@ -41,42 +40,36 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       show: false,
-      courseData: [
-        {
-          title: "课程名称1",
-          place: "上课地点1",
-          time: "上课时间1",
-          role: "责任教师",
-        },
-        {
-          title: "课程名称2",
-          place: "上课地点2",
-          time: "上课时间2",
-          role: "教师",
-        },
-        {
-          title: "课程名称3",
-          place: "上课地点3",
-          time: "上课时间3",
-          role: "教师",
-        },
-        {
-          title: "课程名称4",
-          place: "上课地点4",
-          time: "上课时间4",
-          role: "责任教师",
-        },
-      ],
+      courseData: [],
+      id:""
     };
   },
   methods: {
-    toCourse() {
-      this.$router.push("/teacherHome/concreteCourse");
+    getParams: function () {
+      this.id = sessionStorage.getItem('id');
     },
+    getCourse(){
+      this.axios.get('/api/course/myDuty/',{
+        params:{
+          t_id : this.id
+        }
+      }).then((response) => {
+        this.courseData = response.data //请求成功返回的数据
+      });
+    },
+
+    toCourse(index) {
+      this.$router.push({path:"/teacherHome/concreteCourse",params:{courseID:index.course_id}});
+    },
+  },
+  mounted() {
+    this.getParams();
+    this.getCourse();
   },
 };
 </script>

@@ -5,8 +5,7 @@
         <v-btn
           color="primary"
           dark
-          style="margin-left: 1%; margin-top: 1%; margin-bottom: 1%"
-        >
+          style="margin-left: 1%; margin-top: 1%; margin-bottom: 1%" @click="createClass">
           新增班级
         </v-btn>
         <el-scrollbar>
@@ -160,18 +159,8 @@ export default {
       teaDialog: false,
       proDialog: false,
       fileDialog: false,
-      classList: [
-        {
-          title: "Supermodel",
-          respondTea: "Foster the People",
-          tid: "1",
-        },
-        {
-          title: "班级",
-          respondTea: "教师",
-          tid: "2",
-        },
-      ],
+      courseID:"",
+      classList: [],
       experList: [
         {
           title: "实验名称",
@@ -257,18 +246,6 @@ export default {
       };
     },
 
-    loadAll() {
-      return [
-        { tid: "三全鲜食（北新泾店）" },
-        {
-          tid: "Hot honey 首尔炸鸡（仙霞路）",
-        },
-        {
-          tid: "2",
-        },
-      ];
-    },
-
     handleDeleteClass() {
       this.$confirm("确认删除班级吗?", "提示", {
         confirmButtonText: "确定",
@@ -288,6 +265,23 @@ export default {
             message: "取消删除操作",
           });
         });
+    },
+    createClass(){
+      this.axios.post('/api/addClass/'),JSON.stringify({
+        courseID:this.courseID
+      }).then((response) => {
+        console.log(response)
+      })
+    },
+    getClasses(){
+      this.courseID = this.$route.params.courseID;
+      this.axios.get('/api/showClass',{
+        params:{
+          courseID : this.courseID
+        }
+      }).then((response) => {
+        this.classList = response.data
+      });
     },
     handleDeleteExper() {
       this.$confirm("确认删除实验吗?", "提示", {
@@ -309,9 +303,10 @@ export default {
           });
         });
     },
+
   },
   mounted() {
-    this.teacherExist = this.loadAll();
+    this.getClasses();
   },
 };
 </script>
