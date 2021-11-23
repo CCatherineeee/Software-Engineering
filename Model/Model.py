@@ -28,7 +28,7 @@ class Student(UserMixin,db.Model):
     """
     __tablename__ = 'student'
     s_id = db.Column(db.String(64), primary_key=True, autoincrement=False)  # 表明是主键  学生学号是7位，老师是5位
-    s_pwd = db.Column(db.String(150))
+    s_pwd = db.Column(db.String(1024))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(10))  # 0女，1男
@@ -88,7 +88,7 @@ class Teacher(UserMixin,db.Model):
     """
     __tablename__ = 'teacher'
     t_id = db.Column(db.String(64), primary_key=True, autoincrement=False) 
-    t_pwd = db.Column(db.String(150))
+    t_pwd = db.Column(db.String(1024))
     name = db.Column(db.String(64))   # 名字
     email = db.Column(db.String(64),unique=True)
     gender = db.Column(db.String(64))
@@ -181,7 +181,7 @@ class CourseType(db.Model):
     """
     __tablename__ = 'course_type'
     ct_name = db.Column(db.String(64)) # 存放课程中文名称
-    ct_prefix = db.Column(db.String(64),primary_key = True) # 存放课号前缀
+    prefix = db.Column(db.String(64),primary_key = True) # 存放课号前缀
 
 class Course(db.Model):
     """
@@ -189,10 +189,10 @@ class Course(db.Model):
     """
     __tablename__ = 'course'
     c_id = db.Column(db.String(256),primary_key=True)
-    prefix = db.Column(db.String(64), ForeignKey("course_type.ct_prefix")) 
+    prefix = db.Column(db.String(64), ForeignKey("course_type.prefix",ondelete='CASCADE')) 
     course_semester = db.Column(db.String(64))  #春季为00  秋季为01
     course_year = db.Column(db.String(64))  #如2019
-    duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id"))
+    duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'))
 
 class Class(db.Model):
     """
@@ -203,7 +203,7 @@ class Class(db.Model):
     __tablename__ = 'class'
 
     class_id = db.Column(db.Integer,primary_key=True) 
-    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     class_number = db.Column(db.Integer)
 
     #一对多关联
@@ -217,10 +217,12 @@ class Class(db.Model):
 class Experiment(db.Model):
     """
     类描述：实验表，实验-课程关系为一对多，故无需建立联系表，主码为自增的ID
+    实验-教师关系为 一对多 
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
     class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    t_id = db.Column(db.String(5), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -273,7 +275,7 @@ class Question(db.Model):
     option_c = db.Column(db.String(128))
     option_d = db.Column(db.String(128))
     answer = db.Column(db.Integer)
-    experiment_id = db.Column(db.Integer, ForeignKey('exam.exam_id'))
+    experiment_id = db.Column(db.Integer, ForeignKey('exam.exam_id',ondelete='CASCADE'))
     comment = db.Column(db.String(2048))
 
     def __repr__(self):
@@ -285,7 +287,7 @@ class SystemAnnouncement(db.Model):
     """
     __tablename__ = 'sys_announcement'
     annoucement_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    admin_id = db.Column(db.String(64),ForeignKey("admin.admin_id"))
+    admin_id = db.Column(db.String(64),ForeignKey("admin.admin_id",ondelete='CASCADE'))
     title = db.Column(db.String(128))
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -427,49 +429,53 @@ class Assignment(db.Model):
 
 ############################联系表#################################
 
+"""
 class TeacherExperiment(db.Model):
     """
-    类描述：教师-实验联系表  1-多
-    """
+    # 类描述：教师-实验联系表  1-多
+"""
     __tablename__ = 'teacher_experiment'
-    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id'), primary_key=True)  
-    t_id = db.Column(db.String(5), ForeignKey('teacher.t_id')) 
+    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
+    t_id = db.Column(db.String(5), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
+"""
 
 class StudentExperiment(db.Model):
     """
     类描述：学生-实验联系表  多-多
     """
     __tablename__ = 'student_experiment'
-    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id'), primary_key=True)  
-    s_id = db.Column(db.String(5), ForeignKey('student.s_id'))  # 表明是主键  学生学号是7位，老师是5位
+    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
+    s_id = db.Column(db.String(5), ForeignKey('student.s_id',ondelete='CASCADE'))  # 表明是主键  学生学号是7位，老师是5位
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+"""
 class TeacherCourse(db.Model):
     """
-    类描述：老师-课程联系表  多-多
-    """
+    # 类描述：老师-课程联系表  多-多
+"""
     __tablename__ = 'teacher_course'
     course_id = db.Column(db.String(10), ForeignKey('course.c_id'), primary_key=True)  
     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id')) 
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
-
+"""
+"""
 class StudentCourse(db.Model):
     """
-    类描述：学生-课程联系表  多-多
-    """
+    # 类描述：学生-课程联系表  多-多
+"""
     __tablename__ = 'student_course'
     course_id = db.Column(db.String(10), ForeignKey('course.c_id'), primary_key=True)  
     s_id = db.Column(db.String(7), ForeignKey('student.s_id'))  
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
-
+"""
 # class StudentAssginment(db.Model):
 #     """
 #     类描述：学生-作业联系表 多-多
@@ -502,8 +508,8 @@ class ExamQuestion(db.Model):
     """
     __tablename__ = 'exam_question'
     eq_id =  db.Column(db.Integer,primary_key=True)
-    exam_id = db.Column(db.Integer, ForeignKey('exam.exam_id')) 
-    question_id = db.Column(db.Integer, ForeignKey('question.question_id')) 
+    exam_id = db.Column(db.Integer, ForeignKey('exam.exam_id',ondelete='CASCADE')) 
+    question_id = db.Column(db.Integer, ForeignKey('question.question_id',ondelete='CASCADE')) 
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -513,8 +519,8 @@ class StudentExamQuestion(db.Model):
     类描述：学生-考试问题联系表 多-多
     """
     __tablename__ = 'student_examquestion'
-    eq_id =  db.Column(db.Integer,ForeignKey('exam_question.eq_id'),primary_key=True)
-    s_id = db.Column(db.String(7), ForeignKey('student.s_id')) 
+    eq_id =  db.Column(db.Integer,ForeignKey('exam_question.eq_id',ondelete='CASCADE'),primary_key=True)
+    s_id = db.Column(db.String(7), ForeignKey('student.s_id',ondelete='CASCADE')) 
     spare_time = db.Column(db.DateTime)  #花费时长
     is_correct = db.Column(db.Integer)   #0错误，1正确
     
@@ -526,8 +532,8 @@ class StudentClass(db.Model):
     类说明：学生-课程表，联系表，多对多
     """
     __tablename__ = 'student_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
 
 class TeacherClass(db.Model):
     """
@@ -537,8 +543,8 @@ class TeacherClass(db.Model):
 
     """
     __tablename__ = 'teacher_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id"),primary_key=True) 
-    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id"),primary_key=True)
+    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
 
 class ClassFile(db.Model):  #ClassFile
     """
@@ -549,9 +555,15 @@ class ClassFile(db.Model):  #ClassFile
     __tablename__ = 'class_file'
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+<<<<<<< HEAD
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
     file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
     file_name = db.Column(db.String(128)) #文件名
+=======
+    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'))
+    file_url = db.Column(db.String(128)) # 服务器文件存放地址
+    file_name = db.Column(db.String(128))
+>>>>>>> server
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__
@@ -559,8 +571,8 @@ class ClassFile(db.Model):  #ClassFile
 class StudentExperimentFile(db.Model):
     __tablename__ = 'student_experiment_file'
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    experiment_id = db.Column(db.Integer,ForeignKey("experiment.experiment_id"))  
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"))
+    experiment_id = db.Column(db.Integer,ForeignKey("experiment.experiment_id",ondelete='CASCADE'))  
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
     score = db.Column(db.Integer)
 
 class StudentExam(db.Model):
@@ -568,8 +580,8 @@ class StudentExam(db.Model):
     类描述：学生-测验表，联系表，考试-学生关系为，一个学生对应多个考试，一个考试对应多个学生，故多对多，建立联系表
     """
     __tablename__ = 'student_exam'
-    exam_id = db.Column(db.Integer,ForeignKey("exam.exam_id") ,primary_key=True)
-    s_id = db.Column(db.String(64),ForeignKey("student.s_id"),primary_key=True)
+    exam_id = db.Column(db.Integer,ForeignKey("exam.exam_id",ondelete='CASCADE') ,primary_key=True)
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
     score = db.Column(db.Integer)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -579,5 +591,5 @@ class TAClass(db.Model):
     类描述：联系表，班级助教，是多对多关系
     """
     __tablename__ = 'ta_class'
-    ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id") ,primary_key=True)
-    class_id = db.Column(db.String(256), ForeignKey("class.class_id"),primary_key=True)
+    ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id",ondelete='CASCADE') ,primary_key=True)
+    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)

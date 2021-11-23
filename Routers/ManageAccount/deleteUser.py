@@ -13,7 +13,9 @@ CORS(deleteUserRoute, resources=r'/*')
 
 @deleteUserRoute.route('/delete/student/',methods=['POST'])  
 def deleteStudent():
-    data = request.args.get("s_id")
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    data = data['s_id']
     student = Student.query.filter(Student.s_id == data).first()    
     if not student:
         return "NotExist"
@@ -23,7 +25,9 @@ def deleteStudent():
 
 @deleteUserRoute.route('/delete/teacher/',methods=['POST'])  
 def deleteTeacher():
-    data = request.args.get("t_id")
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    data = data["t_id"]
     teacher = Teacher.query.filter(Teacher.t_id == data).first()    
     if not teacher:
         return "NotExist"

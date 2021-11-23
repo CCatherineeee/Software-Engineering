@@ -45,21 +45,33 @@ def adminLogin():
 #     check = StudentLogin(data.get('username'),data.get('password'))
 #     return check
 
-@loginRoute.route('/login/',methods=['POST']) 
+@loginRoute.route('/login/',methods=['POST'])
 def Login():
+<<<<<<< HEAD
     data = request.form
     uid = data.get('id')
     pwd = data.get('password')
+=======
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    uid = data['id']
+    pwd = data['password']
+>>>>>>> server
     teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
     if teacher:
         if teacher.check_password(pwd):
             return "TSuccess"
         else:
-            return "TPasswordWrong"
+            return "PasswordWrong"
     student = Model.Student.query.filter(Model.Student.s_id == uid).first()
     if student:
         if student.check_password(pwd):
             return "SSuccess"
         else:
+<<<<<<< HEAD
             return "SPasswordWrong"
     return pwd
+=======
+            return "PasswordWrong"
+    return "UserNotExist"
+>>>>>>> server
