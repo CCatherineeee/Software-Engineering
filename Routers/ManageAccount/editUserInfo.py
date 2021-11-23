@@ -150,7 +150,7 @@ def reset_teacher_pwd():
 def upload_student_avatar():
 
     avatar = request.files['avatar']
-    userID = request.form['id']
+    userID = request.form['s_id']
     if avatar is None:
         result = {'status':400,'message':'未成功上传'}
     else:
