@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Student
+from Model.Model import Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
@@ -61,6 +61,26 @@ def editTeacherInfo():
     dbManage.db.session.commit()
     return "Success"
 
+@editUserInfoRoute.route('/editInfo/TA/',methods=['POST'])  
+def editTAInfo():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    name = data['name']
+    ta_id = data['ta_id']
+    email = data['email']
+
+    # student = dbManage.db.session.query(Student).filter(Student.s_id == s_id)
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
+    if not ta:
+        return "NotExist"
+    ta.s_id = ta_id
+    ta.name = name
+    ta.email = email
+
+    dbManage.db.session.commit()
+    return "Success"
+
 @editUserInfoRoute.route('/editInfo/Student/changePwd',methods=['POST'])  
 def change_student_pwd():
     data = request.get_data()
@@ -98,6 +118,28 @@ def change_teacher_pwd():
     if(teacher.check_password(old_pwd)):
         teacher.password(new_pwd)
         dbManage.db.session.add(teacher)
+        dbManage.db.session.commit()
+        data = {'result':200,'message':'修改成功'}
+    else:
+        data = {'result':400,'message':'密码错误'}
+
+    return jsonify(data)
+
+@editUserInfoRoute.route('/editInfo/TA/changePwd',methods=['POST'])  
+def change_ta_pwd():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    ta_id = data['ta_id']
+    old_pwd = data['old_password']
+    new_pwd = data['new_password']
+    
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
+    if not ta:
+        return "NotExist"
+    if(ta.check_password(old_pwd)):
+        ta.password(new_pwd)
+        dbManage.db.session.add(ta)
         dbManage.db.session.commit()
         data = {'result':200,'message':'修改成功'}
     else:

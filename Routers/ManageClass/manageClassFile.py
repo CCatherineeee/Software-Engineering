@@ -46,7 +46,7 @@ def getClassFile():
     class_id = request.form['class_id']
     this_class = Class.query.filter(Class.class_id == class_id).first()
     if not this_class:  #班级不存在
-        return jsonify({'status':500,'message':'班级不存在'})
+        return jsonify({'fileurl':'','filename':''})
     
     file_result = []
     class_file_list = ClassFile.query.filter(ClassFile.class_id == class_id).all()
@@ -58,8 +58,8 @@ def getClassFile():
     return jsonify(file_result)
 
 #根据文件名删除班级文件
-@manageClassRoute.route('/getClassFile',methods=['POST'])  
-def getClassFile():
+@manageClassRoute.route('/deleteClassFile',methods=['POST'])  
+def deleteClassFile():
 
     class_id = request.form['class_id']
     file_name = request.form['file_name']
