@@ -4,7 +4,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model import Model
+# from Model import Model
+import Model
 # from Model import Model
 from sqlalchemy import and_, or_
 import os

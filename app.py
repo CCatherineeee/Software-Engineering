@@ -12,7 +12,8 @@ import json
 import config
 import dbManage
 
-from Model import Model
+# from Model import Model
+import Model
 
 # from Routers.ManageAccount.register import registerRoute
 from Routers.ManageAccount.login import loginRoute
@@ -23,13 +24,7 @@ from Routers.ManageAccount.editUserInfo import editUserInfoRoute
 from Routers.ManageAccount.auth.authManage import auth
 from Routers.ManageCourse.addCourse import addCourseRoute
 from Routers.ManageClass.manageClass import manageClassRoute
-<<<<<<< HEAD
 from Routers.ManageClass.classAddStudent import classAddStudentRoute
-=======
-from Routers.ManageCourse.teacherCourse import teacherCourseRoute
-from Routers.ManageCourse.adminCourse import adminCourseRoute
-from Routers.ManageAnnouncement.manageAnn import manageAnnRoute
->>>>>>> server
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -50,14 +45,7 @@ app.register_blueprint(editUserInfoRoute)
 app.register_blueprint(auth)
 app.register_blueprint(addCourseRoute)
 app.register_blueprint(manageClassRoute)
-<<<<<<< HEAD
 app.register_blueprint(classAddStudentRoute)
-=======
-app.register_blueprint(teacherCourseRoute)
-app.register_blueprint(adminCourseRoute)
-app.register_blueprint(manageAnnRoute)
-
->>>>>>> server
 
 @app.before_first_request
 def initdb():

@@ -5,7 +5,9 @@ manage.py
 
 '''
 import sys
-import app
+sys.path.append("..") 
+sys.path.append(".") 
+# from app import create_app
 from app import create_app
 from flask_migrate import Migrate, MigrateCommand
 from dbManage import db

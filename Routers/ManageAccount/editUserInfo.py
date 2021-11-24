@@ -94,7 +94,7 @@ def change_student_pwd():
     if not student:
         return "NotExist"
     if(student.check_password(old_pwd)):
-        student.password(new_pwd)
+        student.set_password(new_pwd)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
         data = {'result':200,'message':'修改成功'}
@@ -116,7 +116,7 @@ def change_teacher_pwd():
     if not teacher:
         return "NotExist"
     if(teacher.check_password(old_pwd)):
-        teacher.password(new_pwd)
+        teacher.set_password(new_pwd)
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
         data = {'result':200,'message':'修改成功'}
@@ -138,7 +138,7 @@ def change_ta_pwd():
     if not ta:
         return "NotExist"
     if(ta.check_password(old_pwd)):
-        ta.password(new_pwd)
+        ta.set_password(new_pwd)
         dbManage.db.session.add(ta)
         dbManage.db.session.commit()
         data = {'result':200,'message':'修改成功'}
@@ -160,7 +160,7 @@ def reset_student_pwd():
         data = {'result':400,'message':'重置失败'}
         return jsonify(data)
     
-    student.password(new_pwd)
+    student.set_password(new_pwd)
     dbManage.db.session.add(student)
     dbManage.db.session.commit()
 
@@ -180,7 +180,7 @@ def reset_teacher_pwd():
         data = {'result':400,'message':'重置失败'}
         return jsonify(data)
     
-    teacher.password(new_pwd)
+    teacher.set_password(new_pwd)
     dbManage.db.session.add(teacher)
     dbManage.db.session.commit()
     data = {'result':200,'message':'重置成功'}

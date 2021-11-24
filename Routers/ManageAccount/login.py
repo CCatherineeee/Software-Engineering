@@ -3,6 +3,7 @@ from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
 from Model import Model
+# import Model
 from sqlalchemy import and_, or_
 
 # 蓝图名 蓝图路径
@@ -26,14 +27,14 @@ def adminLogin():
     check = AdminLogin(data.get('username'),data.get('password'))
     return check
 
-@loginRoute.route('/login/',methods=['POST']) 
-def adminLogin():
-    # 接口本身
-    data = request.form
-    name = data.get('username')
-    pwd = data.get('password')
-    adName  = admin = Model.Admin.query.filter(Model.Admin.name == name).first()
-    admin = Model.Admin.query.filter(and_(Model.Admin.admin_pwd == admin_pwd,Model.Admin.name == name)).first()
+# @loginRoute.route('/login/',methods=['POST']) 
+# def adminLogin():
+#     # 接口本身
+#     data = request.form
+#     name = data.get('username')
+#     pwd = data.get('password')
+#     adName  = admin = Model.Admin.query.filter(Model.Admin.name == name).first()
+#     admin = Model.Admin.query.filter(and_(Model.Admin.admin_pwd == admin_pwd,Model.Admin.name == name)).first()
     
 
 
@@ -47,16 +48,9 @@ def adminLogin():
 
 @loginRoute.route('/login/',methods=['POST'])
 def Login():
-<<<<<<< HEAD
     data = request.form
     uid = data.get('id')
     pwd = data.get('password')
-=======
-    data = request.get_data()
-    data = json.loads(data.decode("utf-8"))
-    uid = data['id']
-    pwd = data['password']
->>>>>>> server
     teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
     if teacher:
         if teacher.check_password(pwd):
@@ -68,10 +62,5 @@ def Login():
         if student.check_password(pwd):
             return "SSuccess"
         else:
-<<<<<<< HEAD
             return "SPasswordWrong"
     return pwd
-=======
-            return "PasswordWrong"
-    return "UserNotExist"
->>>>>>> server

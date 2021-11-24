@@ -34,7 +34,6 @@ def addClass():
 
     return jsonify(result)
 
-<<<<<<< HEAD
 #责任教师更改班级授课老师
 @manageClassRoute.route('/changeTeacher',methods=['POST'])  
 def changeTeacher():
@@ -56,7 +55,6 @@ def changeTeacher():
         result = {'status':400,'message':'该课程或老师不存在'}
 
     return jsonify(result)
-=======
 @manageClassRoute.route('/showClass/',methods=['GET'])  
 def showClass():
     course_id = request.args.get('courseID')
@@ -69,7 +67,6 @@ def showClass():
         temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id}
         content.append(temp)
     return jsonify(content)
->>>>>>> server
 
 
 #删除班级

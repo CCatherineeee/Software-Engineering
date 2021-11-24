@@ -53,15 +53,15 @@ class Student(UserMixin,db.Model):
     # 密码加密操作
     @property
     def password(self):                   # 密码取值
-        return self.s_pwd
+        raise AttributeError('password 是不可读属性')
 
     @password.setter                      # 密码加密
-    def password(self, raw_password):
-        self.s_pwd = generate_password_hash(raw_password)
+    def set_password(self, password):
+        self.s_pwd = generate_password_hash(password)
 
     # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
     def check_password(self, raw_password):
-        result = check_password_hash(self.password, raw_password)   # 相当于用相同的hash加密算法加密raw_password，检测与数据库中是否一致
+        result = check_password_hash(self.s_pwd, raw_password)   # 相当于用相同的hash加密算法加密raw_password，检测与数据库中是否一致
         return result
 
     #生成确认令牌，过期时间为1h
@@ -114,7 +114,7 @@ class Teacher(UserMixin,db.Model):
         return self.t_pwd
 
     @password.setter                      # 密码加密
-    def password(self, raw_password):
+    def set_password(self, raw_password):
         self.t_pwd = generate_password_hash(raw_password)
 
     # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
@@ -202,7 +202,7 @@ class Class(db.Model):
     """
     __tablename__ = 'class'
 
-    class_id = db.Column(db.Integer,primary_key=True) 
+    class_id = db.Column(db.String(256),primary_key=True) 
     course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     class_number = db.Column(db.Integer)
 
@@ -221,7 +221,7 @@ class Experiment(db.Model):
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
@@ -259,7 +259,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 2为戒指
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -304,7 +304,7 @@ class CourseAnnouncement(db.Model):
     title = db.Column(db.String(128))
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -335,7 +335,7 @@ class TeachingAssistant(db.Model):
         return self.ta_pwd
 
     @password.setter                      # 密码加密
-    def password(self, raw_password):
+    def set_password(self, raw_password):
         self.s_pwd = generate_password_hash(raw_password)
 
     # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
@@ -372,7 +372,7 @@ class AnnouncementCourse(db.Model):
     course_type = db.Column(db.Integer,primary_key=True)  
     course_semester = db.Column(db.String(64),primary_key=True)
     course_year = db.Column(db.String(64),primary_key=True)
-    class_id = db.Column(db.Integer,primary_key=True)
+    class_id = db.Column(db.String(256),primary_key=True)
 
     t_id = db.Column(db.Integer)
 
@@ -386,7 +386,7 @@ class AnnouncementCourse(db.Model):
 """
 class TeacherClass(db.Model):
     __tablename__ = 'teacher_class'
-    class_id = db.Column(db.Integer, ForeignKey('class.class_id'), primary_key=True)  
+    class_id = db.Column(db.String(256), ForeignKey('class.class_id'), primary_key=True)  
     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id'))  
 
     def __repr__(self):
@@ -396,7 +396,7 @@ class TeacherClass(db.Model):
 """
 class StudentClass(db.Model):
     __tablename__ = 'student_class'
-    class_id = db.Column(db.Integer, ForeignKey('class.class_id'), primary_key=True)  
+    class_id = db.Column(db.String(256), ForeignKey('class.class_id'), primary_key=True)  
     s_id = db.Column(db.String(7), ForeignKey('student.s_id'))  # 表明是主键  学生学号是7位，老师是5位
 
     def __repr__(self):
@@ -532,7 +532,7 @@ class StudentClass(db.Model):
     类说明：学生-课程表，联系表，多对多
     """
     __tablename__ = 'student_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
     s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
 
 class TeacherClass(db.Model):
@@ -543,7 +543,7 @@ class TeacherClass(db.Model):
 
     """
     __tablename__ = 'teacher_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
     t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
 
 class ClassFile(db.Model):  #ClassFile
@@ -555,15 +555,9 @@ class ClassFile(db.Model):  #ClassFile
     __tablename__ = 'class_file'
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-<<<<<<< HEAD
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
     file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
     file_name = db.Column(db.String(128)) #文件名
-=======
-    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'))
-    file_url = db.Column(db.String(128)) # 服务器文件存放地址
-    file_name = db.Column(db.String(128))
->>>>>>> server
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__
@@ -592,4 +586,4 @@ class TAClass(db.Model):
     """
     __tablename__ = 'ta_class'
     ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id",ondelete='CASCADE') ,primary_key=True)
-    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)
+    class_id = db.Column(db.String(256), ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)

@@ -59,7 +59,7 @@ def showAvartar():
         s_id = data['s_id']
         student = Student.query.filter(Student.s_id==s_id).first()
         if student is None:
-            pass
+            pic_url = {'url':"",'status':500,'message':"no student"}
         else:
             filename = student.avatar
             current_app.logger.debug('filename is %s' % filename)
