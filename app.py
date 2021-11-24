@@ -26,6 +26,8 @@ from Routers.ManageClass.manageClass import manageClassRoute
 from Routers.ManageCourse.teacherCourse import teacherCourseRoute
 from Routers.ManageCourse.adminCourse import adminCourseRoute
 from Routers.ManageAnnouncement.manageAnn import manageAnnRoute
+from Routers.ManageClass.classAddStudent import classAddStudentRoute
+
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -49,6 +51,9 @@ app.register_blueprint(manageClassRoute)
 app.register_blueprint(teacherCourseRoute)
 app.register_blueprint(adminCourseRoute)
 app.register_blueprint(manageAnnRoute)
+
+app.register_blueprint(classAddStudentRoute)
+
 
 
 @app.before_first_request

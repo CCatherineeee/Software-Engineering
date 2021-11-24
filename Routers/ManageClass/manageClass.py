@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Course,Class,TeacherClass,StudentClass,CourseType,Teacher,Student
+from Model.Model import Course,Class,StudentClass,CourseType,Teacher,Student
 import dbManage
 from sqlalchemy import and_, or_
 
@@ -18,15 +18,14 @@ def addClass():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     course_id = data['courseID']
+    t_id = data['t_id']
 
     course = Course.query.filter(Course.c_id == course_id).first()  #找出全部的这个课程
     if course:  #课程存在
         class_list = Class.query.filter(Class.course_id == course_id).all()  #找出课程名为这个的所有班级
         class_no = len(class_list)+1
-        new_class = Class(class_id =course_id+str(class_no), course_id = course_id,class_number=class_no)
-        teacher_class = TeacherClass(class_id = new_class.class_id , t_id=t_id)
+        new_class = Class(class_id =course_id+str(class_no), course_id = course_id,class_number=class_no, t_id = t_id)
         dbManage.db.session.add(new_class)
-        dbManage.db.session.add(teacher_class)
         dbManage.db.session.commit()
         result = {'status':200,'message':'添加成功','class_id':new_class.class_id}
     else:

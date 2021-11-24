@@ -202,9 +202,10 @@ class Class(db.Model):
     """
     __tablename__ = 'class'
 
-    class_id = db.Column(db.Integer,primary_key=True) 
+    class_id = db.Column(db.String(256),primary_key=True) 
     course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     class_number = db.Column(db.Integer)
+    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
 
     #一对多关联
     experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
@@ -221,7 +222,7 @@ class Experiment(db.Model):
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
@@ -259,7 +260,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 2为戒指
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -304,7 +305,7 @@ class CourseAnnouncement(db.Model):
     title = db.Column(db.String(128))
     content = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -495,19 +496,21 @@ class StudentClass(db.Model):
     类说明：学生-课程表，联系表，多对多
     """
     __tablename__ = 'student_class'
-    class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
     s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
 
+"""
 class TeacherClass(db.Model):
-    """
-    类说明：教师-课程表，联系表，多对多
+"""
+    # 类说明：教师-课程表，联系表，多对多
 
-    注意：该表内的教师指的是任课教师，责任教师应在course表下
+    # 注意：该表内的教师指的是任课教师，责任教师应在course表下
 
-    """
+"""
     __tablename__ = 'teacher_class'
     class_id = db.Column(db.Integer,ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
     t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
+"""
 
 class ClassFile(db.Model):  #ClassFile
     """
@@ -518,7 +521,7 @@ class ClassFile(db.Model):  #ClassFile
     __tablename__ = 'class_file'
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'))
+    class_id = db.Column(db.String(256), ForeignKey("class.class_id",ondelete='CASCADE'))
     file_url = db.Column(db.String(128)) # 服务器文件存放地址
     file_name = db.Column(db.String(128))
 
@@ -549,4 +552,4 @@ class TAClass(db.Model):
     """
     __tablename__ = 'ta_class'
     ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id",ondelete='CASCADE') ,primary_key=True)
-    class_id = db.Column(db.Integer, ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)
+    class_id = db.Column(db.String(256), ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)

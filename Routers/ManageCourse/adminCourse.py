@@ -58,8 +58,21 @@ def addCourse():
     course = Course.query.filter(Course.c_id == c_id).first()
     if course:
         return "CourseExist"
-    course = Course(c_id=c_id,prefix=prefix,course_semester=semester,course_year=year,duty_teacher=t_id)
+    course = Course(c_id=c_id,prefix=prefix,course_semester=semester_,course_year=year,duty_teacher=t_id)
     dbManage.db.session.add(course)
+    dbManage.db.session.commit()
+    return "success"
+
+@adminCourseRoute.route('/course/setDuty/',methods=['POST'])  
+def setDuty():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    courseID = data['courseID']
+    t_id = data['t_id']
+    course = Course.query.filter(Course.c_id == courseID).first()
+    if not course:
+        return "CourseNotExist"
+    course.duty_teacher = t_id
     dbManage.db.session.commit()
     return "success"
 
@@ -71,5 +84,15 @@ def getDuty():
         teacher = Teacher.query.filter(Teacher.t_id == course.duty_teacher).first()
         coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
         temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year,"t_id":course.duty_teacher,"t_name":teacher.name,"c_id":course.c_id}
+        content.append(temp)
+    return jsonify(content)
+
+
+@adminCourseRoute.route('/course/getAllTeacher/',methods=['GET'])  
+def getAllTeacher():
+    teachers = dbManage.db.session.query(Teacher).all()
+    content = []
+    for teacher in teachers:
+        temp = {'name':teacher.name,'id':teacher.t_id}
         content.append(temp)
     return jsonify(content)
