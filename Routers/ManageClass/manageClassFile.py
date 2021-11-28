@@ -18,7 +18,10 @@ CORS(manageClassFileRoute, resources=r'/*')
 @manageClassFileRoute.route('/manageClassFileRoute/addClassFile',methods=['POST'])  
 def addClassFile():
     file = request.files.getlist('file')[0]
-    class_id = request.form['class_id']
+    # class_id = request.args.get('class_id')
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id =data['class_id']
     this_class = Class.query.filter(Class.class_id == class_id).first()
     if not this_class:  #班级不存在
         return jsonify({'status':500,'message':'班级不存在'})
@@ -43,17 +46,18 @@ def addClassFile():
 #获取班级所有文件
 @manageClassFileRoute.route('/manageClassFileRoute/getClassFile',methods=['POST'])  
 def getClassFile():
-
-    class_id = request.form['class_id']
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id =data['class_id']
     this_class = Class.query.filter(Class.class_id == class_id).first()
     if not this_class:  #班级不存在
-        return jsonify({'fileurl':'','filename':''})
+        return jsonify({'file_url':'','filename':''})
     
     file_result = []
     class_file_list = ClassFile.query.filter(ClassFile.class_id == class_id).all()
 
     for item in class_file_list:
-        file_item = {'fileurl':item.file_url,'filename':item.file_name}
+        file_item = {'file_url':"/static/classFile/"+item.file_name,'filename':item.file_name}
         file_result.append(file_item)
 
     return jsonify(file_result)
@@ -62,12 +66,15 @@ def getClassFile():
 @manageClassFileRoute.route('/manageClassFileRoute/deleteClassFile',methods=['POST'])  
 def deleteClassFile():
 
-    class_id = request.form['class_id']
-    file_name = request.form['file_name']
-
-    class_file = ClassFile.query.filter(and_(ClassFile.class_id == class_id,ClassFile.file_name == file_name)).first()
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id =data['class_id']
+    file_url = data['file_url']
+    file_url = os.getcwd()+file_url
+    class_file = ClassFile.query.filter(and_(ClassFile.class_id == class_id,ClassFile.file_url == file_url)).first()
     if class_file:
         dbManage.db.session.delete(class_file)
+        os.remove(file_url)
         dbManage.db.session.commit()
         result = {'status':200,'message':'删除成功'}
     else:

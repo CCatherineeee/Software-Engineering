@@ -210,7 +210,6 @@ def upload_student_avatar():
                 teacher = Teacher.query.filter(Teacher.t_id==userID).first()
                 if teacher:
                     teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
-                    dbManage.db.session.add(teacher)
                     dbManage.db.session.commit()
                     avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
                     result = {'status':200,'message':'上传头像成功'}
@@ -220,7 +219,6 @@ def upload_student_avatar():
                     student = Student.query.filter(Student.s_id==userID).first()
                     if student:
                         student.avatar = '{}_{}'.format(userID,fname+ext)
-                        dbManage.db.session.add(student)
                         dbManage.db.session.commit()
                         avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
                         result = {'status':200,'message':'上传头像成功'}
