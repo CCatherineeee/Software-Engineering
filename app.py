@@ -27,7 +27,9 @@ from Routers.ManageCourse.teacherCourse import teacherCourseRoute
 from Routers.ManageCourse.adminCourse import adminCourseRoute
 from Routers.ManageAnnouncement.manageAnn import manageAnnRoute
 from Routers.ManageClass.classAddStudent import classAddStudentRoute
-
+from Routers.ManageExperiment.manageExperiment import manageExperimentRoute
+from Routers.ManageExperiment.stuExperiment import studentExperimentRoute
+from Routers.ManageExperiment.teaExperiment import teaExperimentRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -53,7 +55,9 @@ app.register_blueprint(adminCourseRoute)
 app.register_blueprint(manageAnnRoute)
 
 app.register_blueprint(classAddStudentRoute)
-
+app.register_blueprint(manageExperimentRoute)
+app.register_blueprint(studentExperimentRoute)
+app.register_blueprint(teaExperimentRoute)
 
 
 @app.before_first_request

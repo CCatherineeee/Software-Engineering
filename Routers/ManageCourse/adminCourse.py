@@ -40,6 +40,16 @@ def getCourseType():
         content.append(temp)
     return jsonify(content)
 
+@adminCourseRoute.route('/course/delType/',methods=['POST'])  
+def delCourseType():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    prefix = data['prefix']
+    ctype = CourseType.query.filter(CourseType.prefix == prefix).first()
+    dbManage.db.session.delete(ctype)
+    dbManage.db.session.commit()
+    return "success"
+
 @adminCourseRoute.route('/course/addCourse/',methods=['POST'])  
 def addCourse():
     data = request.get_data()
@@ -58,10 +68,24 @@ def addCourse():
     course = Course.query.filter(Course.c_id == c_id).first()
     if course:
         return "CourseExist"
-    course = Course(c_id=c_id,prefix=prefix,course_semester=semester_,course_year=year,duty_teacher=t_id)
+    course = Course(c_id=c_id,prefix=prefix,course_semester=semester,course_year=year,duty_teacher=t_id)
     dbManage.db.session.add(course)
     dbManage.db.session.commit()
     return "success"
+
+
+@adminCourseRoute.route('/course/delCourse/',methods=['POST'])  
+def delCourse():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    c_id = data['c_id']
+
+    course = Course.query.filter(Course.c_id == c_id).first()
+    if course:
+        dbManage.db.session.delete(course)
+        dbManage.db.session.commit()
+        return "success"
+    return "NotExist"
 
 @adminCourseRoute.route('/course/setDuty/',methods=['POST'])  
 def setDuty():

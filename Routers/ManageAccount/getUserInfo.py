@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint,current_app,make_response
 import json
-from Model.Model import Student
+from Model.Model import Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
@@ -16,6 +16,7 @@ CORS(getUserInfoRoute, resources=r'/*')
 def getUserInfo():
     students = dbManage.db.session.query(Student).all()
     teachers = dbManage.db.session.query(Teacher).all()
+    tas = dbManage.db.session.query(TeachingAssistant).all()
     content = []
     for student in students:
         temp = {'id':student.s_id,'name':student.name,
@@ -24,6 +25,9 @@ def getUserInfo():
     for teacher in teachers:
         temp = {'id':teacher.t_id,'name':teacher.name,
             'phone_number':teacher.phone_number,'is_active':teacher.is_active,'email':teacher.email,'department':teacher.department,'role':2}
+        content.append(temp)
+    for ta in tas:
+        temp = {'id':ta.ta_id,'name':ta.name,'is_active':ta.is_active,'email':ta.email,'role':3}
         content.append(temp)
     return jsonify(content)
 
