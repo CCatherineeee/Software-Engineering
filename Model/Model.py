@@ -44,7 +44,7 @@ class Student(UserMixin,db.Model):
     # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
     def __init__(self,s_id,s_pwd,name,email):  #只需要这几个参数
         self.s_id = s_id
-        self.password = s_pwd         # 调用该方法 返回下面的self._password数值，
+        self.set_password(s_pwd)       # 调用该方法 返回下面的self._password数值，
         self.name = name
         self.email = email
 
@@ -55,7 +55,7 @@ class Student(UserMixin,db.Model):
     def password(self):                   # 密码取值
         raise AttributeError('password 是不可读属性')
 
-    @password.setter                      # 密码加密
+    # @password.setter                      # 密码加密
     def set_password(self, password):
         self.s_pwd = generate_password_hash(password)
 
@@ -102,7 +102,7 @@ class Teacher(UserMixin,db.Model):
         # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
     def __init__(self,t_id,t_pwd,name,email):  #只需要这几个参数
         self.t_id = t_id
-        self.password = t_pwd         # 调用该方法 返回下面的self._password数值，
+        self.set_password(t_pwd)         # 调用该方法 返回下面的self._password数值，
         self.name = name
         self.email = email
 
@@ -113,7 +113,7 @@ class Teacher(UserMixin,db.Model):
     def password(self):                   # 密码取值
         return self.t_pwd
 
-    @password.setter                      # 密码加密
+    # @password.setter                      # 密码加密
     def set_password(self, raw_password):
         self.t_pwd = generate_password_hash(raw_password)
 
@@ -205,6 +205,7 @@ class Class(db.Model):
     class_id = db.Column(db.String(256),primary_key=True) 
     course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     class_number = db.Column(db.Integer)
+    t_id = db.Column(db.String(64), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
 
     #一对多关联
     experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
@@ -323,7 +324,7 @@ class TeachingAssistant(db.Model):
     # 修改密码加密操作中的字段，在manage.py映射数据库时候，使用字段还是保持相同
     def __init__(self,ta_id,ta_pwd,name,email):  #只需要这几个参数
         self.ta_id = ta_id
-        self.password = ta_pwd         # 调用该方法 返回下面的self._password数值，
+        self.set_password(ta_pwd)         # 调用该方法 返回下面的self._password数值，
         self.name = name
         self.email = email
 
@@ -334,9 +335,9 @@ class TeachingAssistant(db.Model):
     def password(self):                   # 密码取值
         return self.ta_pwd
 
-    @password.setter                      # 密码加密
+    # @password.setter                      # 密码加密
     def set_password(self, raw_password):
-        self.s_pwd = generate_password_hash(raw_password)
+        self.ta_pwd = generate_password_hash(raw_password)
 
     # 用于验证后台登录密码是否和数据库一致，raw_password是后台登录输入的密码
     def check_password(self, raw_password):
@@ -535,16 +536,16 @@ class StudentClass(db.Model):
     class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
     s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
 
-class TeacherClass(db.Model):
-    """
-    类说明：教师-课程表，联系表，多对多
+# class TeacherClass(db.Model):
+#     """
+#     类说明：教师-课程表，联系表，多对多
 
-    注意：该表内的教师指的是任课教师，责任教师应在course表下
+#     注意：该表内的教师指的是任课教师，责任教师应在course表下
 
-    """
-    __tablename__ = 'teacher_class'
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
-    t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
+#     """
+#     __tablename__ = 'teacher_class'
+#     class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True) 
+#     t_id = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'),primary_key=True)
 
 class ClassFile(db.Model):  #ClassFile
     """
@@ -558,6 +559,7 @@ class ClassFile(db.Model):  #ClassFile
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
     file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
     file_name = db.Column(db.String(128)) #文件名
+    upload_time = db.Column(db.String(50)) #上传时间
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__

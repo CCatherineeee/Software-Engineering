@@ -1,4 +1,3 @@
-
 # from flask import Flask
 from flask import Flask, request, jsonify
 from flask import Flask, render_template
@@ -12,8 +11,8 @@ import json
 import config
 import dbManage
 
-# from Model import Model
-import Model
+import Model.Model as Model
+
 
 # from Routers.ManageAccount.register import registerRoute
 from Routers.ManageAccount.login import loginRoute
@@ -25,6 +24,7 @@ from Routers.ManageAccount.auth.authManage import auth
 from Routers.ManageCourse.addCourse import addCourseRoute
 from Routers.ManageClass.manageClass import manageClassRoute
 from Routers.ManageClass.classAddStudent import classAddStudentRoute
+from Routers.ManageClass.manageClassFile import manageClassFileRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -46,10 +46,12 @@ app.register_blueprint(auth)
 app.register_blueprint(addCourseRoute)
 app.register_blueprint(manageClassRoute)
 app.register_blueprint(classAddStudentRoute)
+app.register_blueprint(manageClassFileRoute)
 
 @app.before_first_request
 def initdb():
     dbManage.db.create_all()
+    
     if not Model.Admin.query.filter(Model.Admin.name == "admin").first():
         admin = Model.Admin(admin_id="0000000", admin_pwd="admin", name="admin",
                                email="0000000@tongji.edu.cn")
@@ -75,14 +77,17 @@ def create_app():
     login_manager.init_app(app)
 
     app.register_blueprint(loginRoute)
-    app.register_blueprint(auth)
     app.register_blueprint(addUserRoute)
     app.register_blueprint(getUserInfoRoute)
     app.register_blueprint(deleteUserRoute)
     app.register_blueprint(editUserInfoRoute)
+    app.register_blueprint(auth)
     app.register_blueprint(addCourseRoute)
     app.register_blueprint(manageClassRoute)
     app.register_blueprint(classAddStudentRoute)
+    app.register_blueprint(manageClassFileRoute)
+    
+    return app
 
 
 ###########3 web 服务器 ################

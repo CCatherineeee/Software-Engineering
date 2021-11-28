@@ -4,9 +4,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-# from Model import Model
-import Model
-# from Model import Model
+import Model.Model as Model
+# import Model
 from sqlalchemy import and_, or_
 import os
 import time
@@ -112,6 +111,7 @@ def addTAManually():
     if user:
         return "UserMailExist"
     else:
+        
         ta = Model.TeachingAssistant(ta_id=ta_id, ta_pwd=ta_id, name=name, email=email)
         dbManage.db.session.add(ta)
         dbManage.db.session.commit()

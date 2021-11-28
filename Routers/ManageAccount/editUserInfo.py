@@ -163,6 +163,7 @@ def reset_student_pwd():
     student.set_password(new_pwd)
     dbManage.db.session.add(student)
     dbManage.db.session.commit()
+    data = {'result':200,'message':'重置成功'}
 
 
     return jsonify(data)

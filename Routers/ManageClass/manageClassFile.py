@@ -10,28 +10,29 @@ from flask import current_app
 
 
 
-manageClassRoute = Blueprint('manageClassRoute', __name__)
-CORS(manageClassRoute, resources=r'/*')	
+manageClassFileRoute = Blueprint('manageClassFileRoute', __name__)
+CORS(manageClassFileRoute, resources=r'/*')	
 
 
-#新增班级文件
-@manageClassRoute.route('/addClassFile',methods=['POST'])  
+#新增班级文件(只能传一个)
+@manageClassFileRoute.route('/manageClassFileRoute/addClassFile',methods=['POST'])  
 def addClassFile():
-    file = request.files.getlist('file')
+    file = request.files.getlist('file')[0]
     class_id = request.form['class_id']
     this_class = Class.query.filter(Class.class_id == class_id).first()
     if not this_class:  #班级不存在
         return jsonify({'status':500,'message':'班级不存在'})
     UPLOAD_FOLDER = current_app.config ["CLASSFILE_UPLOAD_FOLDER"]
 
-    ext = os.path.splitext(file.filename)[1]
-    filename = os.path.splitext(file.filename)[0]
-    newFileName = filename + "_" + datetime.datetime.now()  + ext
-    filepath = '{}{}'.format(UPLOAD_FOLDER,newFileName)
+    # ext = os.path.splitext(file.filename)[1]
+    # filename = os.path.splitext(file.filename)[0]
+    nowtime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # newFileName = filename + ext
+    filepath = '{}{}'.format(UPLOAD_FOLDER,file.filename)
     file.save(filepath)
     class_id = request.form['class_id']
     if not ClassFile.query.filter(ClassFile.file_url == filepath).first():
-        classfile = ClassFile(class_id = class_id,file_url = filepath,file_name = newFileName)
+        classfile = ClassFile(class_id = class_id,file_url = filepath,file_name = file.filename,upload_time = nowtime)
         dbManage.db.session.add(classfile)
         dbManage.db.session.commit()
         result = {'status':200,'message':'上传成功'}
@@ -40,7 +41,7 @@ def addClassFile():
     return jsonify(result)
 
 #获取班级所有文件
-@manageClassRoute.route('/getClassFile',methods=['POST'])  
+@manageClassFileRoute.route('/manageClassFileRoute/getClassFile',methods=['POST'])  
 def getClassFile():
 
     class_id = request.form['class_id']
@@ -58,7 +59,7 @@ def getClassFile():
     return jsonify(file_result)
 
 #根据文件名删除班级文件
-@manageClassRoute.route('/deleteClassFile',methods=['POST'])  
+@manageClassFileRoute.route('/manageClassFileRoute/deleteClassFile',methods=['POST'])  
 def deleteClassFile():
 
     class_id = request.form['class_id']

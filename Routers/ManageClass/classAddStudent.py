@@ -40,7 +40,8 @@ def classAddTA():
 #教师手动导入学生
 @classAddStudentRoute.route('/classAddStudentManually',methods=['POST'])  
 def classAddStudentManually():
-    data = request.form
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
 
     s_id = data['s_id']  #课程号前缀
     class_id = data['class_id']
