@@ -21,16 +21,16 @@ def addCourse():
     duty_teacher_id = data['t_id']
 
     if semester == '春季':
-        semester = '00'
+        semester_ = '00'
     elif semester == '秋季':
-        semester = '01'
+        semester_ = '01'
 
     course_list = Course.query.filter(Course.prefix == prefix).first()
     if course_list:
         result = {'status':400,'message':'该课程已存在'}
     else:
 
-        course = Course(c_id = prefix + semester + year,prefix=prefix, 
+        course = Course(c_id = prefix + semester_ + year,prefix=prefix, 
         course_semester=semester, course_year=year, duty_teacher=duty_teacher_id)
         dbManage.db.session.add(course)
         dbManage.db.session.commit()

@@ -40,6 +40,16 @@ def getCourseType():
         content.append(temp)
     return jsonify(content)
 
+@adminCourseRoute.route('/course/delType/',methods=['POST'])  
+def delCourseType():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    prefix = data['prefix']
+    ctype = CourseType.query.filter(CourseType.prefix == prefix).first()
+    dbManage.db.session.delete(ctype)
+    dbManage.db.session.commit()
+    return "success"
+
 @adminCourseRoute.route('/course/addCourse/',methods=['POST'])  
 def addCourse():
     data = request.get_data()
@@ -63,6 +73,33 @@ def addCourse():
     dbManage.db.session.commit()
     return "success"
 
+
+@adminCourseRoute.route('/course/delCourse/',methods=['POST'])  
+def delCourse():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    c_id = data['c_id']
+
+    course = Course.query.filter(Course.c_id == c_id).first()
+    if course:
+        dbManage.db.session.delete(course)
+        dbManage.db.session.commit()
+        return "success"
+    return "NotExist"
+
+@adminCourseRoute.route('/course/setDuty/',methods=['POST'])  
+def setDuty():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    courseID = data['courseID']
+    t_id = data['t_id']
+    course = Course.query.filter(Course.c_id == courseID).first()
+    if not course:
+        return "CourseNotExist"
+    course.duty_teacher = t_id
+    dbManage.db.session.commit()
+    return "success"
+
 @adminCourseRoute.route('/course/getDuty/',methods=['GET'])  
 def getDuty():
     courses = dbManage.db.session.query(Course).all()
@@ -71,5 +108,15 @@ def getDuty():
         teacher = Teacher.query.filter(Teacher.t_id == course.duty_teacher).first()
         coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
         temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year,"t_id":course.duty_teacher,"t_name":teacher.name,"c_id":course.c_id}
+        content.append(temp)
+    return jsonify(content)
+
+
+@adminCourseRoute.route('/course/getAllTeacher/',methods=['GET'])  
+def getAllTeacher():
+    teachers = dbManage.db.session.query(Teacher).all()
+    content = []
+    for teacher in teachers:
+        temp = {'name':teacher.name,'id':teacher.t_id}
         content.append(temp)
     return jsonify(content)

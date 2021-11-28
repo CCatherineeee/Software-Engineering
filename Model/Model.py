@@ -208,7 +208,7 @@ class Class(db.Model):
     t_id = db.Column(db.String(64), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
 
     #一对多关联
-    experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
+    # experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
     exams = db.relationship('Exam', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
     course_announcement = db.relationship('CourseAnnouncement', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
 
@@ -222,13 +222,14 @@ class Experiment(db.Model):
     """
     __tablename__ = 'experiment'
     experiment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     t_id = db.Column(db.String(5), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
     experiment_title = db.Column(db.String(64))
     experiment_brief = db.Column(db.Text)
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     end_time = db.Column(db.DateTime)
     weight = db.Column(db.Float)
+    status = db.Column(db.Integer) # 1发布 0 未发布
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -448,8 +449,9 @@ class StudentExperiment(db.Model):
     """
     __tablename__ = 'student_experiment'
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
-    s_id = db.Column(db.String(5), ForeignKey('student.s_id',ondelete='CASCADE'))  # 表明是主键  学生学号是7位，老师是5位
-
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'))
+    file_url = db.Column(db.String(1024))
+    score = db.Column(db.Integer)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -564,12 +566,14 @@ class ClassFile(db.Model):  #ClassFile
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__
 
+"""
 class StudentExperimentFile(db.Model):
     __tablename__ = 'student_experiment_file'
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     experiment_id = db.Column(db.Integer,ForeignKey("experiment.experiment_id",ondelete='CASCADE'))  
     s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
     score = db.Column(db.Integer)
+"""
 
 class StudentExam(db.Model):
     """

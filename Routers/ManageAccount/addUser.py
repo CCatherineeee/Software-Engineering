@@ -111,7 +111,6 @@ def addTAManually():
     if user:
         return "UserMailExist"
     else:
-        
         ta = Model.TeachingAssistant(ta_id=ta_id, ta_pwd=ta_id, name=name, email=email)
         dbManage.db.session.add(ta)
         dbManage.db.session.commit()
