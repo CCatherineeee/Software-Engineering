@@ -68,7 +68,7 @@ def showAvartar():
                 # response = make_response(image_data)
                 # response.headers['Content-Type'] = 'image/png'
                 # return response
-                pic_url = {'url':current_app.config['AVATAR_UPLOAD_FOLDER']+filename,'status':200,'message':"Success"}
+                pic_url = {'url':'/static/avatar/'+filename,'status':200,'message':"Success"}
                 return jsonify(pic_url)
             else:
                 pic_url = {'url':"",'status':400,'message':"no avatar"}
