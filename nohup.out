@@ -22025,3 +22025,10 @@ Traceback (most recent call last):
     <<<<<<< HEAD
      ^
 SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "app.py", line 14, in <module>
+    import Model.Model as Model
+  File "/root/Software-Engineering/Model/Model.py", line 466
+    <<<<<<< HEAD
+     ^
+SyntaxError: invalid syntax
