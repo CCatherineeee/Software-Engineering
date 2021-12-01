@@ -46,9 +46,9 @@ def classAddStudentManually():
     s_id = data['s_id']  #课程号前缀
     class_id = data['class_id']
 
-    sc = StudentClass.query.filter(StudentClass.class_id == class_id ,StudentClass.s_id == s_id)
+    sc = StudentClass.query.filter(StudentClass.class_id == class_id ,StudentClass.s_id == s_id).first()
     if sc:
-        return jsonify({'status:':400,'message':'学生已存在'})
+        return jsonify({'status:':401,'message':'学生已存在'})
 
     this_stu = Student.query.filter(Student.s_id == s_id).first()
     this_class = Class.query.filter(Class.class_id == class_id).first()
@@ -67,7 +67,7 @@ def classAddStudentManually():
         dbManage.db.session.commit()
         result = {'status':200,'message':'添加成功'}
     else:
-        result = {'status':400,'message':'该班级或学生不存在'}
+        result = {'status':402,'message':'该班级或学生不存在'}
     return jsonify(result)
 
 #教师表格添加学生

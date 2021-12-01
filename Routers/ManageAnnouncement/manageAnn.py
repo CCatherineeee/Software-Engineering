@@ -56,11 +56,24 @@ def addCourseAnn():
     dbManage.db.session.commit()
     return "success"
 
-@manageAnnRoute.route('/course/getAnn/',methods=['GET'])
+@manageAnnRoute.route('/course/getAnn/',methods=['POST'])
 def getCourseAnn():
-    annS = dbManage.db.session.query(SystemAnnouncement).all()
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id = data['class_id']
+    annS = CourseAnnouncement.query.filter(CourseAnnouncement.class_id == class_id).all()
     content = []
     for ann in annS:
-        temp = {'title':ann.title,'content':ann.content,'date':ann.create_time}
+        temp = {'title':ann.title,'content':ann.content,'date':str(ann.create_time),'ann_id' : ann.annoucement_id}
         content.append(temp)
     return jsonify(content)
+
+@manageAnnRoute.route('/course/delAnn/',methods=['POST'])
+def delCourseAnn():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ann_id = data['ann_id']
+    ann = CourseAnnouncement.query.filter(CourseAnnouncement.annoucement_id == ann_id).first()
+    dbManage.db.session.delete(ann) 
+    dbManage.db.session.commit()
+    return "success"

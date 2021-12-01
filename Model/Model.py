@@ -463,12 +463,8 @@ class StudentExperiment(db.Model):
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
     s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'),primary_key=True)
     file_url = db.Column(db.String(1024))
-<<<<<<< HEAD
-    score = db.Column(db.Float)
-=======
     score = db.Column(db.Integer)
     grader = db.Column(db.String(64))  #批改人姓名，不是ID
->>>>>>> 593c60f6c1a505a05ab2faf39ecb2aca6f0ba22d
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
