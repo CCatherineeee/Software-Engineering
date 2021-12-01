@@ -368,7 +368,6 @@ class ClassGroup(db.Model):
     __tablename__ = 'class_group'
     group_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # 表明是主键  学生学号是7位，老师是5位
     class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),nullable=True) 
-    leader_s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='SET NULL'),) #组长id号
     seq_number = db.Column(db.Integer,nullable=True) #班级中的小组序号
 
 
@@ -616,5 +615,6 @@ class StudentGroup(db.Model):
     __tablename__ = 'student_group'
     group_id = db.Column(db.Integer,ForeignKey("class_group.group_id",ondelete='CASCADE') ,primary_key=True)
     s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
+    is_leader = db.Column(db.Integer,default = 0) #标志是否是组长，默认为0：不是
     def __repr__(self):
         return '<User %r>' % self.__tablename__
