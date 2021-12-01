@@ -99,7 +99,8 @@ def addTeacherManually():
 #手动添加助教
 @addUserRoute.route('/Register/addTAManually',methods=['POST'])  
 def addTAManually():
-    data = request.form
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
     name = data['name']
     ta_id = data['ta_id']
     email = data['email']

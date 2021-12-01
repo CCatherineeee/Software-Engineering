@@ -55,7 +55,7 @@ def changeTeacher():
         result = {'status':400,'message':'该课程或老师不存在'}
 
     return jsonify(result)
-@manageClassRoute.route('/manageClass/showClass',methods=['GET'])  
+@manageClassRoute.route('/manageClass/showClass/',methods=['POST'])  
 def showClass():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
@@ -92,26 +92,20 @@ def deleteClass():
 
     return jsonify(result)
 
-
-#根据学生学号获取所在的所有班级,班级信息
-@manageClassRoute.route('/manageClass/studentGetClass',methods=['POST'])  
-def studentGetClass():
+#根据老师工号获取所在的所有班级,班级信息
+@manageClassRoute.route('/manageClass/teacherGetClass',methods=['POST'])  
+def teacherGetClass():
 
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
 
-    s_id = data['s_id']  #学生学号
-    class_list = StudentClass.query.filter(StudentClass.s_id == s_id).all()
-    if not class_list:
-        return jsonify({'status':500,'message':'学生不存在'})
+    t_id = data['t_id']  #老师学号
+    class_list = Class.query.filter(Class.t_id == t_id).all()
     all_class = []
     for class_item in class_list:
         this_class = Class.query.filter(Class.class_id == class_item.class_id).first()
         course_type = CourseType.query.filter(CourseType.prefix == this_class.course_id[:6]).first()
         teacher = Teacher.query.filter(Teacher.t_id==this_class.t_id).first()
-        #看看这个课程是否存在
-        if not course_type:
-            return jsonify({'status':400,'message':'课程不存在'})
         if(this_class.course_id[10:12]=='00'):
             semester = '春季'
         else:
@@ -128,34 +122,7 @@ def studentGetClass():
         all_class.append(data)
 
     return jsonify(all_class)
-
-#根据老师工号获取所在的所有班级,班级信息
-@manageClassRoute.route('/manageClass/teacherGetClass',methods=['POST'])  
-def teacherGetClass():
-
-    data = request.get_data()
-    data = json.loads(data.decode("utf-8"))
-
-    t_id = data['t_id']  #老师学号
-    class_list = Class.query.filter(Class.t_id == t_id).all()
-    all_class = []
-    for class_item in class_list:
-        this_class = Class.query.filter(Class.class_id == class_item.class_id).first()
-        course_type = CourseType.query.filter(CourseType.prefix == this_class.course_id[:6]).first()
-        teacher = Teacher.query.filter(Teacher.t_id==this_class.t_id).first()
-        
-        data = {
-            'class_id':class_item.class_id,
-            'class_number':this_class.class_number,
-            'prefix':course_type.prefix,
-            'semester':this_class.semester,
-            'year':this_class.course_id[6:10],
-            'course_name':course_type.ct_name,
-            'teacher':teacher.name}
-        all_class.append(data)
-
-    return jsonify(all_class)
-
+    
 #通过班级号获取所有班级内信息
 @manageClassRoute.route('/manageClass/IDGetClass',methods=['POST'])  
 def IDGetClass():

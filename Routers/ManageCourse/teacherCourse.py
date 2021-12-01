@@ -15,7 +15,7 @@ teacherCourseRoute = Blueprint('teacherCourseRoute', __name__)
 CORS(teacherCourseRoute, resources=r'/*')	
 
 @teacherCourseRoute.route('/course/myDuty/',methods=['GET'])  
-def addCourseType():
+def getMyDuty():
     t_id = request.args.get('t_id')
     courses = Course.query.filter(Course.duty_teacher == t_id).all()
     content = []

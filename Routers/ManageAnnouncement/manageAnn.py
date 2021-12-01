@@ -30,9 +30,19 @@ def getSysAnn():
     annS = dbManage.db.session.query(SystemAnnouncement).all()
     content = []
     for ann in annS:
-        temp = {'title':ann.title,'content':ann.content,'date':ann.create_time}
+        temp = {'title':ann.title,'content':ann.content,'date':ann.create_time,'annoucement_id':ann.annoucement_id}
         content.append(temp)
     return jsonify(content)
+
+@manageAnnRoute.route('/sys/delAnn/',methods=['POST'])
+def delSysAnn():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    an_id = data['annoucement_id']
+    ann = SystemAnnouncement.query.filter(SystemAnnouncement.annoucement_id == an_id).first()
+    dbManage.db.session.delete(ann) 
+    dbManage.db.session.commit()
+    return "success"
 
 @manageAnnRoute.route('/course/addAnn/',methods=['POST'])  
 def addCourseAnn():
