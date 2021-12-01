@@ -92,27 +92,6 @@ def deleteClass():
 
     return jsonify(result)
 
-#责任教师更改班级授课老师
-@manageClassRoute.route('/changeTeacher/',methods=['POST'])  
-def changeTeacher():
-    
-    data = request.get_data()
-    data = json.loads(data.decode("utf-8"))
-
-    class_id = data['class_id']  #课程号前缀
-    t_id = data['t_id'] #老师工号
-
-    this_class = Class.query.filter(Class.class_id == class_id).first()
-
-    if this_class:
-        this_class.t_id = t_id
-        # dbManage.db.session.(teacher_class)
-        dbManage.db.session.commit()
-        result = {'status':200,'message':'更改成功'}
-    else:
-        result = {'status':400,'message':'该课程或老师不存在'}
-
-    return jsonify(result)
 
 #根据学生学号获取所在的所有班级,班级信息
 @manageClassRoute.route('/manageClass/studentGetClass',methods=['POST'])  
