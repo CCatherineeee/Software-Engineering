@@ -32,10 +32,29 @@ def getReport():
 def scoreReport():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
+    t_id = data['t_id']  #批改的老师的id
     s_id = data['s_id']
     ex_id = data['ex_id']
     score = data['score']
     se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
     se.score = score
+    teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
+    se.grader = teacher.name
+    dbManage.db.session.commit()
+    return "success"
+
+
+@teaExperimentRoute.route('/tea/Ex/taScoreReport/',methods=['POST'])  
+def taScoreReport():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ta_id = data['ta_id']  #批改的老师的id
+    s_id = data['s_id']
+    ex_id = data['ex_id']
+    score = data['score']
+    se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
+    se.score = score
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
+    se.grader = ta.name
     dbManage.db.session.commit()
     return "success"
