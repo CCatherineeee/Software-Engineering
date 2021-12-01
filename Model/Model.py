@@ -139,7 +139,7 @@ class Teacher(UserMixin,db.Model):
         return True
 
 
-class Admin(db.Model):
+class Admin(db.Model): 
     """
     类描述：管理员，管理员的ID为4位
 
@@ -370,6 +370,42 @@ class ClassGroup(db.Model):
     class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),nullable=True) 
     seq_number = db.Column(db.Integer,nullable=True) #班级中的小组序号
 
+class StudentMessage(db.Model):
+    """
+    类描述：学生信息表，主码自增
+    """
+    __tablename__ = 'student_message'
+    stu_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'))
+    tilte = db.Column(db.String(100)) 
+    content = db.Column(db.String(300)) 
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+    is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
+
+class TeacherMessage(db.Model):
+    """
+    类描述：教师信息，主码自增
+    """
+    __tablename__ = 'teacher_message'
+    tea_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    t_id = db.Column(db.String(64), ForeignKey('teacher.t_id',ondelete='CASCADE'))
+    tilte = db.Column(db.String(100)) 
+    content = db.Column(db.String(300)) 
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+    is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
+
+
+class TAMessage(db.Model):
+    """
+    类描述：助教信息表，主码自增
+    """
+    __tablename__ = 'ta_message'
+    ta_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    ta_id = db.Column(db.String(64), ForeignKey('teaching_assistant.ta_id',ondelete='CASCADE'))
+    tilte = db.Column(db.String(100)) 
+    content = db.Column(db.String(300)) 
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
+    is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
 
 """
 

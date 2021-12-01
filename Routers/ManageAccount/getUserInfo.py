@@ -1,3 +1,4 @@
+import re
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint,current_app,make_response
@@ -67,6 +68,18 @@ def getTAnfo():
     content.append(temp)
     return jsonify(content)
 
+@getUserInfoRoute.route('/getUserInfo/getAllTA',methods=['GET'])  
+def getAllTA():
+    TAList = TeachingAssistant.query.all()
+    result = []
+    num = 0
+    for item in TAList:
+        TAdata = {'num':num,'ta_id':item.ta_id}
+        num+=1
+        result.append(TAdata)
+
+    return jsonify(result)
+
 # show photo
 @getUserInfoRoute.route('/getUserInfo/Student/showAvatar', methods=['POST'])
 def showAvartar():
@@ -92,3 +105,4 @@ def showAvartar():
         return jsonify(pic_url)
     else:
         pass
+
