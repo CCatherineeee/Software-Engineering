@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Student
+from Model.Model import Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
@@ -20,6 +20,18 @@ def deleteStudent():
     if not student:
         return "NotExist"
     dbManage.db.session.delete(student)
+    dbManage.db.session.commit()
+    return "Success"
+
+@deleteUserRoute.route('/delete/Ta/',methods=['POST'])  
+def deleteTA():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    data = data['ta_id']
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id == data).first()    
+    if not ta:
+        return "NotExist"
+    dbManage.db.session.delete(ta)
     dbManage.db.session.commit()
     return "Success"
 

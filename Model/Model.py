@@ -449,9 +449,9 @@ class StudentExperiment(db.Model):
     """
     __tablename__ = 'student_experiment'
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
-    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'))
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'),primary_key=True)
     file_url = db.Column(db.String(1024))
-    score = db.Column(db.Integer)
+    score = db.Column(db.Float)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 

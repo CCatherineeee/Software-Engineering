@@ -55,6 +55,18 @@ def getTeacherInfo():
     content.append(temp)
     return jsonify(content)
 
+@getUserInfoRoute.route('/getUserInfo/TA/',methods=['GET'])  
+def getTAnfo():
+    ta_id = request.args.get('ta_id')
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
+    temp = {}
+    if ta:
+        temp = {'ta_id':ta.ta_id,'name':ta.name,
+            'is_active':ta.is_active,'email':ta.email}
+    content = [] 
+    content.append(temp)
+    return jsonify(content)
+
 # show photo
 @getUserInfoRoute.route('/getUserInfo/Student/showAvatar', methods=['POST'])
 def showAvartar():

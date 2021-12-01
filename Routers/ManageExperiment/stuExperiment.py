@@ -71,12 +71,20 @@ def showReport():
     filename = se.file_url.split(path+'/')[1]    
     return send_from_directory(path,filename,as_attachment=True)
 
-"""
+
 @studentExperimentRoute.route('/class/showEx/',methods=['POST'])  
 def showEx():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     s_id = data['s_id']
     class_id = data['class_id']
-    return "ok"
-"""
+    class_ = Class.query.filter(Class.class_id == class_id).first()
+    course_id = class_.course_id
+    Exs = Experiment.query.filter(Experiment.course_id == course_id).all()
+    content = []
+    for ex in Exs:
+        se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex.experiment_id).first()
+        temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":ex.end_time, "weight":ex.weight, "score": se.score}
+        content.append(temp)
+    return jsonify(content)
+    
