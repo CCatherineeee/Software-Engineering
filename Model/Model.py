@@ -360,6 +360,18 @@ class TeachingAssistant(db.Model):
         self.is_active = 1
         db.session.add(self)
         return True
+
+class ClassGroup(db.Model):
+    """
+    类描述：小组表，主码为小组ID，自增
+    """
+    __tablename__ = 'class_group'
+    group_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # 表明是主键  学生学号是7位，老师是5位
+    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'),nullable=True) 
+    leader_s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='SET NULL'),) #组长id号
+    seq_number = db.Column(db.Integer,nullable=True) #班级中的小组序号
+
+
 """
 
 class AnnouncementCourse(db.Model):
@@ -451,7 +463,12 @@ class StudentExperiment(db.Model):
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
     s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'),primary_key=True)
     file_url = db.Column(db.String(1024))
+<<<<<<< HEAD
     score = db.Column(db.Float)
+=======
+    score = db.Column(db.Integer)
+    grader = db.Column(db.String(64))  #批改人姓名，不是ID
+>>>>>>> 593c60f6c1a505a05ab2faf39ecb2aca6f0ba22d
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -593,3 +610,15 @@ class TAClass(db.Model):
     __tablename__ = 'ta_class'
     ta_id = db.Column(db.String(64),ForeignKey("teaching_assistant.ta_id",ondelete='CASCADE') ,primary_key=True)
     class_id = db.Column(db.String(256), ForeignKey("class.class_id",ondelete='CASCADE'),primary_key=True)
+    def __repr__(self):
+        return '<course_file %r>' % self.__tablename__
+
+class StudentGroup(db.Model):
+    """
+    类描述：学生-小组表，联系表
+    """
+    __tablename__ = 'student_group'
+    group_id = db.Column(db.Integer,ForeignKey("class_group.group_id",ondelete='CASCADE') ,primary_key=True)
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'),primary_key=True)
+    def __repr__(self):
+        return '<User %r>' % self.__tablename__
