@@ -56,10 +56,13 @@ export default {
       });
     },
     checkResponse(response){
-      var code = response['code']
-      if(code === 404){
-        this.$message("页面错误")
+      if(response['code'] === 404){
+        this.$message("找不到页面")
         this.$router.push({path:"/404"})
+      }
+      else if(response['code'] === 301){
+        this.$message("验证过期")
+        this.$router.push({path:"/login"})
       }
       else{
         this.courseData = response['data']
@@ -75,7 +78,7 @@ export default {
               }),
     ).then((response) => {
       //这里使用了ES6的语法
-      //console.log(response)
+      console.log(response.data)
       this.checkResponse(response.data); //请求成功返回的数据
     })
   }

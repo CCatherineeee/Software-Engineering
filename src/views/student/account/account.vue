@@ -85,10 +85,8 @@ export default {
 
     getStuInfo() {
       this.axios
-        .get("/api/getUserInfo/Student/", {
-          params: { s_id: this.id ,token:sessionStorage.getItem('token')},
-          crossDomain: true,
-        })
+        .post("/api/getUserInfo/Student/",
+          JSON.stringify({ s_id: this.id ,token:sessionStorage.getItem('token')}))
         .then((response) => {
           console.log(response.data['data']);
           if(response.data['code'] === 301) {
