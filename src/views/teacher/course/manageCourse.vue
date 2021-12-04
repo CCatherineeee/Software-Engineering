@@ -195,7 +195,7 @@ export default {
           this.$router.push({path:"/login"})
         }
         else{
-          this.tableData = response.data //请求成功返回的数据
+          this.tableData = response.data['data'] //请求成功返回的数据
         }
       });
     },
