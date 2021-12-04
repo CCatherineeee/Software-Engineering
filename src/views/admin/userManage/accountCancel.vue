@@ -130,7 +130,7 @@ export default {
     cancelOneAccount(row) {
       //注销单个账户
       console.log("id==" + row.id);
-      if (row.role == 1) {
+      if (row.role === 1) {
         axios
           .post(
             "/api/delete/student/",
@@ -144,7 +144,7 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      } else if (row.role == 2) {
+      } else if (row.role === 2) {
         axios
           .post(
             "/api/delete/teacher/",
@@ -159,7 +159,6 @@ export default {
             console.log(error);
           });
       }
-      //location.reload();
     },
 
     cancelSomeAccount() {
@@ -188,7 +187,7 @@ export default {
             message: "注销成功!",
           });
           //document.execCommand("Refresh");
-          location.reload();
+          //location.reload();
         })
         .catch(() => {
           this.$message({

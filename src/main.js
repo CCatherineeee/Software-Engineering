@@ -13,6 +13,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/dist/vuetify.min.css'
 import vueToPdf from 'vue-to-pdf'
 import htmlToPdf from '@/components/Utils/htmlToPdf'
+import Base64 from '../js/base64.js'
 
 Vue.use(VueAxios, axios)
 //让Vue使用ElementUI
@@ -20,6 +21,8 @@ Vue.use(ElementUI)
 Vue.use(Vuetify)
 Vue.use(vueToPdf);
 Vue.use(htmlToPdf)
+Vue.prototype.$Base64 = Base64;
+
 
 Vue.config.productionTip = false
 

@@ -15,9 +15,12 @@
                 <div>
                   <v-card-title
                     class="text-h5"
-                    v-text="item.title"
-                  ></v-card-title>
-
+                    v-text="item.name + '\t' + item.class_id "
+                  >
+                  </v-card-title>
+                  <v-card-text
+                      v-text=" '教师工号：' + item.t_id + '\t' + '教师姓名：' + item.t_name ">
+                  </v-card-text>
                   <v-card-subtitle v-text="item.respondTea"></v-card-subtitle>
 
                   <v-card-actions>
@@ -89,7 +92,7 @@
               <el-tag size="small">学校</el-tag>
             </el-descriptions-item>
           </el-descriptions>
-          <v-textarea v-model="syllabus" color="teal" label="教学大纲" filled>
+          <v-textarea v-model="syllabus" color="white" label="课程简介" filled>
           </v-textarea>
 
           <v-row dense>
@@ -97,7 +100,7 @@
               <v-card color="#1F7087" dark>
                 <v-card-title v-text="item.title"></v-card-title>
 
-                <v-card-subtitle v-text="item.proportion"> </v-card-subtitle>
+                <v-card-subtitle v-text="'占比:' + item.weight"> </v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn text @click="handleProportion"> 设置占比 </v-btn>
@@ -161,18 +164,7 @@ export default {
       fileDialog: false,
       courseID:"",
       classList: [],
-      experList: [
-        {
-          title: "实验名称",
-          proportion: "10%",
-          id: "1",
-        },
-        {
-          title: "实验名称",
-          proportion: "10%",
-          id: "2",
-        },
-      ],
+      experList: [],
       fileList: [],
       teacherExist: [],
       timeout: null,
@@ -274,27 +266,30 @@ export default {
       })
     },
     getClasses(){
-      this.courseID = this.$route.params.courseID;
-      this.axios.get('/api/showClass',{
-        params:{
-          courseID : this.courseID
-        }
-      }).then((response) => {
+      this.axios.post('/api/manageClass/showClass/',JSON.stringify({
+        courseID : this.courseID
+      })).then((response) => {
+        console.log(response.data)
         this.classList = response.data
       });
     },
-    handleDeleteExper() {
+    handleDeleteExper(item) {
       this.$confirm("确认删除实验吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          document.execCommand("Refresh");
+          this.axios.post("/api/course/delEx/",JSON.stringify({
+            ex_id : item.ex_id
+          })).then(() => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getExper()
+          })
+
         })
         .catch(() => {
           this.$message({
@@ -303,10 +298,19 @@ export default {
           });
         });
     },
-
+    getExper(){
+      this.axios.post('/api/course/getEx/',JSON.stringify({
+        c_id : this.courseID
+      })).then((response) => {
+        console.log(response.data)
+        this.experList = response.data
+      });
+    }
   },
   mounted() {
+    this.courseID = JSON.parse(this.$Base64.decode(this.$route.query.info))['courseID']
     this.getClasses();
+    this.getExper()
   },
 };
 </script>

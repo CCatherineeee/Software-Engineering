@@ -9,8 +9,8 @@
         ></v-img>
 
         <v-card-title>
-          {{ index.name }}
-          {{index.prefix }}
+          {{ index.course_name }}
+          {{index.class_id }}
           <v-spacer></v-spacer>
 
         </v-card-title>
@@ -54,17 +54,27 @@ export default {
       this.id = sessionStorage.getItem('id');
     },
     getCourse(){
-      this.axios.get('/api/course/myDuty/',{
-        params:{
-          t_id : this.id
+      this.axios.post('/api/manageClass/teacherGetClass',JSON.stringify({
+        t_id : sessionStorage.getItem('id'),
+        token : sessionStorage.getItem('token')
+      })).then((response) => {
+        if(response.data['code'] == 404){
+          this.$message("找不到页面")
+          this.$router.push({path:"/404"})
         }
-      }).then((response) => {
-        this.courseData = response.data //请求成功返回的数据
+        else if(response.data['code'] == 301){
+          this.$message("验证过期")
+          this.$router.push({path:"/login"})
+        }
+        this.courseData = response.data['data'] //请求成功返回的数据
       });
     },
 
     toCourse(index) {
-      this.$router.push({path:"/teacherHome/concreteCourse",params:{courseID:index.course_id}});
+      this.$router.push({path:"/teacherHome/concreteCourse",
+        query:{
+          info : this.$Base64.encode(JSON.stringify({"class_id" : index.class_id}))}
+      });
     },
   },
   mounted() {

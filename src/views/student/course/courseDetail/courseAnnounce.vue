@@ -5,7 +5,7 @@
         v-for="(data, index) in dataTable"
         :key="index"
         placement="top"
-        :timestamp="data.time"
+        :timestamp="data.date"
       >
         <el-card
           style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15); margin-right: 20%"
@@ -34,26 +34,8 @@ export default {
       title: "",
       content: "",
       dialogVisible: false,
-      dataTable: [
-        {
-          time: "时间1",
-          title: "标题1",
-          content: "内容1",
-          name: "人1",
-        },
-        {
-          time: "2",
-          title: "2.1",
-          content: "2.2",
-          name: "2.3",
-        },
-        {
-          time: "3",
-          title: "3.1",
-          content: "3.2",
-          name: "3.3",
-        },
-      ],
+      dataTable: [],
+      class_id : ""
     };
   },
   methods: {
@@ -63,5 +45,18 @@ export default {
       this.dialogVisible = true;
     },
   },
+  mounted() {
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
+    this.axios.post(
+        "/api/course/getAnn/",JSON.stringify(
+            {
+              class_id : this.class_id,
+            }),
+    ).then((response) => {
+      //这里使用了ES6的语法
+      this.dataTable = response.data
+      //this.checkResponse(response.data); //请求成功返回的数据
+    })
+  }
 };
 </script>

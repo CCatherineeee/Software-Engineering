@@ -79,29 +79,37 @@ export default {
   },
   methods: {
     getParams: function () {
-      // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
-      // 将数据放在当前组件的数据内
-      console.log("传来的参数==" + routerParams);
-      this.id = routerParams;
+
+      this.id = sessionStorage.getItem('id');
     },
 
     getStuInfo() {
       this.axios
         .get("/api/getUserInfo/Student/", {
-          params: { s_id: this.id },
+          params: { s_id: this.id ,token:sessionStorage.getItem('token')},
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response.data);
-          this.name = response.data[0].name;
-          this.gender = response.data[0].gender;
-          this.phone_number = response.data[0].phone_number;
-          this.email = response.data[0].email;
-          this.is_active = response.data[0].is_active;
-          //this.role = response.data[0].role;
-          this.department = response.data[0].department;
-          //this.major_id;
+          console.log(response.data['data']);
+          if(response.data['code'] === 301) {
+            this.$message("验证过期")
+            this.$router.push({path:"/login"})
+          }
+          else if(response.data['code'] === 404) {
+            this.$message("找不到页面")
+            this.$router.push({path:"/404"})
+          }
+          else {
+
+            this.name = response.data['data'][0].name;
+            this.gender = response.data['data'][0].gender;
+            this.phone_number = response.data['data'][0].phone_number;
+            this.email = response.data['data'][0].email;
+            this.is_active = response.data['data'][0].is_active;
+            //this.role = response.data[0].role;
+            this.department = response.data['data'][0].department;
+            //this.major_id;
+          }
         })
         .catch(function (error) {
           console(error);
@@ -110,9 +118,7 @@ export default {
 
     modifyAccount() {
       this.$router.push({
-        path: "/studentHome/modifyAccount",
-        query: { id: this.id },
-      });
+        path: "/studentHome/modifyAccount"});
     },
   },
   mounted() {

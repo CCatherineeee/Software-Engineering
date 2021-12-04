@@ -10,24 +10,20 @@
           ></v-img>
 
           <v-card-title>
-            {{ index.title }}
+            <b>{{ index.course_name }}      {{  index.class_id  }}</b>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2" color="red" dark float="right">
-              {{ index.role }}
-            </v-btn>
+            <br />
+            <p>{{ index.year}}年      {{  index.semester  }}</p>
           </v-card-title>
 
           <v-card-subtitle> {{ index.place }}{{ index.time }}</v-card-subtitle>
 
           <v-card-actions>
-            <v-btn color="orange lighten-2" @click="toCourse"> 查看 </v-btn>
+            <v-btn color="orange lighten-2" @click="toCourse(index)"> 查看 </v-btn>
 
             <v-spacer></v-spacer>
 
             <v-btn icon @click="show = !show">
-              <v-icon>{{
-                show ? "mdi-chevron-up" : "mdi-chevron-down"
-              }}</v-icon>
             </v-btn>
           </v-card-actions>
 
@@ -49,38 +45,39 @@ export default {
   data() {
     return {
       show: false,
-      courseData: [
-        {
-          title: "课程名称1",
-          place: "上课地点1",
-          time: "上课时间1",
-          role: "责任教师",
-        },
-        {
-          title: "课程名称2",
-          place: "上课地点2",
-          time: "上课时间2",
-          role: "教师",
-        },
-        {
-          title: "课程名称3",
-          place: "上课地点3",
-          time: "上课时间3",
-          role: "教师",
-        },
-        {
-          title: "课程名称4",
-          place: "上课地点4",
-          time: "上课时间4",
-          role: "责任教师",
-        },
-      ],
+      courseData: [],
     };
   },
   methods: {
-    toCourse() {
-      this.$router.push("/studentHome/concreteCourse");
+    toCourse(index) {
+      this.$router.push({path:"/studentHome/concreteCourse",
+        query:{
+        info : this.$Base64.encode(JSON.stringify({"class_id" : index.class_id}))}
+      });
     },
+    checkResponse(response){
+      var code = response['code']
+      if(code === 404){
+        this.$message("页面错误")
+        this.$router.push({path:"/404"})
+      }
+      else{
+        this.courseData = response['data']
+      }
+    }
   },
+  mounted() {
+    this.axios.post(
+          "/api/studentGetClass",JSON.stringify(
+              {
+                s_id : sessionStorage.getItem('id'),
+                token: sessionStorage.getItem('token'),
+              }),
+    ).then((response) => {
+      //这里使用了ES6的语法
+      //console.log(response)
+      this.checkResponse(response.data); //请求成功返回的数据
+    })
+  }
 };
 </script>

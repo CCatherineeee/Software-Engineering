@@ -10,9 +10,9 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="name" label="实验名称" sortable />
-        <el-table-column prop="release" label="发布日期" sortable />
-        <el-table-column prop="deadline" label="截止日期" sortable />
+        <el-table-column prop="title" label="实验名称" sortable />
+        <el-table-column prop="end_time" label="发布日期" sortable />
+        <el-table-column prop="weight" label="权重" sortable />
 
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -47,7 +47,8 @@ export default {
       sid: "",
       currentPage: 1,
       pagesize: 6,
-      tableData: [{ name: "1", release: "2021.11.1", deadline: "2022.2.2" }],
+      tableData: [],
+      class_id : ""
     };
   },
   methods: {
@@ -72,9 +73,27 @@ export default {
         query: { sid: this.sid },
       });
     },
+    checkResponse(response){
+
+      for(var i=0; i<response.length;i++){
+        if (response[i]['status'] == 0){
+          this.tableData.add(response[i])
+        }
+      }
+    }
   },
   mounted() {
-    //获取所有实验信息
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
+    this.axios.post(
+        "/api/course/getEx/",JSON.stringify(
+            {
+              c_id : this.class_id.substring(0,12)
+            }),
+    ).then((response) => {
+      //这里使用了ES6的语法
+      //this.tableData = response.data
+      this.checkResponse(response.data); //请求成功返回的数据
+    })
   },
 };
 </script>

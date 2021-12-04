@@ -20,7 +20,7 @@
           >
             <el-card>
               <h2>{{ data.title }}</h2>
-              <el-link @click="handleTitle(data)">{{ data.content }}</el-link>
+              <p v-html="data.content"></p>
 
               <el-button
                 type="danger"
@@ -28,7 +28,7 @@
                 circle
                 size="mini"
                 style="float: right; margin-left: 5px"
-                @click="handleDelete(data.id)"
+                @click="handleDelete(data.ann_id)"
               ></el-button>
 
               <el-button
@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -104,26 +106,8 @@ export default {
       content: "",
       dialogVisible: false,
       dialogAddVisible: false,
-      dataTable: [
-        {
-          time: "时间1",
-          title: "标题1",
-          content: "内容1",
-          name: "人1",
-        },
-        {
-          time: "2",
-          title: "2.1",
-          content: "2.2",
-          name: "2.3",
-        },
-        {
-          time: "3",
-          title: "3.1",
-          content: "3.2",
-          name: "3.3",
-        },
-      ],
+      class_id : "",
+      dataTable: [],
       formAnn: {
         title: "",
         content: "",
@@ -157,7 +141,12 @@ export default {
           });
         });
     },
-    deleteAnnounce() {},
+    deleteAnnounce(row) {
+      axios.post("/api/course/delAnn/",JSON.stringify({
+        ann_id : row
+      }))
+      this.getAnn()
+    },
     modifyAnn(content) {
       this.dataTable.content = content;
       this.dialogVisible = false;
@@ -168,7 +157,35 @@ export default {
     },
     addAnn() {
       this.dialogAddVisible = false;
+      console.log(this.formAnn.content)
+      this.axios.post("/api/course/addAnn/",JSON.stringify({
+        class_id : this.class_id,
+        title : this.formAnn.title,
+        content : this.formAnn.content.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+      }))
+      this.getAnn()
+      this.formAnn.title = ""
+      this.formAnn.content = ""
+      this.$message("添加成功！")
+
     },
+    getAnn(){
+      this.axios.post(
+          "/api/course/getAnn/",JSON.stringify(
+              {
+                class_id : this.class_id,
+              }),
+      ).then((response) => {
+        //这里使用了ES6的语法
+        console.log(response.data)
+        this.dataTable = response.data
+        //this.checkResponse(response.data); //请求成功返回的数据
+      })
+    }
   },
+  mounted() {
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
+    this.getAnn()
+  }
 };
 </script>

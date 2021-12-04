@@ -4,10 +4,8 @@
     <el-container>
       <el-aside width="120px" class="lBack">
         <el-menu
-          default-active="2"
-          @open="handleOpen"
-          @close="handleClose"
-          router
+            :default-active="activeIndex"
+            @select="handleSelect"
         >
           <el-menu-item index="/teacherHome/concreteCourse/Ann">
             <span slot="title">公告</span>
@@ -67,20 +65,22 @@
 export default {
   data() {
     return {
-      id : "",
-      courseID : ""
+      activeIndex : "",
+      class_id : ""
     };
   },
   methods: {
-    getParams: function () {
-      this.id = sessionStorage.getItem('id');
-      this.courseID = this.$route.params.courseID;
-    },
+    handleSelect(index){
+      this.$router.push({path:index,
+        query:{
+          info : this.$Base64.encode(JSON.stringify({"class_id" : this.class_id}))}
+      });
+    }
 
   },
   mounted() {
-    this.getParams();
-    this.getCourse();
+    this.activeIndex = this.$route.path;
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
   },
 };
 </script>

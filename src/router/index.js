@@ -9,7 +9,6 @@ import Login from '../views/login/Login.vue'
 import AdminLogin from '../views/login/AdminLogin.vue'
 import Register from '../views/login/Register.vue'
 
-
 import StuConcreteCourse from '../views/student/course/concreteCourse.vue'
 import TeaConcreteCourse from '../views/teacher/course/concreteCourse.vue'
 
@@ -18,6 +17,11 @@ import TeaConcreteCourse from '../views/teacher/course/concreteCourse.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/404',
+    name: '404',
+    component: ()=> import('../404')
+  },
   {
     path: '/login',
     name: 'Login',
@@ -41,6 +45,7 @@ const routes = [
     component: StudentHome,
     children: [
       //学生账户
+      { path: '/studentHome/control',component: ()=> import('../views/student/Control')},
       { path: '/studentHome/account', component: () => import('../views/student/account/account.vue') },
       { path: '/studentHome/modifyAccount', component: () => import('../views/student/account/modifyAccount.vue') },
       { path: '/studentHome/modifyPassword', component: () => import('../views/student/account/passwordModify.vue') },
@@ -56,8 +61,6 @@ const routes = [
           { path: '/studentHome/concreteCourse/ConExper', component: () => import('../views/student/course/experiment/experiment.vue') },
           { path: '/studentHome/concreteCourse/FillExper', component: () => import('../views/student/course/experiment/experimentFill.vue') },
           { path: '/studentHome/concreteCourse/File', component: () => import('../views/student/course/courseDetail/courseFile.vue') },
-
-
         ]
       },
       { path: '/studentHome/accounce', component: () => import('../views/announce/announce.vue') },
@@ -108,6 +111,7 @@ const routes = [
     name: 'TeacherHome',
     component: TeacherHome,
     children: [
+      { path: '/teacherHome/control', component: () => import('../views/teacher/Control') },
       { path: '/teacherHome/control', component: () => import('../views/teacher/Control') },
       //账户
       { path: '/teacherHome/account', component: () => import('../views/teacher/account/account.vue') },

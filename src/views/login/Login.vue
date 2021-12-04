@@ -115,21 +115,23 @@ export default {
     },
     checkResponse(response){
       sessionStorage.setItem('id',this.ruleForm.id);
+      //console.log(response['status'])
+      sessionStorage.setItem('token',response['token']);
 
-      if(response === "TSuccess") {
-        sessionStorage.setItem('role','1')
+      if(response['status'] === "TSuccess") {
         this.$message("登陆成功！");
+        sessionStorage.setItem('role',2);
         this.$router.push("/teacherHome/control");
       }
-      else if(response === "SSuccess"){
-        sessionStorage.setItem('role','2')
+      else if(response['status'] === "SSuccess"){
         this.$message("登陆成功！");
+        sessionStorage.setItem('role',1);
         this.$router.push("/studentHome/control");
       }
-      else if(response === "PasswordWrong"){
+      else if(response['status'] === "PasswordWrong"){
         this.$message("密码错误！");
       }
-      else if(response === "UserNotExist"){
+      else if(response['status'] === "UserNotExist"){
         this.$message("用户不存在！");
       }
     },
@@ -145,19 +147,16 @@ export default {
           headers: { "Content-Type": "multipart/form-data" },
         };
         */
-
-        console.log(typeof(this.ruleForm.id))
-        console.log(this.ruleForm)
         this.axios
           .post(
             "/api/login/",JSON.stringify({
                 id : this.ruleForm.id,
                 password : this.ruleForm.password
               })
-
           )
           .then((response) => {
             //这里使用了ES6的语法
+            //console.log(response)
             this.checkResponse(response.data); //请求成功返回的数据
           });
       }

@@ -19,7 +19,7 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="id" label="学号" sortable />
+        <el-table-column prop="s_id" label="学号" sortable />
         <el-table-column prop="name" label="姓名" sortable />
         <el-table-column
           prop="role"
@@ -82,28 +82,8 @@ export default {
       activeName: "first",
       searcP: "",
       searcG: "",
-      tableData: [
-        {
-          name: "王小虎",
-          id: "2016-05-02",
-          role: 1,
-        },
-        {
-          id: "2016-05-04",
-          name: "王小虎",
-          role: 1,
-        },
-        {
-          id: "2016-05-01",
-          name: "王小虎",
-          role: 2,
-        },
-        {
-          id: "2016-05-03",
-          name: "王小虎",
-          role: 2,
-        },
-      ],
+      class_id : "",
+      tableData: [],
       groupData: [
         {
           leader: "组长",
@@ -139,6 +119,20 @@ export default {
       return row[property] === value;
     },
   },
+  mounted() {
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
+    this.axios.post(
+        "/api/manageClass/IDGetClassStudent",JSON.stringify(
+            {
+              class_id : this.class_id,
+            }),
+    ).then((response) => {
+      //这里使用了ES6的语法
+      //this.tableData = response.data
+      this.tableData = response.data['data']
+      //this.checkResponse(response.data); //请求成功返回的数据
+    })
+  }
 };
 </script>
 

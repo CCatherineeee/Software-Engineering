@@ -91,7 +91,7 @@ export default {
           type: "warning",
           message: "课程名称和id不能为空!",
         });
-      } else if (this.isExist) {
+      } else if (this.isExist()) {
         this.$message({
           type: "warning",
           message: "该课程已存在!",

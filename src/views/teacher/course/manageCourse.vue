@@ -31,9 +31,6 @@
           <el-button size="small" @click="handleManage(scope.row)"
             >课程管理</el-button
           >
-          <el-button size="small" @click="handleManage(scope.row)"
-            >课程管理</el-button
-          >
         </template>
       </el-table-column>
     </el-table>
@@ -138,10 +135,11 @@ export default {
     },
 
     handleManage(row) {
-      console.log(row);
+      console.log(row.course_id);
       this.$router.push({
         path: "/teacherHome/courseClass",
-        query: { id: row.id },
+        query:{
+          info : this.$Base64.encode(JSON.stringify({"courseID" : row.course_id}))}
       });
     },
 

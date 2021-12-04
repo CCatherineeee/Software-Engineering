@@ -16,9 +16,6 @@
       style="width: 100%"
     >
       <el-table-column prop="title" label="文件名" sortable />
-      <el-table-column prop="upload" label="上传时间" sortable />
-      <el-table-column prop="modify" label="修改时间" sortable />
-      <el-table-column prop="author" label="修改者" sortable />
 
       <el-table-column>
         <template #header>
@@ -82,82 +79,8 @@ export default {
       currentPage: 1,
       pagesize: 6,
       dialog: false,
-      items: [
-        {
-          id: 1,
-          name: "我的文件",
-        },
-        {
-          id: 5,
-          name: "课程文件1",
-          children: [
-            {
-              id: 6,
-              name: "vuetify :",
-              children: [
-                {
-                  id: 7,
-                  name: "src :",
-                  children: [
-                    { id: 8, name: "index : ts" },
-                    { id: 9, name: "bootstrap : ts" },
-                  ],
-                },
-              ],
-            },
-            {
-              id: 10,
-              name: "material2 :",
-              children: [
-                {
-                  id: 11,
-                  name: "src :",
-                  children: [
-                    { id: 12, name: "v-btn : ts" },
-                    { id: 13, name: "v-card : ts" },
-                    { id: 14, name: "v-window : ts" },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 15,
-          name: "课程文件2",
-          children: [
-            { id: 16, name: "October : pdf" },
-            { id: 17, name: "November : pdf" },
-            { id: 18, name: "Tutorial : html" },
-          ],
-        },
-        {
-          id: 19,
-          name: "课程文件3",
-          children: [
-            {
-              id: 20,
-              name: "Tutorials :",
-              children: [
-                { id: 21, name: "Basic layouts : mp4" },
-                { id: 22, name: "Advanced techniques : mp4" },
-                { id: 23, name: "All about app : dir" },
-              ],
-            },
-            { id: 24, name: "Intro : mov" },
-            { id: 25, name: "Conference introduction : avi" },
-          ],
-        },
-      ],
-
-      tableData: [
-        {
-          title: "wenjian1",
-          upload: "1",
-          modify: "1",
-          author: "1",
-        },
-      ],
+      class_id : "",
+      tableData: [],
     };
   },
   methods: {
@@ -177,6 +100,19 @@ export default {
       console.log(row);
     },
   },
+  mounted() {
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
+    this.axios.post(
+        "/api/manageClassFileRoute/getClassFile",JSON.stringify(
+            {
+              class_id : this.class_id
+            }),
+    ).then((response) => {
+      //这里使用了ES6的语法
+      //this.tableData = response.data
+      this.tableData = response.data; //请求成功返回的数据
+    })
+  }
 };
 </script>
 

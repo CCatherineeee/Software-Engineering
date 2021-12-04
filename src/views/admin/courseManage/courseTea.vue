@@ -92,7 +92,7 @@ export default {
       teaDialog: false,
       courseList: [],
 
-      semesterList: ["Spring", "Autumn"],
+      semesterList: ["春季", "秋季"],
       teaList: [],
 
       prefix: "",
@@ -154,20 +154,30 @@ export default {
         prefix: this.prefix,
         t_id: this.t_id,
       };
+      console.log(jsons)
       axios
-        .post("/api/course/addDuty/", JSON.stringify(jsons))
+        .post("/api/course/addCourse/", JSON.stringify(jsons))
         .then(function (response) {
           console.log(response);
         })
         .catch(function (error) {
           console.log(error);
         });
-      location.reload();
+      //location.reload();
     },
   },
   mounted() {
     this.getAllCourse();
     this.getAllDutyTea();
+    this.axios
+        .get("/api/course/getAllTeacher/")
+        .then((response) => {
+          this.teaList = response.data;
+          console.log(this.teaList)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
   },
 };
 </script>

@@ -26,7 +26,7 @@
             >
               <el-form-item label="用户名" prop="userID" style="padding: auto">
                 <el-input
-                  v-model="ruleForm.username"
+                  v-model="ruleForm.userID"
                   type="text"
                   autocomplete="off"
                   placeholder="请输入用户名"
@@ -94,11 +94,11 @@ export default {
     };
     return {
       ruleForm: {
-        username: "",
+        userID: "",
         password: "",
       },
       rules: {
-        userName: [{ validator: validateName, trigger: "blur" }],
+        userID: [{ validator: validateName, trigger: "blur" }],
         password: [{ validator: validatePass, trigger: "blur" }],
       },
     };
@@ -108,7 +108,7 @@ export default {
       this.$router.go(0);
     },
     submitForm() {
-      if (this.ruleForm.userName === "" && this.ruleForm.password === "") {
+      if (this.ruleForm.userID === "" && this.ruleForm.password === "") {
         this.$message("账户和密码不能为空！");
       } else if (this.ruleForm.Name === "") {
         this.$message("请输入用户名！");
@@ -118,18 +118,24 @@ export default {
         let config = {
           headers: { "Content-Type": "multipart/form-data" },
         };
+        console.log(this.ruleForm)
         this.axios
           .post(
-            "/api/adminLogin/",
-            {
-              params: this.ruleForm,
-            },
+            "/api/adminLogin/",JSON.stringify({
+              userID: this.ruleForm.userID,
+                password:this.ruleForm.password
+              }),
             config
           )
           .then((response) => {
-            if (response.data == "UserNotExist");
-            if (response.data == "PasswordWrong");
-            if (response.data == "Login") {
+
+            if (response.data === "UserNotExist"){
+              this.$message("用户不存在！")
+            }
+            if (response.data === "PasswordWrong"){
+              this.$message("密码错误！")
+            }
+            if (response.data === "Login") {
               this.$message("登录成功！");
               this.$router.push("/adminHome");
             }

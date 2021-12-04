@@ -4,10 +4,8 @@
     <el-container>
       <el-aside width="120px" class="lBack">
         <el-menu
-          default-active="2"
-          @open="handleOpen"
-          @close="handleClose"
-          router
+            :default-active="activeIndex"
+            @select="handleSelect"
         >
           <el-menu-item index="/studentHome/concreteCourse/Ann">
             <span slot="title">公告</span>
@@ -29,11 +27,36 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main class="mBack"> <router-view></router-view></el-main>
+      <el-main class="mBack">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
+<script>
+export default {
+  data(){
+    return{
+      activeIndex : "",
+      class_id : ""
+    }
+  },
+  methods:{
+    handleSelect(index){
+      this.$router.push({path:index,
+        query:{
+          info : this.$Base64.encode(JSON.stringify({"class_id" : this.class_id}))}
+      });
+    }
+  },
+  mounted() {
+    this.activeIndex = this.$route.path;
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
+    console.log(this.class_id)
+  }
+}
+</script>
 <style scoped>
 .back {
   background: rgb(255, 255, 255);

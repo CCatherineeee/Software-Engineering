@@ -55,18 +55,62 @@ export default {
     return {
       userAccount: {
         name: "",
-        sid: 111,
+        sid: "",
         gender: "女",
-        phone: 111,
+        phone: "",
         email: "",
       },
     };
   },
   methods: {
-    save() {},
+    save() {
+      this.axios
+          .post("/api/editInfo/Student/", JSON.stringify(this.userAccount))
+          .then((response) => {
+            if(response.data == "Success"){
+              this.$message("修改成功")
+            }
+          });
+      this.getInfo();
+    },
     back() {
       this.$router.push("/studentHome/account");
     },
+    getInfo(){
+      this.axios
+          .get("/api/getUserInfo/Student/", {
+            params: { s_id: this.userAccount.sid ,token:sessionStorage.getItem('token')},
+            crossDomain: true,
+          })
+          .then((response) => {
+            if(response.data['code'] === 301) {
+              this.$message("验证过期")
+              this.$router.push({path:"/login"})
+            }
+            else if(response.data['code'] === 404) {
+              this.$message("找不到页面")
+              this.$router.push({path:"/404"})
+            }
+            else {
+
+              this.userAccount.name = response.data['data'][0].name;
+              this.userAccount.gender = response.data['data'][0].gender;
+              this.userAccount.phone_number = response.data['data'][0].phone_number;
+              this.userAccount.email = response.data['data'][0].email;
+              this.userAccount.is_active = response.data['data'][0].is_active;
+              //this.role = response.data[0].role;
+              this.userAccount.department = response.data['data'][0].department;
+              //this.major_id;
+            }
+          })
+          .catch(function (error) {
+            console(error);
+          });
+    }
   },
+  mounted() {
+    this.userAccount.sid = sessionStorage.getItem('id');
+    this.getInfo()
+  }
 };
 </script>

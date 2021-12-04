@@ -119,13 +119,15 @@ export default {
     handleAnn() {
       this.annAddDialog = true;
     },
-    handleDelete() {
+    handleDelete(row) {
       this.$confirm("确认删除公告吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
+          this.axios.post("/api/sys/delAnn/",JSON.stringify({"annoucement_id":row.annoucement_id}));
+          this.getAnn();
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -137,9 +139,10 @@ export default {
             message: "取消删除",
           });
         });
+
     },
     addAnn() {
-      if (this.form.title == "") {
+      if (this.form.title === "") {
         this.$message({
           type: "warning",
           message: "公告标题不能为空!",
@@ -160,20 +163,23 @@ export default {
     },
     handleCheck() {},
     checkAnnounce() {},
+    getAnn() {
+      axios
+          .get("/api/sys/getAnn/", {
+            //params: { userData: "value" },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log(response);
+            this.announceData = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
   },
   mounted() {
-    axios
-      .get("/api/sys/getAnn/", {
-        //params: { userData: "value" },
-        crossDomain: true,
-      })
-      .then((response) => {
-        console.log(response);
-        this.announceData = response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    this.getAnn()
   },
 };
 </script>
