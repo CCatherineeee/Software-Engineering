@@ -155,6 +155,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -238,18 +239,21 @@ export default {
       };
     },
 
-    handleDeleteClass() {
+    handleDeleteClass(item) {
       this.$confirm("确认删除班级吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
+          this.axios.post("/api/manageClass/deleteClass",JSON.stringify({
+            classID : item.class_id
+          })).then()
           this.$message({
             type: "success",
             message: "删除成功!",
           });
-          document.execCommand("Refresh");
+          this.getClasses()
         })
         .catch(() => {
           this.$message({

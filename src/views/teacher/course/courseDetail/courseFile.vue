@@ -16,10 +16,9 @@
       "
       style="width: 100%"
     >
-      <el-table-column prop="title" label="文件名" sortable />
-      <el-table-column prop="upload" label="上传时间" sortable />
-      <el-table-column prop="modify" label="修改时间" sortable />
-      <el-table-column prop="author" label="修改者" sortable />
+      <el-table-column prop="filename" label="文件名" sortable />
+      <el-table-column prop="date" label="上传时间" sortable />
+
 
       <el-table-column>
         <template #header>
@@ -89,15 +88,9 @@ export default {
       currentPage: 1,
       pagesize: 6,
       fileDialog: false,
+      class_id:"",
 
-      fileData: [
-        {
-          title: "wenjian1",
-          upload: "1",
-          modify: "1",
-          author: "1",
-        },
-      ],
+      fileData: [],
       fileList: [],
     };
   },
@@ -112,25 +105,71 @@ export default {
       console.log(file);
     },
 
-    handleRemove(file, fileListS) {
-      console.log(file, fileListS);
+    handleRemove(file) {
+      this.fileList.pop(file)
     },
 
     handleChange(file) {
-      console.log(file);
-      this.fileListS.push(file);
-      console.log(this.fileListS);
+      this.fileList.push(file);
     },
 
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
+
     handleUpload() {
       this.fileDialog = true;
     },
-    handleCheck() {},
+    handleCheck(row) {
+      this.axios.post("/api/manageClassFileRoute/preview/",JSON.stringify({
+        id:row.id,
+        class_id : this.class_id
+      }),{
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }}).then((response)=>{
+        //var fname = row.filename
+        //fname = decodeURIComponent(fname)
+        //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+
+        const blob = new Blob([response.data],{type:'charset=UTF-8'});
+        //var downloadElement = document.createElement("a");
+        var href = window.URL.createObjectURL(blob);
+        window.open(href)
+        /*
+        downloadElement.href = href;
+
+        downloadElement.download = fname
+        document.body.appendChild(downloadElement);
+        downloadElement.click();
+        document.body.removeChild(downloadElement);
+        window.URL.revokeObjectURL(href);
+         */
+      })
+    },
     handleDown(row) {
-      console.log(row);
+      this.axios.post("/api/manageClassFileRoute/download/",JSON.stringify({
+        id:row.id,
+        class_id : this.class_id
+      }),{
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }}).then((response)=>{
+        var fname = row.filename
+        fname = decodeURIComponent(fname)
+        //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+
+        const blob = new Blob([response.data],{type:'text/plain,charset=UTF-8'});
+        var downloadElement = document.createElement("a");
+        var href = window.URL.createObjectURL(blob);
+        downloadElement.href = href;
+
+        downloadElement.download = fname
+        document.body.appendChild(downloadElement);
+        downloadElement.click();
+        document.body.removeChild(downloadElement);
+        window.URL.revokeObjectURL(href);
+      })
     },
     handleDelete(row) {
       this.$confirm("确认删除吗?", "提示", {
@@ -155,13 +194,54 @@ export default {
     },
 
     uploadFile() {
-      //上传文件
+      console.log(this.fileList)
+      let param = new FormData();
+      this.fileList.forEach(file => {
+        param.append("files", file.raw);
+      });
+      param.append("class_id", this.class_id);
+      this.axios.post("/api/manageClassFileRoute/addFile",param,{
+        headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+      }).then((res)=>{
+        if(res.data['status'] === 200){
+          this.$message("上传成功")
+          this.fileList = [];
+          this.fileDialog = false;
+          this.getFileList();
+        }
+        else{
+          this.$message("上传失败")
+        }
+      })
+
     },
     deleteFile(row) {
-      //删除文件
-      console.log(row);
+      this.axios.post("/api/manageClassFileRoute/deleteClassFile",JSON.stringify({
+        class_id : this.class_id,
+        id : row.id
+      })).then((res)=>{
+        if(res.data['status'] === 200){
+          this.$message("删除成功")
+          this.getFileList();
+        }
+        else{
+          this.$message(res.data['message'])
+        }
+      })
     },
+    getFileList(){
+      this.axios.post("/api/manageClassFileRoute/getClassFile",JSON.stringify({
+        class_id : this.class_id
+      })).then((response)=>{
+        console.log(response.data)
+        this.fileData = response.data
+      })
+    }
   },
+  mounted() {
+    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
+    this.getFileList();
+  }
 };
 </script>
 

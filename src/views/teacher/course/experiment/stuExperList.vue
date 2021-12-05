@@ -100,7 +100,8 @@ export default {
     handleGrade(row) {
       this.$router.push({
         path: "/teacherHome/concreteCourse/stuExper",
-        query: { sid: row.sid },
+        query:{
+          info : this.$Base64.encode(JSON.stringify({"s_id" : row.s_id,"ex_id":this.ex_id}))}
       });
     },
 
