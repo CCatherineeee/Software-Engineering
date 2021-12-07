@@ -10,9 +10,11 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="name" label="实验名称" sortable />
-        <el-table-column prop="release" label="发布日期" sortable />
-        <el-table-column prop="deadline" label="截止日期" sortable />
+        <el-table-column prop="experiment_title" label="实验名称" sortable />
+        <el-table-column prop="end_time" label="截止日期" sortable />
+        <el-table-column prop="status" label="实验状态" sortable />
+        <el-table-column prop="score" label="成绩" sortable />
+
 
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -74,10 +76,18 @@ export default {
       });
     },
     checkResponse(response) {
+      // console.log(response)
       for (var i = 0; i < response.length; i++) {
-        if (response[i]["status"] == 0) {
-          this.tableData.add(response[i]);
+        if (response[i].status !== 0) {
+          if(response[i].status === 1){
+            response[i].status = "未过期"
+          }
+          else{
+            response[i].status = "已过期"
+          }
+          this.tableData.push(response[i]);
         }
+        console.log(this.tableData)
       }
     },
   },
@@ -87,9 +97,10 @@ export default {
     ];
     this.axios
       .post(
-        "/api/course/getEx/",
+        "/api/class/showEx/",
         JSON.stringify({
-          c_id: this.class_id.substring(0, 12),
+          class_id: this.class_id,
+          s_id : sessionStorage.getItem('id')
         })
       )
       .then((response) => {

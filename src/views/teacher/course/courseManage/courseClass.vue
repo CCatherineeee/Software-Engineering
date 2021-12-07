@@ -69,8 +69,6 @@
               {{ year }}年 {{ semester }}
             </el-descriptions-item>
           </el-descriptions>
-          <v-textarea v-model="syllabus" color="teal" label="教学大纲" filled>
-          </v-textarea>
 
           <v-row dense>
             <v-col v-for="item in experList" :key="item.ex_id" cols="6">
@@ -80,6 +78,9 @@
                   <v-card-subtitle
                     v-text="'实验占比：' + item.weight"
                   ></v-card-subtitle>
+                  <v-card-subtitle
+                      v-text="'实验状态：' + item.status"
+                  ></v-card-subtitle>
                   <v-card-text
                     v-text="'截止日期：' + item.end_time"
                   ></v-card-text>
@@ -87,7 +88,9 @@
                     <v-btn text @click="handleProportion(item)">
                       设置占比
                     </v-btn>
-
+                    <v-btn text @click="handlePushExper(item)">
+                      发布实验
+                    </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn text @click="handleDeleteExper(item)">
                       删除实验
@@ -325,6 +328,14 @@ export default {
       this.id = sessionStorage.getItem("id");
       this.experiment.courseID = this.$route.query.c_id;
     },
+    handlePushExper(item){
+      this.axios.post("/api/course/pushEx/",JSON.stringify({
+        ex_id : item.ex_id
+      })).then(()=>{
+        this.$message("发布成功！")
+        this.getExperiment()
+      })
+    },
     handlePreview(file) {
       console.log(file);
     },
@@ -492,7 +503,12 @@ export default {
       this.axios
         .post("/api/course/addEx/", JSON.stringify(jsons))
         .then((response) => {
-          console.log(response);
+          if(response.data === "WeightUnreasonable"){
+            this.$message("权重不合理！");
+          }
+          else{
+            this.$message("添加成功！");
+          }
           this.exDialog = false;
           this.getExperiment();
         });
@@ -547,7 +563,19 @@ export default {
       this.axios
         .post("/api/course/getEx/", JSON.stringify(jsons))
         .then((response) => {
+          console.log(response)
           this.experList = response.data;
+          for(var i = 0; i < this.experList.length; i++){
+            if(this.experList[i].status === 0){
+              this.experList[i].status = "未发布"
+            }
+            else if(this.experList[i].status === 1){
+              this.experList[i].status = "已发布"
+            }
+            else{
+              this.experList[i].status = "已过期"
+            }
+          }
         })
         .catch(function (error) {
           console.log(error);
