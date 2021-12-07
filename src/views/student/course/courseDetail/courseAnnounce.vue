@@ -2,8 +2,8 @@
   <div>
     <el-timeline>
       <el-timeline-item
-        v-for="(data, index) in dataTable"
-        :key="index"
+        v-for="data in annList"
+        :key="data.ann_id"
         placement="top"
         :timestamp="data.date"
       >
@@ -11,7 +11,9 @@
           style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15); margin-right: 20%"
         >
           <h2>{{ data.title }}</h2>
-          <el-link @click="handleTitle(data)">{{ data.content }}</el-link>
+          <el-link @click="handleTitle(data)"
+            ><p v-html="data.content"></p
+          ></el-link>
           <p style="text-align: right">{{ data.name }}</p>
         </el-card>
       </el-timeline-item>
@@ -34,8 +36,8 @@ export default {
       title: "",
       content: "",
       dialogVisible: false,
-      dataTable: [],
-      class_id : ""
+      annList: [],
+      class_id: "",
     };
   },
   methods: {
@@ -44,19 +46,31 @@ export default {
       this.content = data.content;
       this.dialogVisible = true;
     },
+    getAnnList() {
+      this.axios
+        .post(
+          "/api/course/getAnn/",
+          JSON.stringify({
+            class_id: this.class_id,
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          this.annList = response.data;
+          console.log(this.annList);
+        });
+    },
+    getParams: function () {
+      this.id = sessionStorage.getItem("id");
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
+      console.log("cid===" + this.class_id);
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
-    this.axios.post(
-        "/api/course/getAnn/",JSON.stringify(
-            {
-              class_id : this.class_id,
-            }),
-    ).then((response) => {
-      //这里使用了ES6的语法
-      this.dataTable = response.data
-      //this.checkResponse(response.data); //请求成功返回的数据
-    })
-  }
+    this.getParams();
+    this.getAnnList();
+  },
 };
 </script>

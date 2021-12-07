@@ -19,7 +19,7 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="time" label="发布时间" width="200px">
+        <el-table-column prop="date" label="发布时间" width="200px">
         </el-table-column>
 
         <el-table-column prop="title" label="主题" width="450px">

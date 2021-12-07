@@ -18,7 +18,7 @@
         ref="filterTable"
         row-key="deadline"
         :data="
-          tableData.filter(
+          experimentList.filter(
             (data) =>
               !search || data.name.toLowerCase().includes(search.toLowerCase())
           )
@@ -82,7 +82,7 @@
         :current-page="currentPage"
         :page-size="pagesize"
         layout="total,  prev, pager, next, jumper"
-        :total="tableData.length"
+        :total="experimentList.length"
         filterState
       >
       </el-pagination>
@@ -94,12 +94,13 @@
 export default {
   data() {
     return {
+      c_id: "",
       dialogVisible: false,
       search: "",
       currentPage: 1,
       pagesize: 6,
       fileList: [],
-      tableData: [],
+      experimentList: [],
     };
   },
   methods: {
@@ -139,30 +140,39 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/teacherHome/concreteCourse/stuExperList",
-        query:{
-          info : this.$Base64.encode(JSON.stringify({"ex_id" : row.ex_id}))}
+        query: {
+          info: this.$Base64.encode(JSON.stringify({ ex_id: row.ex_id })),
+        },
       });
     },
 
     handleFile() {
       this.dialogVisible = true;
     },
-    checkResponse(response){
-      this.tableData = response
-      }
+
+    getCourseEx() {
+      var classID = this.c_id.toString();
+      this.axios
+        .post(
+          "/api/course/getEx/",
+          JSON.stringify({
+            c_id: classID.substring(0, 12),
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          console.log(response);
+          this.experimentList = response.data;
+        });
+    },
+    getParams: function () {
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+      console.log("cid===" + this.c_id);
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
-    this.axios.post(
-        "/api/course/getEx/",JSON.stringify(
-            {
-              c_id : this.class_id.substring(0,12)
-            }),
-    ).then((response) => {
-      //这里使用了ES6的语法
-      //this.tableData = response.data
-      this.checkResponse(response.data); //请求成功返回的数据
-    })
+    this.getParams();
+    this.getCourseEx();
   },
 };
 </script>

@@ -34,7 +34,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="teaDialog" title="添加责任教师" center>
+    <el-dialog :visible.sync="addCourseDialog" title="添加责任教师" center>
       <el-form ref="form" label-width="80px" style="margin-left: 5%">
         <el-form-item label="课程编号" required>
           <el-select v-model="prefix">
@@ -75,8 +75,46 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="teaDialog = false">取消</el-button>
-        <el-button type="primary" @click="addTea()">确定</el-button>
+        <el-button @click="addCourseDialog = false">取消</el-button>
+        <el-button type="primary" @click="addCourse()">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="updataTeaDialog" title="更改课程信息" center>
+      <el-form ref="form" label-width="80px" style="margin-left: 5%">
+        <el-form-item label="课程编号" required>
+          <el-input v-model="prefix" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="开课学年" required>
+          <el-input v-model="year"></el-input>
+        </el-form-item>
+        <el-form-item label="开课学期" required>
+          <el-select v-model="semester">
+            <el-option
+              v-for="item in semesterList"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="责任教师" required>
+          <el-select v-model="t_id">
+            <el-option
+              v-for="item in teaList"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updataTeaDialog = false">取消</el-button>
+        <el-button type="primary" @click="updateTea()">确定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -89,12 +127,14 @@ export default {
     return {
       search: "",
 
-      teaDialog: false,
+      addCourseDialog: false,
+      updataTeaDialog: false,
       courseList: [],
 
       semesterList: ["春季", "秋季"],
       teaList: [],
 
+      c_id: "",
       prefix: "",
       year: "",
       semester: "",
@@ -104,14 +144,73 @@ export default {
   },
   methods: {
     handleEdit(row) {
+      this.c_id = row.c_id;
       this.prefix = row.prefix;
       this.year = row.year;
       this.semester = row.semester;
       this.t_id = row.t_id;
-      //this.teaDialog = true;
+      this.updataTeaDialog = true;
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    updateTea() {
+      //更改责任教师
+      var jsons = {
+        c_id: this.c_id,
+        semester: this.semester,
+        year: this.year,
+        prefix: this.prefix,
+        t_id: this.t_id,
+      };
+      axios
+        .post("", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response);
+          this.updataTeaDialog = false;
+          this.c_id = "";
+          this.prefix = "";
+          this.year = "";
+          this.semester = "";
+          this.t_id = "";
+          this.getAllDutyTea();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    handleDelete(row) {
+      this.$confirm("确认删除该课程吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.deleteCourse(row);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除操作",
+          });
+        });
+    },
+    deleteCourse(row) {
+      //删除课程
+      console.log(row);
+      var jsons = {
+        c_id: row.c_id,
+      };
+      axios
+        .post("/api/course/delCourse/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response);
+          this.getAllDutyTea();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     getAllCourse() {
       //获得所有课程
@@ -121,7 +220,6 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response);
           this.courseList = response.data;
         })
         .catch(function (error) {
@@ -136,29 +234,61 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response);
+          console.log("所有责任教师");
+          console.log(response.data);
           this.tableData = response.data;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    handleAdd() {
-      this.teaDialog = true;
+    getAllTea() {
+      //获得所有教师
+      axios
+        .get("/api/course/getAllTeacher/", {
+          //params: { userData: "value" },
+          crossDomain: true,
+        })
+        .then((response) => {
+          this.teaList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
-    addTea() {
-      console.log(this.semester);
+    handleAdd() {
+      this.c_id = "";
+      this.prefix = "";
+      this.year = "";
+      this.semester = "";
+      this.t_id = "";
+      this.addCourseDialog = true;
+    },
+
+    addCourse() {
+      //开课
       var jsons = {
         semester: this.semester,
         year: this.year,
         prefix: this.prefix,
         t_id: this.t_id,
       };
-      console.log(jsons)
       axios
         .post("/api/course/addCourse/", JSON.stringify(jsons))
-        .then(function (response) {
-          console.log(response);
+        .then((response) => {
+          if (response.data == "CourseExist") {
+            this.$message({
+              message: "该课程已存在",
+              type: "error",
+            });
+          } else {
+            this.addCourseDialog = false;
+            this.prefix = "";
+            this.year = "";
+            this.semester = "";
+            this.t_id = "";
+            this.getAllDutyTea();
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -166,18 +296,11 @@ export default {
       //location.reload();
     },
   },
+
   mounted() {
     this.getAllCourse();
     this.getAllDutyTea();
-    this.axios
-        .get("/api/course/getAllTeacher/")
-        .then((response) => {
-          this.teaList = response.data;
-          console.log(this.teaList)
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    this.getAllTea();
   },
 };
 </script>

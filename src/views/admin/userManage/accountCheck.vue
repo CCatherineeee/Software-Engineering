@@ -19,12 +19,15 @@
             { text: '学生', value: 1 },
 
             { text: '教师', value: 2 },
+            { text: '助教', value: 3 },
           ]"
           :filter-method="filterIdentity"
         >
           <template slot-scope="scope">
             <span v-if="scope.row.role === 1">学生</span>
+
             <span v-if="scope.row.role === 2">教师</span>
+            <span v-if="scope.row.role === 3">助教</span>
           </template>
         </el-table-column>
 

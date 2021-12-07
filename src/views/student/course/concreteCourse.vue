@@ -1,12 +1,9 @@
 <template>
   <el-container class="back">
-    <el-header class="hBack">课程名称</el-header>
+    <el-header class="hBack">{{ course_name }}</el-header>
     <el-container>
       <el-aside width="120px" class="lBack">
-        <el-menu
-            :default-active="activeIndex"
-            @select="handleSelect"
-        >
+        <el-menu @select="handleSelect">
           <el-menu-item index="/studentHome/concreteCourse/Ann">
             <span slot="title">公告</span>
           </el-menu-item>
@@ -22,40 +19,62 @@
           <el-menu-item index="/studentHome/concreteCourse/File">
             <span slot="title">文件</span>
           </el-menu-item>
-          <el-menu-item index="">
+          <el-menu-item index="/studentHome/concreteCourse/File">
             <span slot="title">测验</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main class="mBack">
-        <router-view></router-view>
-      </el-main>
+      <el-main class="mBack"> <router-view></router-view></el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
-      activeIndex : "",
-      class_id : ""
-    }
+  data() {
+    return {
+      activeIndex: "",
+      class_id: "",
+      course_name: "",
+    };
   },
-  methods:{
-    handleSelect(index){
-      this.$router.push({path:index,
-        query:{
-          info : this.$Base64.encode(JSON.stringify({"class_id" : this.class_id}))}
+  methods: {
+    getParams: function () {
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
+    },
+    handleSelect(index) {
+      this.$router.push({
+        path: index,
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ class_id: this.class_id })
+          ),
+        },
       });
-    }
+    },
+    getClassInfo() {
+      var jsons = {
+        class_id: this.class_id,
+      };
+
+      this.axios
+        .post("/api/manageClass/IDGetClass", JSON.stringify(jsons))
+        .then((response) => {
+          this.course_name = response.data.course_name;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   mounted() {
-    this.activeIndex = this.$route.path;
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
-    console.log(this.class_id)
-  }
-}
+    this.getParams();
+    this.getClassInfo();
+    console.log(this.class_id);
+  },
+};
 </script>
 <style scoped>
 .back {

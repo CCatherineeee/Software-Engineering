@@ -74,12 +74,12 @@ export default {
   },
   methods: {
     getParams: function () {
-      this.id = sessionStorage.getItem('id');
+      this.id = sessionStorage.getItem("id");
     },
 
     getTeaInfo() {
       this.axios
-        .get('api//getUserInfo/Teacher/', {
+        .get("api//getUserInfo/Teacher/", {
           params: { t_id: this.id },
           crossDomain: true,
         })
@@ -101,7 +101,6 @@ export default {
     modifyAccount() {
       this.$router.push({
         path: "/teacherHome/modifyAccount",
-        query: { id: this.id },
       });
     },
   },

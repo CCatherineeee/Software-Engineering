@@ -19,7 +19,6 @@
       <el-table-column prop="filename" label="文件名" sortable />
       <el-table-column prop="date" label="上传时间" sortable />
 
-
       <el-table-column>
         <template #header>
           <el-input v-model="search" />
@@ -88,7 +87,7 @@ export default {
       currentPage: 1,
       pagesize: 6,
       fileDialog: false,
-      class_id:"",
+      c_id: "",
 
       fileData: [],
       fileList: [],
@@ -106,7 +105,7 @@ export default {
     },
 
     handleRemove(file) {
-      this.fileList.pop(file)
+      this.fileList.pop(file);
     },
 
     handleChange(file) {
@@ -121,22 +120,29 @@ export default {
       this.fileDialog = true;
     },
     handleCheck(row) {
-      this.axios.post("/api/manageClassFileRoute/preview/",JSON.stringify({
-        id:row.id,
-        class_id : this.class_id
-      }),{
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }}).then((response)=>{
-        //var fname = row.filename
-        //fname = decodeURIComponent(fname)
-        //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/preview/",
+          JSON.stringify({
+            id: row.id,
+            class_id: this.c_id,
+          }),
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          //var fname = row.filename
+          //fname = decodeURIComponent(fname)
+          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-        const blob = new Blob([response.data],{type:'charset=UTF-8'});
-        //var downloadElement = document.createElement("a");
-        var href = window.URL.createObjectURL(blob);
-        window.open(href)
-        /*
+          const blob = new Blob([response.data], { type: "charset=UTF-8" });
+          //var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          window.open(href);
+          /*
         downloadElement.href = href;
 
         downloadElement.download = fname
@@ -145,31 +151,42 @@ export default {
         document.body.removeChild(downloadElement);
         window.URL.revokeObjectURL(href);
          */
-      })
+        });
     },
     handleDown(row) {
-      this.axios.post("/api/manageClassFileRoute/download/",JSON.stringify({
-        id:row.id,
-        class_id : this.class_id
-      }),{
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }}).then((response)=>{
-        var fname = row.filename
-        fname = decodeURIComponent(fname)
-        //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+      console.log(row);
+      console.log(this.c_id);
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/download/",
+          JSON.stringify({
+            id: row.id,
+            class_id: this.c_id,
+          }),
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          var fname = row.filename;
+          fname = decodeURIComponent(fname);
+          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-        const blob = new Blob([response.data],{type:'text/plain,charset=UTF-8'});
-        var downloadElement = document.createElement("a");
-        var href = window.URL.createObjectURL(blob);
-        downloadElement.href = href;
+          const blob = new Blob([response.data], {
+            type: "text/plain,charset=UTF-8",
+          });
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
 
-        downloadElement.download = fname
-        document.body.appendChild(downloadElement);
-        downloadElement.click();
-        document.body.removeChild(downloadElement);
-        window.URL.revokeObjectURL(href);
-      })
+          downloadElement.download = fname;
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        });
     },
     handleDelete(row) {
       this.$confirm("确认删除吗?", "提示", {
@@ -194,54 +211,68 @@ export default {
     },
 
     uploadFile() {
-      console.log(this.fileList)
+      console.log(this.fileList);
       let param = new FormData();
-      this.fileList.forEach(file => {
+      this.fileList.forEach((file) => {
         param.append("files", file.raw);
       });
-      param.append("class_id", this.class_id);
-      this.axios.post("/api/manageClassFileRoute/addFile",param,{
-        headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-      }).then((res)=>{
-        if(res.data['status'] === 200){
-          this.$message("上传成功")
-          this.fileList = [];
-          this.fileDialog = false;
-          this.getFileList();
-        }
-        else{
-          this.$message("上传失败")
-        }
-      })
-
+      param.append("class_id", this.c_id);
+      this.axios
+        .post("/api/manageClassFileRoute/addFile", param, {
+          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+        })
+        .then((res) => {
+          if (res.data["status"] === 200) {
+            this.$message("上传成功");
+            this.fileList = [];
+            this.fileDialog = false;
+            this.getFileList();
+          } else {
+            this.$message("上传失败");
+          }
+        });
     },
     deleteFile(row) {
-      this.axios.post("/api/manageClassFileRoute/deleteClassFile",JSON.stringify({
-        class_id : this.class_id,
-        id : row.id
-      })).then((res)=>{
-        if(res.data['status'] === 200){
-          this.$message("删除成功")
-          this.getFileList();
-        }
-        else{
-          this.$message(res.data['message'])
-        }
-      })
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/deleteClassFile",
+          JSON.stringify({
+            class_id: this.c_id,
+            id: row.id,
+          })
+        )
+        .then((res) => {
+          if (res.data["status"] === 200) {
+            this.$message("删除成功");
+            this.getFileList();
+          } else {
+            this.$message(res.data["message"]);
+          }
+        });
     },
-    getFileList(){
-      this.axios.post("/api/manageClassFileRoute/getClassFile",JSON.stringify({
-        class_id : this.class_id
-      })).then((response)=>{
-        console.log(response.data)
-        this.fileData = response.data
-      })
-    }
+    getFileList() {
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/getClassFile",
+          JSON.stringify({
+            class_id: this.c_id,
+          })
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.fileData = response.data;
+        });
+    },
+    getParams: function () {
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+      this.c_id = this.c_id.toString();
+      console.log("cid===" + this.c_id);
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
+    this.getParams();
     this.getFileList();
-  }
+  },
 };
 </script>
 

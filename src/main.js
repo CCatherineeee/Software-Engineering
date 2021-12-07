@@ -21,10 +21,9 @@ Vue.use(ElementUI)
 Vue.use(Vuetify)
 Vue.use(vueToPdf);
 Vue.use(htmlToPdf)
-Vue.prototype.$Base64 = Base64;
-
 
 Vue.config.productionTip = false
+Vue.prototype.$Base64 = Base64;
 
 new Vue({
   router,

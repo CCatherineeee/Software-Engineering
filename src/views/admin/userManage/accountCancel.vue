@@ -26,12 +26,15 @@
               { text: '学生', value: 1 },
 
               { text: '教师', value: 2 },
+              { text: '助教', value: 3 },
             ]"
             :filter-method="filterIdentity"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.role === 1">学生</span>
+
               <span v-if="scope.row.role === 2">教师</span>
+              <span v-if="scope.row.role === 3">助教</span>
             </template>
           </el-table-column>
 
@@ -130,7 +133,7 @@ export default {
     cancelOneAccount(row) {
       //注销单个账户
       console.log("id==" + row.id);
-      if (row.role === 1) {
+      if (row.role == 1) {
         axios
           .post(
             "/api/delete/student/",
@@ -144,7 +147,7 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      } else if (row.role === 2) {
+      } else if (row.role == 2) {
         axios
           .post(
             "/api/delete/teacher/",
@@ -158,7 +161,22 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+      } else if (row.role == 3) {
+        axios
+          .post(
+            "/api/delete/Ta/",
+            JSON.stringify({
+              ta_id: row.id,
+            })
+          )
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
+      this.getUserData();
     },
 
     cancelSomeAccount() {
@@ -186,6 +204,7 @@ export default {
             type: "success",
             message: "注销成功!",
           });
+          this.getUserData();
           //document.execCommand("Refresh");
           //location.reload();
         })
@@ -195,6 +214,7 @@ export default {
             message: "取消注销操作",
           });
         });
+      this.getUserData();
     },
 
     handleCheckCancelS() {
@@ -218,16 +238,19 @@ export default {
           });
         });
     },
+    getUserData() {
+      //获取所有用户所有信息
+      axios
+        .get("/api/getUserInfo/allUser/", {
+          //params: { userData: "value" },
+          crossDomain: true,
+        })
+        .then((response) => (this.userData = response.data))
+        .catch(function () {});
+    },
   },
   mounted() {
-    //获取所有用户所有信息
-    axios
-      .get("/api/getUserInfo/allUser/", {
-        //params: { userData: "value" },
-        crossDomain: true,
-      })
-      .then((response) => (this.userData = response.data))
-      .catch(function () {});
+    this.getUserData();
 
     //console.log(this.userData);
   },

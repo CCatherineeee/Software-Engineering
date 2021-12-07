@@ -23,7 +23,7 @@
         row-key="score"
         @selection-change="handleSelectionChange"
         :data="
-          tableData.filter(
+          stuExData.filter(
             (data) =>
               !search ||
               data.sid.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,7 +38,7 @@
         <el-table-column prop="status" label="是否提交" sortable />
         <el-table-column prop="submitTime" label="提交日期" sortable />
         <el-table-column prop="score" label="分数" sortable />
-        <el-table-column prop="grader" label="批改人"  />
+        <el-table-column prop="grader" label="批改人" />
 
         <el-table-column>
           <template #header>
@@ -63,7 +63,7 @@
         :current-page="currentPage"
         :page-size="pagesize"
         layout="total,  prev, pager, next, jumper"
-        :total="tableData.length"
+        :total="stuExData.length"
         filterState
       >
       </el-pagination>
@@ -77,11 +77,11 @@ export default {
     return {
       search: "",
       currentPage: 1,
-      ex_id:"",
+      ex_id: "",
       pagesize: 6,
       multipleSelection: [],
 
-      tableData: [
+      stuExData: [
         { sid: "1", name: "1", submit: "2021.11.1", score: "2022.2.2" },
       ],
     };
@@ -100,8 +100,11 @@ export default {
     handleGrade(row) {
       this.$router.push({
         path: "/teacherHome/concreteCourse/stuExper",
-        query:{
-          info : this.$Base64.encode(JSON.stringify({"s_id" : row.s_id,"ex_id":this.ex_id}))}
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ s_id: row.s_id, ex_id: this.ex_id })
+          ),
+        },
       });
     },
 
@@ -111,54 +114,59 @@ export default {
     downloadSelect() {
       //批量下载学生的pdf
     },
-    download(row){
-      console.log(row.s_id)
-      let formData = new FormData()
-      formData.append('s_id',row.s_id);
-      formData.append('ex_id',this.ex_id);
-      this.axios.post("/api/tea/Ex/getReport/",formData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            },
-        responseType: "blob"
+    download(row) {
+      console.log(row.s_id);
+      let formData = new FormData();
+      formData.append("s_id", row.s_id);
+      formData.append("ex_id", this.ex_id);
+      this.axios
+        .post("/api/tea/Ex/getReport/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          const fileName = response.headers["content-disposition"];
+          var fname = fileName.split("filename*=UTF-8''")[1];
+          fname = decodeURIComponent(fname);
+          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-          }
-      ).then((response)=>{
+          const blob = new Blob([response.data], {
+            type: "text/plain,charset=UTF-8",
+          });
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
 
-        const fileName = response.headers['content-disposition'];
-        var fname = fileName.split("filename*=UTF-8''")[1]
-        fname = decodeURIComponent(fname)
-        //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
-
-        const blob = new Blob([response.data],{type:'text/plain,charset=UTF-8'});
-        var downloadElement = document.createElement("a");
-        var href = window.URL.createObjectURL(blob);
-        downloadElement.href = href;
-
-        downloadElement.download = fname
-        document.body.appendChild(downloadElement);
-        downloadElement.click();
-        document.body.removeChild(downloadElement);
-        window.URL.revokeObjectURL(href);
-         /*
+          downloadElement.download = fname;
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+          /*
         href.href = window.URL.createObjectURL(blob);
         href.target = "_blank";
         href.click();
           */
-        //console.log(response)
-      })
-    }
+          //console.log(response)
+        });
+    },
   },
   mounted() {
-    this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['ex_id']
-    this.axios.post(
-        "/api/tea/Ex/getReportList/",JSON.stringify(
-            {
-              ex_id : this.ex_id
-            }),
-    ).then((response) => {
-      this.tableData = response.data
-    })
+    this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+      "ex_id"
+    ];
+    this.axios
+      .post(
+        "/api/tea/Ex/getReportList/",
+        JSON.stringify({
+          ex_id: this.ex_id,
+        })
+      )
+      .then((response) => {
+        this.stuExData = response.data;
+      });
   },
 };
 </script>

@@ -17,7 +17,9 @@
           <v-card-subtitle>{{ item.name }}</v-card-subtitle>
 
           <v-card-actions>
-            <v-btn color="orange" text @click="handleDelete"> 删除 </v-btn>
+            <v-btn color="orange" text @click="handleDelete(item)">
+              删除
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col></v-row
@@ -60,14 +62,14 @@ export default {
     };
   },
   methods: {
-    handleDelete() {
+    handleDelete(item) {
       this.$confirm("确认删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.deleteCourse;
+          this.deleteCourse(item);
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -85,7 +87,7 @@ export default {
       this.courseAddDialog = true;
     },
     addCourse() {
-      console.log("form==" + this.form);
+      console.log("form==" + JSON.stringify(this.form));
       if (this.form.name == "" || this.form.prefix == "") {
         this.$message({
           type: "warning",
@@ -102,7 +104,7 @@ export default {
           .then((response) => {
             console.log(response);
             this.courseAddDialog = false;
-            location.reload();
+            this.getCourseType();
           })
           .catch(function (error) {
             console.log(error);
@@ -116,22 +118,38 @@ export default {
         this.courseTypeData.indexOf(this.form.name);
       return ret > 0;
     },
-    deleteCourse() {},
+    deleteCourse(item) {
+      var jsons = {
+        prefix: item.prefix,
+      };
+      axios
+        .post("/api/course/delType/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response);
+          this.getCourseType();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getCourseType() {
+      //获得所有课程
+      axios
+        .get("/api/course/getType/", {
+          //params: { userData: "value" },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.courseTypeData = response.data;
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    },
   },
   mounted() {
-    //获得所有课程
-    axios
-      .get("/api/course/getType/", {
-        //params: { userData: "value" },
-        crossDomain: true,
-      })
-      .then((response) => {
-        console.log("所有课程" + response.data);
-        this.courseTypeData = response.data;
-      })
-      .catch(function (error) {
-        console(error);
-      });
+    this.getCourseType();
   },
 };
 </script>

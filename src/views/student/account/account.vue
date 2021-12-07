@@ -79,33 +79,34 @@ export default {
   },
   methods: {
     getParams: function () {
-
-      this.id = sessionStorage.getItem('id');
+      this.id = sessionStorage.getItem("id");
     },
 
     getStuInfo() {
       this.axios
-        .post("/api/getUserInfo/Student/",
-          JSON.stringify({ s_id: this.id ,token:sessionStorage.getItem('token')}))
+        .post(
+          "/api/getUserInfo/Student/",
+          JSON.stringify({
+            s_id: this.id,
+            token: sessionStorage.getItem("token"),
+          })
+        )
         .then((response) => {
-          console.log(response.data['data']);
-          if(response.data['code'] === 301) {
-            this.$message("验证过期")
-            this.$router.push({path:"/login"})
-          }
-          else if(response.data['code'] === 404) {
-            this.$message("找不到页面")
-            this.$router.push({path:"/404"})
-          }
-          else {
-
-            this.name = response.data['data'][0].name;
-            this.gender = response.data['data'][0].gender;
-            this.phone_number = response.data['data'][0].phone_number;
-            this.email = response.data['data'][0].email;
-            this.is_active = response.data['data'][0].is_active;
+          console.log(response.data["data"]);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.name = response.data["data"][0].name;
+            this.gender = response.data["data"][0].gender;
+            this.phone_number = response.data["data"][0].phone_number;
+            this.email = response.data["data"][0].email;
+            this.is_active = response.data["data"][0].is_active;
             //this.role = response.data[0].role;
-            this.department = response.data['data'][0].department;
+            this.department = response.data["data"][0].department;
             //this.major_id;
           }
         })
@@ -116,7 +117,8 @@ export default {
 
     modifyAccount() {
       this.$router.push({
-        path: "/studentHome/modifyAccount"});
+        path: "/studentHome/modifyAccount",
+      });
     },
   },
   mounted() {

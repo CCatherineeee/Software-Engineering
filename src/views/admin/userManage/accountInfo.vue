@@ -102,7 +102,7 @@ export default {
             //this.major_id;
           })
           .catch(function (error) {
-            console(error);
+            console.log(error);
           });
       } else if (this.role == 2) {
         this.axios
@@ -122,7 +122,27 @@ export default {
             //this.major_id;
           })
           .catch(function (error) {
-            console(error);
+            console.log(error);
+          });
+      } else if (this.role == 3) {
+        this.axios
+          .get("/api/getUserInfo/TA/", {
+            params: { ta_id: this.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log(response.data);
+            this.name = response.data[0].name;
+            this.gender = response.data[0].gender;
+            this.phone_number = response.data[0].phone_number;
+            this.email = response.data[0].email;
+            this.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            this.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console.log(error);
           });
       }
     },

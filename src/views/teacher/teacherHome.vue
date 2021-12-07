@@ -12,7 +12,7 @@
               <i class="el-icon-reading"></i>
               <span slot="title">控制面板</span>
             </el-menu-item>
-            <el-submenu>
+            <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-edit"></i>
                 <span>个人信息</span>
@@ -27,13 +27,13 @@
               </el-menu-item-group>
             </el-submenu>
 
-            <el-submenu>
+            <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-user"></i>
                 <span>课程</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/teacherHome/course"
+                <el-menu-item index="/teacherHome/myClass"
                   >我的班级</el-menu-item
                 >
                 <el-menu-item index="/teacherHome/manageCourse"
@@ -57,14 +57,7 @@
 
 <script>
 export default {
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
-  },
+  methods: {},
 };
 </script>
 

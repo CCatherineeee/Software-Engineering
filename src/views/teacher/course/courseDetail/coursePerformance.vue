@@ -8,6 +8,9 @@
 export default {
   data() {
     return {
+      id: "",
+      c_id: "",
+
       activeName: "first",
     };
   },
@@ -15,6 +18,14 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    getParams: function () {
+      this.id = sessionStorage.getItem("id");
+      this.c_id = this.$route.query.c_id;
+      console.log("cid===" + this.c_id);
+    },
+  },
+  mounted() {
+    this.getParams();
   },
 };
 </script>

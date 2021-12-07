@@ -1,8 +1,6 @@
 <template>
   <div>
     <el-table
-      ref="filterTable"
-      row-key="id"
       :data="
         tableData.filter(
           (data) =>
@@ -15,7 +13,10 @@
       "
       style="width: 100%"
     >
-      <el-table-column prop="title" label="文件名" sortable />
+      <el-table-column prop="filename" label="文件名" sortable />
+      <el-table-column prop="date" label="上传时间" sortable />
+      <el-table-column prop="modify" label="修改时间" sortable />
+      <el-table-column prop="author" label="修改者" sortable />
 
       <el-table-column>
         <template #header>
@@ -79,7 +80,7 @@ export default {
       currentPage: 1,
       pagesize: 6,
       dialog: false,
-      class_id : "",
+      class_id: "",
       tableData: [],
     };
   },
@@ -99,20 +100,31 @@ export default {
     handleDown(row) {
       console.log(row);
     },
+    getFileList() {
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/getClassFile",
+          JSON.stringify({
+            class_id: this.class_id,
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          //this.tableData = response.data
+          this.tableData = response.data; //请求成功返回的数据
+          console.log(this.tableData);
+        });
+    },
+    getParams: function () {
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
-    this.axios.post(
-        "/api/manageClassFileRoute/getClassFile",JSON.stringify(
-            {
-              class_id : this.class_id
-            }),
-    ).then((response) => {
-      //这里使用了ES6的语法
-      //this.tableData = response.data
-      this.tableData = response.data; //请求成功返回的数据
-    })
-  }
+    this.getParams();
+    this.getFileList();
+  },
 };
 </script>
 

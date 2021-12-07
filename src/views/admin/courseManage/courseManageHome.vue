@@ -13,7 +13,7 @@
           >课程类型</el-menu-item
         >
         <el-menu-item index="/adminHome/courseManage/courseTea"
-          >责任教师管理</el-menu-item
+          >开课管理</el-menu-item
         >
       </el-menu>
     </el-header>

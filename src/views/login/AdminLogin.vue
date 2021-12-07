@@ -26,7 +26,7 @@
             >
               <el-form-item label="用户名" prop="userID" style="padding: auto">
                 <el-input
-                  v-model="ruleForm.userID"
+                  v-model="ruleForm.username"
                   type="text"
                   autocomplete="off"
                   placeholder="请输入用户名"
@@ -40,17 +40,7 @@
                   placeholder="请输入密码"
                 ></el-input>
               </el-form-item>
-              <el-form-item>
-                <el-row :gutter="2">
-                  <el-col :span="8"><t class="text-button">忘记密码</t></el-col>
-                  <el-col :span="8"><t class="text-button">教师登录</t></el-col>
-                  <el-col :span="8"
-                    ><t class="text-button" @click="AdminLogin()"
-                      >管理员登录</t
-                    ></el-col
-                  >
-                </el-row>
-              </el-form-item>
+
               <el-form-item>
                 <el-button
                   type="primary"
@@ -61,6 +51,18 @@
                 <el-button @click="toRegister" style="margin-left: 50px"
                   >注册</el-button
                 >
+              </el-form-item>
+              <el-form-item>
+                <el-row :gutter="2">
+                  <el-col :span="12"
+                    ><t class="text-button">忘记密码</t></el-col
+                  >
+                  <el-col :span="12"
+                    ><t class="text-button" @click="Login()"
+                      >用户登录</t
+                    ></el-col
+                  >
+                </el-row>
               </el-form-item>
             </el-form>
           </el-main>
@@ -94,21 +96,21 @@ export default {
     };
     return {
       ruleForm: {
-        userID: "",
+        username: "",
         password: "",
       },
       rules: {
-        userID: [{ validator: validateName, trigger: "blur" }],
+        userName: [{ validator: validateName, trigger: "blur" }],
         password: [{ validator: validatePass, trigger: "blur" }],
       },
     };
   },
   methods: {
-    AdminLogin() {
-      this.$router.go(0);
+    Login() {
+      this.$router.push("/Login");
     },
     submitForm() {
-      if (this.ruleForm.userID === "" && this.ruleForm.password === "") {
+      if (this.ruleForm.userName === "" && this.ruleForm.password === "") {
         this.$message("账户和密码不能为空！");
       } else if (this.ruleForm.Name === "") {
         this.$message("请输入用户名！");
@@ -118,24 +120,18 @@ export default {
         let config = {
           headers: { "Content-Type": "multipart/form-data" },
         };
-        console.log(this.ruleForm)
         this.axios
           .post(
-            "/api/adminLogin/",JSON.stringify({
-              userID: this.ruleForm.userID,
-                password:this.ruleForm.password
-              }),
+            "/api/adminLogin/",
+            {
+              params: this.ruleForm,
+            },
             config
           )
           .then((response) => {
-
-            if (response.data === "UserNotExist"){
-              this.$message("用户不存在！")
-            }
-            if (response.data === "PasswordWrong"){
-              this.$message("密码错误！")
-            }
-            if (response.data === "Login") {
+            if (response.data == "UserNotExist");
+            if (response.data == "PasswordWrong");
+            if (response.data == "Login") {
               this.$message("登录成功！");
               this.$router.push("/adminHome");
             }

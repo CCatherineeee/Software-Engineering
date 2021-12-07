@@ -87,6 +87,7 @@ export default {
     },
 
     getStuInfo() {
+     
       this.axios
         .get("/api/getUserInfo/Student/", {
           params: { s_id: this.id },

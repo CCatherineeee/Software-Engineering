@@ -1,12 +1,9 @@
 <template>
   <el-container class="back">
-    <el-header class="hBack">课程名称</el-header>
+    <el-header class="hBack">{{ course_name }}</el-header>
     <el-container>
       <el-aside width="120px" class="lBack">
-        <el-menu
-            :default-active="activeIndex"
-            @select="handleSelect"
-        >
+        <el-menu @select="handleSelect">
           <el-menu-item index="/teacherHome/concreteCourse/Ann">
             <span slot="title">公告</span>
           </el-menu-item>
@@ -61,26 +58,48 @@
 
 
 <script>
-
 export default {
   data() {
     return {
-      activeIndex : "",
-      class_id : ""
+      annUrl: "/teacherHome/concreteCourse/Ann",
+      experUrl: "/teacherHome/concreteCourse/Exper",
+      performUrl: "/teacherHome/concreteCourse/Perform",
+      peoUrl: "/teacherHome/concreteCourse/Peo",
+      fileUrl: "/teacherHome/concreteCourse/File",
+
+      c_id: "",
+      course_name: "",
     };
   },
   methods: {
-    handleSelect(index){
-      this.$router.push({path:index,
-        query:{
-          info : this.$Base64.encode(JSON.stringify({"class_id" : this.class_id}))}
+    getParams: function () {
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+    },
+    getClassInfo() {
+      var jsons = {
+        class_id: this.c_id,
+      };
+      this.axios
+        .post("/api/manageClass/IDGetClass", JSON.stringify(jsons))
+        .then((response) => {
+          this.course_name = response.data.course_name;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    handleSelect(index) {
+      this.$router.push({
+        path: index,
+        query: {
+          c_id: this.$Base64.encode(JSON.stringify(this.c_id)),
+        },
       });
-    }
-
+    },
   },
   mounted() {
-    this.activeIndex = this.$route.path;
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id']
+    this.getParams();
+    this.getClassInfo();
   },
 };
 </script>

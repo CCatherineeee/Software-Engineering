@@ -1,37 +1,28 @@
 <template>
   <div>
     <el-card>
-      <el-button
-        type="info"
-        style="background: #7986cb; color: white"
-        @click="checkData()"
-        >check</el-button
-      >
+      <el-dropdown @command="handleCommandDetail" style="margin-right: 10px">
+        <el-button type="info" style="background: #7986cb; color: white">
+          手动添加<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="s">添加学生</el-dropdown-item>
+          <el-dropdown-item command="t">添加老师</el-dropdown-item>
+          <el-dropdown-item command="a">添加助教</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
-      <el-button
-        type="info"
-        style="background: #7986cb; color: white"
-        @click="handleDetailS"
-        >手动添加学生</el-button
-      >
-      <el-button
-        type="info"
-        style="background: #7986cb; color: white"
-        @click="handleDetailT"
-        >手动添加教师</el-button
-      >
-      <el-button
-        type="info"
-        style="background: #7986cb; color: white"
-        @click="handleExcelS"
-        >表格导入学生</el-button
-      >
-      <el-button
-        type="info"
-        style="background: #7986cb; color: white"
-        @click="handleExcelT"
-        >表格导入老师</el-button
-      >
+      <el-dropdown @command="handleCommandForm" style="margin-right: 10px">
+        <el-button type="info" style="background: #7986cb; color: white">
+          表格导入<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="s">导入学生</el-dropdown-item>
+          <el-dropdown-item command="t">导入老师</el-dropdown-item>
+          <el-dropdown-item command="a">导入助教</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <el-dialog
         :visible.sync="dialogFormVisibleS"
         title="请输入学生信息"
@@ -45,7 +36,7 @@
         >
           <el-form-item
             label="姓名"
-            :required="true"
+            :rules="nameRules"
             prop="name"
             status-icon="true"
           >
@@ -54,7 +45,7 @@
 
           <el-form-item
             label="学号"
-            :required="true"
+            :rules="idRules"
             prop="id"
             status-icon="true"
           >
@@ -89,7 +80,7 @@
         >
           <el-form-item
             label="姓名"
-            :required="true"
+            :rules="nameRules"
             prop="name"
             status-icon="true"
           >
@@ -98,7 +89,7 @@
 
           <el-form-item
             label="工号"
-            :required="true"
+            :rules="idRules"
             prop="id"
             status-icon="true"
           >
@@ -117,6 +108,49 @@
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisibleT = false">取消</el-button>
           <el-button type="primary" @click="addFromDetailT()">确定</el-button>
+        </div>
+      </el-dialog>
+
+      <el-dialog
+        :visible.sync="dialogFormVisibleA"
+        title="请输入助教信息"
+        center
+      >
+        <el-form
+          :model="formA"
+          style="margin: 40px 65px 0px 25px"
+          label-width="80px"
+        >
+          <el-form-item
+            label="姓名"
+            :rules="nameRules"
+            prop="name"
+            status-icon="true"
+          >
+            <el-input v-model="formA.name" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="学号"
+            :rules="idRules"
+            prop="ta_id"
+            status-icon="true"
+          >
+            <el-input v-model="formA.ta_id"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="邮箱"
+            prop="email"
+            status-icon="true"
+            :required="true"
+          >
+            <el-input type="email" v-model="formA.email"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisibleA = false">取消</el-button>
+          <el-button type="primary" @click="addFromDetailA()">确定</el-button>
         </div>
       </el-dialog>
 
@@ -166,6 +200,29 @@
         </div>
       </el-dialog>
 
+      <el-dialog :visible.sync="dialogExcelVisibleA" title="请选择文件" center>
+        <el-upload
+          class="upload-import"
+          ref="uploadImport"
+          action="https://baidu.com/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-change="handleChange"
+          :before-remove="beforeRemove"
+          :file-list="fileListA"
+          :multiple="true"
+          :auto-upload="false"
+          accept="application/vnd.ms-excel,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
+        >
+          <el-button type="primary">选取文件</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
+        </el-upload>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogExcelVisibleA = false">取消</el-button>
+          <el-button type="success" @click="addFromExcelA()">上传</el-button>
+        </div>
+      </el-dialog>
+
       <el-table
         ref="filterTable"
         :data="
@@ -183,6 +240,7 @@
             { text: '学生', value: 1 },
 
             { text: '教师', value: 2 },
+            { text: '助教', value: 3 },
           ]"
           :filter-method="filterIdentity"
         >
@@ -190,6 +248,7 @@
             <span v-if="scope.row.role === 1">学生</span>
 
             <span v-if="scope.row.role === 2">教师</span>
+            <span v-if="scope.row.role === 3">助教</span>
           </template>
         </el-table-column>
 
@@ -238,6 +297,8 @@ export default {
       dialogExcelVisibleS: false,
       dialogFormVisibleT: false,
       dialogExcelVisibleT: false,
+      dialogFormVisibleA: false,
+      dialogExcelVisibleA: false,
 
       /*手动导入学生数据*/
       formS: {
@@ -251,15 +312,27 @@ export default {
         id: "",
         email: "",
       },
+      /*手动导入助教数据*/
+      formA: {
+        name: "",
+        ta_id: "",
+        email: "",
+      },
 
       /**/
 
       fileListS: [],
       fileListT: [],
+      fileListA: [],
 
       currentPage: 1,
       pagesize: 10,
       userData: [],
+
+      nameRules: [
+        { required: true, message: "name is required", trigger: "blur" },
+      ],
+      idRules: [{ required: true, message: "id is required", trigger: "blur" }],
     };
   },
   methods: {
@@ -270,7 +343,11 @@ export default {
           //params: { userData: "value" },
           crossDomain: true,
         })
-        .then((response) => (this.userData = response.data))
+        .then((response) => {
+          console.log(response);
+          this.userData = response.data;
+          //location.reload();
+        })
         .catch(function (error) {
           console(error);
         });
@@ -289,6 +366,14 @@ export default {
 
     handleExcelT() {
       this.dialogExcelVisibleT = true;
+    },
+
+    handleDetailA() {
+      this.dialogFormVisibleA = true;
+    },
+
+    handleExcelA() {
+      this.dialogExcelVisibleA = true;
     },
 
     handlePreview(file) {
@@ -312,25 +397,90 @@ export default {
     addFromDetailS() {
       //console.log(this.formS);
       //手动增加学生
-      axios
-        .post("/api/Register/addSM/", JSON.stringify(this.formS))
-        .then((response) => {
-          console.log(response);
-          this.checkData(response.data);
+      if (
+        this.formS.name != "" &&
+        this.formS.id != "" &&
+        this.formS.email.indexOf("@") >= 0
+      ) {
+        axios
+          .post("/api/Register/addSM/", JSON.stringify(this.formS))
+          .then((response) => {
+            console.log(response);
+            this.checkData(response.data);
+            //location.reload();
+          });
+        this.dialogFormVisibleS = false;
+        this.formS.name = "";
+        this.formS.id = "";
+        this.formS.email = "";
+        this.getUserData();
+      } else {
+        this.$message({
+          message: "请输入正确信息",
+          type: "error",
         });
-      this.dialogFormVisibleS = false;
-      location.reload();
+      }
+      //location.reload();
     },
 
     addFromDetailT() {
       //手动增加教师
-      this.axios
-        .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
-        .then((response) => {
-          this.checkData(response.data);
+
+      if (
+        this.formT.name != "" &&
+        this.formT.id != "" &&
+        this.formT.email.indexOf("@") >= 0
+      ) {
+        this.axios
+          .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
+          .then((response) => {
+            this.checkData(response.data);
+          });
+        this.dialogFormVisibleT = false;
+        this.formT.name = "";
+        this.formT.id = "";
+        this.formT.email = "";
+        this.getUserData();
+        //location.reload();
+      } else {
+        this.$message({
+          message: "请输入正确信息",
+          type: "error",
         });
-      this.dialogFormVisibleT = false;
-      location.reload();
+      }
+    },
+
+    addFromDetailA() {
+      //手动增加助教
+      if (
+        this.formA.name != "" &&
+        this.formA.ta_id != "" &&
+        this.formA.email.indexOf("@") >= 0
+      ) {
+        var jsons = {
+          name: this.formA.name,
+          ta_id: this.formA.ta_id,
+          email: this.formA.email,
+        };
+        console.log("添加助教");
+        console.log(jsons);
+        this.axios
+          .post("/api/Register/addTAManually", JSON.stringify(jsons))
+          .then((response) => {
+            this.checkData(response.data);
+          });
+        this.dialogFormVisibleA = false;
+        this.formA.name = "";
+        this.formA.ta_id = "";
+        this.formA.email = "";
+        this.getUserData();
+      } else {
+        this.$message({
+          message: "请输入正确信息",
+          type: "error",
+        });
+      }
+      //location.reload();
     },
 
     addFromExcelS() {
@@ -375,6 +525,27 @@ export default {
       this.dialogExcelVisibleT = false;*/
     },
 
+    addFromExcelA() {
+      /*let fdParams = new FormData();
+      this.fileListT.forEach((file) => {
+        console.log(file);
+        fdParams.append("file", file.raw);
+      });
+      fdParams.append("userID", "123");
+
+      this.axios
+        .post("/api/file/addUser/", fdParams, {
+          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+          timeout: 20000,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch({});
+
+      this.dialogExcelVisibleT = false;*/
+    },
+
     handleSizeChange: function (val) {
       this.pagesize = val;
     },
@@ -396,9 +567,28 @@ export default {
       else this.$message("网络错误");
       this.getUserData();
     },
+
+    handleCommandDetail(command) {
+      if (command == "s") this.handleDetailS();
+      else if (command == "t") this.handleDetailT();
+      else if (command == "a") this.handleDetailA();
+    },
+
+    handleCommandForm(command) {
+      if (command == "s") this.handleExcelS();
+      else if (command == "t") this.handleExcelT();
+      else if (command == "a") this.handleExcelA();
+    },
   },
   mounted() {
     this.getUserData();
   },
 };
 </script>
+
+<style scoped>
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
+</style>

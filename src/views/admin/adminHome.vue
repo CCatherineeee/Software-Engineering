@@ -2,6 +2,7 @@
   <div>
     <el-container class="back">
       <el-aside width="15%">
+        <el-button type="primary" @click="getAvatar">显示头像</el-button>
         <div>
           <el-menu class="admin-aside-menu" router>
             <img
@@ -79,7 +80,7 @@ export default {
   data() {
     return {
       avatarDialog: false,
-      id: "1951095",
+      id: "",
       imageUrl: "https://www.w3school.com.cn/i/photo/coffee.jpg",
     };
   },
@@ -138,11 +139,7 @@ export default {
       this.avatarDialog = false;
     },
     getAvatar() {
-      /*var jsons = {
-        s_id: this.id,
-      };
-     */
-
+      //获取头像
       let formData = new FormData();
       formData.append("s_id", this.id);
       let url = "/api/getUserInfo/Student/showAvatar";
@@ -158,6 +155,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.imageUrl = "/api" + response.data.url;
         })
         .catch({});
 
@@ -192,7 +190,7 @@ export default {
     },
   },
   mounted() {
-    //this.getAvatar();
+    if (this.id != "") this.getAvatar();
   },
 };
 </script>

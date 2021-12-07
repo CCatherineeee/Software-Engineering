@@ -1,4 +1,4 @@
-<!-- 查看页面-->
+<!--  教师查看自己名下所有责任课程 -->-->
 <template>
   <div>
     <v-btn color="orange lighten-2" dark @click="handleDialog">
@@ -20,8 +20,9 @@
     >
       <el-table-column prop="course_id" label="课程编号" sortable />
       <el-table-column prop="name" label="课程名称" sortable />
-      <el-table-column prop="semester" label="课程学年" sortable />
-      <el-table-column prop="year" label="课程学期" sortable />
+      <el-table-column prop="year" label="课程学年" sortable />
+      <el-table-column prop="semester" label="课程学期" sortable>
+      </el-table-column>
 
       <el-table-column>
         <template #header>
@@ -103,7 +104,6 @@
 </template>
 
 <script >
-
 export default {
   data() {
     return {
@@ -111,9 +111,7 @@ export default {
       search: "",
       currentPage: 1,
       pagesize: 6,
-      tableData: [
-
-      ],
+      tableData: [],
 
       form: {
         title: "",
@@ -127,6 +125,9 @@ export default {
     };
   },
   methods: {
+    getParams: function () {
+      this.id = sessionStorage.getItem("id");
+    },
     handleSizeChange: function (val) {
       this.pagesize = val;
     },
@@ -135,11 +136,16 @@ export default {
     },
 
     handleManage(row) {
-      console.log(row.course_id);
+      console.log(row);
       this.$router.push({
         path: "/teacherHome/courseClass",
-        query:{
-          info : this.$Base64.encode(JSON.stringify({"courseID" : row.course_id}))}
+        query: {
+          c_id: row.course_id,
+          name: row.name,
+          prefix: row.prefix,
+          semester: row.semester,
+          year: row.year,
+        },
       });
     },
 
@@ -177,27 +183,27 @@ export default {
         );
       };
     },
-    getParams: function () {
-      this.id = sessionStorage.getItem('id');
-    },
-    getCourse(){
-      this.axios.post('/api/course/myDuty/',JSON.stringify({
-        t_id : this.id,
-        token : sessionStorage.getItem('token')
-        })
-      ).then((response) => {
-        if(response.data['code'] == 404){
-          this.$message("找不到页面")
-          this.$router.push({path:"/404"})
-        }
-        else if(response.data['code'] == 301){
-          this.$message("验证过期")
-          this.$router.push({path:"/login"})
-        }
-        else{
-          this.tableData = response.data['data'] //请求成功返回的数据
-        }
-      });
+
+    getCourse() {
+      this.axios
+        .post(
+          "/api/course/myDuty/",
+          JSON.stringify({
+            t_id: this.id,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          if (response.data["code"] == 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else if (response.data["code"] == 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else {
+            this.tableData = response.data["data"]; //请求成功返回的数据
+          }
+        });
     },
   },
 

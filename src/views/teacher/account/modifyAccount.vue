@@ -16,22 +16,22 @@
         <el-input type="text" v-model="userAccount.name"></el-input>
       </el-form-item>
 
-      <el-form-item label="学号" prop="sid">
-        <el-input v-model="userAccount.sid" :disabled="true"></el-input>
+      <el-form-item label="工号" prop="t_id">
+        <el-input v-model="userAccount.t_id" :disabled="true"></el-input>
       </el-form-item>
 
-      <el-form-item label="学院" prop="college">
-        <el-input v-model="userAccount.college" :disabled="true"></el-input>
+      <el-form-item label="学院" prop="department">
+        <el-input v-model="userAccount.department" :disabled="true"></el-input>
       </el-form-item>
 
       <el-form-item label="性别" prop="gender">
         <el-select v-model="userAccount.gender" style="float: left">
-          <el-option label="男" :value="1"></el-option>
-          <el-option label="女" :value="0"></el-option>
+          <el-option label="男" :value="'男'"></el-option>
+          <el-option label="女" :value="'女'"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="手机" prop="phone">
+      <el-form-item label="手机" prop="phone_number">
         <el-input v-model="userAccount.phone"></el-input>
       </el-form-item>
 
@@ -53,20 +53,56 @@
 export default {
   data() {
     return {
-      userAccount: {
-        name: "",
-        sid: 111,
-        gender: "女",
-        phone: 111,
-        email: "",
-      },
+      userAccount: {},
     };
   },
   methods: {
-    save() {},
+    getParams: function () {
+      this.id = sessionStorage.getItem("id");
+    },
+    save() {
+      var jsons = {
+        name: this.userAccount.name,
+        t_id: this.userAccount.t_id,
+        gender: this.userAccount.gender,
+        phone_number: this.userAccount.phone_number,
+        email: this.userAccount.email,
+      };
+      this.axios
+        .post("/api/editInfo/Teacher/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response); //请求成功返回的数据
+          if (response.data == "Success")
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+          else this.$message.error("错误");
+          this.getTeaInfo();
+        });
+    },
     back() {
       this.$router.push("/teacherHome/account");
     },
+    getTeaInfo() {
+      this.axios
+        .get("api//getUserInfo/Teacher/", {
+          params: { t_id: this.id },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log("老师信息");
+          console.log(response.data);
+          this.userAccount = response.data[0];
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    },
+  },
+  mounted() {
+    this.getParams();
+    this.getTeaInfo();
   },
 };
 </script>

@@ -62,6 +62,7 @@
         >
         <el-col :span="3"><v-btn dark @click="confirm">确定</v-btn></el-col>
         <el-col :span="3"><v-btn dark @click="back">取消</v-btn></el-col>
+        <el-col :span="3"><v-btn dark @click="check">测试</v-btn></el-col>
       </el-row>
     </v-container>
 
@@ -198,6 +199,10 @@ export default {
         .catch(function (error) {
           console(error);
         });
+    },
+    check() {
+      console.log(this.date1);
+      console.log(this.date2);
     },
   },
   mounted() {

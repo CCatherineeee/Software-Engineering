@@ -93,7 +93,7 @@ export default {
       annAddDialog: false,
 
       currentPage: 1,
-      pagesize: 6,
+      pagesize: 10,
       title: "",
       content: "",
       announceData: [],
@@ -126,8 +126,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.axios.post("/api/sys/delAnn/",JSON.stringify({"annoucement_id":row.annoucement_id}));
-          this.getAnn();
+          this.deleteAnn(row);
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -139,10 +138,9 @@ export default {
             message: "取消删除",
           });
         });
-
     },
     addAnn() {
-      if (this.form.title === "") {
+      if (this.form.title == "") {
         this.$message({
           type: "warning",
           message: "公告标题不能为空!",
@@ -153,8 +151,8 @@ export default {
           .post("/api//sys/addAnn/", JSON.stringify(this.form))
           .then((response) => {
             console.log(response);
-
-            location.reload();
+            this.annAddDialog = false;
+            this.getAnn();
           })
           .catch(function (error) {
             console.log(error);
@@ -165,21 +163,37 @@ export default {
     checkAnnounce() {},
     getAnn() {
       axios
-          .get("/api/sys/getAnn/", {
-            //params: { userData: "value" },
-            crossDomain: true,
-          })
-          .then((response) => {
-            console.log(response);
-            this.announceData = response.data;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    }
+        .get("/api/sys/getAnn/", {
+          //params: { userData: "value" },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log(response);
+          this.announceData = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    deleteAnn(row) {
+      console.log("删除公告");
+      console.log(row);
+      var jsons = {
+        annoucement_id: row.annoucement_id,
+      };
+      axios
+        .post("/api/sys/delAnn/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response);
+          this.getAnn();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   mounted() {
-    this.getAnn()
+    this.getAnn();
   },
 };
 </script>

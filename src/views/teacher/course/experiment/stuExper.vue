@@ -7,15 +7,14 @@
         <el-col :span="6">
           <v-textarea
             label="score"
-            v-model="score"
             auto-grow
             outlined
             rows="1"
             row-height="15"
           ></v-textarea
         ></el-col>
-        <el-col :span="2" :offset="14"
-          ><v-btn dark @click="confirm"> 确认 </v-btn></el-col
+        <el-col :span="2" :offset="14" @click="confirm"
+          ><v-btn dark> 确认 </v-btn></el-col
         >
         <el-col :span="2"><v-btn dark @click="back">返回</v-btn></el-col>
       </el-row>
@@ -59,20 +58,27 @@ export default {
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      this.sid = JSON.parse(this.$Base64.decode(this.$route.query.info))['s_id']
-      this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['ex_id']
-      // 将数据放在当前组件的数据内
-
+      this.sid = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "s_id"
+      ];
+      this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "ex_id"
+      ];
     },
 
     confirm() {
-      this.axios.post("/api/tea/Ex/scoreReport/",JSON.stringify({
-        s_id : this.sid,
-        ex_id : this.ex_id,
-        score : this.score
-      })).then((response)=>{
-        console.log(response)
-      })
+      this.axios
+        .post(
+          "/api/tea/Ex/scoreReport/",
+          JSON.stringify({
+            s_id: this.sid,
+            ex_id: this.ex_id,
+            score: this.score,
+          })
+        )
+        .then((response) => {
+          console.log(response);
+        });
     },
 
     back() {

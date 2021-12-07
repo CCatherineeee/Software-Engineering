@@ -129,6 +129,26 @@ export default {
           .catch(function (error) {
             console(error);
           });
+      } else if (this.userAccount.role == 3) {
+        axios
+          .get("/api/getUserInfo/TA/", {
+            params: { ta_id: this.userAccount.id },
+            crossDomain: true,
+          })
+          .then((response) => {
+            console.log("拿到的信息" + JSON.stringify(response.data));
+            this.userAccount.name = response.data[0].name;
+            this.userAccount.gender = response.data[0].gender;
+            this.userAccount.phone_number = response.data[0].phone_number;
+            this.userAccount.email = response.data[0].email;
+            //this.userAccount.is_active = response.data[0].is_active;
+            //this.role = response.data[0].role;
+            //this.userAccount.department = response.data[0].department;
+            //this.major_id;
+          })
+          .catch(function (error) {
+            console(error);
+          });
       }
     },
 
@@ -155,6 +175,12 @@ export default {
           phone_number: this.userAccount.phone_number,
           email: this.userAccount.email,
         };
+      } else if (this.userAccount.role == 3) {
+        jsons = {
+          name: this.userAccount.name,
+          ta_id: this.userAccount.id,
+          email: this.userAccount.email,
+        };
       }
 
       if (this.userAccount.role == 1) {
@@ -166,6 +192,12 @@ export default {
       } else if (this.userAccount.role == 2) {
         this.axios
           .post("/api/editInfo/Teacher/", JSON.stringify(jsons))
+          .then((response) => {
+            this.checkResponse(response.data); //请求成功返回的数据
+          });
+      } else if (this.userAccount.role == 3) {
+        this.axios
+          .post("/api/editInfo/TA/", JSON.stringify(jsons))
           .then((response) => {
             this.checkResponse(response.data); //请求成功返回的数据
           });

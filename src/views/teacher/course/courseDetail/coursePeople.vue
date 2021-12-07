@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="所有人" name="first">
         <el-row>
           <el-col :span="3">
@@ -8,51 +8,28 @@
           >
           <el-col :span="3" :offset="1"
             ><v-btn dark @click="handleExcelS">表格导入学生</v-btn></el-col
-          ><el-col :span="5" :offset="10">
+          ><el-col :span="5" :offset="7">
             <v-text-field
               v-model="assist"
-              :append-outer-icon="isRead ? 'mdi-pencil' : 'mdi-send'"
               filled
               label="助教"
               type="text"
-              :readonly="isRead"
-              @click:append-outer="changeAssist"
-            ></v-text-field></el-col
-        ></el-row>
-
-        <el-table
-          :data="
-            studentData.filter(
-              (data) =>
-                !searchP ||
-                data.name.toLowerCase().includes(searchP.toLowerCase()) ||
-                data.id.toLowerCase().includes(searchP.toLowerCase()) ||
-                data.role.toLowerCase().includes(searchP.toLowerCase())
-            )
-          "
-          style="width: 100%"
+              :readonly="true"
+            ></v-text-field
+          ></el-col>
+          <el-col :span="3" :offset="2"
+            ><v-btn @click="handleAssist" dark color="cyan"
+              >设置助教</v-btn
+            ></el-col
+          ></el-row
         >
+
+        <el-table :data="studentData" style="width: 100%">
           <el-table-column prop="s_id" label="学号" sortable />
           <el-table-column prop="name" label="姓名" sortable />
-          <el-table-column
-            prop="role"
-            label="身份"
-            sortable
-            :filters="[
-              { text: '学生', value: 1 },
-
-              { text: '助教', value: 2 },
-            ]"
-            :filter-method="filterIdentity"
-          >
-            <template slot-scope="scope">
-              <span v-if="scope.row.role === 1">学生</span>
-
-              <span v-if="scope.row.role === 2">助教</span>
-            </template>
-          </el-table-column>
         </el-table>
       </el-tab-pane>
+
       <el-tab-pane label="小组" name="second">
         <el-row>
           <el-col :span="3">
@@ -85,26 +62,37 @@
         label-width="80px"
       >
         <el-form-item
-          label="姓名"
-          :required="true"
-          prop="name"
-          status-icon="true"
-        >
-          <el-input v-model="formS.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item
           label="学号"
           :required="true"
-          prop="id"
+          prop="s_id"
           status-icon="true"
         >
-          <el-input v-model="formS.id"></el-input>
+          <el-input v-model="formS.s_id"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleS = false">取消</el-button>
         <el-button type="primary" @click="addFromDetailS()">确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="dialogAssist"
+      title="请选择助教"
+      center
+      width="300px"
+    >
+      <el-select v-model="assist">
+        <el-option
+          v-for="i in assistList"
+          :key="i.ta_id"
+          :label="i.ta_id"
+          :value="i.ta_id"
+        >
+        </el-option>
+      </el-select>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogAssist = false">取消</el-button>
+        <el-button type="primary" @click="setAssist()">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -117,7 +105,6 @@
         :model="dynamicValidateForm"
         style="margin: 40px 65px 0px 25px"
         label-width="80px"
-        class="demo-dynamic"
       >
         <el-form-item
           prop="leader"
@@ -208,23 +195,25 @@
 export default {
   data() {
     return {
+      id: "",
+      c_id: "",
+
       activeName: "first",
       dialogFormVisibleS: false,
       dialogExcelVisibleS: false,
       dialogFormVisibleG: false,
       dialogExcelVisibleG: false,
+      dialogAssist: false,
 
       studentData: [],
       groupData: [],
-      class_id : "",
 
-      assist: "111",
-      isRead: true,
+      assist: "",
+      assistList: [],
 
       /*手动导入学生数据*/
       formS: {
-        name: "",
-        id: "",
+        s_id: "",
       },
       /*手动导入小组成员数据*/
       dynamicValidateForm: {
@@ -244,56 +233,74 @@ export default {
     };
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    filterIdentity(value, row, column) {
-      const property = column["property"];
-      return row[property] === value;
-    },
     handleDetailS() {
       this.dialogFormVisibleS = true;
     },
-
     handleExcelS() {
       this.dialogExcelVisibleS = true;
     },
-
     handleDetailG() {
       this.dialogFormVisibleG = true;
     },
-
     handleExcelT() {
       this.dialogExcelVisibleG = true;
+    },
+    handleAssist() {
+      this.dialogAssist = true;
     },
 
     handlePreview(file) {
       console.log(file);
     },
-
     handleRemove(file, fileListS) {
       console.log(file, fileListS);
     },
-
     handleChange(file) {
       console.log(file);
       this.fileListS.push(file);
       console.log(this.fileListS);
     },
-
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
 
     addFromDetailS() {
-      console.log(this.formS);
       //手动增加学生
-      this.axios.post("", JSON.stringify(this.formS)).then((response) => {
-        //这里使用了ES6的语法
-        console.log(response); //请求成功返回的数据
-      });
-      this.dialogFormVisibleS = false;
-      location.reload();
+
+      var jsons = {
+        class_id: this.c_id,
+        s_id: this.formS.s_id,
+      };
+      console.log("手动增加学生");
+      console.log(jsons);
+      this.axios
+        .post("/api/classAddStudentManually", JSON.stringify(jsons))
+        .then((response) => {
+          //这里使用了ES6的语法
+          console.log("手动添加学生返回");
+          console.log(response); //请求成功返回的数据
+          if (response.data.status == "200") {
+            this.dialogFormVisibleS = false;
+            this.getStuList();
+            this.$message({
+              message: "添加成功",
+              type: "success",
+            });
+            this.formS.s_id = "";
+          } else if (response.data.status == "402") {
+            this.$message({
+              message: "该学生不存在！",
+              type: "error",
+            });
+            this.formS.s_id = "";
+          } else if (response.data.status == "401") {
+            this.$message({
+              message: "该学生已在班级中！",
+              type: "error",
+            });
+            this.formS.s_id = "";
+          }
+        });
     },
 
     addFromDetailT(formName) {
@@ -356,19 +363,6 @@ export default {
 
       this.dialogExcelVisibleG = false;*/
     },
-    handleSizeChange: function (val) {
-      this.pagesize = val;
-    },
-    handleCurrentChange: function (currentPage) {
-      this.currentPage = currentPage;
-    },
-
-    changeAssist() {
-      if (!this.isRead) {
-        this.setAssist;
-        location.reload();
-      } else this.isRead = !this.isRead;
-    },
 
     setAssist() {
       //上传助教
@@ -385,21 +379,40 @@ export default {
         sid: "",
       });
     },
+
+    getStuList() {
+      var jsons = {
+        class_id: this.c_id,
+      };
+
+      this.axios
+        .post("/api/manageClass/IDGetClassStudent", JSON.stringify(jsons))
+        .then((response) => {
+          this.studentData = response.data.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getAssistList() {
+      console.log("获得助教");
+      this.axios.get("/api/getUserInfo/getAllTA").then((response) => {
+        console.log("获得助教");
+        console.log(response);
+        this.assistList = response.data;
+      });
+    },
+
+    getParams: function () {
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+      console.log("cid===" + this.c_id);
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
-    this.axios.post(
-        "/api/manageClass/IDGetClassStudent",JSON.stringify(
-            {
-              class_id : this.class_id,
-            }),
-    ).then((response) => {
-      //这里使用了ES6的语法
-      //this.tableData = response.data
-      this.studentData = response.data['data']
-      //this.checkResponse(response.data); //请求成功返回的数据
-    })
-  }
+    this.getParams();
+    this.getStuList();
+    this.getAssistList();
+  },
 };
 </script>
 

@@ -3,13 +3,13 @@
     <el-tab-pane label="所有人" name="first">
       <el-input
         placeholder="请输入学号或姓名"
-        v-model="searchP"
+        :v-model="searchP"
         style="width: 20%"
         clearable
       />
       <el-table
         :data="
-          tableData.filter(
+          stuList.filter(
             (data) =>
               !searchP ||
               data.name.toLowerCase().includes(searchP.toLowerCase()) ||
@@ -21,23 +21,6 @@
       >
         <el-table-column prop="s_id" label="学号" sortable />
         <el-table-column prop="name" label="姓名" sortable />
-        <el-table-column
-          prop="role"
-          label="身份"
-          sortable
-          :filters="[
-            { text: '学生', value: 1 },
-
-            { text: '助教', value: 2 },
-          ]"
-          :filter-method="filterIdentity"
-        >
-          <template slot-scope="scope">
-            <span v-if="scope.row.role === 1">学生</span>
-
-            <span v-if="scope.row.role === 2">助教</span>
-          </template>
-        </el-table-column>
       </el-table>
     </el-tab-pane>
     <el-tab-pane label="小组" name="second">
@@ -82,8 +65,8 @@ export default {
       activeName: "first",
       searcP: "",
       searcG: "",
-      class_id : "",
-      tableData: [],
+      class_id: "",
+      stuList: [],
       groupData: [
         {
           leader: "组长",
@@ -118,21 +101,33 @@ export default {
       const property = column["property"];
       return row[property] === value;
     },
+    getStuList() {
+      this.axios
+        .post(
+          "/api/manageClass/IDGetClassStudent",
+          JSON.stringify({
+            class_id: this.class_id,
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          //this.stuList = response.data
+          this.stuList = response.data["data"];
+          console.log(this.stuList);
+        });
+    },
+    getParams: function () {
+      this.id = sessionStorage.getItem("id");
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
+      console.log("cid===" + this.class_id);
+    },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))['class_id'];
-    this.axios.post(
-        "/api/manageClass/IDGetClassStudent",JSON.stringify(
-            {
-              class_id : this.class_id,
-            }),
-    ).then((response) => {
-      //这里使用了ES6的语法
-      //this.tableData = response.data
-      this.tableData = response.data['data']
-      //this.checkResponse(response.data); //请求成功返回的数据
-    })
-  }
+    this.getParams();
+    this.getStuList();
+  },
 };
 </script>
 
