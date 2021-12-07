@@ -178,7 +178,7 @@
               <v-col cols="6">
                 <el-select
                   v-model="experiment.status"
-                  placeholder="请选择实验状态"
+                  placeholder="请选择实验提交方式"
                   style="margin-bottom: 15px; width: 100%"
                 >
                   <el-option
@@ -276,16 +276,16 @@ export default {
         brief: "",
         weight: "",
         end_time: "",
-        status: 0,
+        status: null,
       },
       exStatus: [
         {
-          value: 0,
-          label: "未发布",
+          value: "在线提交",
+          label: "在线提交",
         },
         {
-          value: 1,
-          label: "发布",
+          value: "在线提交",
+          label: "提交文件",
         },
       ],
 
@@ -495,7 +495,7 @@ export default {
         brief: this.experiment.brief,
         weight: this.experiment.weight,
         end_time: this.formatDateTime(this.experiment.end_time),
-        status: this.experiment.status,
+        ex_type: this.experiment.status,
       };
       console.log("新增实验");
       console.log(jsons);

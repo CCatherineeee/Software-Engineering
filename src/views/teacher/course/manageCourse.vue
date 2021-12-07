@@ -194,10 +194,10 @@ export default {
           })
         )
         .then((response) => {
-          if (response.data["code"] == 404) {
+          if (response.data["code"] === 404) {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
-          } else if (response.data["code"] == 301) {
+          } else if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
           } else {

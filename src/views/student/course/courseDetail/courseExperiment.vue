@@ -100,7 +100,8 @@ export default {
         "/api/class/showEx/",
         JSON.stringify({
           class_id: this.class_id,
-          s_id : sessionStorage.getItem('id')
+          s_id : sessionStorage.getItem('id'),
+          token : sessionStorage.getItem('token')
         })
       )
       .then((response) => {
