@@ -33,6 +33,9 @@ from Routers.ManageExperiment.manageExperiment import manageExperimentRoute
 from Routers.ManageExperiment.stuExperiment import studentExperimentRoute
 from Routers.ManageExperiment.teaExperiment import teaExperimentRoute
 from Routers.ManageGroup.manageGroup import manageGroup
+from Routers.ManageMessage.stuMessage import stuMessage
+from Routers.ManageMessage.TAMessage import TAMessageManage
+from Routers.ManageMessage.teacherMessage import teacherMessage
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -64,6 +67,9 @@ app.register_blueprint(manageExperimentRoute)
 app.register_blueprint(studentExperimentRoute)
 app.register_blueprint(teaExperimentRoute)
 app.register_blueprint(manageGroup)
+app.register_blueprint(stuMessage)
+app.register_blueprint(TAMessageManage)
+app.register_blueprint(teacherMessage)
 
 
 @app.before_first_request
@@ -111,8 +117,11 @@ def create_app():
     app.register_blueprint(classAddStudentRoute)
     app.register_blueprint(manageExperimentRoute)
     app.register_blueprint(studentExperimentRoute)
-    app.register_blueprint(teaExperimentRoute)
+    app.register_blueprint(teaExperimentRoute)  
     app.register_blueprint(manageGroup)
+    app.register_blueprint(stuMessage)
+    app.register_blueprint(TAMessageManage)
+    app.register_blueprint(teacherMessage)
     
     return app
 

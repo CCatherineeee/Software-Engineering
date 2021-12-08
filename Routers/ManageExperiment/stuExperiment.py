@@ -1,5 +1,6 @@
 import re
 from flask import Flask, request, jsonify,send_from_directory
+from flask.globals import current_app
 from flask_cors import CORS
 from flask import Blueprint
 import json
@@ -31,7 +32,7 @@ def createFilePath(sID,exID,filename):
     
 
 @studentExperimentRoute.route('/Ex/stuUpload/',methods=['POST'])  
-def uoloadReport():
+def uploadReport():
     report = request.files.get('report')
     data = request.form
     s_id = data['s_id']
@@ -95,3 +96,18 @@ def showEx():
         content.append(temp)
     return jsonify(content)
     
+#学生下载实验模板
+
+@studentExperimentRoute.route('/Ex/downloadExTemplate',methods=['POST'])  
+def downloadExTemplate():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    experiment_id = data['experiment_id']
+
+    ex = Experiment.query.filter(Experiment.experiment_id == experiment_id).first()
+    if not ex:
+        return jsonify({'status':400,'message':"该实验不存在"})
+    experiment_path = current_app.config ["EXPERIMENT_UPLOAD_FOLDER"]
+    template_name = ex.template_file
+    return send_from_directory(experiment_path,template_name,as_attachment=True)
+    #return jsonify({'tempUrl':template_url})

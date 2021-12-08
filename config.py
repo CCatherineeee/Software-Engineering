@@ -8,3 +8,4 @@ SQLALCHEMY_ECHO = True
 SECRET_KEY = '123123'
 AVATAR_UPLOAD_FOLDER = os.getcwd()+'/static/avatar/'
 CLASSFILE_UPLOAD_FOLDER = os.getcwd()+'/static/classFile/'
+EXPERIMENT_UPLOAD_FOLDER = os.getcwd()+'/static/experimentFile/'

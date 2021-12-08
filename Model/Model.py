@@ -1,3 +1,4 @@
+from re import template
 from dbManage import db
 from sqlalchemy import ForeignKey
 import datetime
@@ -231,6 +232,7 @@ class Experiment(db.Model):
     weight = db.Column(db.Float)
     ex_type = db.Column(db.String(10))
     status = db.Column(db.Integer) # 1发布 0 未发布
+    template_file = db.Column(db.String(100),default = '实验模板.docx')
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -378,7 +380,7 @@ class StudentMessage(db.Model):
     __tablename__ = 'student_message'
     stu_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
     s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'))
-    tilte = db.Column(db.String(100)) 
+    title = db.Column(db.String(100)) 
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
@@ -390,7 +392,7 @@ class TeacherMessage(db.Model):
     __tablename__ = 'teacher_message'
     tea_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
     t_id = db.Column(db.String(64), ForeignKey('teacher.t_id',ondelete='CASCADE'))
-    tilte = db.Column(db.String(100)) 
+    title = db.Column(db.String(100)) 
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
@@ -403,7 +405,7 @@ class TAMessage(db.Model):
     __tablename__ = 'ta_message'
     ta_message_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
     ta_id = db.Column(db.String(64), ForeignKey('teaching_assistant.ta_id',ondelete='CASCADE'))
-    tilte = db.Column(db.String(100)) 
+    title = db.Column(db.String(100)) 
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是

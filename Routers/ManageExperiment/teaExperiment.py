@@ -7,10 +7,9 @@ from Model.Model import Class,StudentClass,Teacher,Student,TeachingAssistant,TAC
 import dbManage
 from sqlalchemy import and_, or_
 import os
-import xlrd
-import uuid
-import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+import datetime
 
 teaExperimentRoute = Blueprint('teaExperimentRoute', __name__)
 CORS(teaExperimentRoute, resources=r'/*')
@@ -70,7 +69,7 @@ def scoreReport():
 def taScoreReport():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    ta_id = data['ta_id']  #批改的老师的id
+    ta_id = data['ta_id']  #批改的助教的id
     s_id = data['s_id']
     ex_id = data['ex_id']
     score = data['score']
@@ -80,3 +79,26 @@ def taScoreReport():
     se.grader = ta.name
     dbManage.db.session.commit()
     return "success"
+
+#老师上传实验模板
+@teaExperimentRoute.route('/tea/Ex/uploadTemplate',methods=['POST'])  
+def uploadTemplate():
+    template = request.files.get('template')
+    data = request.form
+    experiment_id = data['experiment_id']
+    ex = Experiment.query.filter(Experiment.experiment_id == experiment_id).first()
+    if not ex:
+        return jsonify({'status':400,'message':"该实验不存在"})
+
+    ext = os.path.splitext(template.filename)[1]
+    filename = os.path.splitext(template.filename)[0]
+    UPLOAD_FOLDER = current_app.config ["EXPERIMENT_UPLOAD_FOLDER"]
+
+    nowtime = datetime.datetime.now().strftime("%Y-%m-%d")
+    template.filename = filename+'_'+nowtime+ext
+    #filepath = UPLOAD_FOLDER+template.filename
+    template.save(UPLOAD_FOLDER+template.filename)
+    ex.template_file = template.filename
+    dbManage.db.session.commit()
+    return jsonify({'status':200,'message':"上传模板成功"})
+    
