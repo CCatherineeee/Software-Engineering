@@ -46,8 +46,10 @@ def classAddTA():
     else:
         this_ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id == ta_id).first()
         this_class = Class.query.filter(Class.class_id == class_id).first()
-
         if this_ta and this_class:  #两个都存在
+            tc = TAClass.query.filter(and_(TAClass.ta_id == ta_id,TAClass.class_id == class_id)).first()
+            if tc:
+                return jsonify({'code':500,'message':"该助教已存在于课程",'data':None})
             ta_class = TAClass(class_id = this_class.class_id , ta_id=this_ta.ta_id)
             dbManage.db.session.add(ta_class)
             dbManage.db.session.commit()

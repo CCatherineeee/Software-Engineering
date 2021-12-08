@@ -51,7 +51,7 @@ def getStuentInfo():
     if token_role != 1:
         return jsonify({'code':404,'status':"无法访问",'data':None})
 
-    if token_role == StudentRole:
+    if token_role == Role.StudentRole:
         if s_id != token_id:
             return jsonify({'code':404,'status':"无法访问",'data':None})
 
