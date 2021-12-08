@@ -229,6 +229,7 @@ class Experiment(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     end_time = db.Column(db.DateTime)
     weight = db.Column(db.Float)
+    ex_type = db.Column(db.String(10))
     status = db.Column(db.Integer) # 1发布 0 未发布
 
     def __repr__(self):
@@ -500,6 +501,7 @@ class StudentExperiment(db.Model):
     file_url = db.Column(db.String(1024))
     score = db.Column(db.Integer)
     grader = db.Column(db.String(64))  #批改人姓名，不是ID
+    submitTime = db.Column(db.DateTime,onupdate=datetime.datetime.now())
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
@@ -607,9 +609,9 @@ class ClassFile(db.Model):  #ClassFile
 
     file_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     class_id = db.Column(db.String(256), ForeignKey("class.class_id"))
-    file_url = db.Column(db.String(128),default='../static/classFile') # 服务器文件存放地址
+    file_url = db.Column(db.String(128)) # 服务器文件存放地址
     file_name = db.Column(db.String(128)) #文件名
-    upload_time = db.Column(db.String(50)) #上传时间
+    upload_time = db.Column(db.String(50),default=datetime.datetime.now()) #上传时间
 
     def __repr__(self):
         return '<course_file %r>' % self.__tablename__

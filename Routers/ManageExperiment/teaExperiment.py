@@ -25,21 +25,43 @@ def getReport():
     ex_id = data['ex_id']
     se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
     path = os.path.join(basepath,'StudentExFile',ex_id)
-    filename = se.file_url.split(path+'/')[1]    
-    return send_from_directory(path,filename,as_attachment=True)
+    filename = se.file_url.split(path+'/')[1]
+    response = send_from_directory(path,filename,as_attachment=True)
+    response.headers["Access-Control-Expose-Headers"] = "Content-disposition"  
+    return response
+
+
+@teaExperimentRoute.route('/tea/Ex/getReportList/',methods=['POST'])  
+def getReportList():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    path = os.path.join(basepath,'StudentExFile',str(ex_id))
+    ses = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id).all()
+    content = []
+    for se in ses:
+        filename = se.file_url
+        status = "否"
+        if filename:
+            filename = se.file_url.split(path+'/')[1]
+            status = "是"
+        s = Student.query.filter(Student.s_id == se.s_id).first()
+        temp = {"s_id" : se.s_id,"s_name":s.name,"filename":filename,"score":se.score,"grader":se.grader,"submitTime":str(se.submitTime),"status":status}
+        content.append(temp)
+    return jsonify(content)
 
 @teaExperimentRoute.route('/tea/Ex/scoreReport/',methods=['POST'])  
 def scoreReport():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    t_id = data['t_id']  #批改的老师的id
+    # t_id = data['t_id']  #批改的老师的id
     s_id = data['s_id']
     ex_id = data['ex_id']
     score = data['score']
     se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
     se.score = score
-    teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
-    se.grader = teacher.name
+    # teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
+    # se.grader = teacher.name
     dbManage.db.session.commit()
     return "success"
 

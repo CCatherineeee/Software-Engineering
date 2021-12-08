@@ -23,6 +23,7 @@ def addEx():
     brief = data['brief']
     end_time = data['end_time']
     weight = float(data['weight'])
+    ex_type = data['ex_type']
     end_time = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     exs = Experiment.query.filter(Experiment.course_id == course_id).all()
     sw = 0
@@ -30,7 +31,7 @@ def addEx():
         sw = sw + ex.weight
     if sw + weight > 1:
         return "WeightUnreasonable"
-    experiment = Experiment(course_id = course_id, experiment_title = title, experiment_brief = brief, end_time = end_time, status = 0, weight = weight)
+    experiment = Experiment(course_id = course_id, experiment_title = title, experiment_brief = brief, end_time = end_time, status = 0, weight = weight, ex_type = ex_type)
     dbManage.db.session.add(experiment) 
     dbManage.db.session.commit()
 
@@ -53,7 +54,12 @@ def getEx():
     exs = Experiment.query.filter(Experiment.course_id == c_id).all()
     content = []
     for ex in exs:
-        temp = {'ex_id':ex.experiment_id, 'title':ex.experiment_title,'brief':ex.experiment_brief,"create_time" : str(ex.create_time),"end_time" :str(ex.end_time), "weight":ex.weight, "status":ex.status}
+        now_time = datetime.datetime.now()
+        if now_time > ex.end_time:
+            status = 3
+        else:
+            status = ex.status
+        temp = {'ex_id':ex.experiment_id, 'title':ex.experiment_title,'brief':ex.experiment_brief,"create_time" : str(ex.create_time),"end_time" :str(ex.end_time), "weight":ex.weight, "status":status, 'ex_type' :ex.ex_type}
         content.append(temp)
     return jsonify(content)
 
@@ -94,5 +100,18 @@ def editEx():
     new_ex.status = status
     new_ex.end_time = end_time
 
+    dbManage.db.session.commit()
+    return "success"
+
+@manageExperimentRoute.route('/course/pushEx/',methods=['POST'])  
+def pushEx():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+
+    ex = Experiment.query.filter(Experiment.experiment_id == ex_id).first()
+    
+    ex.status = 1
+    
     dbManage.db.session.commit()
     return "success"

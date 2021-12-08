@@ -19,7 +19,7 @@ def editStudentInfo():
     data = json.loads(data.decode("utf-8"))
 
     name = data['name']
-    s_id = data['s_id']
+    s_id = data['sid']
     email = data['email']
     gender = data['gender']
     phone_number = data['phone_number']
@@ -33,7 +33,6 @@ def editStudentInfo():
     student.email = email
     student.gender = gender
     student.phone_number = phone_number
-
     dbManage.db.session.commit()
     return "Success"
 

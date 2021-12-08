@@ -30,7 +30,7 @@ def getSysAnn():
     annS = dbManage.db.session.query(SystemAnnouncement).all()
     content = []
     for ann in annS:
-        temp = {'title':ann.title,'content':ann.content,'date':ann.create_time,'annoucement_id':ann.annoucement_id}
+        temp = {'title':ann.title,'content':ann.content,'date':str(ann.create_time),'annoucement_id':ann.annoucement_id}
         content.append(temp)
     return jsonify(content)
 

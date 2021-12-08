@@ -105,9 +105,14 @@ def getDuty():
     courses = dbManage.db.session.query(Course).all()
     content = []
     for course in courses:
-        teacher = Teacher.query.filter(Teacher.t_id == course.duty_teacher).first()
+        t_name = None
+        t_id = None
+        if course.duty_teacher:
+            teacher = Teacher.query.filter(Teacher.t_id == course.duty_teacher).first()
+            t_id = course.duty_teacher
+            t_name = teacher.name
         coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
-        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year,"t_id":course.duty_teacher,"t_name":teacher.name,"c_id":course.c_id}
+        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year,"t_id":t_id,"t_name":t_name,"c_id":course.c_id}
         content.append(temp)
     return jsonify(content)
 

@@ -5,6 +5,7 @@ import json
 from Model.Model import Course,Class,StudentClass,CourseType,Teacher,Student
 import dbManage
 from sqlalchemy import and_, or_
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 
@@ -65,9 +66,14 @@ def showClass():
     content = []
     for class_ in classes:
         course = Course.query.filter(Course.c_id == course_id).first()
-        teacher = Teacher.query.filter(Teacher.t_id == class_.t_id).first()
+        t_id = None
+        t_name = None
+        if class_.t_id:
+            teacher = Teacher.query.filter(Teacher.t_id == class_.t_id).first()
+            t_id = teacher.t_id
+            t_name = teacher.name
         coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
-        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id, "t_id":teacher.t_id,"t_name":teacher.name}
+        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id, "t_id":t_id,"t_name":t_name}
         content.append(temp)
     return jsonify(content)
 
@@ -92,6 +98,44 @@ def deleteClass():
 
     return jsonify(result)
 
+@manageClassRoute.route('/studentGetClass',methods=['POST'])  
+def studentGetClass():
+
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    s_id = data['s_id']
+    token = data['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return jsonify({'code':301,'status':"验证过期",'data':None})
+
+    if token_role != 1:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
+    if s_id != token_id:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
+    class_list = StudentClass.query.filter(StudentClass.s_id == s_id).all()
+    all_class = []
+    for class_item in class_list:
+        this_class = Class.query.filter(Class.class_id == class_item.class_id).first()
+        this_course = Course.query.filter(Course.c_id == this_class.course_id).first()
+        course_type = CourseType.query.filter(CourseType.prefix == this_course.prefix).first()
+        
+        data = {
+            'class_id':class_item.class_id,
+            'class_number':this_class.class_number,
+            'prefix':this_course.prefix,
+            'semester':this_course.course_semester,
+            'year':this_course.course_year,
+            'course_name':course_type.ct_name}
+        all_class.append(data)
+
+    return jsonify({'code':200,'status':"请求成功",'data':all_class})
+
 #根据老师工号获取所在的所有班级,班级信息
 @manageClassRoute.route('/manageClass/teacherGetClass',methods=['POST'])  
 def teacherGetClass():
@@ -100,28 +144,37 @@ def teacherGetClass():
     data = json.loads(data.decode("utf-8"))
 
     t_id = data['t_id']  #老师学号
+    token = data['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except :
+        return jsonify({'code':301,'status':"验证过期",'data':None})
+    
+    if token_role != 2:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
+    if t_id != token_id:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
     class_list = Class.query.filter(Class.t_id == t_id).all()
     all_class = []
     for class_item in class_list:
         this_class = Class.query.filter(Class.class_id == class_item.class_id).first()
-        course_type = CourseType.query.filter(CourseType.prefix == this_class.course_id[:6]).first()
+        this_course = Course.query.filter(Course.c_id == this_class.course_id).first()
+        course_type = CourseType.query.filter(CourseType.prefix == this_course.prefix).first()
         teacher = Teacher.query.filter(Teacher.t_id==this_class.t_id).first()
-        if(this_class.course_id[10:12]=='00'):
-            semester = '春季'
-        else:
-            semester = '秋季'
-        
         data = {
             'class_id':class_item.class_id,
             'class_number':this_class.class_number,
-            'prefix':course_type.prefix,
-            'semester':semester,
-            'year':this_class.course_id[6:10],
-            'course_name':course_type.ct_name,
-            'teacher':teacher.name}
+            'prefix':this_course.prefix,
+            'semester':this_course.course_semester,
+            'year':this_course.course_year,
+            'course_name':course_type.ct_name}
         all_class.append(data)
 
-    return jsonify(all_class)
+    return jsonify({'code':200,'status':"请求成功",'data':all_class})
     
 #通过班级号获取所有班级内信息
 @manageClassRoute.route('/manageClass/IDGetClass',methods=['POST'])  

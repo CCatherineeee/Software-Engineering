@@ -9,6 +9,8 @@ from sqlalchemy import and_, or_
 import time
 import dbManage
 import os
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 
 getUserInfoRoute = Blueprint('getUserInfoRoute', __name__)
 CORS(getUserInfoRoute, resources=r'/*')	
@@ -32,9 +34,25 @@ def getUserInfo():
         content.append(temp)
     return jsonify(content)
 
-@getUserInfoRoute.route('/getUserInfo/Student/',methods=['GET'])  
+@getUserInfoRoute.route('/getUserInfo/Student/',methods=['POST'])  
 def getStuentInfo():
-    s_id = request.args.get('s_id')
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    s_id = data['s_id']
+    token = data['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return jsonify({'code':301,'status':"验证过期",'data':None})
+    
+    if token_role != 1:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
+    if s_id != token_id:
+        return jsonify({'code':404,'status':"无法访问",'data':None})
+
     student = Student.query.filter(Student.s_id==s_id).first()
     temp = {}
     if student:
@@ -42,7 +60,7 @@ def getStuentInfo():
             'phone_number':student.phone_number,'is_active':student.is_active,'email':student.email,'department':student.department,'gender':student.gender}
     content = []
     content.append(temp)
-    return jsonify(content)
+    return jsonify({'code':200,'status':"请求成功",'data':content})
 
 @getUserInfoRoute.route('/getUserInfo/Teacher/',methods=['GET'])  
 def getTeacherInfo():
