@@ -11,10 +11,23 @@ import time
 import dbManage
 import os
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-
+from Routers import Role
 
 teacherCourseRoute = Blueprint('teacherCourseRoute', __name__)
 CORS(teacherCourseRoute, resources=r'/*')	
+
+def checkToken(token,role):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
+    
+    if token_role != role:
+        return 404
+    else:
+        return 200
 
 @teacherCourseRoute.route('/course/myDuty/',methods=['POST'])  
 def getMyDuty():

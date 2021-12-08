@@ -20,6 +20,26 @@ CORS(manageGroup, resources=r'/*')
 #教师添加小组(先添加小组再添加学生)
 @manageGroup.route('/group/addGroup',methods=['POST'])  
 def addGroup():
+    """Add some data
+
+    @@@
+    ### args
+    |  args | nullable | request type | type |  remarks |
+    |-------|----------|--------------|------|----------|
+    | title |  false   |    body      | str  | blog title    |
+    | name  |  false   |    body      | str  | person's name |
+
+    ### request
+    ```json
+    {"title": "xxx", "name": "xxx"}
+    ```
+
+    ### return
+    ```json
+    {"code": xxxx, "msg": "xxx", "data": null}
+    ```
+    @@@
+    """
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
 

@@ -10,6 +10,7 @@ import time
 import dbManage
 import os
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Routers import Role
 
 
 getUserInfoRoute = Blueprint('getUserInfoRoute', __name__)
@@ -50,8 +51,9 @@ def getStuentInfo():
     if token_role != 1:
         return jsonify({'code':404,'status':"无法访问",'data':None})
 
-    if s_id != token_id:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+    if token_role == StudentRole:
+        if s_id != token_id:
+            return jsonify({'code':404,'status':"无法访问",'data':None})
 
     student = Student.query.filter(Student.s_id==s_id).first()
     temp = {}

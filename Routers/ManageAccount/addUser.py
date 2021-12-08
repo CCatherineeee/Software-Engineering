@@ -13,9 +13,24 @@ import uuid
 import xlrd
 from .myemail.sendEmail import send_email
 import dbManage
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Routers import Role
 
 addUserRoute = Blueprint('addUserRoute', __name__)
 CORS(addUserRoute, resources=r'/*')	
+
+def checkAdminToken(token,role):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
+    
+    if token_role != role:
+        return 404
+    else:
+        return 200
 
 def manageFile(uploadPath):
     workbook = xlrd.open_workbook(uploadPath)
@@ -60,19 +75,25 @@ def addStudentManually():
     name = data['name']
     s_id = data['id']
     email = data['email']
-
-    user = Model.Student.query.filter(Model.Student.s_id == s_id).first()
-    if user:
-        return "UserIDExist"
-    user = Model.Student.query.filter(Model.Student.email == email).first()
-    if user:
-        return "UserMailExist"
+    token = data['token']
+    res = checkToken(token,Role.AdminRole)
+    if res == 301:
+        return jsonify({'code':res,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
-        dbManage.db.session.add(student)
-        dbManage.db.session.commit()
-        send_email(email,0,student,0)
-        return "Success"
+        user = Model.Student.query.filter(Model.Student.s_id == s_id).first()
+        if user:
+            return jsonify({'code':302,'message':"用户ID已存在",'data':None})
+        user = Model.Student.query.filter(Model.Student.email == email).first()
+        if user:
+            return jsonify({'code':302,'message':"用户邮箱已被注册",'data':None})
+        else:
+            student = Model.Student(s_id=s_id, s_pwd=s_id, name=name, email=email)
+            dbManage.db.session.add(student)
+            dbManage.db.session.commit()
+            send_email(email,0,student,0)
+            return jsonify({'code':200,'message':"添加成功",'data':None})
 
 
 
@@ -83,18 +104,25 @@ def addTeacherManually():
     name = data['name']
     t_id = data['id']
     email = data['email']
-    user = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
-    if user:
-        return "UserIDExist"
-    user = Model.Teacher.query.filter(Model.Teacher.email == email).first()
-    if user:
-        return "UserMailExist"
+    token = data['token']
+    res = checkToken(token,Role.AdminRole)
+    if res == 301:
+        return jsonify({'code':res,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        teacher = Model.Teacher(t_id=t_id,t_pwd=t_id,name=name,email=email)
-        dbManage.db.session.add(teacher)
-        dbManage.db.session.commit()
-        send_email(email,0,teacher,1)
-        return "Success"
+        user = Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first()
+        if user:
+            return jsonify({'code':302,'message':"用户ID已存在",'data':None})
+        user = Model.Teacher.query.filter(Model.Teacher.email == email).first()
+        if user:
+            return jsonify({'code':302,'message':"用户邮箱已被注册",'data':None})
+        else:
+            teacher = Model.Teacher(t_id=t_id,t_pwd=t_id,name=name,email=email)
+            dbManage.db.session.add(teacher)
+            dbManage.db.session.commit()
+            send_email(email,0,teacher,1)
+            return jsonify({'code':200,'message':"添加成功",'data':None})
 
 #手动添加助教
 @addUserRoute.route('/Register/addTAManually',methods=['POST'])  
@@ -104,16 +132,22 @@ def addTAManually():
     name = data['name']
     ta_id = data['ta_id']
     email = data['email']
-
-    user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.ta_id == ta_id).first()
-    if user:
-        return "UserIDExist"
-    user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.email == email).first()
-    if user:
-        return "UserMailExist"
+    token = data['token']
+    res = checkToken(token,Role.AdminRole)
+    if res == 301:
+        return jsonify({'code':res,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        ta = Model.TeachingAssistant(ta_id=ta_id, ta_pwd=ta_id, name=name, email=email)
-        dbManage.db.session.add(ta)
-        dbManage.db.session.commit()
-        #send_email(email,0,ta)
-        return "Success"
+        user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.ta_id == ta_id).first()
+        if user:
+            return jsonify({'code':302,'message':"用户ID已存在",'data':None})
+        user = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.email == email).first()
+        if user:
+            return jsonify({'code':302,'message':"用户邮箱已被注册",'data':None})
+        else:
+            ta = Model.TeachingAssistant(ta_id=ta_id, ta_pwd=ta_id, name=name, email=email)
+            dbManage.db.session.add(ta)
+            dbManage.db.session.commit()
+            #send_email(email,0,ta)
+            return jsonify({'code':200,'message':"添加成功",'data':None})

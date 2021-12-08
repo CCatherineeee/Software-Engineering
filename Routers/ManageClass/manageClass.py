@@ -6,12 +6,25 @@ from Model.Model import Course,Class,StudentClass,CourseType,Teacher,Student
 import dbManage
 from sqlalchemy import and_, or_
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-
+from Routers import Role
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 manageClassRoute = Blueprint('manageClassRoute', __name__)
 CORS(manageClassRoute, resources=r'/*')	
 
+def checkToken(token,role):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
+    
+    if token_role != role:
+        return 404
+    else:
+        return 200
 
 #责任教师开班，班号为课程号+总班数   需要选择开课的年份及季节
 @manageClassRoute.route('/manageClass/addClass',methods=['POST'])  
@@ -20,19 +33,25 @@ def addClass():
     data = json.loads(data.decode("utf-8"))
     course_id = data['courseID']
     t_id = data['t_id']
-
-    course = Course.query.filter(Course.c_id == course_id).first()  #找出全部的这个课程
-    if course:  #课程存在
-        class_list = Class.query.filter(Class.course_id == course_id).all()  #找出课程名为这个的所有班级
-        class_no = len(class_list)+1
-        new_class = Class(class_id =course_id+str(class_no), course_id = course_id,class_number=class_no, t_id = t_id)
-        dbManage.db.session.add(new_class)
-        dbManage.db.session.commit()
-        result = {'status':200,'message':'添加成功','class_id':new_class.class_id}
+    token = data['token']
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        result = {'status':400,'message':'该课程不存在','class_id':''}
+        course = Course.query.filter(Course.c_id == course_id).first()  #找出全部的这个课程
+        if course:  #课程存在
+            class_list = Class.query.filter(Class.course_id == course_id).all()  #找出课程名为这个的所有班级
+            class_no = len(class_list)+1
+            new_class = Class(class_id =course_id+str(class_no), course_id = course_id,class_number=class_no, t_id = t_id)
+            dbManage.db.session.add(new_class)
+            dbManage.db.session.commit()
+            result = {'code':200,'message':'添加成功','data':None}
+        else:
+            result = {'cdde':500,'message':'该课程不存在','data':None}
 
-    return jsonify(result)
+        return jsonify(result)
 
 #责任教师更改班级授课老师
 @manageClassRoute.route('/manageClass/changeTeacher',methods=['POST'])  
@@ -43,39 +62,52 @@ def changeTeacher():
 
     class_id = data['class_id']  #课程号前缀
     t_id = data['t_id'] #老师工号
-
-    this_class = Class.query.filter(Class.class_id == class_id).first()
-    this_teacher = Teacher.query.filter(Teacher.t_id == t_id).first()
-
-    if this_class and this_teacher:
-        Class.query.filter_by(class_id = class_id).update({'t_id':t_id})
-        # dbManage.db.session.(teacher_class)
-        dbManage.db.session.commit()
-        result = {'status':200,'message':'更改成功'}
+    token = data['token']
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        result = {'status':400,'message':'该课程或老师不存在'}
+        this_class = Class.query.filter(Class.class_id == class_id).first()
+        this_teacher = Teacher.query.filter(Teacher.t_id == t_id).first()
 
-    return jsonify(result)
+        if this_class and this_teacher:
+            Class.query.filter_by(class_id = class_id).update({'t_id':t_id})
+            # dbManage.db.session.(teacher_class)
+            dbManage.db.session.commit()
+            result = {'message':200,'message':'更改成功','data':None}
+        else:
+            result = {'message':500,'message':'该课程或老师不存在','data':None}
+
+        return jsonify(result)
+
 @manageClassRoute.route('/manageClass/showClass/',methods=['POST'])  
 def showClass():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     course_id = data['courseID']
-
-    classes = Class.query.filter(Class.course_id == course_id).all()  #找出全部的这个课程
-    content = []
-    for class_ in classes:
-        course = Course.query.filter(Course.c_id == course_id).first()
-        t_id = None
-        t_name = None
-        if class_.t_id:
-            teacher = Teacher.query.filter(Teacher.t_id == class_.t_id).first()
-            t_id = teacher.t_id
-            t_name = teacher.name
-        coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
-        temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id, "t_id":t_id,"t_name":t_name}
-        content.append(temp)
-    return jsonify(content)
+    token = data['token']
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
+    else:
+        classes = Class.query.filter(Class.course_id == course_id).all()  #找出全部的这个课程
+        content = []
+        for class_ in classes:
+            course = Course.query.filter(Course.c_id == course_id).first()
+            t_id = None
+            t_name = None
+            if class_.t_id:
+                teacher = Teacher.query.filter(Teacher.t_id == class_.t_id).first()
+                t_id = teacher.t_id
+                t_name = teacher.name
+            coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
+            temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id, "t_id":t_id,"t_name":t_name}
+            content.append(temp)
+        return jsonify({'code':404,'message':"无法访问页面",'data':content})
 
 
 #删除班级
@@ -85,18 +117,24 @@ def deleteClass():
     data = json.loads(data.decode("utf-8"))
 
     class_id = data['classID']  #课程号前缀
-
-    old_class = Class.query.filter(Class.class_id == class_id).first()  #找出课程名为这个的所有班级
-
-    if (old_class):
-        dbManage.db.session.delete(old_class)
-        dbManage.db.session.commit()
-        result = {'status':200,'message':'删除成功'}
-
+    token = data['token']
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        result = {'status':400,'message':'该班级不存在，删除失败'}
+        old_class = Class.query.filter(Class.class_id == class_id).first()  #找出课程名为这个的所有班级
 
-    return jsonify(result)
+        if (old_class):
+            dbManage.db.session.delete(old_class)
+            dbManage.db.session.commit()
+            result = {'code':200,'message':'删除成功','data':None}
+
+        else:
+            result = {'code':500,'500':'该班级不存在','data':None}
+
+        return jsonify(result)
 
 @manageClassRoute.route('/studentGetClass',methods=['POST'])  
 def studentGetClass():
@@ -110,13 +148,13 @@ def studentGetClass():
         token_id = s.loads(token)['id']
         token_role = s.loads(token)['role']
     except:
-        return jsonify({'code':301,'status':"验证过期",'data':None})
+        return jsonify({'code':301,'message':"验证过期",'data':None})
 
     if token_role != 1:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+        return jsonify({'code':404,'message':"无法访问",'data':None})
 
     if s_id != token_id:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+        return jsonify({'code':404,'message':"无法访问",'data':None})
 
     class_list = StudentClass.query.filter(StudentClass.s_id == s_id).all()
     all_class = []
@@ -134,7 +172,7 @@ def studentGetClass():
             'course_name':course_type.ct_name}
         all_class.append(data)
 
-    return jsonify({'code':200,'status':"请求成功",'data':all_class})
+    return jsonify({'code':200,'message':"请求成功",'data':all_class})
 
 #根据老师工号获取所在的所有班级,班级信息
 @manageClassRoute.route('/manageClass/teacherGetClass',methods=['POST'])  
@@ -150,13 +188,13 @@ def teacherGetClass():
         token_id = s.loads(token)['id']
         token_role = s.loads(token)['role']
     except :
-        return jsonify({'code':301,'status':"验证过期",'data':None})
+        return jsonify({'code':301,'message':"验证过期",'data':None})
     
     if token_role != 2:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+        return jsonify({'code':404,'message':"无法访问",'data':None})
 
     if t_id != token_id:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+        return jsonify({'code':404,'message':"无法访问",'data':None})
 
     class_list = Class.query.filter(Class.t_id == t_id).all()
     all_class = []
@@ -174,7 +212,7 @@ def teacherGetClass():
             'course_name':course_type.ct_name}
         all_class.append(data)
 
-    return jsonify({'code':200,'status':"请求成功",'data':all_class})
+    return jsonify({'code':200,'message':"请求成功",'data':all_class})
     
 #通过班级号获取所有班级内信息
 @manageClassRoute.route('/manageClass/IDGetClass',methods=['POST'])  
@@ -184,7 +222,7 @@ def IDGetClass():
 
     class_id = data['class_id']  #班级号
     this_class = Class.query.filter(Class.class_id == class_id).first()
-    # teacher_class = TeacherClass.query.filter(TeacherClass.class_id == class_id ).first()
+
     teacher = Teacher.query.filter(Teacher.t_id==this_class.t_id).first()
     course_type = CourseType.query.filter(CourseType.prefix == this_class.course_id[:6]).first()
     if(this_class.course_id[10:12]=='00'):
@@ -192,8 +230,7 @@ def IDGetClass():
     else:
         semester = '秋季'
     if (this_class):
-        result = {
-            'status':200,
+        data = {
             'class_id':this_class.class_id,
             'course_id':this_class.course_id,
             'class_number':this_class.class_number,
@@ -202,18 +239,9 @@ def IDGetClass():
             'year':this_class.course_id[6:10],
             'course_name':course_type.ct_name,
             'teacher':teacher.name}
+        result = {'code':200,'message':"请求成功",'data':data}
     else:  #不存在这个班级
-        result = {
-            'status':400,
-            'class_id':'',
-            'course_id':'',
-            'class_number':'',
-            'prefix':'',
-            'semester':'',
-            'year':'',
-            'course_name':'',
-            'teacher':''
-        }
+        result = {'code':500,'message':"班级不存在",'data':None}
     return jsonify(result)
 
 #通过班级号获取所有班级内所有学生
@@ -222,7 +250,6 @@ def IDGetClassStudent():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     class_id = data['class_id']  #班级号
-    # this_class = Class.query.filter(Class.class_id == class_id).first()
     all_student = {'data':[]}
     student_list = StudentClass.query.filter(StudentClass.class_id == class_id).all()
     for student_item in student_list:
@@ -230,4 +257,4 @@ def IDGetClassStudent():
         stu_json = {'s_id':stu.s_id,'name':stu.name}
         all_student['data'].append(stu_json)
 
-    return jsonify(all_student)
+    return {'code':200,'message':"班级不存在",'data':all_student}

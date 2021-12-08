@@ -12,12 +12,27 @@ import xlrd
 import uuid
 import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Routers import Role
 
 studentExperimentRoute = Blueprint('studentExperimentRoute', __name__)
 CORS(studentExperimentRoute, resources=r'/*')
 
 
 basepath = os.path.dirname(__file__)
+
+
+def checkToken(token,role):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
+    
+    if token_role != role:
+        return 404
+    else:
+        return 200
 
 def createFilePath(sID,exID,filename):
     ext = os.path.splitext(filename)[1]
@@ -37,19 +52,26 @@ def uploadReport():
     data = request.form
     s_id = data['s_id']
     ex_id = data['ex_id']
-    path = createFilePath(s_id,ex_id,report.filename)
-    se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
-    if se:
-        if se.file_url:
-            os.remove(se.file_url)
-            se.file_url = path
-        else :
-            se.file_url = path
-        report.save(path)
-        dbManage.db.session.commit()
-        return "success"
+    token = data['token']
+    res = checkToken(token,Role.StudentRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        return "NotExist"
+        path = createFilePath(s_id,ex_id,report.filename)
+        se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
+        if se:
+            if se.file_url:
+                os.remove(se.file_url)
+                se.file_url = path
+            else :
+                se.file_url = path
+            report.save(path)
+            dbManage.db.session.commit()
+            return jsonify({'code':200,'message':"提交成功",'data':None})
+        else:
+            return jsonify({'code':501,'message':"实验不存在",'data':None})
 
 @studentExperimentRoute.route('/Ex/getUpload/',methods=['POST'])  
 def getReport():
@@ -81,20 +103,27 @@ def showEx():
     data = json.loads(data.decode("utf-8"))
     s_id = data['s_id']
     class_id = data['class_id']
-    class_ = Class.query.filter(Class.class_id == class_id).first()
-    course_id = class_.course_id
-    Exs = Experiment.query.filter(Experiment.course_id == course_id).all()
-    content = []
-    for ex in Exs:
-        now_time = datetime.datetime.now()
-        if now_time > ex.end_time:
-            status = 3
-        else:
-            status = ex.status
-        se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex.experiment_id).first()
-        temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status}
-        content.append(temp)
-    return jsonify(content)
+    token = data['token']
+    res = checkToken(token,Role.StudentRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
+    else:
+        class_ = Class.query.filter(Class.class_id == class_id).first()
+        course_id = class_.course_id
+        Exs = Experiment.query.filter(Experiment.course_id == course_id).all()
+        content = []
+        for ex in Exs:
+            now_time = datetime.datetime.now()
+            if now_time > ex.end_time:
+                status = 3
+            else:
+                status = ex.status
+            se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex.experiment_id).first()
+            temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status}
+            content.append(temp)
+        return jsonify({'code':404,'message':"无法访问页面",'data':content})
     
 #学生下载实验模板
 

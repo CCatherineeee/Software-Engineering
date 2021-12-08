@@ -96,9 +96,9 @@ def change_student_pwd():
         student.set_password(new_pwd)
         dbManage.db.session.add(student)
         dbManage.db.session.commit()
-        data = {'result':200,'message':'修改成功'}
+        data = {'code':200,'message':'修改成功','data':None}
     else:
-        data = {'result':400,'message':'密码错误'}
+        data = {'code':500,'message':'密码错误','data':None}
 
     return jsonify(data)
 
@@ -118,9 +118,9 @@ def change_teacher_pwd():
         teacher.set_password(new_pwd)
         dbManage.db.session.add(teacher)
         dbManage.db.session.commit()
-        data = {'result':200,'message':'修改成功'}
+        data = {'code':200,'message':'修改成功','data':None}
     else:
-        data = {'result':400,'message':'密码错误'}
+        data = {'code':500,'message':'密码错误','data':None}
 
     return jsonify(data)
 
@@ -140,9 +140,9 @@ def change_ta_pwd():
         ta.set_password(new_pwd)
         dbManage.db.session.add(ta)
         dbManage.db.session.commit()
-        data = {'result':200,'message':'修改成功'}
+        data = {'code':200,'message':'修改成功'}
     else:
-        data = {'result':400,'message':'密码错误'}
+        data = {'code':500,'message':'密码错误','data':None}
 
     return jsonify(data)
 
@@ -156,13 +156,13 @@ def reset_student_pwd():
 
     student = Student.query.filter(Student.s_id==s_id).first()
     if not student:
-        data = {'result':400,'message':'重置失败'}
+        data = {'code':400,'message':'重置失败','data':None}
         return jsonify(data)
     
     student.set_password(new_pwd)
     dbManage.db.session.add(student)
     dbManage.db.session.commit()
-    data = {'result':200,'message':'重置成功'}
+    data = {'code':200,'message':'重置成功','data':None}
 
 
     return jsonify(data)
@@ -177,13 +177,13 @@ def reset_teacher_pwd():
 
     teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
     if not teacher:
-        data = {'result':400,'message':'重置失败'}
+        data = {'code':400,'message':'重置失败','data':None}
         return jsonify(data)
     
     teacher.set_password(new_pwd)
     dbManage.db.session.add(teacher)
     dbManage.db.session.commit()
-    data = {'result':200,'message':'重置成功'}
+    data = {'code':200,'message':'重置成功','data':None}
 
     return jsonify(data)
 
@@ -194,14 +194,14 @@ def upload_student_avatar():
     avatar = request.files['avatar']
     userID = request.form['s_id']
     if avatar is None:
-        result = {'status':400,'message':'未成功上传'}
+        result = {'code':400,'message':'未成功上传'}
     else:
         ext = os.path.splitext(avatar.filename)[1]
         fname = os.path.splitext(avatar.filename)[0]
         UPLOAD_FOLDER = current_app.config ["AVATAR_UPLOAD_FOLDER"]
         ALLOWED_EXTENSIONS = [ '.png', '.jpg' , '.jpeg' , '.gif']
         if ext not in ALLOWED_EXTENSIONS:
-            result = {'status':500,'message':'文件类型错误'}
+            result = {'code':500,'message':'文件类型错误','data':None}
 
         else:
 
@@ -211,20 +211,20 @@ def upload_student_avatar():
                     teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
                     dbManage.db.session.commit()
                     avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
-                    result = {'status':200,'message':'上传头像成功'}
+                    result = {'code':200,'message':'上传头像成功','data':None}
                 else:
-                    result = {'status':501,'message':'未找到用户'}
+                    result = {'code':501,'message':'未找到用户','data':None}
             elif len(userID)==7:  #是学生
                     student = Student.query.filter(Student.s_id==userID).first()
                     if student:
                         student.avatar = '{}_{}'.format(userID,fname+ext)
                         dbManage.db.session.commit()
                         avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
-                        result = {'status':200,'message':'上传头像成功'}
+                        result = {'code':200,'message':'上传头像成功','data':None}
                     else:
-                        result = {'status':501,'message':'未找到用户'}
+                        result = {'code':501,'message':'未找到用户','data':None}
             else:
-                result = {'status':400,'message':'ID错误'}
+                result = {'code':400,'message':'ID错误','data':None}
             
     
     return jsonify(result)
