@@ -82,6 +82,8 @@ def getEx():
         now_time = datetime.datetime.now()
         if now_time > ex.end_time:
             status = 3
+            ex.status = 3
+            dbManage.db.session.commit()
         else:
             status = ex.status
         temp = {'ex_id':ex.experiment_id, 'title':ex.experiment_title,'brief':ex.experiment_brief,"create_time" : str(ex.create_time),"end_time" :str(ex.end_time), "weight":ex.weight, "status":status, 'ex_type' :ex.ex_type}
@@ -189,6 +191,8 @@ def getExById():
     now_time = datetime.datetime.now()
     if now_time > ex.end_time:
         status = 3
+        ex.status =3
+        dbManage.db.session.commit()
     else:
         status = ex.status
     temp = {'ex_id':ex.experiment_id, 'title':ex.experiment_title,'brief':ex.experiment_brief,"create_time" : str(ex.create_time),"end_time" :str(ex.end_time), "weight":ex.weight, "status":status, 'ex_type' :ex.ex_type}

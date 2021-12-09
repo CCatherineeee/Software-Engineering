@@ -40,6 +40,8 @@ def getExam():
         now_time = datetime.datetime.now()
         if now_time > e.end_time:
             status = 3
+            e.status = 3
+            dbManage.db.session.commit()
         else:
             status = e.status
         temp = {"exam_id":e.exam_id, "title": e.title, "start_time": str(e.start_time), "end_time": str(e.end_time), "status": status}
