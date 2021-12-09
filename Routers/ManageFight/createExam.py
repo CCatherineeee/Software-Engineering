@@ -2,11 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Course,Class,Exam,Question
+from Model.Model import Course,Class,Exam,Question,StudentClass,ExamGroup
 import dbManage
 from Routers import Role
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import datetime
+import random
 
 createFightRoute = Blueprint('createFightRoute', __name__)
 
@@ -38,6 +39,9 @@ def getExam():
     content = []
     for e in exams:
         now_time = datetime.datetime.now()
+        if now_time > e.start_time:
+            e.status = 1
+            dbManage.db.session.commit()
         if now_time > e.end_time:
             status = 3
             e.status = 3
@@ -57,6 +61,25 @@ def pushExam():
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     exam.status = 1
     dbManage.db.session.commit()
+
+    # 找到班级学生，生产测验小组
+    class_id = exam.class_id
+    students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+    while(len(students) >= 3):
+        sg = random.sample(students,3)
+        students.remove(sg[0])
+        students.remove(sg[1])
+        students.remove(sg[2])
+        ag = ExamGroup(exam_id = exam_id,s_id_1 = sg[0].s_id,s_id_2 = sg[1].s_id,s_id_3 = sg[2].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 2:
+        ag = ExamGroup(exam_id = exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 1:
+        ag = ExamGroup(exam_id = exam_id,s_id_1 = students[0].s_id)
+        dbManage.db.session.add(ag)
+    dbManage.db.session.commit()
+
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
 @createFightRoute.route('/stopExam',methods=['POST']) 
@@ -67,6 +90,9 @@ def stopExam():
     exam_id = data['exam_id']
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     exam.status = 3
+    egs = ExamGroup.query.filter(ExamGroup.exam_id == exam_id).all()
+    for e in egs:
+        dbManage.db.session.delete(e)
     dbManage.db.session.commit()
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
@@ -82,9 +108,12 @@ def addQuestion():
         option_b = q['option_b']
         option_c = q['option_c']
         option_d = q['option_d']
-        answer = q['answer']
         q_type = q['q_type']
         q_score = q['q_score']
+        checkList = q['checkList']
+        answer = ""
+        for c in checkList:
+            answer = answer + c
         qs = Question(title = title, option_a = option_a, option_b = option_b, option_c = option_c, option_d = option_d, answer = answer, exam_id = exam_id, q_type = q_type,q_score = q_score)
         dbManage.db.session.add(qs)
     dbManage.db.session.commit()
