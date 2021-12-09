@@ -76,7 +76,7 @@ def classAddStudentManually():
     else:
         sc = StudentClass.query.filter(StudentClass.class_id == class_id ,StudentClass.s_id == s_id).first()
         if sc:
-            return jsonify({'status:':401,'message':'学生已存在','data':None})
+            return jsonify({'code':401,'message':'学生已存在','data':None})
 
         this_stu = Student.query.filter(Student.s_id == s_id).first()
         this_class = Class.query.filter(Class.class_id == class_id).first()

@@ -37,6 +37,7 @@ from Routers.ManageMessage.stuMessage import stuMessage
 from Routers.ManageMessage.TAMessage import TAMessageManage
 from Routers.ManageMessage.teacherMessage import teacherMessage
 from Routers.ManageFight.createExam import createFightRoute
+from Routers.ManageFight.getExam import getExamRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -72,6 +73,7 @@ app.register_blueprint(stuMessage)
 app.register_blueprint(TAMessageManage)
 app.register_blueprint(teacherMessage)
 app.register_blueprint(createFightRoute)
+app.register_blueprint(getExamRoute)
 
 
 @app.before_first_request

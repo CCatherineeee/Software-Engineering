@@ -160,3 +160,36 @@ def pushEx():
         
         dbManage.db.session.commit()
         return jsonify({'code':200,'message':"发布成功",'data':None})
+
+@manageExperimentRoute.route('/course/stopEx/',methods=['POST'])  
+def stopEx():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    token = data['token']
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    elif res == 404:
+        return jsonify({'code':404,'message':"无法访问页面",'data':None})
+    else:
+        ex = Experiment.query.filter(Experiment.experiment_id == ex_id).first()
+        
+        ex.status = 0
+        
+        dbManage.db.session.commit()
+        return jsonify({'code':200,'message':"发布成功",'data':None})
+
+@manageExperimentRoute.route('/course/getExById/',methods=['POST'])  
+def getExById():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    ex = Experiment.query.filter(Experiment.experiment_id == ex_id).first()
+    now_time = datetime.datetime.now()
+    if now_time > ex.end_time:
+        status = 3
+    else:
+        status = ex.status
+    temp = {'ex_id':ex.experiment_id, 'title':ex.experiment_title,'brief':ex.experiment_brief,"create_time" : str(ex.create_time),"end_time" :str(ex.end_time), "weight":ex.weight, "status":status, 'ex_type' :ex.ex_type}
+    return jsonify({'code':200,'message':"请求成功",'data':temp})

@@ -280,7 +280,9 @@ class Question(db.Model):
     option_c = db.Column(db.String(128))
     option_d = db.Column(db.String(128))
     answer = db.Column(db.Integer)
+    q_score = db.Column(db.Integer)
     exam_id = db.Column(db.Integer, ForeignKey('exam.exam_id',ondelete='CASCADE'))
+    q_type = db.Column(db.Integer)
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
