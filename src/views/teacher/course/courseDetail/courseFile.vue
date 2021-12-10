@@ -126,6 +126,7 @@ export default {
           JSON.stringify({
             id: row.id,
             class_id: this.c_id,
+            token: sessionStorage.getItem("token"),
           }),
           {
             headers: {
@@ -137,11 +138,21 @@ export default {
           //var fname = row.filename
           //fname = decodeURIComponent(fname)
           //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
-
-          const blob = new Blob([response.data], { type: "charset=UTF-8" });
-          //var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          window.open(href);
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            const blob = new Blob([response.data.data], {
+              type: "charset=UTF-8",
+            });
+            //var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            window.open(href);
+          }
           /*
         downloadElement.href = href;
 
@@ -155,13 +166,13 @@ export default {
     },
     handleDown(row) {
       console.log(row);
-      console.log(this.c_id);
       this.axios
         .post(
           "/api/manageClassFileRoute/download/",
           JSON.stringify({
             id: row.id,
             class_id: this.c_id,
+            token: sessionStorage.getItem("token"),
           }),
           {
             headers: {
@@ -170,22 +181,31 @@ export default {
           }
         )
         .then((response) => {
-          var fname = row.filename;
-          fname = decodeURIComponent(fname);
-          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            var fname = row.filename;
+            fname = decodeURIComponent(fname);
+            //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-          const blob = new Blob([response.data], {
-            type: "text/plain,charset=UTF-8",
-          });
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob);
-          downloadElement.href = href;
+            const blob = new Blob([response.data.data], {
+              type: "text/plain,charset=UTF-8",
+            });
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
 
-          downloadElement.download = fname;
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(href);
+            downloadElement.download = fname;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          }
         });
     },
     handleDelete(row) {
@@ -217,18 +237,28 @@ export default {
         param.append("files", file.raw);
       });
       param.append("class_id", this.c_id);
+      param.append("token", sessionStorage.getItem("token"));
       this.axios
         .post("/api/manageClassFileRoute/addFile", param, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
         })
         .then((res) => {
-          if (res.data["status"] === 200) {
-            this.$message("上传成功");
-            this.fileList = [];
-            this.fileDialog = false;
-            this.getFileList();
+          console.log(res);
+          if (res.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (res.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
           } else {
-            this.$message("上传失败");
+            if (res.data["status"] === 200) {
+              this.$message("上传成功");
+              this.fileList = [];
+              this.fileDialog = false;
+              this.getFileList();
+            } else {
+              this.$message("上传失败");
+            }
           }
         });
     },
@@ -239,14 +269,24 @@ export default {
           JSON.stringify({
             class_id: this.c_id,
             id: row.id,
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((res) => {
-          if (res.data["status"] === 200) {
-            this.$message("删除成功");
-            this.getFileList();
+          console.log(res);
+          if (res.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (res.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
           } else {
-            this.$message(res.data["message"]);
+            if (res.data["status"] === 200) {
+              this.$message("删除成功");
+              this.getFileList();
+            } else {
+              this.$message(res.data["message"]);
+            }
           }
         });
     },
@@ -256,11 +296,20 @@ export default {
           "/api/manageClassFileRoute/getClassFile",
           JSON.stringify({
             class_id: this.c_id,
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
-          console.log(response.data);
-          this.fileData = response.data;
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.fileData = response.data.data;
+          }
         });
     },
     getParams: function () {

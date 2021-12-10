@@ -15,8 +15,6 @@
     >
       <el-table-column prop="filename" label="文件名" sortable />
       <el-table-column prop="date" label="上传时间" sortable />
-      <el-table-column prop="modify" label="修改时间" sortable />
-      <el-table-column prop="author" label="修改者" sortable />
 
       <el-table-column>
         <template #header>
@@ -99,6 +97,47 @@ export default {
     },
     handleDown(row) {
       console.log(row);
+      this.axios
+        .post(
+          "/api/manageClassFileRoute/download/",
+          JSON.stringify({
+            id: row.id,
+            class_id: this.class_id,
+            token: sessionStorage.getItem("token"),
+          }),
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            var fname = row.filename;
+            fname = decodeURIComponent(fname);
+            //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+
+            const blob = new Blob([response.data.data], {
+              type: "text/plain,charset=UTF-8",
+            });
+            var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            downloadElement.href = href;
+
+            downloadElement.download = fname;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(href);
+          }
+        });
     },
     getFileList() {
       this.axios
@@ -106,13 +145,23 @@ export default {
           "/api/manageClassFileRoute/getClassFile",
           JSON.stringify({
             class_id: this.class_id,
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
           //这里使用了ES6的语法
           //this.tableData = response.data
-          this.tableData = response.data; //请求成功返回的数据
-          console.log(this.tableData);
+          console.log("fileList");
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.tableData = response.data.data;
+          } //请求成功返回的数据
         });
     },
     getParams: function () {

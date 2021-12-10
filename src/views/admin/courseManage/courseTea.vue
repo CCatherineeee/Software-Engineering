@@ -7,12 +7,7 @@
       >添加责任教师</el-button
     >
     <el-table
-      :data="
-        tableData.filter(
-          (data) =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
-        )
-      "
+      :data="tableData"
       style="width: 100%"
     >
       <el-table-column label="课程编号" prop="prefix" sortable />
@@ -230,13 +225,13 @@ export default {
       //已经设置的责任教师
       axios
         .get("/api/course/getDuty/", {
-          //params: { userData: "value" },
-          crossDomain: true,
+          params: { token: sessionStorage.getItem('token') },
         })
         .then((response) => {
           console.log("所有责任教师");
-          console.log(response.data);
-          this.tableData = response.data;
+
+          this.tableData = response.data.data;
+          console.log(this.tableData);
         })
         .catch(function (error) {
           console.log(error);
@@ -272,11 +267,12 @@ export default {
         year: this.year,
         prefix: this.prefix,
         t_id: this.t_id,
+        token : sessionStorage.getItem('token')
       };
       axios
         .post("/api/course/addCourse/", JSON.stringify(jsons))
         .then((response) => {
-          if (response.data == "CourseExist") {
+          if (response.data === "CourseExist") {
             this.$message({
               message: "该课程已存在",
               type: "error",

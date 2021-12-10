@@ -27,6 +27,7 @@
       >
         <el-table-column prop="title" label="实验名称" sortable />
         <el-table-column prop="end_time" label="发布日期" sortable />
+        <el-table-column prop="ex_type" label="提交方式" sortable />
         <el-table-column prop="weight" label="权重" sortable />
 
         <el-table-column>
@@ -35,15 +36,11 @@
           </template>
           <template #default="scope">
             <v-row>
-              <v-col cols="6">
-                <v-btn small dark @click="handleEdit(scope.row)"
-                  >编辑实验模板</v-btn
-                >
+              <v-col cols="3">
+                <v-btn small dark @click="handleCheck(scope.row)">查看</v-btn>
               </v-col>
               <v-col cols="3">
-                <v-btn small dark @click="handleGrade(scope.row)"
-                  >批改实验报告</v-btn
-                >
+                <v-btn small dark @click="handleGrade(scope.row)">批改</v-btn>
               </v-col>
             </v-row>
           </template>
@@ -128,20 +125,22 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
 
-    handleEdit(row) {
-      console.log(row);
+    handleCheck(row) {
       this.$router.push({
-        path: "/teacherHome/concreteCourse/addExper",
-        query: { id: row.id },
+        path: "/teacherHome/concreteCourse/ConExper",
+        query: {
+          info: this.$Base64.encode(JSON.stringify(row.ex_id)),
+        },
       });
     },
 
     handleGrade(row) {
-      console.log(row);
       this.$router.push({
         path: "/teacherHome/concreteCourse/stuExperList",
         query: {
-          info: this.$Base64.encode(JSON.stringify({ ex_id: row.ex_id })),
+          info: this.$Base64.encode(
+            JSON.stringify({ ex_id: row.ex_id, ex_type: row.ex_type })
+          ),
         },
       });
     },
@@ -157,12 +156,21 @@ export default {
           "/api/course/getEx/",
           JSON.stringify({
             c_id: classID.substring(0, 12),
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
           //这里使用了ES6的语法
           console.log(response);
-          this.experimentList = response.data;
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.experimentList = response.data.data;
+          }
         });
     },
     getParams: function () {

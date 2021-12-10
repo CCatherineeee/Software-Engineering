@@ -8,26 +8,10 @@
         :column="1"
         border
         size="medium"
-        title="实验指导"
+        title="实验信息"
       >
         <template slot="extra">
           <el-row :gutter="20">
-            <el-col :span="7" v-if="ex_info.status == '未截止'"
-              ><v-btn
-                dark
-                v-if="ex_info.ex_type == '在线提交'"
-                @click="fillExperiment()"
-              >
-                填写 </v-btn
-              ><v-btn
-                dark
-                v-if="ex_info.ex_type == '提交文件'"
-                @click="handleFile"
-              >
-                上传
-              </v-btn></el-col
-            >
-            <el-col :span="7"><v-btn dark> 导出 </v-btn></el-col>
             <el-col :span="7"><v-btn dark @click="back">返回</v-btn></el-col>
           </el-row>
         </template>
@@ -117,14 +101,7 @@ export default {
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    fillExperiment() {
-      this.$router.push({
-        path: "/studentHome/concreteCourse/FillExper",
-        query: {
-          info: this.$Base64.encode(JSON.stringify(this.ex_info.ex_id)),
-        },
-      });
-    },
+
     getExInfo() {
       var jsons = {
         ex_id: this.ex_id,

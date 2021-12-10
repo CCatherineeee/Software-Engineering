@@ -266,10 +266,10 @@ export default {
 
     addFromDetailS() {
       //手动增加学生
-
       var jsons = {
-        class_id: this.c_id,
+        class_id: this.c_id.toString(),
         s_id: this.formS.s_id,
+        token: sessionStorage.getItem("token"),
       };
       console.log("手动增加学生");
       console.log(jsons);
@@ -278,27 +278,27 @@ export default {
         .then((response) => {
           //这里使用了ES6的语法
           console.log("手动添加学生返回");
-          console.log(response); //请求成功返回的数据
-          if (response.data.status == "200") {
-            this.dialogFormVisibleS = false;
-            this.getStuList();
-            this.$message({
-              message: "添加成功",
-              type: "success",
-            });
-            this.formS.s_id = "";
-          } else if (response.data.status == "402") {
-            this.$message({
-              message: "该学生不存在！",
-              type: "error",
-            });
-            this.formS.s_id = "";
-          } else if (response.data.status == "401") {
-            this.$message({
-              message: "该学生已在班级中！",
-              type: "error",
-            });
-            this.formS.s_id = "";
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else if (response.data["code"] === 401) {
+            this.$message.warning("该学生已在班级中！");
+          } else if (response.data["code"] === 402) {
+            this.$message.warning("该学生不存在！");
+          } else {
+            if (response.data.code == "200") {
+              this.dialogFormVisibleS = false;
+              this.getStuList();
+              this.$message({
+                message: "添加成功",
+                type: "success",
+              });
+              this.formS.s_id = "";
+            }
           }
         });
     },
@@ -365,7 +365,36 @@ export default {
     },
 
     setAssist() {
-      //上传助教
+      //设置助教
+      var jsons = {
+        class_id: this.c_id.toString(),
+        ta_id: this.assist,
+        token: sessionStorage.getItem("token"),
+      };
+      console.log("设置助教");
+      console.log(jsons);
+      this.axios
+        .post("/api/classAddTA", JSON.stringify(jsons))
+        .then((response) => {
+          console.log("setAssist");
+          console.log(response);
+
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else if (response.data["code"] === 500) {
+            this.$message.warning("该助教已经在班级中！");
+          } else {
+            this.$message({
+              type: "success",
+              message: "设置成功!",
+            });
+            this.dialogAssist = false;
+          }
+        });
     },
     removeDomain(item) {
       const index = this.dynamicValidateForm.members.indexOf(item);
@@ -383,24 +412,40 @@ export default {
     getStuList() {
       var jsons = {
         class_id: this.c_id,
+        token: sessionStorage.getItem("token"),
       };
-
       this.axios
         .post("/api/manageClass/IDGetClassStudent", JSON.stringify(jsons))
         .then((response) => {
-          this.studentData = response.data.data;
-        })
-        .catch(function (error) {
-          console.log(error);
+          console.log("getStu");
+          console.log(response);
+
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.studentData = response.data.data["data"];
+          }
         });
     },
     getAssistList() {
       console.log("获得助教");
-      this.axios.get("/api/getUserInfo/getAllTA").then((response) => {
-        console.log("获得助教");
-        console.log(response);
-        this.assistList = response.data;
-      });
+      this.axios
+        .get("/api/getUserInfo/getAllTA", {
+          params: { token: sessionStorage.getItem("token") },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log("获得助教");
+
+          this.assistList = response.data;
+        });
+    },
+    getAssist() {
+      //查看班级助教
     },
 
     getParams: function () {
@@ -412,6 +457,7 @@ export default {
     this.getParams();
     this.getStuList();
     this.getAssistList();
+    this.getAssist();
   },
 };
 </script>

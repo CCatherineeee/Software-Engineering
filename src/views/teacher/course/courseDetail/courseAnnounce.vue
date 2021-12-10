@@ -136,6 +136,7 @@ export default {
     deleteAnnounce(row) {
       var jsons = {
         ann_id: row.ann_id,
+        token: sessionStorage.getItem("token"),
       };
       console.log("删除公告");
       console.log(jsons);
@@ -143,7 +144,15 @@ export default {
         .post("/api/course/delAnn/", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
-          this.getAnnList();
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.getAnnList();
+          }
         });
     },
 
@@ -158,6 +167,7 @@ export default {
           .replace(/\r\n/g, "<br/>")
           .replace(/\n/g, "<br/>")
           .replace(/\s/g, "&nbsp;"),
+        token: sessionStorage.getItem("token"),
       };
       console.log("新增公告");
       console.log(jsons);
@@ -165,25 +175,36 @@ export default {
         .post("/api/course/addAnn/", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
-          this.dialogAddVisible = false;
-          this.formAnn.title = "";
-          this.formAnn.content = "";
-          this.getAnnList();
-          this.$message("添加成功！");
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.dialogAddVisible = false;
+            this.formAnn.title = "";
+            this.formAnn.content = "";
+            this.getAnnList();
+            this.$message("添加成功！");
+          }
         });
     },
 
     getAnnList() {
       var jsons = {
         class_id: this.c_id,
+        token: sessionStorage.getItem("token"),
       };
-      console.log("获得公告");
+
       console.log(jsons);
       this.axios
         .post("/api/course/getAnn/", JSON.stringify(jsons))
         .then((response) => {
+          console.log("获得公告");
           console.log(response);
-          this.annList = response.data;
+
+          this.annList = response.data.data;
         });
     },
 

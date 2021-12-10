@@ -20,7 +20,6 @@
       </v-btn>
       <el-table
         ref="filterTable"
-        row-key="score"
         @selection-change="handleSelectionChange"
         :data="
           stuExData.filter(
@@ -38,7 +37,6 @@
         <el-table-column prop="status" label="是否提交" sortable />
         <el-table-column prop="submitTime" label="提交日期" sortable />
         <el-table-column prop="score" label="分数" sortable />
-        <el-table-column prop="grader" label="批改人" />
 
         <el-table-column>
           <template #header>
@@ -46,10 +44,17 @@
           </template>
           <template #default="scope">
             <v-row>
-              <v-col cols="3">
-                <v-btn small dark @click="handleGrade(scope.row)">打分</v-btn>
+              <v-col cols="3" v-if="ex_type == '在线提交'">
+                <v-btn small dark @click="giveScoreOnline(scope.row)"
+                  >打分</v-btn
+                >
               </v-col>
-              <v-col cols="3">
+              <v-col cols="3" v-if="ex_type == '提交文件'">
+                <v-btn small dark @click="handleScoreDown(scope.row)"
+                  >打分</v-btn
+                >
+              </v-col>
+              <v-col cols="3" v-if="ex_type == '提交文件'">
                 <v-btn small dark @click="download(scope.row)">下载</v-btn>
               </v-col>
             </v-row>
@@ -68,6 +73,18 @@
       >
       </el-pagination>
     </el-card>
+    <el-dialog
+      :visible.sync="scoreDialog"
+      title="学生分数"
+      center
+      width="300px"
+    >
+      <el-input v-model="stuScore"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="proDialog = false">取消</el-button>
+        <el-button type="primary" @click="giveScoreDown()">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -75,9 +92,14 @@
 export default {
   data() {
     return {
+      ex_id: "",
+      ex_type: "",
       search: "",
       currentPage: 1,
-      ex_id: "",
+      scoreDialog: false,
+      stuScore: "",
+      s_id: "",
+
       pagesize: 6,
       multipleSelection: [],
 
@@ -96,13 +118,47 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    handleScoreDown(row) {
+      this.scoreDialog = true;
+      this.s_id = row.s_id;
+    },
+    giveScoreDown() {
+      var jsons = {
+        s_id: this.s_id,
+        ex_id: this.ex_id,
+        score: this.stuScore,
+        token: sessionStorage.getItem("token"),
+      };
+      console.log(jsons);
+      this.axios
+        .post("/api/tea/Ex/scoreReport/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.$message.success("成功打分！");
+            this.scoreDialog = false;
+            this.stuScore = "";
+            this.getStuEx();
+          }
+        });
+    },
 
-    handleGrade(row) {
+    giveScoreOnline(row) {
       this.$router.push({
         path: "/teacherHome/concreteCourse/stuExper",
         query: {
           info: this.$Base64.encode(
-            JSON.stringify({ s_id: row.s_id, ex_id: this.ex_id })
+            JSON.stringify({
+              s_id: row.s_id,
+              ex_id: this.ex_id,
+              score: row.score,
+            })
           ),
         },
       });
@@ -115,10 +171,11 @@ export default {
       //批量下载学生的pdf
     },
     download(row) {
-      console.log(row.s_id);
+      console.log(row);
       let formData = new FormData();
       formData.append("s_id", row.s_id);
       formData.append("ex_id", this.ex_id);
+
       this.axios
         .post("/api/tea/Ex/getReport/", formData, {
           headers: {
@@ -127,6 +184,8 @@ export default {
           responseType: "blob",
         })
         .then((response) => {
+          console.log(response);
+
           const fileName = response.headers["content-disposition"];
           var fname = fileName.split("filename*=UTF-8''")[1];
           fname = decodeURIComponent(fname);
@@ -152,21 +211,41 @@ export default {
           //console.log(response)
         });
     },
+    getStuEx() {
+      this.axios
+        .post(
+          "/api/tea/Ex/getReportList/",
+          JSON.stringify({
+            ex_id: this.ex_id,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          console.log("stuEx");
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.stuExData = response.data.data;
+          }
+        });
+    },
+    getParams: function () {
+      this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "ex_id"
+      ];
+      this.ex_type = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "ex_type"
+      ];
+    },
   },
   mounted() {
-    this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-      "ex_id"
-    ];
-    this.axios
-      .post(
-        "/api/tea/Ex/getReportList/",
-        JSON.stringify({
-          ex_id: this.ex_id,
-        })
-      )
-      .then((response) => {
-        this.stuExData = response.data;
-      });
+    this.getParams();
+    this.getStuEx();
   },
 };
 </script>

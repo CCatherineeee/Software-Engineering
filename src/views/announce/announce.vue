@@ -96,11 +96,12 @@ export default {
   mounted() {
     axios
       .get("/api/sys/getAnn/", {
-        //params: { userData: "value" },
+        params: { token: sessionStorage.getItem("token") },
         crossDomain: true,
       })
       .then((response) => {
         console.log(response);
+
         this.announceData = response.data;
       })
       .catch(function (error) {

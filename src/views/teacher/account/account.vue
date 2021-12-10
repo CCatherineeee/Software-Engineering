@@ -80,11 +80,12 @@ export default {
     getTeaInfo() {
       this.axios
         .get("api//getUserInfo/Teacher/", {
-          params: { t_id: this.id },
+          params: { t_id: this.id, token: sessionStorage.getItem("token") },
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
+
           this.name = response.data[0].name;
           this.gender = response.data[0].gender;
           this.phone_number = response.data[0].phone_number;
@@ -94,7 +95,7 @@ export default {
           this.department = response.data[0].department;
         })
         .catch(function (error) {
-          console(error);
+          console.log(error);
         });
     },
 

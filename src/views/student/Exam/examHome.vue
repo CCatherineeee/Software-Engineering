@@ -1,0 +1,45 @@
+<template>
+    <el-container class="back">
+        <el-header>
+          <el-menu @select="handleSelect" mode="horizontal">
+            <el-menu-item index="/studentHome/concreteCourse/examHome/checkExam">
+              <span slot="title">查看测验</span>
+            </el-menu-item>
+          </el-menu>
+        </el-header>
+        <el-main> <router-view></router-view></el-main>
+    </el-container>
+
+</template>
+
+<script>
+export default {
+  name: "examHome",
+  data(){
+    return{
+      class_id :"",
+    }
+  },
+  methods: {
+    getParams(){
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["class_id"];
+    },
+    handleSelect(index){
+      this.$router.push({
+        path: index,
+        query: {info: this.$Base64.encode(JSON.stringify({ class_id: this.class_id })),},
+      });
+    }
+
+  },
+  mounted() {
+    this.getParams();
+  }
+}
+</script>
+
+<style scoped>
+.el-button--primary{
+  color: white;
+}
+</style>

@@ -44,7 +44,7 @@
               <el-form-item>
                 <el-button
                   type="primary"
-                  @click="submitForm(ruleForm)"
+                  @click="submitForm()"
                   style="margin-right: 50px"
                   >登陆</el-button
                 >
@@ -117,25 +117,35 @@ export default {
       } else if (this.ruleForm.password === "") {
         this.$message("请输入密码！");
       } else {
-        let config = {
-          headers: { "Content-Type": "multipart/form-data" },
-        };
+
         this.axios
           .post(
             "/api/adminLogin/",
-            {
-              params: this.ruleForm,
-            },
-            config
+            JSON.stringify({
+              username : this.ruleForm.username,
+              password : this.ruleForm.password
+            })
           )
           .then((response) => {
-            if (response.data == "UserNotExist");
-            if (response.data == "PasswordWrong");
-            if (response.data == "Login") {
+            console.log(response.data.status)
+            if (response.data.status === "UserNotExist"){
+              this.$message("用户不存在");
+            }
+            else if (response.data.status === "PasswordWrong"){
+              this.$message("密码错误！");
+            }
+            if (response.data.status === "Login") {
               this.$message("登录成功！");
+              sessionStorage.setItem("id", this.ruleForm.username);
+              sessionStorage.setItem("token", response.data.token);
+              this.$router.push("/adminHome");
               this.$router.push("/adminHome");
             }
-          });
+          }).catch((error) => {
+            this.$message("网络错误！");
+            console.log(error)
+        });
+
       }
     },
     toRegister() {

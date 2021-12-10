@@ -33,7 +33,7 @@
 
       <div v-for="(data, index) in groupData" :key="index">
         <el-card shadow="hover" class="box-card">
-          <el-collapse @change="handleChange">
+          <el-collapse>
             <el-collapse-item :title="data.leader">
               <div v-for="(data, index) in data.member" :key="index">
                 {{ data.name }}
@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       activeName: "first",
-      searcP: "",
-      searcG: "",
+      searchP: "",
+      searchG: "",
       class_id: "",
       stuList: [],
       groupData: [
@@ -107,13 +107,22 @@ export default {
           "/api/manageClass/IDGetClassStudent",
           JSON.stringify({
             class_id: this.class_id,
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
-          //这里使用了ES6的语法
-          //this.stuList = response.data
-          this.stuList = response.data["data"];
-          console.log(this.stuList);
+          console.log("getStu");
+          console.log(response);
+
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.stuList = response.data.data["data"];
+          }
         });
     },
     getParams: function () {

@@ -26,13 +26,13 @@
 
       <el-form-item label="性别" prop="gender">
         <el-select v-model="userAccount.gender" style="float: left">
-          <el-option label="男" :value="1"></el-option>
-          <el-option label="女" :value="0"></el-option>
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="手机" prop="phone">
-        <el-input v-model="userAccount.phone"></el-input>
+        <el-input v-model="userAccount.phone_number"></el-input>
       </el-form-item>
 
       <el-form-item label="邮箱" prop="email">
@@ -56,36 +56,47 @@ export default {
       userAccount: {
         name: "",
         sid: "",
-        gender: "女",
-        phone: "",
+        gender: "",
+        phone_number: "",
         email: "",
       },
     };
   },
   methods: {
     save() {
+      var jsons = {
+        name: this.userAccount.name,
+        sid: this.userAccount.sid,
+        gender: this.userAccount.gender,
+        phone_number: this.userAccount.phone_number,
+        email: this.userAccount.email,
+        token: sessionStorage.getItem("token"),
+      };
       this.axios
-        .post("/api/editInfo/Student/", JSON.stringify(this.userAccount))
+        .post("/api/editInfo/Student/", JSON.stringify(jsons))
         .then((response) => {
+          console.log("sava");
+          console.log(response);
+
           if (response.data == "Success") {
             this.$message("修改成功");
+            this.getInfo();
           }
         });
-      this.getInfo();
     },
     back() {
       this.$router.push("/studentHome/account");
     },
     getInfo() {
+      var jsons = {
+        s_id: this.userAccount.sid,
+        token: sessionStorage.getItem("token"),
+      };
       this.axios
-        .get("/api/getUserInfo/Student/", {
-          params: {
-            s_id: this.userAccount.sid,
-            token: sessionStorage.getItem("token"),
-          },
-          crossDomain: true,
-        })
+        .post("/api/getUserInfo/Student/", JSON.stringify(jsons))
         .then((response) => {
+          console.log("getinfo");
+          console.log(response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });

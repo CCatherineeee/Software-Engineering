@@ -52,12 +52,22 @@ export default {
           "/api/course/getAnn/",
           JSON.stringify({
             class_id: this.class_id,
+            token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
-          //这里使用了ES6的语法
-          this.annList = response.data;
-          console.log(this.annList);
+          console.log(response.data["data"]);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            //这里使用了ES6的语法
+            this.annList = response.data.data;
+            console.log(this.annList);
+          }
         });
     },
     getParams: function () {

@@ -21,7 +21,7 @@
             <span slot="title">文件</span>
           </el-menu-item>
 
-          <el-menu-item index="">
+          <el-menu-item index="/teacherHome/concreteCourse/examHome">
             <span slot="title">测验</span>
           </el-menu-item>
         </el-menu>
@@ -61,12 +61,6 @@
 export default {
   data() {
     return {
-      annUrl: "/teacherHome/concreteCourse/Ann",
-      experUrl: "/teacherHome/concreteCourse/Exper",
-      performUrl: "/teacherHome/concreteCourse/Perform",
-      peoUrl: "/teacherHome/concreteCourse/Peo",
-      fileUrl: "/teacherHome/concreteCourse/File",
-
       c_id: "",
       course_name: "",
     };
@@ -78,11 +72,21 @@ export default {
     getClassInfo() {
       var jsons = {
         class_id: this.c_id,
+        token: sessionStorage.getItem("token"),
       };
       this.axios
         .post("/api/manageClass/IDGetClass", JSON.stringify(jsons))
         .then((response) => {
-          this.course_name = response.data.course_name;
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.course_name = response.data.data.course_name;
+          }
         })
         .catch(function (error) {
           console.log(error);

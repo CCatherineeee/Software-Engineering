@@ -10,19 +10,34 @@
         "
         style="width: 100%"
       >
-        <el-table-column prop="experiment_title" label="实验名称" sortable />
+        <el-table-column prop="experiment_title" label="实验名称">
+          <template slot-scope="scope"
+            ><el-link @click="toExperiment(scope.row)">{{
+              scope.row.experiment_title
+            }}</el-link>
+          </template></el-table-column
+        >
         <el-table-column prop="end_time" label="截止日期" sortable />
         <el-table-column prop="status" label="实验状态" sortable />
         <el-table-column prop="score" label="成绩" sortable />
 
-
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="small" @click="handleCheck(scope.row)"
-              >查看实验指导</el-button
+            <el-button size="small" @click="toExperiment(scope.row)"
+              >查看</el-button
             >
-            <el-button size="small" @click="handleExamine()"
-              >查看我的报告</el-button
+
+            <el-button
+              size="small"
+              @click="toExFill(scope.row)"
+              v-if="scope.row.type === '在线提交'"
+              >在线填写</el-button
+            >
+            <el-button
+              size="small"
+              @click="handleUpload(scope.row)"
+              v-if="scope.row.type === '提交文件'"
+              >上传文件</el-button
             >
           </template>
         </el-table-column>
@@ -39,6 +54,27 @@
       >
       </el-pagination>
     </el-card>
+    <el-dialog :visible.sync="fileDialog" title="请选择文件" center>
+      <el-upload
+        class="upload-import"
+        ref="uploadImport"
+        action="https://baidu.com/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :on-change="handleChange"
+        :before-remove="beforeRemove"
+        :file-list="fileList"
+        :multiple="true"
+        :auto-upload="false"
+        accept=""
+      >
+        <el-button type="primary">选取文件</el-button>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="fileDialog = false">取消</el-button>
+        <el-button type="success" @click="uploadFile()">上传</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -47,10 +83,13 @@ export default {
   data() {
     return {
       sid: "",
-      currentPage: 1,
-      pagesize: 6,
-      tableData: [],
       class_id: "",
+      ex_id: "",
+      currentPage: 1,
+      pagesize: 7,
+      tableData: [],
+      fileList: [],
+      fileDialog: false,
     };
   },
   methods: {
@@ -60,55 +99,131 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-
-    handleCheck(row) {
-      console.log(row);
-      this.$router.push({
-        path: "/studentHome/concreteCourse/ConExper",
-        query: { release: row.id },
-      });
+    handlePreview(file) {
+      console.log(file);
     },
 
+    handleRemove(file) {
+      this.fileList.pop(file);
+    },
+
+    handleChange(file) {
+      this.fileList.push(file);
+    },
+
+    beforeRemove(file) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    handleUpload(row) {
+      this.fileDialog = true;
+      this.ex_id = row.ex_id;
+    },
     handleExamine() {
       this.$router.push({
         path: "/studentHome/concreteCourse/FillExper",
         query: { sid: this.sid },
       });
     },
+
+    toExperiment(row) {
+      this.$router.push({
+        path: "/studentHome/concreteCourse/ConExper",
+        query: {
+          info: this.$Base64.encode(JSON.stringify(row.ex_id)),
+        },
+      });
+    },
+    toExFill(row) {
+      this.$router.push({
+        path: "/studentHome/concreteCourse/FillExper",
+        query: {
+          info: this.$Base64.encode(JSON.stringify(row.ex_id)),
+        },
+      });
+    },
+    uploadFile() {
+      let param = new FormData();
+      this.fileList.forEach((file) => {
+        param.append("files", file.raw);
+      });
+      param.append("s_id", this.sid);
+      param.append("ex_id", this.ex_id);
+      param.append("token", sessionStorage.getItem("token"));
+      this.axios
+        .post("/api/Ex/stuUpload/", param, {
+          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (res.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            if (res.data["status"] === 200) {
+              this.$message("上传成功");
+              this.fileList = [];
+              this.fileDialog = false;
+              this.getFileList();
+            } else {
+              this.$message("上传失败");
+            }
+          }
+        });
+    },
+    getEx() {
+      this.axios
+        .post(
+          "/api/class/showEx/",
+          JSON.stringify({
+            class_id: this.class_id,
+            s_id: sessionStorage.getItem("id"),
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          //this.tableData = response.data
+          console.log("getEx");
+          this.checkResponse(response.data); //请求成功返回的数据
+        });
+    },
     checkResponse(response) {
-      // console.log(response)
-      for (var i = 0; i < response.length; i++) {
-        if (response[i].status !== 0) {
-          if(response[i].status === 1){
-            response[i].status = "未过期"
+      console.log(response);
+      if (response["code"] === 301) {
+        this.$message("验证过期");
+        this.$router.push({ path: "/login" });
+      } else if (response["code"] === 404) {
+        this.$message("找不到页面");
+        this.$router.push({ path: "/404" });
+      } else {
+        for (var i = 0; i < response.data.length; i++) {
+          if (response.data[i].status !== 0) {
+            if (response.data[i].status === 1) {
+              response.data[i].status = "未过期";
+            } else {
+              response.data[i].status = "已过期";
+            }
+            this.tableData.push(response.data[i]);
           }
-          else{
-            response[i].status = "已过期"
-          }
-          this.tableData.push(response[i]);
+          console.log("thisTable");
+          console.log(this.tableData);
         }
-        console.log(this.tableData)
       }
+    },
+    getParams: function () {
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
+      this.sid = sessionStorage.getItem("id");
     },
   },
   mounted() {
-    this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-      "class_id"
-    ];
-    this.axios
-      .post(
-        "/api/class/showEx/",
-        JSON.stringify({
-          class_id: this.class_id,
-          s_id : sessionStorage.getItem('id'),
-          token : sessionStorage.getItem('token')
-        })
-      )
-      .then((response) => {
-        //这里使用了ES6的语法
-        //this.tableData = response.data
-        this.checkResponse(response.data); //请求成功返回的数据
-      });
+    this.getParams();
+    this.getEx();
   },
 };
 </script>

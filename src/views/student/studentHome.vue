@@ -8,7 +8,7 @@
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
-            <el-submenu>
+            <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-edit"></i>
                 <span>个人信息</span>

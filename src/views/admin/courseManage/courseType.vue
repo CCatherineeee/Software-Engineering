@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       courseAddDialog: false,
-      courseTypeData: [{ name: "默认", prefix: "000" }],
+      courseTypeData: [],
       form: { name: "", prefix: "" },
     };
   },
@@ -136,12 +136,13 @@ export default {
       //获得所有课程
       axios
         .get("/api/course/getType/", {
-          //params: { userData: "value" },
-          crossDomain: true,
+          params:{
+            token : sessionStorage.getItem('token')
+          }
         })
         .then((response) => {
           console.log(response.data);
-          this.courseTypeData = response.data;
+          this.courseTypeData = response.data.data;
         })
         .catch(function (error) {
           console(error);

@@ -19,7 +19,7 @@
           <el-menu-item index="/studentHome/concreteCourse/File">
             <span slot="title">文件</span>
           </el-menu-item>
-          <el-menu-item index="/studentHome/concreteCourse/File">
+          <el-menu-item index="/studentHome/concreteCourse/examHome">
             <span slot="title">测验</span>
           </el-menu-item>
         </el-menu>
@@ -57,12 +57,23 @@ export default {
     getClassInfo() {
       var jsons = {
         class_id: this.class_id,
+        token: sessionStorage.getItem("token"),
       };
 
       this.axios
         .post("/api/manageClass/IDGetClass", JSON.stringify(jsons))
         .then((response) => {
-          this.course_name = response.data.course_name;
+          console.log(this.response);
+          console.log(response.data["data"]);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.course_name = response.data.data.course_name;
+          }
         })
         .catch(function (error) {
           console.log(error);

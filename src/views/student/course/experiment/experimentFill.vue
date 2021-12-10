@@ -5,9 +5,10 @@
         <v-textarea
           filled
           label="实验名称"
+          disabled
           auto-grow
           height="20px"
-          value=""
+          :value="ex_info.title"
         ></v-textarea>
       </v-col>
       <v-col cols="12" md="6">
@@ -64,23 +65,42 @@ export default {
       dialogVisible: false,
       dialog: false,
       fileList: [],
+      ex_id: "",
+      ex_info: {},
     };
   },
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
-      // 将数据放在当前组件的数据内
-      console.log("传来的参数==" + routerParams);
-      this.id = routerParams;
+      this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info));
     },
-
+    getExInfo() {
+      var jsons = {
+        ex_id: this.ex_id,
+      };
+      this.axios
+        .post("/api/course/getExById/", JSON.stringify(jsons))
+        .then((response) => {
+          //这里使用了ES6的语法
+          //this.tableData = response.data
+          console.log("getExInfo");
+          console.log(response);
+          if (response.data.data.status == 0)
+            response.data.data.status = "未发布";
+          if (response.data.data.status == 1)
+            response.data.data.status = "未截止";
+          if (response.data.data.status == 3)
+            response.data.data.status = "已截止";
+          this.ex_info = response.data.data;
+        });
+    },
     back() {
-      this.$router.push("/studentHome/concreteCourse/ConExper");
+      this.$router.go(-1);
     },
   },
   mounted() {
     this.getParams();
+    this.getExInfo();
   },
 };
 </script>
