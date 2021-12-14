@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint,current_app,make_response
 import json
-from Model.Model import Student,TeachingAssistant
+from Model.Model import Student,TeachingAssistant,Admin
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 import time
@@ -99,6 +99,19 @@ def getAllTA():
         result.append(TAdata)
 
     return jsonify(result)
+
+@getUserInfoRoute.route('/getAdminInfo/admin/',methods=['GET'])  
+def getAdminInfo():
+    admin_id = request.args.get('admin_id')
+    admin = Admin.query.filter(Admin.admin_id==admin_id).first()
+    temp = {}
+    if admin:
+        temp = {'admin_id':admin.admin_id,'name':admin.name,
+            'email':admin.email,'phone_number':admin.phone_number,'state':admin.state}
+    content = [] 
+    content.append(temp)
+    return jsonify(content)
+
 
 # show photo
 @getUserInfoRoute.route('/getUserInfo/Student/showAvatar', methods=['POST'])
