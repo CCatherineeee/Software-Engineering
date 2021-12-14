@@ -107,7 +107,7 @@ def showClass():
             coursetype = CourseType.query.filter(CourseType.prefix == course.prefix).first()
             temp = {'name':coursetype.ct_name,'prefix':course.prefix,'semester':course.course_semester,"year":course.course_year, "class_id":class_.class_id, "t_id":t_id,"t_name":t_name}
             content.append(temp)
-        return jsonify({'code':404,'message':"无法访问页面",'data':content})
+        return jsonify({'code':200,'message':"请求成功",'data':content})
 
 
 #删除班级

@@ -19,6 +19,19 @@ CORS(teaExperimentRoute, resources=r'/*')
 
 basepath = os.path.dirname(__file__)
 
+def checkToken(token,role):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
+    
+    if token_role != role:
+        return 404
+    else:
+        return 200
+
 @teaExperimentRoute.route('/tea/Ex/getReport/',methods=['POST'])  
 def getReport():
     data = request.form

@@ -14,14 +14,14 @@ CORS(loginRoute, resources=r'/*')	# 注册CORS, "/*" 允许访问所有api
 
 def AdminLogin(admin_id, admin_pwd):
     admin = Model.Admin.query.filter(Model.Admin.admin_id == admin_id).first()
-    
+    s = Serializer('WEBSITE_SECRET_KEY', 60*100)
     if not admin:
         return jsonify({'status':"UserNotExist",'token':None,'is_active':None})
     admin = Model.Admin.query.filter(and_(Model.Admin.admin_pwd == admin_pwd,Model.Admin.admin_id == admin_id)).first()
     if not admin:
         return jsonify({'status':"PasswordWrong",'token':None,'is_active':None})
     else:
-        token = s.dumps({'id': data['userID'],'role':0,'isactive':1}).decode('utf-8')
+        token = s.dumps({'id': admin_id,'role':0,'isactive':1}).decode('utf-8')
         return jsonify({'status':"Login",'token':token,'is_active':1})
 
 @loginRoute.route('/adminLogin/',methods=['POST']) 
@@ -30,7 +30,7 @@ def adminLogin():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     
-    check = AdminLogin(data['userID'],data['password'])
+    check = AdminLogin(data['username'],data['password'])
     return check
 
 # @loginRoute.route('/login/',methods=['POST']) 

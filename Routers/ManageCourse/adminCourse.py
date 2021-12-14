@@ -17,18 +17,23 @@ from Routers import Role
 adminCourseRoute = Blueprint('adminCourseRoute', __name__)
 CORS(adminCourseRoute, resources=r'/*')	
 
-def checkToken(token,role):
+def checkToken(token,role,role2 = None):
     try:
         s = Serializer('WEBSITE_SECRET_KEY')
         token_id = s.loads(token)['id']
         token_role = s.loads(token)['role']
     except:
         return 301
-    
-    if token_role != role:
-        return 404
+    if not role2:
+        if token_role != role:
+            return 404
+        else:
+            return 200
     else:
-        return 200
+        if token_role != role2 and token_role != role:
+            return 404
+        else:
+            return 200
 
 @adminCourseRoute.route('/course/addType/',methods=['POST'])  
 def addCourseType():
@@ -184,12 +189,13 @@ def getDuty():
 @adminCourseRoute.route('/course/getAllTeacher/',methods=['GET'])  
 def getAllTeacher():
     token = request.args.get('token')
-    res = checkToken(token,Role.AdminRole)
+    res = checkToken(token,Role.AdminRole,Role.TeacherRole)
     if res == 301:
         return jsonify({'code':301,'message':"验证过期",'data':None})
     elif res == 404:
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
+        res = checkToken(token,Role.TeacherRole)
         teachers = dbManage.db.session.query(Teacher).all()
         content = []
         for teacher in teachers:
