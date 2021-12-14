@@ -86,7 +86,7 @@ def delCourseType():
         ctype = CourseType.query.filter(CourseType.prefix == prefix).first()
         dbManage.db.session.delete(ctype)
         dbManage.db.session.commit()
-        return jsonify({'code':200,'message':"删除成功",'data':content})
+        return jsonify({'code':200,'message':"删除成功"})
 
 @adminCourseRoute.route('/course/addCourse/',methods=['POST'])  
 def addCourse():
