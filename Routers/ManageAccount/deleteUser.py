@@ -33,7 +33,7 @@ def deleteStudent():
     data = json.loads(data.decode("utf-8"))
     data = data['s_id']
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
@@ -52,7 +52,7 @@ def deleteTA():
     data = json.loads(data.decode("utf-8"))
     data = data['ta_id']
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
@@ -71,7 +71,7 @@ def deleteTeacher():
     data = json.loads(data.decode("utf-8"))
     data = data["t_id"]
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
