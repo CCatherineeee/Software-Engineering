@@ -19,7 +19,7 @@ def editStudentInfo():
     data = json.loads(data.decode("utf-8"))
 
     name = data['name']
-    s_id = data['sid']
+    s_id = data['s_id']
     email = data['email']
     gender = data['gender']
     phone_number = data['phone_number']
