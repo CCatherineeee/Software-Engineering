@@ -35,25 +35,25 @@ def getUserInfo():
         content.append(temp)
     return jsonify(content)
 
-@getUserInfoRoute.route('/getUserInfo/Student/',methods=['POST'])  
+@getUserInfoRoute.route('/getUserInfo/Student/',methods=['GET'])  
 def getStuentInfo():
-    data = request.get_data()
-    data = json.loads(data.decode("utf-8"))
-    s_id = data['s_id']
-    token = data['token']
-    try:
-        s = Serializer('WEBSITE_SECRET_KEY')
-        token_id = s.loads(token)['id']
-        token_role = s.loads(token)['role']
-    except:
-        return jsonify({'code':301,'status':"验证过期",'data':None})
+    s_id = request.args.get('s_id')
+    # token = request.args.get('token')
+    # s_id = data['s_id']
+    # token = data['token']
+    # try:
+    #     s = Serializer('WEBSITE_SECRET_KEY')
+    #     token_id = s.loads(token)['id']
+    #     token_role = s.loads(token)['role']
+    # except:
+    #     return jsonify({'code':301,'status':"验证过期",'data':None})
     
-    if token_role != 1:
-        return jsonify({'code':404,'status':"无法访问",'data':None})
+    # if token_role != 1:
+    #     return jsonify({'code':404,'status':"无法访问",'data':None})
 
-    if token_role == Role.StudentRole:
-        if s_id != token_id:
-            return jsonify({'code':404,'status':"无法访问",'data':None})
+    # if token_role == Role.StudentRole:
+    #     if s_id != token_id:
+    #         return jsonify({'code':404,'status':"无法访问",'data':None})
 
     student = Student.query.filter(Student.s_id==s_id).first()
     temp = {}
