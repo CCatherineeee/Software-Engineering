@@ -32,6 +32,7 @@ def checkAdminToken(token,role):
     else:
         return 200
 
+
 def manageFile(uploadPath):
     workbook = xlrd.open_workbook(uploadPath)
     get_sheet_name = workbook.sheet_names()[0]
@@ -76,7 +77,7 @@ def addStudentManually():
     s_id = data['id']
     email = data['email']
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
@@ -105,7 +106,7 @@ def addTeacherManually():
     t_id = data['id']
     email = data['email']
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
@@ -133,7 +134,7 @@ def addTAManually():
     ta_id = data['ta_id']
     email = data['email']
     token = data['token']
-    res = checkToken(token,Role.AdminRole)
+    res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':res,'message':"验证过期",'data':None})
     elif res == 404:
