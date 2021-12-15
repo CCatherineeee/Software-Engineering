@@ -12,6 +12,7 @@ import datetime
 from Routers import Role
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
+
 def checkToken(token,role):
     try:
         s = Serializer('WEBSITE_SECRET_KEY')
