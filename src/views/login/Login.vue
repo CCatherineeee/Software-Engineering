@@ -6,7 +6,7 @@
           style="padding:0px;filter:brightness(85%);width=100%;overflow:hidden;"
         >
           <img
-            src="@/assets/logo.png"
+            src="@/assets/home_left.jpg"
             style="height: 560px; overflow: hidden"
           />
         </el-main>
@@ -76,8 +76,8 @@
                     <dialog-bar
                       v-model="sendVal"
                       type="danger"
-                      title="我是标题"
-                      content="我是内容"
+                      title="忘记密码"
+                      content="忘记密码"
                       v-on:cancel="clickCancel()"
                       @danger="clickDanger()"
                       @confirm="clickConfirm()"

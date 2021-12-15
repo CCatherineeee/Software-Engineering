@@ -15,6 +15,7 @@ import vueToPdf from 'vue-to-pdf'
 import htmlToPdf from '@/components/Utils/htmlToPdf'
 import Base64 from '../js/base64.js'
 
+
 Vue.use(VueAxios, axios)
 //让Vue使用ElementUI
 Vue.use(ElementUI)
