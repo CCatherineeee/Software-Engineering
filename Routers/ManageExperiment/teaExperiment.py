@@ -10,7 +10,6 @@ import os
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 import datetime
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
 
 teaExperimentRoute = Blueprint('teaExperimentRoute', __name__)
