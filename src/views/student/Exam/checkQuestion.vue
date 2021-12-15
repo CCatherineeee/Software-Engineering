@@ -114,7 +114,6 @@ export default {
       this.axios.post('/api/getExamById', JSON.stringify({
         exam_id: this.exam_id
       })).then((res) => {
-        console.log(res.data)
         if (res.data.code === 200) {
           this.end_time = res.data.data.end_time
           this.start_time = res.data.data.start_time
@@ -124,6 +123,7 @@ export default {
             this.answerList.push({q_id: res.data.data.questions[i].q_id, answer: 0, checkList: []})
           }
         }
+        console.log(this.questionList)
       })
     },
     save() {
@@ -162,11 +162,6 @@ export default {
     Timer() {
       this.time.timeStr = setInterval(this.timer, 50)
       this.isClose = setInterval(this.checkClose,1)
-      if(this.isClose === true){
-        this.save()
-        this.$message("测验结束！")
-
-      }
     },
     timer() {//定义计时函数
       this.time.ms = this.time.ms + 50        //毫秒
@@ -193,11 +188,12 @@ export default {
       }
     },
     checkClose(){
+      if(this.isClose === true)
+        return true
       let yourtime = this.end_time.replace("-","/");
       let d2 = new Date();//取今天的日期
       let d1 = new Date(Date.parse(yourtime));
       if(d2 > d1){
-        alert("已截至")
         return true
       }
 

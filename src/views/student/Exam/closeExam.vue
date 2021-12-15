@@ -131,6 +131,7 @@ export default {
       this.exam_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["exam_id"];
     },
     getExam(){
+
       this.axios.post('/api/getCloseExam',JSON.stringify({
         exam_id:this.exam_id,
         s_id : sessionStorage.getItem('id')
@@ -147,6 +148,7 @@ export default {
           else
             this.answerList = res.data.data.answerList
           for(let i = 0; i< this.questionList.length; i++){
+            this.answerList.push({})
             if(this.questionList[i].q_type === 1||this.questionList[i].q_type === 3){
               var c = null
               switch (this.questionList[i].answer) {
@@ -189,6 +191,8 @@ export default {
               this.correct.push(t)
             }
           }
+          console.log(this.answerList)
+          console.log(this.questionList)
         }
       })
     },

@@ -96,7 +96,7 @@ export default {
       this.$router.push({
         path: index,
         query: {
-          c_id: this.$Base64.encode(JSON.stringify(this.c_id)),
+          info: this.$Base64.encode(JSON.stringify({class_id : this.c_id})),
         },
       });
     },

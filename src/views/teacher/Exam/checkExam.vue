@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     getExamList(){
+      console.log(this.class_id)
       this.axios.post("/api/getExam",JSON.stringify({
         class_id : this.class_id,
         token : sessionStorage.getItem('token')
@@ -115,6 +116,7 @@ export default {
 
             this.examList.push(res.data.data.data[i])
           }
+          console.log(res)
         }
       })
     },
@@ -133,7 +135,7 @@ export default {
     lookExam(row){
       this.$router.push({
         path: '/teacherHome/concreteCourse/exam',
-        query: {info: this.$Base64.encode(JSON.stringify({ exam_id: row.exam_id })),},
+        query: {info: this.$Base64.encode(JSON.stringify({ exam_id: row.exam_id, class_id : this.class_id })),},
       });
     },
     stopExam(row){
