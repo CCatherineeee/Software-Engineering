@@ -123,11 +123,11 @@ def TALogin():
     uid = data['id']
     pwd = data['password']
 
-    ta = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.s_id == uid).first()
+    ta = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.ta_id == uid).first()
     if ta:
         if ta.check_password(pwd):
             s = Serializer('WEBSITE_SECRET_KEY', 60*100)
-            token = s.dumps({'id': uid,'role':1,'isactive':ta.is_active}).decode('utf-8')
+            token = s.dumps({'id': uid,'role':3,'isactive':ta.is_active}).decode('utf-8')
             return jsonify({'status':"TASuccess",'token':token,'is_active':ta.is_active})
         else:
             return jsonify({'status':"PasswordWrong",'token': None,'is_active':None})
