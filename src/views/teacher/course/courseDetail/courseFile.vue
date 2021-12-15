@@ -175,13 +175,13 @@ export default {
             token: sessionStorage.getItem("token"),
           }),
           {
+            responseType: 'blob',
             headers: {
               "Content-Type": "multipart/form-data",
             },
           }
         )
         .then((response) => {
-          console.log(response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -193,8 +193,8 @@ export default {
             fname = decodeURIComponent(fname);
             //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-            const blob = new Blob([response.data.data], {
-              type: "text/plain,charset=UTF-8",
+            const blob = new Blob([response.data], {
+              type: "application/pdf",
             });
             var downloadElement = document.createElement("a");
             var href = window.URL.createObjectURL(blob);
@@ -240,6 +240,7 @@ export default {
       param.append("token", sessionStorage.getItem("token"));
       this.axios
         .post("/api/manageClassFileRoute/addFile", param, {
+
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
         })
         .then((res) => {
