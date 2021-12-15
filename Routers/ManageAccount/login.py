@@ -29,8 +29,9 @@ def adminLogin():
     # 接口本身
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    
-    check = AdminLogin(data['username'],data['password'])
+    uid = data['id']
+    pwd = data['password']
+    check = AdminLogin(uid,pwd)
     return check
 
 # @loginRoute.route('/login/',methods=['POST']) 
@@ -73,6 +74,61 @@ def Login():
             s = Serializer('WEBSITE_SECRET_KEY', 60*100)
             token = s.dumps({'id': uid,'role':1,'isactive':student.is_active}).decode('utf-8')
             return jsonify({'status':"SSuccess",'token':token,'is_active':student.is_active})
+        else:
+            return jsonify({'status':"PasswordWrong",'token': None,'is_active':None})
+    return jsonify({'status':"UserNotExist",'token': None,'is_active':None})
+
+
+@loginRoute.route('/teacherLogin/',methods=['POST'])
+def teacherLogin():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    uid = data['id']
+    pwd = data['password']
+    
+    teacher = Model.Teacher.query.filter(Model.Teacher.t_id == uid).first()
+    if teacher:
+        if teacher.check_password(pwd):
+            s = Serializer('WEBSITE_SECRET_KEY', 60*100)
+            token = s.dumps({'id': uid,'role':2,'isactive':teacher.is_active}).decode('utf-8')
+            return jsonify({'status':"TSuccess",'token':token,'is_active':teacher.is_active})
+        else:
+            return jsonify({'status':"PasswordWrong",'token': None,'is_active':None})
+    else:
+        return jsonify({'status':"UserNotExist",'token': None,'is_active':None})
+
+
+@loginRoute.route('/studentLogin/',methods=['POST'])
+def studentLogin():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    uid = data['id']
+    pwd = data['password']
+
+    student = Model.Student.query.filter(Model.Student.s_id == uid).first()
+    if student:
+        if student.check_password(pwd):
+            s = Serializer('WEBSITE_SECRET_KEY', 60*100)
+            token = s.dumps({'id': uid,'role':1,'isactive':student.is_active}).decode('utf-8')
+            return jsonify({'status':"SSuccess",'token':token,'is_active':student.is_active})
+        else:
+            return jsonify({'status':"PasswordWrong",'token': None,'is_active':None})
+    return jsonify({'status':"UserNotExist",'token': None,'is_active':None})
+
+
+@loginRoute.route('/TALogin/',methods=['POST'])
+def TALogin():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    uid = data['id']
+    pwd = data['password']
+
+    ta = Model.TeachingAssistant.query.filter(Model.TeachingAssistant.s_id == uid).first()
+    if ta:
+        if ta.check_password(pwd):
+            s = Serializer('WEBSITE_SECRET_KEY', 60*100)
+            token = s.dumps({'id': uid,'role':1,'isactive':ta.is_active}).decode('utf-8')
+            return jsonify({'status':"TASuccess",'token':token,'is_active':ta.is_active})
         else:
             return jsonify({'status':"PasswordWrong",'token': None,'is_active':None})
     return jsonify({'status':"UserNotExist",'token': None,'is_active':None})
