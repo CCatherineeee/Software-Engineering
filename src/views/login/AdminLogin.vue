@@ -160,7 +160,7 @@ body > .el-container {
 
 .loginPage {
   text-align: center;
-  background: #dfd3d3;
+  background: #ffffff;
   color: var(--el-text-color-primary);
   text-align: center;
   line-height: 570px;
