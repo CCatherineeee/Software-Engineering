@@ -124,9 +124,11 @@ export default {
       this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["class_id"];
     },
     pushExam(row){
-      this.axios.post("/api/pushExam",JSON.stringify({
-        exam_id : row.exam_id
+      this.axios.post("/api/pushExamForce",JSON.stringify({
+        exam_id : row.exam_id,
+        class_id : this.class_id
       })).then((res)=>{
+        console.log(res)
         if(res.data.code === 200){
           this.getExamList()
         }
@@ -158,7 +160,8 @@ export default {
       this.axios.post("/api/editExamTime",JSON.stringify({
         exam_id : this.edit_exam_id,
         start_time : this.formatDateTime(this.edit_start_time),
-        end_time : this.formatDateTime(this.edit_end_time)
+        end_time : this.formatDateTime(this.edit_end_time),
+        class_id : this.class_id
       })).then((res)=>{
         if(res.data.code === 200){
           this.$message("修改成功！")

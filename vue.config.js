@@ -13,7 +13,8 @@ module.exports = {
                 pathRewrite: { // 重写路径: 去掉路径中开头的'/api'
                     '^/api': ''
                 }
-            }
+            },
+
         },
         /*
         headers: {
