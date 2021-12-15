@@ -99,8 +99,13 @@ export default {
           message: "该课程已存在!",
         });
       } else {
+        var jsons = {
+          name: this.form.name,
+          prefix: this.form.prefix,
+          token: sessionStorage.getItem("token"),
+        };
         axios
-          .post("/api/course/addType/", JSON.stringify(this.form))
+          .post("/api/course/addType/", JSON.stringify(jsons))
           .then((response) => {
             console.log(response);
             this.courseAddDialog = false;
@@ -121,6 +126,7 @@ export default {
     deleteCourse(item) {
       var jsons = {
         prefix: item.prefix,
+        token: sessionStorage.getItem("token"),
       };
       axios
         .post("/api/course/delType/", JSON.stringify(jsons))
@@ -134,14 +140,16 @@ export default {
     },
     getCourseType() {
       //获得所有课程
+      console.log("getCourseType");
       axios
         .get("/api/course/getType/", {
-          params:{
-            token : sessionStorage.getItem('token')
-          }
+          params: {
+            token: sessionStorage.getItem("token"),
+          },
         })
         .then((response) => {
-          console.log(response.data);
+          console.log("getCourseType");
+          console.log(response);
           this.courseTypeData = response.data.data;
         })
         .catch(function (error) {

@@ -117,21 +117,19 @@ export default {
       } else if (this.ruleForm.password === "") {
         this.$message("请输入密码！");
       } else {
-
         this.axios
           .post(
             "/api/adminLogin/",
             JSON.stringify({
-              username : this.ruleForm.username,
-              password : this.ruleForm.password
+              username: this.ruleForm.username,
+              password: this.ruleForm.password,
             })
           )
           .then((response) => {
-            console.log(response.data.status)
-            if (response.data.status === "UserNotExist"){
+            console.log(response.data.status);
+            if (response.data.status === "UserNotExist") {
               this.$message("用户不存在");
-            }
-            else if (response.data.status === "PasswordWrong"){
+            } else if (response.data.status === "PasswordWrong") {
               this.$message("密码错误！");
             }
             if (response.data.status === "Login") {
@@ -141,11 +139,11 @@ export default {
               this.$router.push("/adminHome");
               this.$router.push("/adminHome");
             }
-          }).catch((error) => {
+          })
+          .catch((error) => {
             this.$message("网络错误！");
-            console.log(error)
-        });
-
+            console.log(error);
+          });
       }
     },
     toRegister() {

@@ -6,10 +6,7 @@
       @click="handleAdd"
       >添加责任教师</el-button
     >
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-    >
+    <el-table :data="dutyTeaList" style="width: 100%">
       <el-table-column label="课程编号" prop="prefix" sortable />
       <el-table-column label="课程名称" prop="name" sortable />
       <el-table-column label="开课学年" prop="year" sortable />
@@ -134,7 +131,7 @@ export default {
       year: "",
       semester: "",
       t_id: "",
-      tableData: [],
+      dutyTeaList: [],
     };
   },
   methods: {
@@ -154,6 +151,7 @@ export default {
         year: this.year,
         prefix: this.prefix,
         t_id: this.t_id,
+        token: sessionStorage.getItem("token"),
       };
       axios
         .post("", JSON.stringify(jsons))
@@ -196,6 +194,7 @@ export default {
       console.log(row);
       var jsons = {
         c_id: row.c_id,
+        token: sessionStorage.getItem("token"),
       };
       axios
         .post("/api/course/delCourse/", JSON.stringify(jsons))
@@ -211,11 +210,13 @@ export default {
       //获得所有课程
       axios
         .get("/api/course/getType/", {
-          //params: { userData: "value" },
+          params: { token: sessionStorage.getItem("token") },
           crossDomain: true,
         })
         .then((response) => {
-          this.courseList = response.data;
+          console.log("getAllCourse");
+          console.log(response);
+          this.courseList = response.data.data;
         })
         .catch(function (error) {
           console(error);
@@ -225,13 +226,13 @@ export default {
       //已经设置的责任教师
       axios
         .get("/api/course/getDuty/", {
-          params: { token: sessionStorage.getItem('token') },
+          params: { token: sessionStorage.getItem("token") },
         })
         .then((response) => {
           console.log("所有责任教师");
 
-          this.tableData = response.data.data;
-          console.log(this.tableData);
+          this.dutyTeaList = response.data.data;
+          console.log(this.dutyTeaList);
         })
         .catch(function (error) {
           console.log(error);
@@ -241,11 +242,11 @@ export default {
       //获得所有教师
       axios
         .get("/api/course/getAllTeacher/", {
-          //params: { userData: "value" },
+          params: { token: sessionStorage.getItem("token") },
           crossDomain: true,
         })
         .then((response) => {
-          this.teaList = response.data;
+          this.teaList = response.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -267,7 +268,7 @@ export default {
         year: this.year,
         prefix: this.prefix,
         t_id: this.t_id,
-        token : sessionStorage.getItem('token')
+        token: sessionStorage.getItem("token"),
       };
       axios
         .post("/api/course/addCourse/", JSON.stringify(jsons))

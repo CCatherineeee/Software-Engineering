@@ -77,13 +77,15 @@ export default {
       // 取到路由带过来的参数
       //var routerParams = this.$route.query.id;
       // 将数据放在当前组件的数据内
-      console.log("传来的id==" + this.$route.query.id);
-      console.log("传来的role==" + this.$route.query.role);
-      this.id = this.$route.query.id;
-      this.role = this.$route.query.role;
+
+      this.id = JSON.parse(this.$Base64.decode(this.$route.query.info))["id"];
+      this.role = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "role"
+      ];
+      console.log("路有参数" + this.id + this.role);
     },
 
-    getStuInfo() {
+    getInfo() {
       if (this.role == 1) {
         this.axios
           .get("/api/getUserInfo/Student/", {
@@ -91,14 +93,15 @@ export default {
             crossDomain: true,
           })
           .then((response) => {
-            console.log(response.data);
-            this.name = response.data[0].name;
-            this.gender = response.data[0].gender;
-            this.phone_number = response.data[0].phone_number;
-            this.email = response.data[0].email;
-            this.is_active = response.data[0].is_active;
+            console.log("getInfo");
+            console.log(response);
+            this.name = response.data.data[0].name;
+            this.gender = response.data.data[0].gender;
+            this.phone_number = response.data.data[0].phone_number;
+            this.email = response.data.data[0].email;
+            this.is_active = response.data.data[0].is_active;
             //this.role = response.data[0].role;
-            this.department = response.data[0].department;
+            this.department = response.data.data[0].department;
             //this.major_id;
           })
           .catch(function (error) {
@@ -111,7 +114,8 @@ export default {
             crossDomain: true,
           })
           .then((response) => {
-            console.log(response.data);
+            console.log("getInfo");
+            console.log(response);
             this.name = response.data[0].name;
             this.gender = response.data[0].gender;
             this.phone_number = response.data[0].phone_number;
@@ -131,7 +135,9 @@ export default {
             crossDomain: true,
           })
           .then((response) => {
-            console.log(response.data);
+            console.log("getInfo");
+            console.log(response);
+
             this.name = response.data[0].name;
             this.gender = response.data[0].gender;
             this.phone_number = response.data[0].phone_number;
@@ -150,16 +156,20 @@ export default {
     modifyAccount() {
       this.$router.push({
         path: "/adminHome/userManage/accountModify",
-        query: { id: this.id, role: this.role },
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ id: this.id, role: this.role })
+          ),
+        },
       });
     },
     back() {
-      this.$router.push("/adminHome/userManage/accountCheck");
+      this.$router.go(-1);
     },
   },
   mounted() {
     this.getParams();
-    this.getStuInfo();
+    this.getInfo();
   },
 };
 </script>

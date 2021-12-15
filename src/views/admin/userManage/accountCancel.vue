@@ -111,7 +111,11 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: row.id, role: row.role },
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ id: row.id, role: row.role })
+          ),
+        },
       });
     },
 
@@ -133,12 +137,14 @@ export default {
     cancelOneAccount(row) {
       //注销单个账户
       console.log("id==" + row.id);
+      console.log("token==" + sessionStorage.getItem("token"));
       if (row.role == 1) {
         axios
           .post(
             "/api/delete/student/",
             JSON.stringify({
               s_id: row.id,
+              token: sessionStorage.getItem("token"),
             })
           )
           .then(function (response) {
@@ -153,6 +159,7 @@ export default {
             "/api/delete/teacher/",
             JSON.stringify({
               t_id: row.id,
+              token: sessionStorage.getItem("token"),
             })
           )
           .then(function (response) {
@@ -167,6 +174,7 @@ export default {
             "/api/delete/Ta/",
             JSON.stringify({
               ta_id: row.id,
+              token: sessionStorage.getItem("token"),
             })
           )
           .then(function (response) {

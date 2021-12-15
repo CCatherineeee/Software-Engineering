@@ -102,7 +102,11 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountInfo",
-        query: { id: row.id, role: row.role },
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ id: row.id, role: row.role })
+          ),
+        },
       });
     },
 
@@ -110,7 +114,11 @@ export default {
       console.log(row);
       this.$router.push({
         path: "/adminHome/userManage/accountModify",
-        query: { id: row.id, role: row.role },
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ id: row.id, role: row.role })
+          ),
+        },
       });
     },
 

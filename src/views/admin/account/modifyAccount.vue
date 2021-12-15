@@ -16,12 +16,8 @@
         <el-input type="text" v-model="userAccount.name"></el-input>
       </el-form-item>
 
-      <el-form-item label="学号" prop="sid">
-        <el-input v-model="userAccount.sid" :disabled="true"></el-input>
-      </el-form-item>
-
-      <el-form-item label="学院" prop="college">
-        <el-input v-model="userAccount.college" :disabled="true"></el-input>
+      <el-form-item label="工号" prop="admin_id">
+        <el-input v-model="userAccount.admin_id" :disabled="true"></el-input>
       </el-form-item>
 
       <el-form-item label="性别" prop="gender">
@@ -31,8 +27,8 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="手机" prop="phone">
-        <el-input v-model="userAccount.phone"></el-input>
+      <el-form-item label="手机" prop="phone_number">
+        <el-input v-model="userAccount.phone_number"></el-input>
       </el-form-item>
 
       <el-form-item label="邮箱" prop="email">
@@ -53,6 +49,7 @@
 export default {
   data() {
     return {
+      id: "",
       userAccount: {
         name: "",
         sid: 111,
@@ -63,10 +60,39 @@ export default {
     };
   },
   methods: {
+    getParams: function () {
+      // 取到路由带过来的参数
+      //var routerParams = this.$route.query.id;
+      // 将数据放在当前组件的数据内
+
+      this.id = JSON.parse(this.$Base64.decode(this.$route.query.info));
+
+      console.log("路有参数" + this.id);
+    },
+    getAdminInfo() {
+      this.axios
+        .get("/api/getAdminInfo/admin/", {
+          params: { admin_id: this.id, token: sessionStorage.getItem("token") },
+          crossDomain: true,
+        })
+        .then((response) => {
+          console.log("getAdminInfo");
+          console.log(response);
+          this.userAccount = response.data[0];
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    },
+
     save() {},
     back() {
-      this.$router.push("/adminHome/account");
+      this.$router.go(-1);
     },
+  },
+  mounted() {
+    this.getParams();
+    this.getAdminInfo();
   },
 };
 </script>

@@ -395,16 +395,22 @@ export default {
     },
 
     addFromDetailS() {
-      //console.log(this.formS);
       //手动增加学生
       if (
         this.formS.name != "" &&
         this.formS.id != "" &&
         this.formS.email.indexOf("@") >= 0
       ) {
+        var jsons = {
+          email: this.formS.email,
+          id: this.formS.id,
+          name: this.formS.name,
+          token: sessionStorage.getItem("token"),
+        };
         axios
-          .post("/api/Register/addSM/", JSON.stringify(this.formS))
+          .post("/api/Register/addSM/", JSON.stringify(jsons))
           .then((response) => {
+            console.log(" addFromDetailS");
             console.log(response);
             this.checkData(response.data);
             //location.reload();
@@ -431,8 +437,14 @@ export default {
         this.formT.id != "" &&
         this.formT.email.indexOf("@") >= 0
       ) {
+        var jsons = {
+          email: this.formT.email,
+          id: this.formT.id,
+          name: this.formT.name,
+          token: sessionStorage.getItem("token"),
+        };
         this.axios
-          .post("/api/Register/addTeacherManually/", JSON.stringify(this.formT))
+          .post("/api/Register/addTeacherManually/", JSON.stringify(jsons))
           .then((response) => {
             this.checkData(response.data);
           });
@@ -461,6 +473,7 @@ export default {
           name: this.formA.name,
           ta_id: this.formA.ta_id,
           email: this.formA.email,
+          token: sessionStorage.getItem("token"),
         };
         console.log("添加助教");
         console.log(jsons);
@@ -561,7 +574,7 @@ export default {
     },
 
     checkData(response) {
-      if (response == "Success") this.$message("添加成功");
+      if (response.code == 200) this.$message.success("添加成功");
       else if (response == "UserIDExist") this.$message("学号/工号 已被注册");
       else if (response == "UserMailExist") this.$message("邮箱已被注册");
       else this.$message("网络错误");

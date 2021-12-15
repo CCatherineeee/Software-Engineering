@@ -146,10 +146,15 @@ export default {
           message: "公告标题不能为空!",
         });
       } else {
-        console.log("form==" + this.form);
+        var jsons = {
+          content: this.form.content,
+          title: this.form.title,
+          token: sessionStorage.getItem("token"),
+        };
         axios
-          .post("/api//sys/addAnn/", JSON.stringify(this.form))
+          .post("/api//sys/addAnn/", JSON.stringify(jsons))
           .then((response) => {
+            console.log("addAnn");
             console.log(response);
             this.annAddDialog = false;
             this.getAnn();
@@ -168,6 +173,7 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
+          console.log("getAnn");
           console.log(response);
           this.announceData = response.data;
         })

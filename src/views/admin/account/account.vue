@@ -36,24 +36,6 @@
             <template slot="label"> 邮箱 </template>
             {{ email }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label"> 状态 </template>
-            <el-tag
-              :type="is_active === 1 ? 'success' : 'danger'"
-              disable-transitions
-              ><span v-if="is_active === 1">激活</span>
-              <span v-if="is_active === 0">非激活</span></el-tag
-            >
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"> 学院 </template>
-            {{ department }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label"> 专业 </template>
-            {{ major_id }}
-          </el-descriptions-item>
         </el-descriptions>
       </el-card>
     </el-main>
@@ -80,28 +62,26 @@ export default {
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      var routerParams = this.$route.query.id;
-      // 将数据放在当前组件的数据内
-      console.log("传来的参数==" + routerParams);
-      this.id = routerParams;
+
+      this.id = sessionStorage.getItem("id");
     },
 
-    getStuInfo() {
-     
+    getAdminInfo() {
       this.axios
-        .get("/api/getUserInfo/Student/", {
-          params: { s_id: this.id },
+        .get("/api/getAdminInfo/admin/", {
+          params: { admin_id: this.id, token: sessionStorage.getItem("token") },
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response.data);
+          console.log("getAdminInfo");
+          console.log(response);
           this.name = response.data[0].name;
-          this.gender = response.data[0].gender;
+          //this.gender = response.data[0].gender;
           this.phone_number = response.data[0].phone_number;
           this.email = response.data[0].email;
-          this.is_active = response.data[0].is_active;
+          //this.is_active = response.data[0].is_active;
           //this.role = response.data[0].role;
-          this.department = response.data[0].department;
+          //this.department = response.data[0].department;
           //this.major_id;
         })
         .catch(function (error) {
@@ -112,13 +92,15 @@ export default {
     modifyAccount() {
       this.$router.push({
         path: "/adminHome/modifyAccount",
-        query: { id: this.id },
+        query: {
+          info: this.$Base64.encode(JSON.stringify(this.id)),
+        },
       });
     },
   },
   mounted() {
     this.getParams();
-    this.getStuInfo();
+    this.getAdminInfo();
   },
 };
 </script>

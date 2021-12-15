@@ -81,14 +81,17 @@ export default {
       // 取到路由带过来的参数
       //var routerParams = this.$route.query.id;
       // 将数据放在当前组件的数据内
-      //console.log("传来的参数===" + routerParams);
-      console.log("传来的id==" + this.$route.query.id);
-      console.log("传来的role==" + this.$route.query.role);
-      this.userAccount.id = this.$route.query.id;
-      this.userAccount.role = this.$route.query.role;
+
+      this.userAccount.id = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      )["id"];
+      this.userAccount.role = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      )["role"];
+      console.log("路有参数" + this.userAccount.id);
     },
 
-    getStuInfo() {
+    getInfo() {
       if (this.userAccount.role == 1) {
         axios
           .get("/api/getUserInfo/Student/", {
@@ -96,11 +99,12 @@ export default {
             crossDomain: true,
           })
           .then((response) => {
-            console.log("拿到的信息" + JSON.stringify(response.data));
-            this.userAccount.name = response.data[0].name;
-            this.userAccount.gender = response.data[0].gender;
-            this.userAccount.phone_number = response.data[0].phone_number;
-            this.userAccount.email = response.data[0].email;
+            console.log("getInfo");
+            console.log(response);
+            this.userAccount.name = response.data.data[0].name;
+            this.userAccount.gender = response.data.data[0].gender;
+            this.userAccount.phone_number = response.data.data[0].phone_number;
+            this.userAccount.email = response.data.data[0].email;
             //this.userAccount.is_active = response.data[0].is_active;
             //this.role = response.data[0].role;
             //this.userAccount.department = response.data[0].department;
@@ -166,6 +170,7 @@ export default {
           gender: this.userAccount.gender,
           phone_number: this.userAccount.phone_number,
           email: this.userAccount.email,
+          token: sessionStorage.getItem("token"),
         };
       } else if (this.userAccount.role == 2) {
         jsons = {
@@ -174,12 +179,14 @@ export default {
           gender: this.userAccount.gender,
           phone_number: this.userAccount.phone_number,
           email: this.userAccount.email,
+          token: sessionStorage.getItem("token"),
         };
       } else if (this.userAccount.role == 3) {
         jsons = {
           name: this.userAccount.name,
           ta_id: this.userAccount.id,
           email: this.userAccount.email,
+          token: sessionStorage.getItem("token"),
         };
       }
 
@@ -187,38 +194,40 @@ export default {
         this.axios
           .post("/api/editInfo/Student/", JSON.stringify(jsons))
           .then((response) => {
+            console.log("save");
+            console.log(response);
             this.checkResponse(response.data); //请求成功返回的数据
+            this.getInfo();
           });
       } else if (this.userAccount.role == 2) {
         this.axios
           .post("/api/editInfo/Teacher/", JSON.stringify(jsons))
           .then((response) => {
+            console.log("save");
+            console.log(response);
             this.checkResponse(response.data); //请求成功返回的数据
+            this.getInfo();
           });
       } else if (this.userAccount.role == 3) {
         this.axios
           .post("/api/editInfo/TA/", JSON.stringify(jsons))
           .then((response) => {
+            console.log("save");
+            console.log(response);
             this.checkResponse(response.data); //请求成功返回的数据
+            this.getInfo();
           });
       }
-      document.execCommand("Refresh");
-      this.$router.push({
-        path: "/adminHome/userManage/accountInfo",
-        query: { id: this.userAccount.id, role: this.userAccount.role },
-      });
     },
 
     back() {
-      this.$router.push({
-        path: "/adminHome/userManage/accountInfo",
-        query: { id: this.userAccount.id, role: this.userAccount.role },
-      });
+      this.$router.go(-1);
     },
   },
   mounted() {
     this.getParams();
-    this.getStuInfo();
+
+    this.getInfo();
   },
 };
 </script>
