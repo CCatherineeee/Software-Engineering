@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     getExamList(){
+      console.log(this.class_id)
       this.axios.post("/api/getExam",JSON.stringify({
         class_id : this.class_id,
         token : sessionStorage.getItem('token')
@@ -115,6 +116,7 @@ export default {
 
             this.examList.push(res.data.data.data[i])
           }
+          console.log(res)
         }
       })
     },
@@ -122,9 +124,11 @@ export default {
       this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["class_id"];
     },
     pushExam(row){
-      this.axios.post("/api/pushExam",JSON.stringify({
-        exam_id : row.exam_id
+      this.axios.post("/api/pushExamForce",JSON.stringify({
+        exam_id : row.exam_id,
+        class_id : this.class_id
       })).then((res)=>{
+        console.log(res)
         if(res.data.code === 200){
           this.getExamList()
         }
@@ -133,7 +137,7 @@ export default {
     lookExam(row){
       this.$router.push({
         path: '/teacherHome/concreteCourse/exam',
-        query: {info: this.$Base64.encode(JSON.stringify({ exam_id: row.exam_id })),},
+        query: {info: this.$Base64.encode(JSON.stringify({ exam_id: row.exam_id, class_id : this.class_id })),},
       });
     },
     stopExam(row){
@@ -156,7 +160,8 @@ export default {
       this.axios.post("/api/editExamTime",JSON.stringify({
         exam_id : this.edit_exam_id,
         start_time : this.formatDateTime(this.edit_start_time),
-        end_time : this.formatDateTime(this.edit_end_time)
+        end_time : this.formatDateTime(this.edit_end_time),
+        class_id : this.class_id
       })).then((res)=>{
         if(res.data.code === 200){
           this.$message("修改成功！")

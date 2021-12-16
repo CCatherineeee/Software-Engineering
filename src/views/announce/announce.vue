@@ -53,7 +53,7 @@
       </el-pagination>
 
       <el-dialog :visible.sync="dialogVisible" :title="this.title" center>
-        <span class="dialogBack">{{ this.content }}</span>
+        <div v-html="formatImag(content)"></div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false"
             >确定</el-button
@@ -92,6 +92,9 @@ export default {
     },
     handleCheck() {},
     checkAnnounce() {},
+    formatImag (content) {
+      return content.replace(/<img/g, "<img style='max-width:60%;height:auto;'")
+    },
   },
   mounted() {
     axios

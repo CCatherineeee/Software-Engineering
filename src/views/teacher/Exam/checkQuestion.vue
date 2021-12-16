@@ -88,13 +88,15 @@ export default {
       ex_title :"",
       end_time: null,
       start_time:null,
-      answerList:[]
+      answerList:[],
+      class_id : ""
     }
   },
   methods:{
 
     getParams(){
       this.exam_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["exam_id"];
+      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["class_id"];
     },
     getExam(){
       this.axios.post('/api/getExamById',JSON.stringify({

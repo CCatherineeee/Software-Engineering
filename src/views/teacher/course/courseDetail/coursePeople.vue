@@ -449,8 +449,9 @@ export default {
     },
 
     getParams: function () {
-      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
-      console.log("cid===" + this.c_id);
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+          "class_id"
+          ];
     },
   },
   mounted() {

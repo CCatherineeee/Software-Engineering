@@ -41,32 +41,6 @@
     >
     </el-pagination>
 
-    <el-dialog :visible.sync="dialog" center>
-      <el-descriptions
-        direction="vertical"
-        :column="1"
-        border
-        size="medium"
-        title="实验指导"
-      >
-        <el-descriptions-item label="实验名称"
-          >kooriookami</el-descriptions-item
-        >
-        <el-descriptions-item label="实验目的"
-          >18100000000</el-descriptions-item
-        >
-        <el-descriptions-item label="实验设备" :span="2"
-          >苏州市</el-descriptions-item
-        >
-
-        <el-descriptions-item label="实验步骤"
-          >江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item
-        >
-      </el-descriptions>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialog = false">确定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -92,11 +66,41 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-    handleCheck() {
-      this.dialog = true;
+    handleCheck(row) {
+      this.axios
+          .post(
+              "/api/manageClassFileRoute/download/",
+              JSON.stringify({
+                id: row.id,
+                class_id: this.class_id,
+                token: sessionStorage.getItem("token"),
+              }),
+              {
+                responseType: 'blob',
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+          )
+          .then((response) => {
+            if (response.data["code"] === 301) {
+              this.$message("验证过期");
+              this.$router.push({ path: "/login" });
+            } else if (response.data["code"] === 404) {
+              this.$message("找不到页面");
+              this.$router.push({ path: "/404" });
+            } else {
+              //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+
+              const blob = new Blob([response.data], {
+                type: "application/pdf",
+              });
+              var href = window.URL.createObjectURL(blob);
+              window.open(href)
+            }
+          });
     },
     handleDown(row) {
-      console.log(row);
       this.axios
         .post(
           "/api/manageClassFileRoute/download/",
@@ -106,9 +110,7 @@ export default {
             token: sessionStorage.getItem("token"),
           }),
           {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+            responseType: 'blob'
           }
         )
         .then((response) => {
@@ -124,8 +126,8 @@ export default {
             fname = decodeURIComponent(fname);
             //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-            const blob = new Blob([response.data.data], {
-              type: "text/plain,charset=UTF-8",
+            const blob = new Blob([response.data], {
+              type: "application/pdf",
             });
             var downloadElement = document.createElement("a");
             var href = window.URL.createObjectURL(blob);
@@ -151,8 +153,6 @@ export default {
         .then((response) => {
           //这里使用了ES6的语法
           //this.tableData = response.data
-          console.log("fileList");
-          console.log(response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });

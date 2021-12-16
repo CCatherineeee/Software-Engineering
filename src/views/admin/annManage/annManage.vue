@@ -52,7 +52,7 @@
     </el-pagination>
 
     <el-dialog :visible.sync="annCheckDialog" :title="this.title" center>
-      <span class="dialogBack">{{ this.content }}</span>
+      <div v-html="formatImag(content)"></div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="annCheckDialog = false"
           >确定</el-button
@@ -61,20 +61,25 @@
     </el-dialog>
     <el-dialog :visible.sync="annAddDialog" title="新增公告" center>
       <v-form lazy-validation>
-        <v-text-field
+        <el-input
           v-model="form.title"
           :counter="20"
           label="标题"
           filled
           required
-        ></v-text-field>
+        ></el-input>
 
-        <v-textarea
+        <br />
+        <br />
+        <br />
+
+        <quill-editor
           v-model="form.content"
           label="内容"
           solo
           :counter="200"
-        ></v-textarea>
+        ></quill-editor>
+
       </v-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addAnn">确定</el-button>
@@ -98,8 +103,8 @@ export default {
       content: "",
       announceData: [],
       form: {
-        title: "",
-        content: "",
+        title: "输入标题",
+        content: "请输入内容",
       },
     };
   },
@@ -196,6 +201,9 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    formatImag (content) {
+      return content.replace(/<img/g, "<img style='max-width:50%;height:auto;'")
     },
   },
   mounted() {
