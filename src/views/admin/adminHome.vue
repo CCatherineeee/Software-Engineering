@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container class="back">
+    <el-container class="back" >
       <el-aside width="15%">
         <el-button type="primary" @click="getAvatar">显示头像</el-button>
         <div>
@@ -203,11 +203,13 @@ export default {
 }
 .back {
   margin-left: 10px;
+  margin-top: 20px;
 }
 .admin-aside-menu {
   box-shadow: 3px 3px 10px #d3d3d3;
-  background: rgb(255, 255, 255);
+  background: #F0F8FF;
   border-radius: 10%;
+  height: 800px;
 }
 .admin-aside-menu-head {
   margin: 20px auto;

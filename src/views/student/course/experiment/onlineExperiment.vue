@@ -1,6 +1,6 @@
 <template>
 
-      <el-container>
+      <el-container style="margin-top:20px;">
         <el-header>
           <el-col :span="16" align="left">{{ auction.auctionName }}</el-col>
           <el-col :span="8" align="right" justify="right">{{ isIn ? '未参加' : '已参加' }}</el-col>

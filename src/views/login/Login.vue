@@ -1,7 +1,7 @@
 <template>
   <div style="margin: auto auto; height: 620px">
     <div class="loginPart" style="height: 620px">
-      <el-container class="loginPage">
+      <el-container class="loginPage" style="mardin-top: 0px">
         <el-main
           style="padding:0px;filter:brightness(85%);width=100%;overflow:hidden;"
         >
@@ -239,6 +239,7 @@ export default {
   },
   methods: {
     openMask() {
+      this.$store.state.data=""
       this.sendVal = true;
     },
     clickCancel() {

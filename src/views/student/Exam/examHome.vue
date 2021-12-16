@@ -1,5 +1,5 @@
 <template>
-    <el-container class="back">
+      <el-container style="margin-top:20px;">
         <el-header>
           <el-menu @select="handleSelect" mode="horizontal">
             <el-menu-item index="/studentHome/concreteCourse/examHome/checkExam">

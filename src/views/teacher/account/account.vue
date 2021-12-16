@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container>
+  <el-container style="margin-top:20px;">
     <el-aside width="200px"></el-aside>
     <el-main class="back">
       <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15)">

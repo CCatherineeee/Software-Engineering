@@ -10,7 +10,7 @@
         <div class="content">
           <slot>
              <el-button class="cancel" plain @click="close">取消</el-button>
-             <el-button class="sure" type="primary" plain @click="sure"> 确定</el-button>
+             <el-button class="sure" type="primary" plain @click="validateCaptcha"> 确定</el-button>
           </slot>
         </div>
         <slot name="footer">
@@ -20,7 +20,7 @@
   </transition>
 </template>
 
-<script type="text/javascript">
+<script>
   export default {
     name: 'kiko-confirm',
     props: {
@@ -43,40 +43,103 @@
     },
     data () {
       return {
-        commitJson:""
+        verifySuccess:"false",
       }
     },
     methods: {
-      sure(){
-        this.commitJson = this.$store.state.data
-        if(this.commitJson.newPsw!=this.commitJson.confirmNewPsw)
-        {
-          //弹出错误提示
-          alert("两次密码输入不一样!")
-        }
-        else{
-          // console.log( this.commitJson.captcha);
-            this.axios
+      validateCaptcha(){
+        var commitJson = this.$store.state.data;
+        var result = [];
+        this.axios
             .post(
               //"/api/users/validateCaptcha"
               "http://100.67.159.209:5000/users/validateCaptcha",
               JSON.stringify({
-                email: this.commitJson.email,
-                captcha: this.commitJson.captcha
+                email: commitJson.email,
+                captcha: commitJson.captcha
               })
             )
             .then(function(response) {
               //这里使用了ES6的语法
               // this.checkResponse(response.data); //请求成功返回的数据
               alert("验证验证码成功");
+              result = response.data.message
+              console.log(result)
+            if (result == "true")
+            {commitJson.verifySuccess="ture";}
+
+            },function(err){
+              console.log(err)
+            });
+          // if (result == "true")
+          //   {commitJson.verifySuccess=="ture";}
+          setTimeout(()=>{
+            this.sure(commitJson)
+          },2000)
+          this.visible = false;
+          this.$router.push({path:"/Login"});
+      },
+      sure(commitJson){
+        // var commitJson = this.$store.state.data
+        
+        if(commitJson.newPsw!=commitJson.confirmNewPsw)
+        {
+          //弹出错误提示
+          alert("两次密码输入不一样!")
+        }
+        else{
+
+        debugger;
+        if(commitJson.role=="student" && commitJson.verifySuccess=="ture"){
+            this.axios
+            .post(
+              //"/api/users/validateCaptcha"
+              "/api/editInfo/Student/resetPwd",
+              JSON.stringify({
+                s_id: commitJson.id,
+                new_password: commitJson.newPsw
+              })
+            )
+            .then(function(response) {
+              //这里使用了ES6的语法
+              // this.checkResponse(response.data); //请求成功返回的数据
+              alert("重置学生密码成功");
               console.log(response)
-              this.props.visible=false;
-              this.$router.push("/Login");
-            },
-            function(err){
+
+            }, function(err){
               console.log(err)
             });
               }
+        else if(commitJson.role=="teacher" && commitJson.verifySuccess=="ture"){
+            this.axios
+            .post(
+              //"/api/users/validateCaptcha"
+              "/api/editInfoTeacher/resetPwd",
+              JSON.stringify({
+                t_id: commitJson.id,
+                new_password: commitJson.new_password
+              })
+            )
+            .then(function(response) {
+              //这里使用了ES6的语法
+              // this.checkResponse(response.data); //请求成功返回的数据
+              alert("重置教师密码成功");
+              console.log(response)
+
+            }, function(err){
+              console.log(err)
+            });
+              }
+        else if(commitJson.role=="teachingAssistant" && commitJson.verifySuccess=="ture"){
+              alert("助教还没写");
+
+              }
+        else{
+          alert("验证码错误");
+          this.visible = false;
+          return
+        }
+      }
       },
       close () {
         this.visible = false;

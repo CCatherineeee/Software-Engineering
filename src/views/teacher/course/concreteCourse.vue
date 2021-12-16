@@ -36,6 +36,7 @@
   background: rgb(255, 255, 255);
   border-radius: 15px;
   height: 610px;
+  margin-top: 20px;
 }
 .hBack {
   padding: 20px;

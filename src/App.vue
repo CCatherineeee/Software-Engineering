@@ -25,6 +25,9 @@
 
 #nav {
   padding: 30px;
+  background:
+  -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8AB9EB), color-stop(40%,#5C9DDC), color-stop(100%,#2374C5));
+  box-shadow: 2px 2px 2px #888888;
 }
 
 #nav a {

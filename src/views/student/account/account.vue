@@ -1,9 +1,18 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container>
+  <el-container style="margin-top:20px;">
     <el-aside width="200px"></el-aside>
+    
+
     <el-main class="back">
-      <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15)">
+
+    <div class="circle"  @click.stop="uploadHeadImg">
+        <div class="circle0" v-html="avatar"></div>
+        <div class="circle1">修改头像</div>
+    </div>
+  <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+    <div style="margin-top:25px">
+      <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15);">
         <el-descriptions
           title="账户信息"
           :column="2"
@@ -56,6 +65,7 @@
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
+    </div>
     </el-main>
     <el-aside width="200px"></el-aside>
   </el-container>
@@ -75,11 +85,63 @@ export default {
       //role: "",
       department: "",
       major_id: "",
+      avatar:""
     };
   },
   methods: {
+    getUserAvatar:function(){
+
+      let param = new FormData(); // 创建form对象
+      param.append('s_id',sessionStorage.getItem("id"));
+      this.axios
+        .post(
+          "http://100.67.159.209:5000/getUserInfo/Student/showAvatar", param
+        ).then((response) => {
+          var address = "http://100.67.159.209:5000";
+          var url=response.data.url;
+          var imgHtml = "<img src="+address+url+"></img>"
+          console.log(imgHtml)
+          this.avatar = imgHtml;
+
+        }).catch(function (error) {
+          console.log(error);
+        });
+    },
     getParams: function () {
       this.id = sessionStorage.getItem("id");
+    },
+    // 打开图片上传
+    uploadHeadImg: function () {
+      this.$el.querySelector('.hiddenInput').click()
+    },
+    // 将头像显示
+    handleFile: function (e) {
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+      let param = new FormData(); // 创建form对象
+      param.append('avatar', file); // 将文件存入file下面
+      param.append('token',sessionStorage.getItem("token"));
+      param.append('id',sessionStorage.getItem("id"));
+      let config = {headers: {'Content-Type': 'multipart/form-data'}}
+      this.axios
+        .post(
+          "http://100.67.159.209:5000/editInfo/uploadAvatar", param, config
+        ).then((response) => {
+          var msg=response.data.message;
+          this.$message(msg);
+
+        }).catch(function (error) {
+          console(error);
+        });
+
+
+      var reader = new FileReader()
+      // reader.onload = (data) => {
+      //   let res = data.target || data.srcElement
+      //   // this.userInfo.avatar = res.result
+      // }
+
+      reader.readAsDataURL(file)
     },
 
     getStuInfo() {
@@ -124,14 +186,53 @@ export default {
   mounted() {
     this.getParams();
     this.getStuInfo();
+    this.getUserAvatar();
   },
 };
 </script>
 
 
 <style scoped>
+  .circle{
+     margin:0 auto;
+      width: 220px;
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+  }
+  .circle0{
+    width: 220px;
+    height: 220px;
+    /* background-color: red; */
+    background-size: 100% 100%;
+  }
+  .circle1{
+    width: 220px;
+    height: 220px;
+    background-color: #999999;
+    opacity: 0.6;
+    transition: transform 1s ease;
+    text-align: center;
+    display: -moz-box;/*兼容Firefox*/
+    display: -webkit-box;/*兼容FSafari、Chrome*/
+
+    -moz-box-align: center;/*兼容Firefox*/
+    -webkit-box-align: center;/*兼容FSafari、Chrome */
+
+    -moz-box-pack: center;/*兼容Firefox*/
+    -webkit-box-pack: center;/*兼容FSafari、Chrome */
+    color:#FFFFFF
+
+  }
+  .circle:hover > .circle1 {
+      transform: translateY(-100%);
+    }
+
+
 .back {
   width: 700px;
+  margin-top: 20px;
+
 }
 .demo-border .text {
   width: 15%;
@@ -140,5 +241,15 @@ export default {
 .demo-border .line div {
   width: 100%;
   height: 0;
+}
+
+
+.hiddenInput{
+  display: none;
+}
+.caption {
+  color: #8F8F8F;
+  font-size: 26px;
+  height: 37px;
 }
 </style>

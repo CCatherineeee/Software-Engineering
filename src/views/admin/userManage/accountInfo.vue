@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container>
+  <el-container style="margin-top:20px;">
     <el-main>
       <el-card>
         <el-descriptions title="账户信息" :column="2" border size="medium">

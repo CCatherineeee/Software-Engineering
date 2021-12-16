@@ -71,11 +71,14 @@ export default {
 }
 .back {
   margin-left: 10px;
+  margin-top:20px;
 }
 .admin-aside-menu {
   box-shadow: 3px 3px 10px #d3d3d3;
-  background: rgb(255, 255, 255);
+  background: #F0F8FF;
   border-radius: 10%;
+  height: 800px;
+  margin-top: 20px;
 }
 .admin-aside-menu-head {
   margin: 20px auto;

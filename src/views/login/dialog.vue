@@ -147,7 +147,8 @@ export default {
                 newPsw: this.newPsw,
                 confirmNewPsw: this.confirmNewPsw,
                 email: this.email,
-                captcha: this.captcha
+                captcha: this.captcha,
+                verifySuccess:false
               }
       console.log(this.$store.state.data)
      this.$refs.confirmChange.visible=true;
