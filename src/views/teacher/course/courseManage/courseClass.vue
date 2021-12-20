@@ -219,6 +219,13 @@
                   </el-option>
                 </el-select>
               </v-col>
+              <v-col cols="6">
+                <el-cascader
+                  v-model="is_online"
+                  placeholder="是否在线模拟"
+                  :options="online_op"
+                  @change="handleExChange"></el-cascader>
+              </v-col>
             </v-row>
 
             <v-textarea
@@ -293,6 +300,7 @@ export default {
       year: "",
       semester: "",
       id: "",
+      is_online:"",  //默认不是线上开课
 
       tid: "",
       teaList: [],
@@ -317,6 +325,18 @@ export default {
           label: "提交文件",
         },
       ],
+
+      online_op:[{
+        value:"0",
+        label:'否'
+      },{
+        value:"1",
+        label:'是',
+        children:[{
+          value:"paimai",
+          label:'软件工程拍卖在线实验'
+        }]
+      }],
 
       changeTemp: {},
       timeout: null,
@@ -349,6 +369,10 @@ export default {
     };
   },
   methods: {
+    handleExChange(value) {
+      this.is_online = value[0]
+      console.log(this.is_online)
+      },
     getParams: function () {
       this.courseID = this.$route.query.c_id;
       this.name = this.$route.query.name;
@@ -603,12 +627,14 @@ export default {
         end_time: this.formatDateTime(this.experiment.end_time),
         ex_type: this.experiment.status,
         token: sessionStorage.getItem("token"),
+        is_online: this.is_online
       };
       console.log("新增实验");
       console.log(jsons);
 
       this.axios
-        .post("/api/course/addEx/", JSON.stringify(jsons))
+        //.post("/api/course/addEx/", JSON.stringify(jsons))
+        .post("http://100.67.159.209:5000/course/addEx/", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 301) {
             this.$message("验证过期");

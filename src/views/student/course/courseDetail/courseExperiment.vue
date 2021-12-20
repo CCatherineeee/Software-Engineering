@@ -39,6 +39,12 @@
               v-if="scope.row.type === '提交文件'"
               >上传文件</el-button
             >
+            <el-button type="primary" plain
+              size="small"
+              @click="handleUpload(scope.row)"
+              v-if="scope.row.online === 1"
+              >在线模拟</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -175,6 +181,7 @@ export default {
         });
     },
     getEx() {
+      //"/api/class/showEx/"
       this.axios
         .post(
           "/api/class/showEx/",
