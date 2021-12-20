@@ -6,10 +6,14 @@ import random
 from .redis_captcha import redis_get                                       # 导入验证码模块
 from flask_mail import Message
 from flask import render_template
-from flask import Blueprint
+from flask import Blueprint,request
 from flask_login import current_user
 from dbManage import db
 from flask import jsonify
+from flask_cors import cross_origin
+import json
+
+
 
 email = Blueprint('email', __name__)
 '''
@@ -93,14 +97,19 @@ def send_email(receiver,code,user,usertype):    #这里增加一个标志位！
 输出：0(false)/1(true)
 '''
 @email.route('/users/validateCaptcha',methods=['POST'])  
-def validate_captcha(email,captcha):           # 方法命名规则是：validate_字段名()
-        # 取redis中保存的验证码         s    第一个redis_captcha是新对象，第二个redis_captcha是redis_captcha.py文件
-        redis_captcha = redis_get(email)
-        if not redis_captcha or captcha.lower() != redis_captcha.lower():    # 不区分大小写
-            data = {'status':400,'message':'wrong'}
-        else:
-            data = {'status':200,'message':'true'}
-        return jsonify(data)
+@cross_origin()
+def validate_captcha():          
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    # 取redis中保存的验证码         s    第一个redis_captcha是新对象，第二个redis_captcha是redis_captcha.py文件
+    email = data['email']
+    captcha = data['captcha']
+    redis_captcha = redis_get(email)
+    if not redis_captcha or captcha.lower() != redis_captcha.lower():    # 不区分大小写
+        data = {'status':400,'message':'wrong'}
+    else:
+        data = {'status':200,'message':'true'}
+    return jsonify(data)
 
 
 '''
@@ -109,12 +118,15 @@ def validate_captcha(email,captcha):           # 方法命名规则是：validat
 输出：json
 '''
 @email.route('/users/sendCaptcha',methods=['POST'])  
-def send_captcha(receiver):
+def send_captcha():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    receiver = data['email']
     _user = "1284915396@qq.com"
     _pwd  = "otxvdgxwvvqbiadg"
     _to   = receiver
     captcha = get_random_captcha(4)           # 生成4位验证码
-    content = "您的邮箱验证码为:"+captcha
+    content = "Your verification code is:"+captcha
     subject = "实验管理系统验证！"
     msg = MIMEText(content)   #邮件内容
     
@@ -127,11 +139,11 @@ def send_captcha(receiver):
     s.sendmail(_user, _to, msg.as_string())
     s.quit()
     try:
-        if len(_to)>1:
-            for item in _to:
-                redis_captcha.redis_set(key=item, value=captcha)        # redis中都是键值对类型，存储验证码
-        else:
-            redis_captcha.redis_set(key=_to[0], value=captcha)        # redis中都是键值对类型，存储验证码
+        # if len(_to)>1:
+        #     for item in _to:
+        #         redis_captcha.redis_set(key=item, value=captcha)        # redis中都是键值对类型，存储验证码
+        # else:
+        redis_captcha.redis_set(key=_to, value=captcha)        # redis中都是键值对类型，存储验证码
         status = {'status':200,'message':'Success'}
         return jsonify(status)
     except (smtplib.SMTPException):

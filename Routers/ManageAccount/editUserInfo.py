@@ -5,9 +5,12 @@ import json
 from Model.Model import Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
+from Routers import Role
 import time
 import dbManage
 from flask import current_app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask_cors import cross_origin
 import os
 
 editUserInfoRoute = Blueprint('editUserInfoRoute', __name__)
@@ -189,10 +192,18 @@ def reset_teacher_pwd():
 
 
 @editUserInfoRoute.route('/editInfo/uploadAvatar',methods=['POST'])  
-def upload_student_avatar():
+@cross_origin(supports_credentials=True)
+def upload_avatar():
 
     avatar = request.files['avatar']
-    userID = request.form['s_id']
+    userID = request.form['id']
+    token = request.form['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_role = s.loads(token)['role']
+    except:
+        return False
+
     if avatar is None:
         result = {'code':400,'message':'未成功上传'}
     else:
@@ -205,7 +216,7 @@ def upload_student_avatar():
 
         else:
 
-            if len(userID)==5:  #是老师
+            if token_role==Role.TeacherRole:  #是老师
                 teacher = Teacher.query.filter(Teacher.t_id==userID).first()
                 if teacher:
                     teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
@@ -214,7 +225,7 @@ def upload_student_avatar():
                     result = {'code':200,'message':'上传头像成功','data':None}
                 else:
                     result = {'code':501,'message':'未找到用户','data':None}
-            elif len(userID)==7:  #是学生
+            elif token_role==Role.StudentRole:  #是学生
                     student = Student.query.filter(Student.s_id==userID).first()
                     if student:
                         student.avatar = '{}_{}'.format(userID,fname+ext)

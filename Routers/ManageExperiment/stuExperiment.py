@@ -121,7 +121,7 @@ def showEx():
             else:
                 status = ex.status
             se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex.experiment_id).first()
-            temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status,"type":ex.ex_type}
+            temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status,"type":ex.ex_type,"online":ex.is_online}
             content.append(temp)
         return jsonify({'code':200,'message':"无法访问页面",'data':content})
     

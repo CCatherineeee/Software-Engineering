@@ -13,7 +13,7 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 
 
 # 存储验证码
-def redis_set(key, value, timeout=90):         # timeout=60过期时间60s
+def redis_set(key, value, timeout=180):         # timeout=60过期时间60s
     return r.set(key, value, timeout)
 
 

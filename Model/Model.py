@@ -265,8 +265,9 @@ class Experiment(db.Model):
     end_time = db.Column(db.DateTime)
     weight = db.Column(db.Float)
     ex_type = db.Column(db.String(10))
-    status = db.Column(db.Integer) # 1发布 0 未发布
+    status = db.Column(db.Integer) # 1发布 0 未发布 3 在线提交 4 在线提交+模拟实验 （5 提交文件+模拟实验）
     template_file = db.Column(db.String(100),default = '实验模板.docx')
+    is_online = db.Column(db.Integer,default = 0)  #0 不是线上实验  1 是线上实验
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
