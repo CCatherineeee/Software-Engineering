@@ -1,13 +1,13 @@
 <template>
 
-      <el-container style="margin-top:20px;">
+      <el-container >
         <el-header>
           <el-col :span="16" align="left">{{ auction.auctionName }}</el-col>
           <el-col :span="8" align="right" justify="right">{{ isIn ? '未参加' : '已参加' }}</el-col>
         </el-header>
         <el-container>
           <el-aside>
-            <el-row align="center">意愿竞拍所得表</el-row>
+            <el-row align="center"  style="text-aligh:center;">意愿竞拍所得表</el-row>
             <el-table :data="totalProfitList" border style="width: 100%">
               <el-table-column prop="price" label="价格" width="80px"></el-table-column>
               <el-table-column prop="buyerNum" label="报价者数" width="70px"></el-table-column>
@@ -79,9 +79,20 @@ export default {
     }
   },
   created() {
-    console.log(this.auction)
-
-    this.getAuctionDetail(1)
-  }
+    // console.log(this.auction)
+    window.that = this
+    this.getParams()
+  },
+  methods: {
+      getParams(){
+        const routerParams = this.$route.query;
+        console.log(routerParams);
+        if (routerParams!=null){
+          // this.addData()
+          this.modal=true;
+          this.detail.inspector=routerParams;
+        }
+      },
+      }
 }
 </script>

@@ -21,7 +21,7 @@
         <el-table-column prop="status" label="实验状态" sortable />
         <el-table-column prop="score" label="成绩" sortable />
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" min-width="110%">
           <template slot-scope="scope">
             <el-button size="small" @click="toExperiment(scope.row)"
               >查看</el-button
@@ -41,7 +41,7 @@
             >
             <el-button type="primary" plain
               size="small"
-              @click="handleUpload(scope.row)"
+              @click="goToOnline(scope.row.ex_id)"
               v-if="scope.row.online === 1"
               >在线模拟</el-button
             >
@@ -104,6 +104,16 @@ export default {
     },
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
+    },
+    goToOnline(ex_id){
+      var id=this.sid;
+      this.$router.push({
+        path: '/studentHome/concreteCourse/onlineExp',
+        query:{
+          sid:id,
+          ex_id:ex_id
+        }
+      })
     },
     handlePreview(file) {
       console.log(file);
