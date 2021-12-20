@@ -48,6 +48,7 @@ def addEx():
         end_time = data['end_time']
         weight = float(data['weight'])
         ex_type = data['ex_type']
+        is_online = eval(data['is_online'])
         
         end_time = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         exs = Experiment.query.filter(Experiment.course_id == course_id).all()
@@ -56,7 +57,7 @@ def addEx():
             sw = sw + ex.weight
         if sw + weight > 1:
             return jsonify({'code':501,'message':"权重不合理",'data':None})
-        experiment = Experiment(course_id = course_id, experiment_title = title, experiment_brief = brief, end_time = end_time, status = 0, weight = weight, ex_type = ex_type)
+        experiment = Experiment(course_id = course_id, experiment_title = title, experiment_brief = brief, end_time = end_time, status = 0, weight = weight, ex_type = ex_type, is_online = is_online)
         dbManage.db.session.add(experiment) 
         dbManage.db.session.commit()
 
