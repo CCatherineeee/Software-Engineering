@@ -123,7 +123,7 @@ def download():
     # filename = secure_filename(filename)
 
     response = send_from_directory(path,filename,as_attachment=True)
-    response.headers["Access-Control-Expose-Headers"] = "Content-disposition"  
+    # response.headers["Access-Control-Expose-Headers"] = "Content-disposition"  
     return response
 
 @manageClassFileRoute.route('/manageClassFileRoute/preview/',methods=['POST'])  

@@ -37,7 +37,7 @@ def addSysAnn():
     content = data['content']
     title = data['title']
     token = data['token']
-    res = checkToken(token,Role.TeacherRole)
+    res = checkToken(token,Role.AdminRole)
     if res == 301:
         return jsonify({'code':301,'message':"验证过期"})
     elif res == 404:

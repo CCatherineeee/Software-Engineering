@@ -32,12 +32,19 @@ def createExam():
 
     # 找到班级学生，生产测验小组
     students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
-    while(len(students) >= 3):
+    while(len(students) > 4):
         sg = random.sample(students,3)
         students.remove(sg[0])
         students.remove(sg[1])
         students.remove(sg[2])
         ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = sg[0].s_id,s_id_2 = sg[1].s_id,s_id_3 = sg[2].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 4:
+        ag1 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+        ag2 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[1].s_id,s_id_2 = students[2].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 3:
+        ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id,s_id_3 = students[2].s_id)
         dbManage.db.session.add(ag)
     if len(students) == 2:
         ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
@@ -73,7 +80,7 @@ def getExam():
         else:
             if now_time > e.start_time:
                 e.status = 1
-                pushExam(e.exam_id)
+                pushExam(e.exam_id,class_id)
             else:
                 e.status = 0
         is_submit = None
@@ -89,10 +96,11 @@ def getExam():
         content.append(temp)
     return jsonify({'code':200,'message':"请求成功",'data':{'data':content,'role':token_role}})
 
-def pushExam(exam_id):
+def pushExam(exam_id,class_id):
 
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     exam.status = 1
+
     dbManage.db.session.commit()
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
@@ -101,10 +109,37 @@ def pushExamForce():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     exam_id = data['exam_id']
+    class_id = data['class_id']
+
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     exam.status = 1
     exam.start_time = datetime.datetime.now()
+
+    students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+    while(len(students) > 4):
+        sg = random.sample(students,3)
+        students.remove(sg[0])
+        students.remove(sg[1])
+        students.remove(sg[2])
+        ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = sg[0].s_id,s_id_2 = sg[1].s_id,s_id_3 = sg[2].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 4:
+        ag1 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+        ag2 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[2].s_id,s_id_2 = students[3].s_id)
+        dbManage.db.session.add(ag1)
+        dbManage.db.session.add(ag2)
+    if len(students) == 3:
+        ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id,s_id_3 = students[2].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 2:
+        ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+        dbManage.db.session.add(ag)
+    if len(students) == 1:
+        ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id)
+        dbManage.db.session.add(ag)
+
     dbManage.db.session.commit()
+
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
 def stopExam(exam_id):
@@ -164,6 +199,7 @@ def editExamRime():
     exam_id = data['exam_id']
     start_time = data['start_time']
     end_time = data['end_time']
+    class_id = data['class_id']
 
     end_time = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     start_time = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
@@ -171,6 +207,31 @@ def editExamRime():
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     exam.start_time = start_time
     exam.end_time = end_time
+
+    now_time = datetime.datetime.now()
+    if now_time < end_time:
+        students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+        while(len(students) > 4):
+            sg = random.sample(students,3)
+            students.remove(sg[0])
+            students.remove(sg[1])
+            students.remove(sg[2])
+            ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = sg[0].s_id,s_id_2 = sg[1].s_id,s_id_3 = sg[2].s_id)
+            dbManage.db.session.add(ag)
+        if len(students) == 4:
+            ag1 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+            ag2 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[2].s_id,s_id_2 = students[3].s_id)
+            dbManage.db.session.add(ag1)
+            dbManage.db.session.add(ag2)
+        if len(students) == 3:
+            ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id,s_id_3 = students[2].s_id)
+            dbManage.db.session.add(ag)
+        if len(students) == 2:
+            ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
+            dbManage.db.session.add(ag)
+        if len(students) == 1:
+            ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id)
+            dbManage.db.session.add(ag)
 
     dbManage.db.session.commit()
     return jsonify({'code':200,'message':"添加成功"})

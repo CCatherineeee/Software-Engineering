@@ -9,3 +9,6 @@ SECRET_KEY = '123123'
 AVATAR_UPLOAD_FOLDER = os.getcwd()+'/static/avatar/'
 CLASSFILE_UPLOAD_FOLDER = os.getcwd()+'/static/classFile/'
 EXPERIMENT_UPLOAD_FOLDER = os.getcwd()+'/static/experimentFile/'
+SQLALCHEMY_POOL_RECYCLE = 30
+SQLALCHEMY_POOL_SIZE = 300
+SQLALCHEMY_TRACK_MODIFICATIONS = True
