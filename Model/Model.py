@@ -416,6 +416,18 @@ class StudentGroup(db.Model):
         return '<User %r>' % self.__tablename__
 
 
+class Auction(db.Model):
+    """
+    类描述：学生-小组表，联系表
+    """
+    __tablename__ = 'auction'
+    auction_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    s_id = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
+    experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE')) #实验id
+    good = db.Column(db.Integer,nullable=False) #商品，0代表茶壶，1是背包，2是抱枕
+    price = db.Column(db.Integer,nullable=False) #所出价格
+    role = db.Column(db.Integer,nullable=False) #角色，0是需求者，1是供给者
+
 
 #######################  考试  ####################3333
 
