@@ -6,7 +6,7 @@ from flask import Blueprint
 import json
 
 from flask_login.mixins import AnonymousUserMixin
-from Model.Model import Class, Experiment,StudentClass,Teacher,Student,Auction
+from Model.Model import Class, Course, Experiment,StudentClass,Teacher,Student,Auction
 import dbManage
 from sqlalchemy import and_, or_
 import os
@@ -51,8 +51,8 @@ def addAuctionItem():
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
         stu_list = Auction.query.filter(and_(Auction.s_id==s_id,Auction.experiment_id==ex_id)).all()
-        if len(stu_list)>=3:
-            return jsonify({'code':400,'message':'不能竞价大于3次'})
+        if len(stu_list)>=5:
+            return jsonify({'code':400,'message':'不能竞价大于5次'})
         if role == "需求者":
             _role = 0
         else:
@@ -161,8 +161,24 @@ def getExCount():
         return jsonify({'code':400,'message':"找不到实验",'data':None})
     else:
         auc_list = Auction.query.filter(Auction.experiment_id==ex_id).all()
-        return jsonify({'code':200,'message':"获得供给曲线",'data':len(auc_list)})
+        return jsonify({'code':200,'message':"成功获取",'data':len(auc_list)})
 
+
+#获取拍卖发起人
+@auctionRoute.route('/auction/getStarter',methods=['POST'])  
+def getStarter():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    ex = Experiment.query.filter(Experiment.experiment_id==ex_id).first()
+    if not ex:
+        return jsonify({'code':400,'message':"找不到实验",'data':None})
+    course = Course.query.filter(Course.c_id == ex.course_id).first()
+    teacher = Teacher.query.filter(Teacher.t_id == course.duty_teacher).first()
+    if not teacher:
+        return jsonify({'code':500,'message':"找不到老师",'data':None})
+    return jsonify({'code':200,'message':"成功获取",'data':teacher.name})
+    
 
 def getSpecificItem(ex_id,thisType,role):
         demand_list = Auction.query.filter(and_(Auction.experiment_id==ex_id,Auction.good==thisType,Auction.role==role)).all()
@@ -197,3 +213,60 @@ def getSpecificItem(ex_id,thisType,role):
             yData.append(str(item[1]))
 
         return xRange,yData
+
+@auctionRoute.route('/auction/getProfitTable',methods=['POST'])  
+def getProfitTable():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    ex = Experiment.query.filter(Experiment.experiment_id==ex_id).first()
+    if not ex:
+        return jsonify({'code':400,'message':"找不到实验",'data':None})
+    else:
+        potProfit = getAllProfit(1,ex_id)
+        bagProfit = getAllProfit(2,ex_id)
+        pillowProfit = getAllProfit(3,ex_id)
+
+        result = []
+        for item in [potProfit,bagProfit,pillowProfit]:
+            for it in item:
+                result.append(it)
+
+        return jsonify({'code':200,'message':"获取成功",'data':result})
+
+
+def getAllProfit(type,ex_id):
+    all_list = Auction.query.filter(and_(Auction.experiment_id == ex_id,Auction.good == type,Auction.role==0)).all()
+    price_list = []
+    result = []
+    if type==1:
+        typeName = "茶壶"
+    elif type==2:
+        typeName = "背包"
+    else:
+        typeName = "抱枕"
+    for item in all_list:
+        price_list.append(item.price)
+
+    price_list.sort(key=None, reverse=False) #排序
+
+    count = 1
+    all_sold = len(price_list)
+    if len(price_list)==1:
+        result.append([typeName,price_list[0],1,1,price_list[0]])
+    else:
+        for idx in range(1,len(price_list)):
+            if price_list[idx] == price_list[idx-1]:
+                count += 1
+                continue
+            else:
+                if idx==1:
+                    tp_list = [typeName,price_list[0],1,all_sold,all_sold*price_list[0]]
+                    result.append(tp_list)
+                    all_sold -=1
+                tp_list = [typeName,price_list[idx],count,all_sold,all_sold*price_list[idx-1]]
+                result.append(tp_list)
+                all_sold -=count
+                count = 1
+    return result
+
