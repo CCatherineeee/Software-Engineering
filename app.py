@@ -39,6 +39,7 @@ from Routers.ManageMessage.teacherMessage import teacherMessage
 from Routers.ManageFight.createExam import createFightRoute
 from Routers.ManageFight.getExam import getExamRoute
 from Routers.ManageAccount.myemail.sendEmail import email
+from Routers.ManageExperiment.auction import auctionRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -76,6 +77,7 @@ app.register_blueprint(teacherMessage)
 app.register_blueprint(createFightRoute)
 app.register_blueprint(getExamRoute)
 app.register_blueprint(email)
+app.register_blueprint(auctionRoute)
 
 
 @app.before_first_request
@@ -129,6 +131,7 @@ def create_app():
     app.register_blueprint(TAMessageManage)
     app.register_blueprint(teacherMessage)
     app.register_blueprint(email)
+    app.register_blueprint(auctionRoute)
     
     return app
 

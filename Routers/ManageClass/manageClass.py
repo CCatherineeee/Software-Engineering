@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Course,Class,StudentClass,CourseType,Teacher,Student
+from Model.Model import Course,Class, Experiment,StudentClass,CourseType, StudentExam, StudentExperiment,Teacher,Student
 import dbManage
 from sqlalchemy import and_, or_
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 
 
 manageClassRoute = Blueprint('manageClassRoute', __name__)
@@ -258,3 +258,34 @@ def IDGetClassStudent():
         all_student['data'].append(stu_json)
 
     return {'code':200,'message':"班级不存在",'data':all_student}
+
+#通过班级号获取所有班级内所有学生的所有成绩
+@manageClassRoute.route('/manageClass/GetClassStudentScore',methods=['POST'])  
+def GetClassStudentScore():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id = data['class_id']  #班级号
+    all_student = {"experiment":[],"score":[]}
+    student_list = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+    for student_item in student_list:
+        stu = Student.query.filter(Student.s_id == student_item.s_id).first()
+        stu_json = {"name":stu.name,"id":student_item.s_id}
+        stu_ex_list = StudentExperiment.query.filter(StudentExperiment.s_id == student_item.s_id).all()
+        for ex_item in stu_ex_list:
+            this_ex = Experiment.query.filter(Experiment.experiment_id==ex_item.experiment_id).first()
+            if this_ex.course_id != class_id[:-1]:
+                continue
+            ex_name = "ex_" + str(ex_item.experiment_id)
+            ex_name_json = {"label":this_ex.experiment_title,"key":ex_name}
+            if ex_name_json not in all_student['experiment']:
+                all_student['experiment'].append(ex_name_json)
+            if not ex_item.score:
+                stu_json[ex_name] = 0
+            else:
+                stu_json[ex_name] = ex_item.score
+            
+        all_student['score'].append(stu_json)
+        
+
+    return {'code':200,'message':"成功获取",'data':all_student}
+
