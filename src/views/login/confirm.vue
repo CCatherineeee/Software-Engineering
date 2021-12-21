@@ -53,7 +53,7 @@
         this.axios
             .post(
               //"/api/users/validateCaptcha"
-              "http://100.67.159.209:5000/users/validateCaptcha",
+              "/api/users/validateCaptcha",
               JSON.stringify({
                 email: commitJson.email,
                 captcha: commitJson.captcha

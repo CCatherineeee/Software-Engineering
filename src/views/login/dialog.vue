@@ -115,7 +115,7 @@ export default {
       this.axios
       .post(
         //"/api/users/sendCaptcha"
-        "http://100.67.159.209:5000/users/sendCaptcha",
+        "/api/users/sendCaptcha",
         JSON.stringify({
           email: this.email,
         })

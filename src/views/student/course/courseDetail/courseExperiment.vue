@@ -41,7 +41,7 @@
             >
             <el-button type="primary" plain
               size="small"
-              @click="goToOnline(scope.row.ex_id)"
+              @click="goToOnline(scope.row.ex_id,scope.row.end_time)"
               v-if="scope.row.online === 1"
               >在线模拟</el-button
             >
@@ -105,13 +105,16 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-    goToOnline(ex_id){
+    goToOnline(ex_id,stopTime){
       var id=this.sid;
       this.$router.push({
         path: '/studentHome/concreteCourse/onlineExp',
         query:{
           sid:id,
-          ex_id:ex_id
+          ex_id:ex_id,
+          token:sessionStorage.getItem("token"),
+          stop_time:stopTime
+
         }
       })
     },

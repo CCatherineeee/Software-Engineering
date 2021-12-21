@@ -95,7 +95,7 @@ export default {
       param.append('s_id',sessionStorage.getItem("id"));
       this.axios
         .post(
-          "http://100.67.159.209:5000/getUserInfo/Student/showAvatar", param
+          "/api/getUserInfo/Student/showAvatar", param
         ).then((response) => {
           var address = "http://100.67.159.209:5000";
           var url=response.data.url;
@@ -125,7 +125,7 @@ export default {
       let config = {headers: {'Content-Type': 'multipart/form-data'}}
       this.axios
         .post(
-          "http://100.67.159.209:5000/editInfo/uploadAvatar", param, config
+          "/api/editInfo/uploadAvatar", param, config
         ).then((response) => {
           var msg=response.data.message;
           this.$message(msg);
