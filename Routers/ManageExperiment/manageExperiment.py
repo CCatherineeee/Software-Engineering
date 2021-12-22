@@ -12,6 +12,7 @@ import uuid
 import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
+from flask_cors import cross_origin
 
 
 manageExperimentRoute = Blueprint('manageExperimentRoute', __name__)
@@ -32,6 +33,7 @@ def checkToken(token,role):
 
 
 @manageExperimentRoute.route('/course/addEx/',methods=['POST'])  
+@cross_origin(supports_credentials=True)
 def addEx():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))

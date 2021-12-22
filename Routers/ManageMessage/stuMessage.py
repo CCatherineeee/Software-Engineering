@@ -8,6 +8,7 @@ from sqlalchemy.sql.elements import Null
 from Model.Model import Student,StudentMessage
 import dbManage
 from sqlalchemy import and_, or_,desc
+import datetime
 
 
 
@@ -24,12 +25,15 @@ def addStuMessage():
     s_id = data['s_id']
     title = data['title']
     content = data['content']
+    deadline = data['deadline']
+    deadline = datetime.datetime.strptime(deadline, "%Y-%m-%d %H:%M:%S")
+
 
     student = Student.query.filter(Student.s_id==s_id).first()
     if not student:
         return jsonify({'status':400,'message':'找不到学生'})
 
-    stuMessage = StudentMessage(s_id = s_id,title = title ,content = content)
+    stuMessage = StudentMessage(s_id = s_id,title = title ,content = content, deadline = deadline)
     dbManage.db.session.add(stuMessage)
     dbManage.db.session.commit()
     result = {'status':200,'message':'成功添加'}
@@ -72,7 +76,8 @@ def getStuMessage():
     for item in stuMessage_list:
 
         data = {'stu_message_id':item.stu_message_id,'title':item.title,
-        'content':item.content,'create_time':item.create_time.strftime("%Y-%m-%d %H:%M:%S"),'is_read':item.is_read}
+        'content':item.content,'create_time':item.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'is_read':item.is_read,'deadline':item.deadline.strftime("%Y-%m-%d %H:%M:%S")}
 
         if item.is_read == 0:
             not_read.append(data)

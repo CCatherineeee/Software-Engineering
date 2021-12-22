@@ -8,7 +8,6 @@ from Routers import Role
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import datetime
 import random
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
 
 createFightRoute = Blueprint('createFightRoute', __name__)
@@ -104,7 +103,7 @@ def pushExam(exam_id,class_id):
     dbManage.db.session.commit()
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
-@createFightRoute.route('/pushExam',methods=['POST']) 
+@createFightRoute.route('/pushExamForce',methods=['POST']) 
 def pushExamForce():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
@@ -235,3 +234,20 @@ def editExamRime():
 
     dbManage.db.session.commit()
     return jsonify({'code':200,'message':"添加成功"})
+
+@createFightRoute.route('/exam/examGetStudent',methods=['POST']) 
+def examGetStudent():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    exam_id = data['exam_id']
+    stu_list=[]
+    group_list = ExamGroup.query.filter(ExamGroup.exam_id==exam_id).all()
+    for item in group_list:
+        if(item.s_id_1):
+            stu_list.append({"s_id":item.s_id_1})
+        if(item.s_id_2):
+            stu_list.append({"s_id":item.s_id_2})
+        if(item.s_id_3):
+            stu_list.append({"s_id":item.s_id_3})
+    return jsonify({'code':200,'message':"获取成功",'data':stu_list})
+        

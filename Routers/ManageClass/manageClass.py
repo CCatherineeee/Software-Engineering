@@ -257,7 +257,7 @@ def IDGetClassStudent():
         stu_json = {'s_id':stu.s_id,'name':stu.name}
         all_student['data'].append(stu_json)
 
-    return {'code':200,'message':"班级不存在",'data':all_student}
+    return {'code':200,'message':"获取成功",'data':all_student}
 
 #通过班级号获取所有班级内所有学生的所有成绩
 @manageClassRoute.route('/manageClass/GetClassStudentScore',methods=['POST'])  
@@ -289,3 +289,21 @@ def GetClassStudentScore():
 
     return {'code':200,'message':"成功获取",'data':all_student}
 
+
+#通过课程号获取所有班级
+@manageClassRoute.route('/manageClass/courseGetClass',methods=['POST'])  
+def courseGetClass():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data['course_id']  #课程号
+    course = Course.query.filter(Course.c_id==course_id).first()
+    if not course:
+        return jsonify({'code':400,'message':"课程不存在",'data':None})
+    class_list = Class.query.filter(Class.course_id==course_id).all()
+    result = []
+    for item in class_list:
+        item_json = {"class_id":item.class_id}
+        result.append(item_json)
+
+    return jsonify({'code':200,'message':"获取成功",'data':result})
+    

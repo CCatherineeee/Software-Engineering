@@ -323,6 +323,7 @@ class StudentMessage(db.Model):
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
+    deadline = db.Column(db.DateTime)
 
 class TeacherMessage(db.Model):
     """
@@ -335,7 +336,7 @@ class TeacherMessage(db.Model):
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
-
+    deadline = db.Column(db.DateTime)
 
 class TAMessage(db.Model):
     """
