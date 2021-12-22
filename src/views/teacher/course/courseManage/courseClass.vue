@@ -632,7 +632,7 @@ export default {
       console.log(this.classList[i]["class_id"])
       return this.axios
       //.post("/api/course/addEx/", JSON.stringify(jsons))
-      .post("http://100.66.213.249:5000/manageClass/IDGetClassStudent", JSON.stringify(json3))
+      .post("/api/manageClass/IDGetClassStudent", JSON.stringify(json3))
       .then((response) => {
         if (response.data["code"] === 400) {
           this.$message("班级不存在");
@@ -672,7 +672,7 @@ export default {
 
       return this.axios
         //.post("/api/course/addEx/", JSON.stringify(jsons))
-        .post("http://100.66.213.249:5000/course/addEx/", JSON.stringify(jsons))
+        .post("/api/course/addEx/", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 301) {
             this.$message("验证过期");
@@ -713,7 +713,7 @@ export default {
               };
             this.axios
             //.post("/api/course/addEx/", JSON.stringify(jsons))
-            .post("http://100.66.213.249:5000/message/addStuMessage", JSON.stringify(json4))
+            .post("/api/message/addStuMessage", JSON.stringify(json4))
             .then((response) => {
               if (response.data["code"] === 400) {
                 this.$message("找不到学生");

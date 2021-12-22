@@ -130,7 +130,7 @@ export default {
       await this.pushExam(row);
       await this.examGetStudent(row);
       await this.classGetCourseName();
-      await this.sendStuMessage();
+      await this.sendStuMessage(row);
     },
     examGetStudent(row){
       //获取所有学生
@@ -140,42 +140,43 @@ export default {
       };
       return this.axios
       //.post("/api/course/addEx/", JSON.stringify(jsons))
-      .post("http://100.66.213.249:5000/exam/examGetStudent", JSON.stringify(json))
+      .post("/api/exam/examGetStudent", JSON.stringify(json))
       .then((response) => {
         if (response.data["code"] === 400) {
           this.$message("考试不存在");
         } else {
-          debugger;
           var class_student = response.data["data"];
           //求并集
           console.log(class_student);
-          for(var t=0;t<class_student.data.length;t++)
+          for(var t=0;t<class_student.length;t++)
           {
-            this.stu_list.push(class_student.data[t]);
+            this.stu_list.push(class_student[t]);
           }
     
         }
       });
     },
-        sendStuMessage(){
+        sendStuMessage(row){
+          debugger;
           //在这里添加，获取所有学生还要再写一个接口！！
-          var end_time = this.edit_end_time;
+          var end_time = this.getDate(row.end_time);
+          var date = this.formatDateTime(end_time)
           console.log(end_time);
           if(this.addSuccess == true)
           {
             debugger;
             for(var i=0;i<this.stu_list.length;i++){
               var content = this.courseName+"已发布考试"+",请在"
-              +this.formatDateTime(this.edit_end_time)+"前完成";
+              +row.end_time+"前完成";
               var json4 = {
                 s_id:this.stu_list[i]["s_id"],
                 title:this.courseName+"已新增考试",
                 content:content,
-                deadline:this.formatDateTime(this.edit_end_time),
+                deadline:date,
               };
             this.axios
             //.post("/api/course/addEx/", JSON.stringify(jsons))
-            .post("http://100.66.213.249:5000/message/addStuMessage", JSON.stringify(json4))
+            .post("/api/message/addStuMessage", JSON.stringify(json4))
             .then((response) => {
               if (response.data["code"] === 400) {
                 this.$message("找不到学生");
@@ -192,7 +193,7 @@ export default {
       }
       return this.axios
       //.post("/api/course/addEx/", JSON.stringify(jsons))
-      .post("http://100.66.213.249:5000/manageClass/IDGetClass", JSON.stringify(json))
+      .post("/api/manageClass/IDGetClass", JSON.stringify(json))
       .then((response) => {
         if (response.data["code"] === 500) {
           this.$message("班级不存在");
@@ -258,6 +259,14 @@ export default {
         this.edit_end_time = null
         this.edit_exam_id = null
       })
+    },
+    getDate(strDate){
+          if (strDate) { 
+          var arr1 = strDate.split(" "); 
+          var sdate = arr1[0].split('-'); 
+          var date = new Date(sdate[0], sdate[1]-1, sdate[2]); 
+          return date;
+          } 
     },
     formatDateTime(date) {
       //时间戳转换

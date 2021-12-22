@@ -217,7 +217,7 @@ export default {
         role: this.role
       };
       this.axios
-        .post("http://100.67.159.209:5000/auction/addAuctionItem", JSON.stringify(jsons))
+        .post("/api/auction/addAuctionItem", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
           if (response.data["code"] === 301) {
@@ -243,7 +243,7 @@ export default {
         ex_id: this.ex_id,
       };
       this.axios
-        .post("http://100.67.159.209:5000/auction/getDemand", JSON.stringify(jsons))
+        .post("/api/auction/getDemand", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
           if (response.data["code"] === 400) {
@@ -267,7 +267,7 @@ export default {
         ex_id: this.ex_id,
       };
       this.axios
-        .post("http://100.67.159.209:5000/auction/getProvide", JSON.stringify(jsons))
+        .post("/api/auction/getProvide", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 400) {
             this.$message("找不到该实验");
@@ -295,7 +295,7 @@ export default {
         ex_id: this.ex_id,
       };
       this.axios
-        .post("http://100.67.159.209:5000/auction/getAuctionRole", JSON.stringify(jsons))
+        .post("/api/auction/getAuctionRole", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 301) {
             this.$message("验证过期");
@@ -618,7 +618,7 @@ export default {
       };
       this.totalProfitList= []
       this.axios
-        .post("http://100.67.159.209:5000/auction/getProfitTable", JSON.stringify(jsons))
+        .post("/api/auction/getProfitTable", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 400) {
             this.$message("找不到该实验");
@@ -648,7 +648,7 @@ export default {
       };
 
       this.axios
-        .post("http://100.67.159.209:5000/auction/getExCount", JSON.stringify(jsons))
+        .post("/api/auction/getExCount", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 400) {
             this.$message("找不到该实验");
@@ -668,7 +668,7 @@ export default {
       };
       this.totalProfitList= []
       this.axios
-        .post("http://100.67.159.209:5000/auction/getStarter", JSON.stringify(jsons))
+        .post("/api/auction/getStarter", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 400) {
             this.$message("找不到该实验");
