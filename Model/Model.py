@@ -10,6 +10,7 @@ from flask_login import UserMixin
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
+
 """
  
  Tables
@@ -80,8 +81,6 @@ class Student(UserMixin,db.Model):
         self.is_active = 1
         db.session.add(self)
         return True
-
-
 
 class Teacher(UserMixin,db.Model):
     """
@@ -264,8 +263,8 @@ class Experiment(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     end_time = db.Column(db.DateTime)
     weight = db.Column(db.Float)
-    ex_type = db.Column(db.String(10))
-    status = db.Column(db.Integer) # 1发布 0 未发布 3 在线提交 4 在线提交+模拟实验 （5 提交文件+模拟实验）
+    ex_type = db.Column(db.String(10))# 1 在线提交 2 在线提交+模拟实验 （3 提交文件+模拟实验）
+    status = db.Column(db.Integer) # 1发布 0 未发布 
     template_file = db.Column(db.String(100),default = '实验模板.docx')
     is_online = db.Column(db.Integer,default = 0)  #0 不是线上实验  1 是线上实验
 
@@ -338,6 +337,7 @@ class TeacherMessage(db.Model):
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
     deadline = db.Column(db.DateTime)
 
+
 class TAMessage(db.Model):
     """
     类描述：助教信息表，主码自增
@@ -349,6 +349,7 @@ class TAMessage(db.Model):
     content = db.Column(db.String(300)) 
     create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     is_read = db.Column(db.Integer,default = 0) #标志是否已读，默认为0：不是
+    deadline = db.Column(db.DateTime)
 
 
 
@@ -362,7 +363,7 @@ class StudentExperiment(db.Model):
     file_url = db.Column(db.String(1024))
     score = db.Column(db.Integer)
     grader = db.Column(db.String(64))  #批改人姓名，不是ID
-    submitTime = db.Column(db.DateTime,onupdate=datetime.datetime.now())
+    submitTime = db.Column(db.DateTime)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 

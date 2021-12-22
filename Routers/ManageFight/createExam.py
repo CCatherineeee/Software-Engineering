@@ -254,4 +254,21 @@ def examGetStudent():
         if(item.s_id_3):
             stu_list.append({"s_id":item.s_id_3})
     return jsonify({'code':200,'message':"获取成功",'data':stu_list})
+
+@createFightRoute.route('/delExam',methods=['POST']) 
+def delExam():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    exam_id = data['exam_id']
+    token = data['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return jsonify({'code':500,'message':"请求失败",'data':{'data':None,'role':None}})
+    exam = Exam.query.filter(Exam.exam_id == exam_id).first()
+    dbManage.db.session.delete(exam)
+    return jsonify({'code':200,'message':"删除成功"})
         
