@@ -33,7 +33,7 @@
       <template #default="scope">
         <div v-if="scope.row.status==='未开放'">
           <el-button type="primary" @click="editExamTime(scope.row)">修改</el-button>
-          <el-button type="primary" @click="pushExam(scope.row)">开放</el-button>
+          <el-button type="primary" @click="pushExamSendMsg(scope.row)">开放</el-button>
           <el-button type="primary" @click="lookExam(scope.row)">查看</el-button>
         </div>
         <div v-if="scope.row.status==='进行中'">
@@ -43,7 +43,7 @@
         </div>
         <div v-if="scope.row.status==='已截止'">
           <el-button type="primary" @click="editExamTime(scope.row)">修改</el-button>
-          <el-button type="primary" @click="pushExam(scope.row)">开放</el-button>
+          <el-button type="primary" @click="pushExamSendMsg(scope.row)">开放</el-button>
           <el-button type="primary" @click="lookExam(scope.row)">查看</el-button>
 
         </div>
@@ -80,10 +80,13 @@ export default {
     return{
       examList:[],
       class_id :"",
+      courseName:"",
       dialogVisible : false,
       edit_start_time : null,
       edit_end_time : null,
-      edit_exam_id : null
+      edit_exam_id : null,
+      stu_list:[],
+      addSuccess:false,
     }
   },
   methods: {
@@ -123,14 +126,95 @@ export default {
     getParams(){
       this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))["class_id"];
     },
+    async pushExamSendMsg(row){
+      await this.pushExam(row);
+      await this.examGetStudent(row);
+      await this.classGetCourseName();
+      await this.sendStuMessage();
+    },
+    examGetStudent(row){
+      //获取所有学生
+      var exam_id = row.exam_id;
+      var json = {
+        exam_id:exam_id
+      };
+      return this.axios
+      //.post("/api/course/addEx/", JSON.stringify(jsons))
+      .post("http://100.66.213.249:5000/exam/examGetStudent", JSON.stringify(json))
+      .then((response) => {
+        if (response.data["code"] === 400) {
+          this.$message("考试不存在");
+        } else {
+          debugger;
+          var class_student = response.data["data"];
+          //求并集
+          console.log(class_student);
+          for(var t=0;t<class_student.data.length;t++)
+          {
+            this.stu_list.push(class_student.data[t]);
+          }
+    
+        }
+      });
+    },
+        sendStuMessage(){
+          //在这里添加，获取所有学生还要再写一个接口！！
+          var end_time = this.edit_end_time;
+          console.log(end_time);
+          if(this.addSuccess == true)
+          {
+            debugger;
+            for(var i=0;i<this.stu_list.length;i++){
+              var content = this.courseName+"已发布考试"+",请在"
+              +this.formatDateTime(this.edit_end_time)+"前完成";
+              var json4 = {
+                s_id:this.stu_list[i]["s_id"],
+                title:this.courseName+"已新增考试",
+                content:content,
+                deadline:this.formatDateTime(this.edit_end_time),
+              };
+            this.axios
+            //.post("/api/course/addEx/", JSON.stringify(jsons))
+            .post("http://100.66.213.249:5000/message/addStuMessage", JSON.stringify(json4))
+            .then((response) => {
+              if (response.data["code"] === 400) {
+                this.$message("找不到学生");
+              } else {
+                console.log(response.data["message"]);
+              }
+            });
+            }
+          }
+    },
+    classGetCourseName(){
+      var json = {
+        class_id:this.class_id
+      }
+      return this.axios
+      //.post("/api/course/addEx/", JSON.stringify(jsons))
+      .post("http://100.66.213.249:5000/manageClass/IDGetClass", JSON.stringify(json))
+      .then((response) => {
+        if (response.data["code"] === 500) {
+          this.$message("班级不存在");
+        } else {
+          var course = response.data["data"];
+          //求并集
+          console.log(course);
+          this.courseName = course.course_name;
+    
+        }
+      });
+    },
     pushExam(row){
+      this.addSuccess = false;
       this.axios.post("/api/pushExamForce",JSON.stringify({
         exam_id : row.exam_id,
         class_id : this.class_id
       })).then((res)=>{
         console.log(res)
         if(res.data.code === 200){
-          this.getExamList()
+          this.getExamList();
+          this.addSuccess = true;
         }
       })
     },

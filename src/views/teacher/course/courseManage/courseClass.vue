@@ -254,7 +254,7 @@
 
           <div slot="footer" class="dialog-footer">
             <el-button @click="exDialog = false">取消</el-button>
-            <el-button type="primary" @click="addEx()">确定</el-button>
+            <el-button type="primary" @click="addExSendMsg()">确定</el-button>
           </div>
         </el-dialog>
 
@@ -285,6 +285,7 @@
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
   data() {
     return {
@@ -301,12 +302,14 @@ export default {
       semester: "",
       id: "",
       is_online:"",  //默认不是线上开课
+      addSuccess:false,
 
       tid: "",
       teaList: [],
       classList: [],
       experList: [],
       fileList: [],
+      stu_list:[],
       experiment: {
         courseID: "",
         title: "",
@@ -461,6 +464,7 @@ export default {
       this.classDialog = true;
     },
     handleAddEx() {
+      this.experiment={};
       this.exDialog = true;
     },
     handleDeleteClass(row) {
@@ -618,9 +622,43 @@ export default {
           console.log(error);
         });
     },
+
+    classGetStudent(){
+      //获取所有学生
+      for(var i=0;i<this.classList.length;i++){
+      var json3 = {
+        class_id:this.classList[i]["class_id"]
+      };
+      console.log(this.classList[i]["class_id"])
+      return this.axios
+      //.post("/api/course/addEx/", JSON.stringify(jsons))
+      .post("http://100.66.213.249:5000/manageClass/IDGetClassStudent", JSON.stringify(json3))
+      .then((response) => {
+        if (response.data["code"] === 400) {
+          this.$message("班级不存在");
+        } else {
+          var class_student = response.data["data"];
+          //求并集
+          console.log(class_student);
+          for(var t=0;t<class_student.data.length;t++)
+          {
+            this.stu_list.push(class_student.data[t]);
+          }
+    
+        }
+      });
+      }
+    },
+    async addExSendMsg(){
+      await this.addEx();
+      await this.classGetStudent();
+      await this.sendStuMessage();
+    },
     addEx() {
+      this.addSuccess = false;
+
       var jsons = {
-        courseID: this.experiment.courseID,
+        courseID: this.courseID,
         title: this.experiment.title,
         brief: this.experiment.brief,
         weight: this.experiment.weight,
@@ -632,9 +670,9 @@ export default {
       console.log("新增实验");
       console.log(jsons);
 
-      this.axios
+      return this.axios
         //.post("/api/course/addEx/", JSON.stringify(jsons))
-        .post("http://100.67.159.209:5000/course/addEx/", JSON.stringify(jsons))
+        .post("http://100.66.213.249:5000/course/addEx/", JSON.stringify(jsons))
         .then((response) => {
           if (response.data["code"] === 301) {
             this.$message("验证过期");
@@ -647,12 +685,44 @@ export default {
               this.$message("权重不合理！");
             } else {
               this.$message("添加成功！");
+              this.addSuccess = true;
               this.exDialog = false;
-              this.experiment = {};
               this.getExperiment();
+
+              //这里给所有学生发信息,先获取所有班级
             }
           }
         });
+  
+    },
+    sendStuMessage(){
+          //在这里添加，获取所有学生还要再写一个接口！！
+
+          var end_time = this.experiment.end_time;
+          console.log(end_time);
+          if(this.addSuccess == true)
+          {
+            for(var i=0;i<this.stu_list.length;i++){
+              var content = this.name+"已发布实验"+this.experiment.title+",成绩占比"+this.experiment.weight+",请在"
+              +this.formatDateTime(this.experiment.end_time)+"前完成";
+              var json4 = {
+                s_id:this.stu_list[i]["s_id"],
+                title:"实验——"+this.experiment.title+"已新增",
+                content:content,
+                deadline:this.formatDateTime(this.experiment.end_time),
+              };
+            this.axios
+            //.post("/api/course/addEx/", JSON.stringify(jsons))
+            .post("http://100.66.213.249:5000/message/addStuMessage", JSON.stringify(json4))
+            .then((response) => {
+              if (response.data["code"] === 400) {
+                this.$message("找不到学生");
+              } else {
+                console.log(response.data["message"]);
+              }
+            });
+            }
+          }
     },
     deleteEx(item) {
       var jsons = {
