@@ -99,7 +99,7 @@ export default {
       times:null,
       starter:null,
       total: 0,
-      pagesize:20,
+      pagesize:8,
       currentPage:1,
       types:[{
         value:1,
@@ -684,6 +684,9 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    current_change(current){
+      this.currentPage=current;
     },
       }
 }

@@ -124,10 +124,10 @@ export default {
   this.getAllScore();
   setTimeout(() => {
       _this.initChart()
-    },700)
+    },760)
   setTimeout(() => {
       _this.getNowScore()
-    },600)
+    },760)
   }
 };
 </script>
