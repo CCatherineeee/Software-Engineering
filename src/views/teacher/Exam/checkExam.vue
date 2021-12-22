@@ -157,14 +157,12 @@ export default {
       });
     },
         sendStuMessage(row){
-          debugger;
           //在这里添加，获取所有学生还要再写一个接口！！
           var end_time = this.getDate(row.end_time);
           var date = this.formatDateTime(end_time)
           console.log(end_time);
           if(this.addSuccess == true)
           {
-            debugger;
             for(var i=0;i<this.stu_list.length;i++){
               var content = this.courseName+"已发布考试"+",请在"
               +row.end_time+"前完成";
