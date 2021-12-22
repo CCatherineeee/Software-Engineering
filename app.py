@@ -40,6 +40,7 @@ from Routers.ManageFight.createExam import createFightRoute
 from Routers.ManageFight.getExam import getExamRoute
 from Routers.ManageAccount.myemail.sendEmail import email
 from Routers.ManageExperiment.auction import auctionRoute
+from Routers.ManageClass.manageClassExper import manageExperRoute
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -78,6 +79,7 @@ app.register_blueprint(createFightRoute)
 app.register_blueprint(getExamRoute)
 app.register_blueprint(email)
 app.register_blueprint(auctionRoute)
+app.register_blueprint(manageExperRoute)
 
 
 @app.before_first_request
