@@ -4,7 +4,7 @@ from flask.globals import current_app
 from flask_cors import CORS
 from flask import Blueprint
 import json
-from Model.Model import Class,StudentClass,Teacher,Student,TeachingAssistant,TAClass, Experiment,StudentExperiment
+from Model.Model import Class,StudentClass,Teacher,Student,TeachingAssistant,TAClass, Experiment,StudentExperiment,Course
 import dbManage
 from sqlalchemy import and_, or_
 import os
@@ -140,4 +140,34 @@ def downloadExTemplate():
     template_name = ex.template_file
     return send_from_directory(experiment_path,template_name,as_attachment=True)
     #return jsonify({'tempUrl':template_url})
+
+@studentExperimentRoute.route('/Ex/getClassAllScore',methods=['POST'])  
+def getClassAllScore():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    class_id = data['class_id']
+    s_id = data["s_id"]
+    course_id = class_id[:-1]
+    this_course = Course.query.filter(Course.c_id==course_id).first()
+    if not this_course:
+        return jsonify({'status':400,'message':"该课程不存在"})
+
+    ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()
+    result = []
+    for item in ex_list:
+        stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+        #学生有这个实验
+        if stu_ex_item:
+            if not stu_ex_item.score:
+                score = 0
+            else:
+                score = stu_ex_item.score
+            last_score = item.weight*score
+            result_item = {"name":item.experiment_title,"value":last_score}
+            result.append(result_item)
+    
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+    
+
 

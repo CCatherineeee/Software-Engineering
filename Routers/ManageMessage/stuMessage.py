@@ -73,18 +73,20 @@ def getStuMessage():
     stuMessage_list = StudentMessage.query.filter(StudentMessage.s_id==s_id).order_by(desc('create_time')).all()
     read = []
     not_read = []  #优先未读，然后已读
+    i = 0
     for item in stuMessage_list:
 
         data = {'stu_message_id':item.stu_message_id,'title':item.title,
         'content':item.content,'create_time':item.create_time.strftime("%Y-%m-%d %H:%M:%S"),
-        'is_read':item.is_read,'deadline':item.deadline.strftime("%Y-%m-%d %H:%M:%S")}
+        'is_read':item.is_read,'deadline':item.deadline.strftime("%Y-%m-%d %H:%M:%S"),'seq':str(i)}
 
         if item.is_read == 0:
             not_read.append(data)
 
         else:
             read.append(data)
-
+        i+=1
+        
     result["not_read"] = not_read
     result["read"] = read
     return jsonify(result)
