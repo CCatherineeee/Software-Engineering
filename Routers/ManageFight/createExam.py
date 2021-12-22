@@ -40,8 +40,9 @@ def createExam():
         dbManage.db.session.add(ag)
     if len(students) == 4:
         ag1 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id)
-        ag2 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[1].s_id,s_id_2 = students[2].s_id)
-        dbManage.db.session.add(ag)
+        ag2 = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[2].s_id,s_id_2 = students[3].s_id)
+        dbManage.db.session.add(ag1)
+        dbManage.db.session.add(ag2)
     if len(students) == 3:
         ag = ExamGroup(exam_id = exam.exam_id,s_id_1 = students[0].s_id,s_id_2 = students[1].s_id,s_id_3 = students[2].s_id)
         dbManage.db.session.add(ag)
@@ -241,6 +242,9 @@ def examGetStudent():
     data = json.loads(data.decode("utf-8"))
     exam_id = data['exam_id']
     stu_list=[]
+    this_exam = Exam.query.filter(Exam.exam_id==exam_id).first()
+    if not this_exam:
+        return jsonify({'code':400,'message':"考试不存在",'data':None})
     group_list = ExamGroup.query.filter(ExamGroup.exam_id==exam_id).all()
     for item in group_list:
         if(item.s_id_1):
