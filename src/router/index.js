@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import StudentHome from '../views/student/studentHome.vue'
 import AdminHome from '../views/admin/adminHome'
 import TeacherHome from '../views/teacher/teacherHome.vue'
+import AssistHome from '../views/assist/assistHome.vue'
 
 import Login from '../views/login/Login.vue'
 import AdminLogin from '../views/login/AdminLogin.vue'
@@ -12,12 +13,17 @@ import Register from '../views/login/Register.vue'
 
 import StuConcreteCourse from '../views/student/course/concreteCourse.vue'
 import TeaConcreteCourse from '../views/teacher/course/concreteCourse.vue'
-
+import AssistConcreteCourse from '../views/assist/course/concreteCourse.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import('../views/test.vue')
+  },
   {
     path: '/login',
     name: 'Login',
@@ -133,6 +139,7 @@ const routes = [
           { path: '/teacherHome/concreteCourse/Ann', component: () => import('../views/teacher/course/courseDetail/courseAnnounce.vue') },
           { path: '/teacherHome/concreteCourse/Peo', component: () => import('../views/teacher/course/courseDetail/coursePeople.vue') },
           { path: '/teacherHome/concreteCourse/Perform', component: () => import('../views/teacher/course/courseDetail/coursePerformance.vue') },
+          { path: '/teacherHome/concreteCourse/Score', component: () => import('../views/teacher/course/courseDetail/courseScore.vue') },
           { path: '/teacherHome/concreteCourse/File', component: () => import('../views/teacher/course/courseDetail/courseFile.vue') },
           { path: '/teacherHome/concreteCourse/Exper', component: () => import('../views/teacher/course/courseDetail/courseExperiment.vue') },
 
@@ -143,6 +150,7 @@ const routes = [
             path: '/teacherHome/concreteCourse/examHome', component: () => import('../views/teacher/Exam/examHome.vue'), children: [
               { path: '/teacherHome/concreteCourse/examHome/checkExam', component: () => import('../views/teacher/Exam/checkExam.vue') },
               { path: '/teacherHome/concreteCourse/examHome/addExam', component: () => import('../views/teacher/Exam/AddExam.vue') },
+              { path: '/teacherHome/concreteCourse/examHome/analysisExam', component: () => import('../views/teacher/Exam/AnalysisExam.vue') },
             ]
           },
           { path: '/teacherHome/concreteCourse/exam', component: () => import('../views/teacher/Exam/checkQuestion.vue') }
@@ -150,6 +158,37 @@ const routes = [
         ]
       },
       { path: '/teacherHome/accounce', component: () => import('../views/announce/announce.vue') },
+    ]
+  },
+
+  {
+    //助教界面
+    path: '/assistHome',
+    name: 'AssistHome',
+    component: AssistHome,
+    children: [
+      { path: '/assistHome/control', component: () => import('../views/assist/Control') },
+      //账户
+      { path: '/assistHome/account', component: () => import('../views/assist/account/account.vue') },
+      { path: '/assistHome/modifyAccount', component: () => import('../views/assist/account/modifyAccount.vue') },
+      { path: '/assistHome/modifyPassword', component: () => import('../views/assist/account/passwordModify.vue') },
+
+      //课程
+      { path: '/assistHome/myClass', component: () => import('../views/assist/course/myClass.vue') },
+      {
+        path: '/assistHome/concreteCourse', component: AssistConcreteCourse, children: [
+          { path: '/assistHome/concreteCourse/Ann', component: () => import('../views/assist/course/courseDetail/courseAnnounce.vue') },
+          { path: '/assistHome/concreteCourse/Exper', component: () => import('../views/assist/course/courseDetail/courseExperiment.vue') },
+          { path: '/assistHome/concreteCourse/ConExper', component: () => import('../views/assist/course/experiment/experiment.vue') },
+          { path: '/assistHome/concreteCourse/stuExperList', component: () => import('../views/assist/course/experiment/stuExperList.vue') },
+          { path: '/assistHome/concreteCourse/stuExper', component: () => import('../views/assist/course/experiment/stuExper.vue') },
+          { path: '/assistHome/concreteCourse/Score', component: () => import('../views/assist/course/courseDetail/courseScore.vue') },
+          { path: '/assistHome/concreteCourse/Peo', component: () => import('../views/assist/course/courseDetail/coursePeople.vue') },
+          { path: '/assistHome/concreteCourse/File', component: () => import('../views/assist/course/courseDetail/courseFile.vue') },
+
+        ]
+      },
+      { path: '/assistHome/accounce', component: () => import('../views/announce/announce.vue') },
     ]
   },
 

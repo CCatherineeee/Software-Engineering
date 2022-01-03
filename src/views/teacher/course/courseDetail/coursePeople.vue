@@ -1,59 +1,30 @@
 <template>
   <div>
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="所有人" name="first">
-        <el-row>
-          <el-col :span="3">
-            <v-btn dark @click="handleDetailS">手动添加学生</v-btn></el-col
-          >
-          <el-col :span="3" :offset="1"
-            ><v-btn dark @click="handleExcelS">表格导入学生</v-btn></el-col
-          ><el-col :span="5" :offset="7">
-            <v-text-field
-              v-model="assist"
-              filled
-              label="助教"
-              type="text"
-              :readonly="true"
-            ></v-text-field
-          ></el-col>
-          <el-col :span="3" :offset="2"
-            ><v-btn @click="handleAssist" dark color="cyan"
-              >设置助教</v-btn
-            ></el-col
-          ></el-row
-        >
+    <el-row>
+      <el-col :span="3">
+        <v-btn dark @click="handleDetailS">手动添加学生</v-btn></el-col
+      >
+      <el-col :span="3" :offset="1"
+        ><v-btn dark @click="handleExcelS">表格导入学生</v-btn></el-col
+      ><el-col :span="5" :offset="7">
+        <v-text-field
+          v-model="assist"
+          filled
+          label="助教"
+          type="text"
+          :readonly="true"
+        ></v-text-field
+      ></el-col>
+      <el-col :span="3" :offset="2"
+        ><v-btn @click="handleAssist" dark color="cyan">设置助教</v-btn></el-col
+      ></el-row
+    >
 
-        <el-table :data="studentData" style="width: 100%">
-          <el-table-column prop="s_id" label="学号" sortable />
-          <el-table-column prop="name" label="姓名" sortable />
-        </el-table>
-      </el-tab-pane>
+    <el-table :data="studentData" style="width: 100%">
+      <el-table-column prop="s_id" label="学号" sortable />
+      <el-table-column prop="name" label="姓名" sortable />
+    </el-table>
 
-      <el-tab-pane label="小组" name="second">
-        <el-row>
-          <el-col :span="3">
-            <v-btn dark @click="handleDetailG">手动添加小组</v-btn></el-col
-          >
-          <el-col :span="3" :offset="1"
-            ><v-btn dark @click="handleExcelT">表格导入小组</v-btn></el-col
-          ></el-row
-        >
-
-        <v-expansion-panels focusable style="margin-top: 20px">
-          <v-expansion-panel v-for="(data, index) in groupData" :key="index">
-            <v-expansion-panel-header>
-              {{ data.leader }}
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div v-for="(data, index) in data.member" :key="index">
-                {{ data.name }}
-              </div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </el-tab-pane>
-    </el-tabs>
     <el-dialog :visible.sync="dialogFormVisibleS" title="请输入学生信息" center>
       <el-form
         :model="formS"
@@ -450,8 +421,8 @@ export default {
 
     getParams: function () {
       this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-          "class_id"
-          ];
+        "class_id"
+      ];
     },
   },
   mounted() {

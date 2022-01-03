@@ -40,7 +40,6 @@
       :total="tableData.length"
     >
     </el-pagination>
-
   </div>
 </template>
 
@@ -68,37 +67,37 @@ export default {
     },
     handleCheck(row) {
       this.axios
-          .post(
-              "/api/manageClassFileRoute/download/",
-              JSON.stringify({
-                id: row.id,
-                class_id: this.class_id,
-                token: sessionStorage.getItem("token"),
-              }),
-              {
-                responseType: 'blob',
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-          )
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+        .post(
+          "/api/manageClassFileRoute/download/",
+          JSON.stringify({
+            id: row.id,
+            class_id: this.class_id,
+            token: sessionStorage.getItem("token"),
+          }),
+          {
+            responseType: "blob",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
-              const blob = new Blob([response.data], {
-                type: "application/pdf",
-              });
-              var href = window.URL.createObjectURL(blob);
-              window.open(href)
-            }
-          });
+            const blob = new Blob([response.data], {
+              type: "application/pdf",
+            });
+            var href = window.URL.createObjectURL(blob);
+            window.open(href);
+          }
+        });
     },
     handleDown(row) {
       this.axios
@@ -110,7 +109,7 @@ export default {
             token: sessionStorage.getItem("token"),
           }),
           {
-            responseType: 'blob'
+            responseType: "blob",
           }
         )
         .then((response) => {

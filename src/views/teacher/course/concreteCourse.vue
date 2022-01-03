@@ -14,6 +14,9 @@
           <el-menu-item index="/teacherHome/concreteCourse/Perform">
             <span slot="title">成绩</span>
           </el-menu-item>
+          <el-menu-item index="/teacherHome/concreteCourse/Score">
+            <span slot="title">批改</span>
+          </el-menu-item>
           <el-menu-item index="/teacherHome/concreteCourse/Peo">
             <span slot="title">人员</span>
           </el-menu-item>
@@ -97,9 +100,7 @@ export default {
       this.$router.push({
         path: index,
         query: {
-          info: this.$Base64.encode(
-              JSON.stringify({ class_id: this.c_id })
-          ),
+          info: this.$Base64.encode(JSON.stringify({ class_id: this.c_id })),
         },
       });
     },

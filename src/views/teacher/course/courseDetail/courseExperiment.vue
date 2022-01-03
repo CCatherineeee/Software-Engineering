@@ -2,18 +2,7 @@
 <template>
   <div>
     <el-card>
-      <el-row>
-        <el-col :span="3">
-          <v-btn
-            color="orange lighten-2"
-            dark
-            @click="handleFile"
-            style="margin-bottom: 10px"
-          >
-            pdf导入实验模板
-          </v-btn></el-col
-        >
-      </el-row>
+      
       <el-table
         ref="filterTable"
         row-key="deadline"

@@ -1,5 +1,11 @@
 <template>
-  <v-container style="background-color: #eff0f1; box-shadow: -5px -5px 10px 5px darkgrey;border-radius: 10px">
+  <v-container
+    style="
+      background-color: #eff0f1;
+      box-shadow: -5px -5px 10px 5px darkgrey;
+      border-radius: 10px;
+    "
+  >
     <v-row>
       <v-col cols="12" md="6">
         <br />
@@ -8,18 +14,17 @@
         <br />
         <br />
       </v-col>
-
     </v-row>
-      <h3>合作人员</h3>
-      <v-col cols="12" md="6">
-        <el-input
-          filled
-          label="合作人员"
-          auto-grow
-          height="20px"
-          value=""
-        ></el-input>
-      </v-col>
+    <h3>合作人员</h3>
+    <v-col cols="12" md="6">
+      <el-input
+        filled
+        label="合作人员"
+        auto-grow
+        height="20px"
+        value=""
+      ></el-input>
+    </v-col>
     <br />
     <br />
     <br />

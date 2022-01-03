@@ -34,11 +34,17 @@
         <el-descriptions-item label="实验名称">{{
           ex_info.title
         }}</el-descriptions-item>
+        <el-descriptions-item label="开始日期">{{
+          ex_info.create_time
+        }}</el-descriptions-item>
         <el-descriptions-item label="截止日期">{{
           ex_info.end_time
         }}</el-descriptions-item>
         <el-descriptions-item label="实验权重" :span="2">{{
           ex_info.weight
+        }}</el-descriptions-item>
+        <el-descriptions-item label="实验状态">{{
+          ex_info.status
         }}</el-descriptions-item>
 
         <el-descriptions-item label="实验简介">{{

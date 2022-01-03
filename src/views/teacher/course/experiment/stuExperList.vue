@@ -2,22 +2,6 @@
 <template>
   <div>
     <el-card>
-      <v-btn
-        color="orange lighten-2"
-        dark
-        @click="releaseGrade"
-        style="margin-bottom: 10px; margin-right: 10px"
-      >
-        发布成绩
-      </v-btn>
-      <v-btn
-        color="orange lighten-2"
-        dark
-        @click="downloadSelect"
-        style="margin-bottom: 10px"
-      >
-        批量下载
-      </v-btn>
       <el-table
         ref="filterTable"
         @selection-change="handleSelectionChange"

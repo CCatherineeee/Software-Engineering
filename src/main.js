@@ -20,6 +20,10 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+Vue.use(codemirror)
+
 
 
 
@@ -33,6 +37,7 @@ Vue.use(VueQuillEditor)
 
 Vue.config.productionTip = false
 Vue.prototype.$Base64 = Base64;
+
 
 new Vue({
   router,

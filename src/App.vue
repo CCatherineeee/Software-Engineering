@@ -9,6 +9,8 @@
       <router-link to="/studentHome/account">Stuent-Home</router-link> |
       <router-link to="/teacherHome">Teacher-Home</router-link> |
       <router-link to="/adminHome">Admin-Home</router-link> |
+      <router-link to="/assistHome">assist-Home</router-link> |
+      <router-link to="/test">在线编译器test</router-link> |
       <router-link to="/login">Login-test</router-link>
     </div>
     <router-view />
@@ -25,8 +27,14 @@
 
 #nav {
   padding: 30px;
-  background:
-  -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8AB9EB), color-stop(40%,#5C9DDC), color-stop(100%,#2374C5));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, #8ab9eb),
+    color-stop(40%, #5c9ddc),
+    color-stop(100%, #2374c5)
+  );
   box-shadow: 2px 2px 2px #888888;
 }
 
