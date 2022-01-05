@@ -20,6 +20,16 @@
         <el-table-column prop="end_time" label="截止日期" sortable />
         <el-table-column prop="status" label="实验状态" sortable />
         <el-table-column prop="score" label="成绩" sortable />
+        <el-table-column prop="is_submit" label="提交状态" sortable >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.is_submit === true" key="已提交" type="success" effect="plain"> 已提交
+            </el-tag>
+
+            <el-tag v-if="scope.row.is_submit === false" key="未提交" type="danger" effect="plain"> 未提交
+            </el-tag>
+
+          </template>
+        </el-table-column>
 
         <el-table-column label="操作" min-width="110%">
           <template slot-scope="scope">
@@ -154,7 +164,8 @@ export default {
       this.$router.push({
         path: "/studentHome/concreteCourse/FillExper",
         query: {
-          info: this.$Base64.encode(JSON.stringify(row.ex_id)),
+          info: this.$Base64.encode(row.ex_id),
+          title:this.$Base64.encode(row.experiment_title)
         },
       });
     },

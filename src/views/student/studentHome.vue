@@ -37,7 +37,7 @@
           </el-menu>
         </div>
       </el-aside>
-      <el-main>
+      <el-main style="height: 900px">
         <router-view></router-view>
       </el-main>
     </el-container>

@@ -10,28 +10,17 @@
       <v-col cols="12" md="6">
         <br />
         <br />
-        <h2>{{ ex_title }}</h2>
+
+        <h2>实验名称： {{ ex_title }}</h2>
 
         <br />
         <br />
       </v-col>
     </v-row>
-    <h3>合作人员</h3>
-    <v-col cols="12" md="6">
-      <el-input
-        filled
-        label="合作人员"
-        auto-grow
-        height="20px"
-        value=""
-      ></el-input>
-    </v-col>
-    <br />
-    <br />
     <br />
     <h3>实验目的</h3>
     <br />
-    <quill-editor style="background-color: white"></quill-editor>
+    <quill-editor style="background-color: white" v-model="report_info.goal"></quill-editor>
 
     <br />
     <br />
@@ -39,33 +28,33 @@
     <h3>实验设备</h3>
     <br />
 
-    <quill-editor style="background-color: white"></quill-editor>
+    <quill-editor style="background-color: white" v-model="report_info.device"></quill-editor>
 
     <br />
     <br />
     <br />
     <h3>实验步骤</h3>
     <br />
-    <quill-editor style="background-color: white"></quill-editor>
+    <quill-editor style="background-color: white" v-model="report_info.step"></quill-editor>
 
     <br />
     <br />
     <br />
     <h3>实验过程</h3>
     <br />
-    <quill-editor style="background-color: white"></quill-editor>
+    <quill-editor style="background-color: white" v-model="report_info.process"></quill-editor>
 
     <br />
     <br />
     <br />
     <h3>结果分析</h3>
     <br />
-    <quill-editor style="background-color: white"></quill-editor>
+    <quill-editor style="background-color: white" v-model="report_info.result"></quill-editor>
     <br />
     <br />
     <el-row :gutter="10">
-      <el-col :span="3" :offset="6"><v-btn dark>提交</v-btn></el-col>
-      <el-col :span="3"><v-btn dark>暂存</v-btn></el-col>
+      <el-col :span="3" :offset="6"><v-btn dark @click="submit()">提交</v-btn></el-col>
+      <el-col :span="3"><v-btn dark @click="cache()">暂存</v-btn></el-col>
       <el-col :span="3"><v-btn dark @click="back">取消</v-btn></el-col>
     </el-row>
     <br />
@@ -88,25 +77,70 @@ export default {
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
-      this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info));
-      this.ex_title = JSON.parse(this.$Base64.decode(this.$route.query.title));
+      this.ex_id = this.$Base64.decode(this.$route.query.info);
+      this.ex_title = this.$Base64.decode(this.$route.query.title);
     },
     getMyReport() {
       var jsons = {
         ex_id: this.ex_id,
+        s_id: sessionStorage.getItem('id')
       };
       this.axios
-        .post("/api/course/getExById/", JSON.stringify(jsons))
+        .post("/api/Ex/getFilledRort", JSON.stringify(jsons))
         .then((response) => {
-          //这里使用了ES6的语法
-          //this.tableData = response.data
-          console.log("getMyReport");
-          console.log(response);
-        });
+          if(response.data.status === 200){
+            this.report_info = response.data.data
+          }
+          else{
+            this.$message("网络错误")
+          }
+        }).catch((err)=>{
+          this.$message("网络错误")
+        console.log(err)
+      });
     },
     back() {
       this.$router.go(-1);
     },
+    cache(){
+
+      var jsons = this.report_info
+      jsons["ex_id"] = this.ex_id
+      jsons["s_id"] = sessionStorage.getItem('id')
+      console.log(jsons)
+      this.axios
+          .post("/api/Ex/cacheEx", JSON.stringify(jsons))
+          .then((response) => {
+            if(response.data.status === 200){
+              this.$message("缓存成功")
+            }
+            else{
+              this.$message("网络错误")
+            }
+          }).catch((error)=>{
+            this.$message("网络错误")
+            console.log(error)
+      });
+    },
+    submit(){
+      var jsons = this.report_info
+      jsons["ex_id"] = this.ex_id
+      jsons["s_id"] = sessionStorage.getItem('id')
+      console.log(jsons)
+      this.axios
+          .post("/api/Ex/fillEx", JSON.stringify(jsons))
+          .then((response) => {
+            if(response.data.status === 200){
+              this.$message("提交成功")
+            }
+            else{
+              this.$message("网络错误")
+            }
+          }).catch((error)=>{
+        this.$message("网络错误")
+        console.log(error)
+      });
+    }
   },
   mounted() {
     this.getParams();
