@@ -1,5 +1,5 @@
 <template>
-   <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-main>
       <el-card
         style="
@@ -19,7 +19,7 @@
           </el-form-item>
 
           <el-form-item label="再次输入" :required="true" status-icon="true">
-            <el-input type="password" v-model="form.passwordC"></el-input>
+            <el-input type="password" v-model="form.passwordN"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -49,12 +49,31 @@ export default {
     return {
       form: {
         password: "",
-        passwordC: "",
+        passwordN: "",
       },
     };
   },
   methods: {
-    save() {},
+    save() {
+      var jsons = {
+        t_id: this.userAccount.t_id,
+        old_password: this.password,
+        new_password: this.passwordN,
+        token: sessionStorage.getItem("token"),
+      };
+      this.axios
+        .post("/api/editInfo/Teacher/changePwd/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log("save", response);
+
+          if (response.data == "Success")
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+          else this.$message.error("错误");
+        });
+    },
     back() {
       this.$router.push("/teacherHome");
     },

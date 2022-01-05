@@ -1,21 +1,20 @@
 <!--  教师查看自己名下所有责任课程 -->-->
 <template>
   <div>
-    <v-btn color="orange lighten-2" dark @click="handleDialog">
-      开课申请
-    </v-btn>
     <el-table
       class="tableBack"
       ref="filterTable"
       :data="
-        tableData.filter(
-          (data) =>
-            !search ||
-            data.title.toLowerCase().includes(search.toLowerCase()) ||
-            data.id.toLowerCase().includes(search.toLowerCase()) ||
-            data.date.toLowerCase().includes(search.toLowerCase()) ||
-            data.place.toLowerCase().includes(search.toLowerCase())
-        )
+        tableData
+          .filter(
+            (data) =>
+              !search ||
+              data.course_id.toLowerCase().includes(search.toLowerCase()) ||
+              data.name.toLowerCase().includes(search.toLowerCase()) ||
+              data.year.toLowerCase().includes(search.toLowerCase()) ||
+              data.semester.toLowerCase().includes(search.toLowerCase())
+          )
+          .slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
     >
       <el-table-column prop="course_id" label="课程编号" sortable />
@@ -96,7 +95,7 @@
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-size="pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
+      layout="total, prev, pager, next, jumper"
       :total="tableData.length"
     >
     </el-pagination>
@@ -110,7 +109,7 @@ export default {
       dialogVisible: false,
       search: "",
       currentPage: 1,
-      pagesize: 6,
+      pagesize: 10,
       tableData: [],
 
       form: {
@@ -218,5 +217,8 @@ export default {
 .tableBack {
   width: 100%;
   margin-top: 10px;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

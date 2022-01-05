@@ -129,6 +129,7 @@ export default {
             token: sessionStorage.getItem("token"),
           }),
           {
+            responseType: "blob",
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -138,7 +139,7 @@ export default {
           //var fname = row.filename
           //fname = decodeURIComponent(fname)
           //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
-          console.log(response);
+
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -146,22 +147,14 @@ export default {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
           } else {
-            const blob = new Blob([response.data.data], {
-              type: "charset=UTF-8",
+            console.log("查看文件", response);
+            const blob = new Blob([response.data], {
+              type: "application/pdf",
             });
             //var downloadElement = document.createElement("a");
             var href = window.URL.createObjectURL(blob);
             window.open(href);
           }
-          /*
-        downloadElement.href = href;
-
-        downloadElement.download = fname
-        document.body.appendChild(downloadElement);
-        downloadElement.click();
-        document.body.removeChild(downloadElement);
-        window.URL.revokeObjectURL(href);
-         */
         });
     },
     handleDown(row) {
@@ -175,7 +168,7 @@ export default {
             token: sessionStorage.getItem("token"),
           }),
           {
-            responseType: 'blob',
+            responseType: "blob",
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -216,11 +209,6 @@ export default {
       })
         .then(() => {
           this.deleteFile(row);
-
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
         })
         .catch(() => {
           this.$message({
@@ -240,7 +228,6 @@ export default {
       param.append("token", sessionStorage.getItem("token"));
       this.axios
         .post("/api/manageClassFileRoute/addFile", param, {
-
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
         })
         .then((res) => {
@@ -315,8 +302,8 @@ export default {
     },
     getParams: function () {
       this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-          "class_id"
-          ];
+        "class_id"
+      ];
       console.log("cid===" + this.c_id);
     },
   },
@@ -335,5 +322,11 @@ export default {
   margin: 0 8px;
   vertical-align: middle;
   position: relative;
+}
+.el-button--primary {
+  color: white;
+}
+.el-button--success {
+  color: white;
 }
 </style>

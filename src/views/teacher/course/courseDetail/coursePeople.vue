@@ -274,25 +274,6 @@ export default {
         });
     },
 
-    addFromDetailT(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-          this.axios
-            .post("", JSON.stringify(this.dynamicValidateForm))
-            .then((response) => {
-              //这里使用了ES6的语法
-              console.log(response); //请求成功返回的数据
-            });
-          this.dialogFormVisibleG = false;
-          //location.reload();
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-
     addFromExcelS() {
       /*let fdParams = new FormData();
       this.fileListS.forEach((file) => {
@@ -314,27 +295,6 @@ export default {
       this.dialogExcelVisibleS = false;*/
     },
 
-    addFromExcelG() {
-      /*let fdParams = new FormData();
-      this.fileListG.forEach((file) => {
-        console.log(file);
-        fdParams.append("file", file.raw);
-      });
-      fdParams.append("userID", "123");
-
-      this.axios
-        .post("/api/file/addUser/", fdParams, {
-          headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-          timeout: 20000,
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch({});
-
-      this.dialogExcelVisibleG = false;*/
-    },
-
     setAssist() {
       //设置助教
       var jsons = {
@@ -342,13 +302,11 @@ export default {
         ta_id: this.assist,
         token: sessionStorage.getItem("token"),
       };
-      console.log("设置助教");
-      console.log(jsons);
+
       this.axios
         .post("/api/classAddTA", JSON.stringify(jsons))
         .then((response) => {
-          console.log("setAssist");
-          console.log(response);
+          console.log("setAssist", response);
 
           if (response.data["code"] === 301) {
             this.$message("验证过期");
@@ -366,18 +324,6 @@ export default {
             this.dialogAssist = false;
           }
         });
-    },
-    removeDomain(item) {
-      const index = this.dynamicValidateForm.members.indexOf(item);
-      if (index !== -1) {
-        this.dynamicValidateForm.members.splice(index, 1);
-      }
-    },
-    addDomain() {
-      this.dynamicValidateForm.members.push({
-        key: Date.now(),
-        sid: "",
-      });
     },
 
     getStuList() {
@@ -403,14 +349,13 @@ export default {
         });
     },
     getAssistList() {
-      console.log("获得助教");
       this.axios
         .get("/api/getUserInfo/getAllTA", {
           params: { token: sessionStorage.getItem("token") },
           crossDomain: true,
         })
         .then((response) => {
-          console.log("获得助教");
+          console.log("获得助教", response);
 
           this.assistList = response.data;
         });

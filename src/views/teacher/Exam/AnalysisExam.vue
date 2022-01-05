@@ -20,14 +20,14 @@ export default {
         },
         yAxis: {
           type: "category",
-          data: ["Mon"],
-          name: "实验", //x坐标轴的名称
+          data: ["测验"],
+          name: "测验名称", //x坐标轴的名称
         },
         series: [
           {
-            data: [120, 200],
+            data: [120],
             type: "bar",
-            name: "优", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
+            name: "100-90", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
             backgroundStyle: {
               color: "rgba(220, 220, 220, 0.8)",
@@ -40,9 +40,51 @@ export default {
             },
           },
           {
-            data: [120, 200],
+            data: [120],
             type: "bar",
-            name: "良", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
+            name: "90-80", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(220, 220, 220, 0.8)",
+            },
+            label: {
+              show: true,
+              position: "center",
+              color: "#fff",
+            },
+          },
+          {
+            data: [120],
+            type: "bar",
+            name: "80-70", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(220, 220, 220, 0.8)",
+            },
+            label: {
+              show: true,
+              position: "center",
+              color: "#fff",
+            },
+          },
+          {
+            data: [120],
+            type: "bar",
+            name: "70-60", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(220, 220, 220, 0.8)",
+            },
+            label: {
+              show: true,
+              position: "center",
+              color: "#fff",
+            },
+          },
+          {
+            data: [120],
+            type: "bar",
+            name: "不及格", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
             backgroundStyle: {
               color: "rgba(220, 220, 220, 0.8)",
@@ -68,7 +110,7 @@ export default {
           },
         },
         legend: {
-          data: ["优", "良", "中"],
+          data: ["100-90", "90-80", "80-70", "70-60", "不及格"],
           top: 10,
         },
       },

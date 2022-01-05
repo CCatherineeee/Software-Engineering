@@ -1,6 +1,6 @@
 <template>
   <div>
-  <el-container style="margin-top:20px;">
+    <el-container style="margin-top: 20px">
       <el-aside width="50%">
         <v-btn
           color="primary"
@@ -40,12 +40,6 @@
       <el-main>
         <el-scrollbar>
           <el-row>
-            <el-col :span="6">
-              <v-btn dark @click="saveInfo()">保存课程信息</v-btn></el-col
-            >
-            <el-col :span="6">
-              <v-btn dark @click="handleFile">上传教学大纲</v-btn></el-col
-            >
             <el-col :span="3">
               <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col
             >
@@ -224,7 +218,8 @@
                   v-model="is_online"
                   placeholder="是否在线模拟"
                   :options="online_op"
-                  @change="handleExChange"></el-cascader>
+                  @change="handleExChange"
+                ></el-cascader>
               </v-col>
             </v-row>
 
@@ -301,15 +296,15 @@ export default {
       year: "",
       semester: "",
       id: "",
-      is_online:"",  //默认不是线上开课
-      addSuccess:false,
+      is_online: "", //默认不是线上开课
+      addSuccess: false,
 
       tid: "",
       teaList: [],
       classList: [],
       experList: [],
       fileList: [],
-      stu_list:[],
+      stu_list: [],
       experiment: {
         courseID: "",
         title: "",
@@ -329,17 +324,22 @@ export default {
         },
       ],
 
-      online_op:[{
-        value:"0",
-        label:'否'
-      },{
-        value:"1",
-        label:'是',
-        children:[{
-          value:"paimai",
-          label:'软件工程拍卖在线实验'
-        }]
-      }],
+      online_op: [
+        {
+          value: "0",
+          label: "否",
+        },
+        {
+          value: "1",
+          label: "是",
+          children: [
+            {
+              value: "paimai",
+              label: "软件工程拍卖在线实验",
+            },
+          ],
+        },
+      ],
 
       changeTemp: {},
       timeout: null,
@@ -373,9 +373,9 @@ export default {
   },
   methods: {
     handleExChange(value) {
-      this.is_online = value[0]
-      console.log(this.is_online)
-      },
+      this.is_online = value[0];
+      console.log(this.is_online);
+    },
     getParams: function () {
       this.courseID = this.$route.query.c_id;
       this.name = this.$route.query.name;
@@ -464,7 +464,7 @@ export default {
       this.classDialog = true;
     },
     handleAddEx() {
-      this.experiment={};
+      this.experiment = {};
       this.exDialog = true;
     },
     handleDeleteClass(row) {
@@ -623,33 +623,33 @@ export default {
         });
     },
 
-    classGetStudent(){
+    classGetStudent() {
       //获取所有学生
-      for(var i=0;i<this.classList.length;i++){
-      var json3 = {
-        class_id:this.classList[i]["class_id"]
-      };
-      console.log(this.classList[i]["class_id"])
-      return this.axios
-      //.post("/api/course/addEx/", JSON.stringify(jsons))
-      .post("/api/manageClass/IDGetClassStudent", JSON.stringify(json3))
-      .then((response) => {
-        if (response.data["code"] === 400) {
-          this.$message("班级不存在");
-        } else {
-          var class_student = response.data["data"];
-          //求并集
-          console.log(class_student);
-          for(var t=0;t<class_student.data.length;t++)
-          {
-            this.stu_list.push(class_student.data[t]);
-          }
-    
-        }
-      });
+      for (var i = 0; i < this.classList.length; i++) {
+        var json3 = {
+          class_id: this.classList[i]["class_id"],
+        };
+        console.log(this.classList[i]["class_id"]);
+        return (
+          this.axios
+            //.post("/api/course/addEx/", JSON.stringify(jsons))
+            .post("/api/manageClass/IDGetClassStudent", JSON.stringify(json3))
+            .then((response) => {
+              if (response.data["code"] === 400) {
+                this.$message("班级不存在");
+              } else {
+                var class_student = response.data["data"];
+                //求并集
+                console.log(class_student);
+                for (var t = 0; t < class_student.data.length; t++) {
+                  this.stu_list.push(class_student.data[t]);
+                }
+              }
+            })
+        );
       }
     },
-    async addExSendMsg(){
+    async addExSendMsg() {
       await this.addEx();
       await this.classGetStudent();
       await this.sendStuMessage();
@@ -665,53 +665,59 @@ export default {
         end_time: this.formatDateTime(this.experiment.end_time),
         ex_type: this.experiment.status,
         token: sessionStorage.getItem("token"),
-        is_online: this.is_online
+        is_online: this.is_online,
       };
-      console.log("新增实验");
-      console.log(jsons);
 
-      return this.axios
-        //.post("/api/course/addEx/", JSON.stringify(jsons))
-        .post("/api/course/addEx/", JSON.stringify(jsons))
-        .then((response) => {
-          if (response.data["code"] === 301) {
-            this.$message("验证过期");
-            this.$router.push({ path: "/login" });
-          } else if (response.data["code"] === 404) {
-            this.$message("找不到页面");
-            this.$router.push({ path: "/404" });
-          } else {
-            if (response.data.data === "WeightUnreasonable") {
-              this.$message("权重不合理！");
+      return (
+        this.axios
+          //.post("/api/course/addEx/", JSON.stringify(jsons))
+          .post("/api/course/addEx/", JSON.stringify(jsons))
+          .then((response) => {
+            console.log("新增实验", response);
+            if (response.data["code"] === 301) {
+              this.$message("验证过期");
+              this.$router.push({ path: "/login" });
+            } else if (response.data["code"] === 404) {
+              this.$message("找不到页面");
+              this.$router.push({ path: "/404" });
             } else {
-              this.$message("添加成功！");
-              this.addSuccess = true;
-              this.exDialog = false;
-              this.getExperiment();
+              if (response.data.data === "WeightUnreasonable") {
+                this.$message("权重不合理！");
+              } else {
+                this.$message("添加成功！");
+                this.addSuccess = true;
+                this.exDialog = false;
+                this.getExperiment();
 
-              //这里给所有学生发信息,先获取所有班级
+                //这里给所有学生发信息,先获取所有班级
+              }
             }
-          }
-        });
-  
+          })
+      );
     },
-    sendStuMessage(){
-          //在这里添加，获取所有学生还要再写一个接口！！
+    sendStuMessage() {
+      //在这里添加，获取所有学生还要再写一个接口！！
 
-          var end_time = this.experiment.end_time;
-          console.log(end_time);
-          if(this.addSuccess == true)
-          {
-            for(var i=0;i<this.stu_list.length;i++){
-              var content = this.name+"已发布实验"+this.experiment.title+",成绩占比"+this.experiment.weight+",请在"
-              +this.formatDateTime(this.experiment.end_time)+"前完成";
-              var json4 = {
-                s_id:this.stu_list[i]["s_id"],
-                title:"实验——"+this.experiment.title+"已新增",
-                content:content,
-                deadline:this.formatDateTime(this.experiment.end_time),
-              };
-            this.axios
+      var end_time = this.experiment.end_time;
+      console.log(end_time);
+      if (this.addSuccess == true) {
+        for (var i = 0; i < this.stu_list.length; i++) {
+          var content =
+            this.name +
+            "已发布实验" +
+            this.experiment.title +
+            ",成绩占比" +
+            this.experiment.weight +
+            ",请在" +
+            this.formatDateTime(this.experiment.end_time) +
+            "前完成";
+          var json4 = {
+            s_id: this.stu_list[i]["s_id"],
+            title: "实验——" + this.experiment.title + "已新增",
+            content: content,
+            deadline: this.formatDateTime(this.experiment.end_time),
+          };
+          this.axios
             //.post("/api/course/addEx/", JSON.stringify(jsons))
             .post("/api/message/addStuMessage", JSON.stringify(json4))
             .then((response) => {
@@ -721,8 +727,8 @@ export default {
                 console.log(response.data["message"]);
               }
             });
-            }
-          }
+        }
+      }
     },
     deleteEx(item) {
       var jsons = {
@@ -859,5 +865,8 @@ export default {
 .el-scrollbar__wrap {
   overflow-x: hidden;
   overflow-y: hidden;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

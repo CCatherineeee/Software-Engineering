@@ -24,7 +24,7 @@
             <span slot="title">文件</span>
           </el-menu-item>
 
-          <el-menu-item index="/teacherHome/concreteCourse/examHome">
+          <el-menu-item index="/teacherHome/concreteCourse/examHome/checkExam">
             <span slot="title">测验</span>
           </el-menu-item>
         </el-menu>
@@ -71,7 +71,9 @@ export default {
   },
   methods: {
     getParams: function () {
-      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
     },
     getClassInfo() {
       var jsons = {

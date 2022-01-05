@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-aside width="200px"></el-aside>
     <el-main class="back">
       <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15)">
@@ -44,11 +44,6 @@
               ><span v-if="is_active === 1">激活</span>
               <span v-if="is_active === 0">非激活</span></el-tag
             >
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"> 学院 </template>
-            {{ department }}
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -124,5 +119,8 @@ export default {
 .demo-border .line div {
   width: 100%;
   height: 0;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

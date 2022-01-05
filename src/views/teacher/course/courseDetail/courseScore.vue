@@ -165,7 +165,6 @@ export default {
     getData() {
       var jsons = {
         class_id: JSON.stringify(this.c_id),
-
         token: sessionStorage.getItem("token"),
       };
       this.axios
@@ -179,6 +178,7 @@ export default {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
           } else {
+            console.log("getData", response.data.data);
             this.headers = response.data.data.experiment;
             this.scoreData = response.data.data.score;
           }

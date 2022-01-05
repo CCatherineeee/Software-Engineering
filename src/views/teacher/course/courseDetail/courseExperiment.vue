@@ -2,21 +2,41 @@
 <template>
   <div>
     <el-card>
-      
       <el-table
         ref="filterTable"
         row-key="deadline"
         :data="
-          experimentList.filter(
-            (data) =>
-              !search || data.name.toLowerCase().includes(search.toLowerCase())
-          )
+          experimentList
+            .filter(
+              (data) =>
+                !search ||
+                data.title.toLowerCase().includes(search.toLowerCase())
+            )
+            .slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
         style="width: 100%"
       >
         <el-table-column prop="title" label="实验名称" sortable />
         <el-table-column prop="end_time" label="发布日期" sortable />
-        <el-table-column prop="ex_type" label="提交方式" sortable />
+        <el-table-column
+          prop="ex_type"
+          label="提交方式"
+          sortable
+          :filters="[
+            { text: '在线提交', value: '在线提交' },
+            { text: '提交文件', value: '提交文件' },
+          ]"
+          :filter-method="filterTag"
+          filter-placement="bottom-end"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.ex_type === '在线提交' ? 'primary' : 'success'"
+              disable-transitions
+              >{{ scope.row.ex_type }}</el-tag
+            >
+          </template>
+        </el-table-column>
         <el-table-column prop="weight" label="权重" sortable />
 
         <el-table-column>
@@ -25,7 +45,7 @@
           </template>
           <template #default="scope">
             <v-row>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-btn small dark @click="handleCheck(scope.row)">查看</v-btn>
               </v-col>
               <v-col cols="3">
@@ -36,32 +56,6 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog
-        :visible.sync="dialogVisible"
-        title="请选择文件"
-        center
-        border-radius="4px"
-      >
-        <el-upload
-          ref="uploadImport"
-          action=""
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-change="handleChange"
-          :before-remove="beforeRemove"
-          :file-list="fileList"
-          :multiple="true"
-          :auto-upload="false"
-          accept=""
-        >
-          <el-button type="primary" style="float: center">选取文件</el-button>
-          <div slot="tip" class="el-upload__tip"></div>
-        </el-upload>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="success">上传</el-button>
-        </div>
-      </el-dialog>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -96,6 +90,20 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
+    resetDateFilter() {
+      this.$refs.filterTable.clearFilter("date");
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    filterTag(value, row) {
+      return row.ex_type === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
+    },
+
     handlePreview(file) {
       console.log(file);
     },
@@ -164,8 +172,8 @@ export default {
     },
     getParams: function () {
       this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-          "class_id"
-          ];
+        "class_id"
+      ];
       console.log("cid===" + this.c_id);
     },
   },

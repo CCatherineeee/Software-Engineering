@@ -211,6 +211,9 @@ export default {
           this.ex_info = response.data.data;
         });
     },
+    editExper() {
+      //修改实验信息
+    },
   },
   mounted() {
     this.getParams();
@@ -227,5 +230,8 @@ export default {
 .el-card {
   margin-bottom: 20px;
   margin-top: 15px;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

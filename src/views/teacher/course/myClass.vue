@@ -63,8 +63,13 @@ export default {
     toClass(index) {
       console.log(index);
       this.$router.push({
-        path: "/teacherHome/concreteCourse",
-        query: { c_id: this.$Base64.encode(index.class_id) },
+        path: "/teacherHome/concreteCourse/Ann",
+        //query: { c_id: this.$Base64.encode(index.class_id) },
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ class_id: index.class_id })
+          ),
+        },
       });
     },
   },

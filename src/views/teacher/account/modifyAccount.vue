@@ -20,10 +20,6 @@
         <el-input v-model="userAccount.t_id" :disabled="true"></el-input>
       </el-form-item>
 
-      <el-form-item label="学院" prop="department">
-        <el-input v-model="userAccount.department" :disabled="true"></el-input>
-      </el-form-item>
-
       <el-form-item label="性别" prop="gender">
         <el-select v-model="userAccount.gender" style="float: left">
           <el-option label="男" :value="'男'"></el-option>
@@ -61,6 +57,11 @@ export default {
       this.id = sessionStorage.getItem("id");
     },
     save() {
+      if (this.userAccount.phone_number.length != 11) {
+        this.$message.warning("请输入11位的手机号！");
+        return;
+      }
+
       var jsons = {
         name: this.userAccount.name,
         t_id: this.userAccount.t_id,
@@ -110,3 +111,8 @@ export default {
   },
 };
 </script>
+<style >
+.el-button--primary {
+  color: white;
+}
+</style>

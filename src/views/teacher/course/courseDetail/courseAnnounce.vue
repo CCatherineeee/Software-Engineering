@@ -1,6 +1,6 @@
 <template>
   <div>
-  <el-container style="margin-top:20px;">
+    <el-container style="margin-top: 20px">
       <el-main>
         <v-btn
           color="orange lighten-2"
@@ -19,10 +19,9 @@
             :timestamp="data.date"
           >
             <el-card>
-              <h2>{{ data.title }}</h2>
-              <el-link @click="handleTitle(data)"
-                ><p v-html="data.content"></p
-              ></el-link>
+              <el-link @click="handleTitle(data)">
+                <h2>{{ data.title }}</h2></el-link
+              >
 
               <el-button
                 type="danger"
@@ -35,7 +34,7 @@
 
               <el-button
                 type="primary"
-                icon="el-icon-edit"
+                icon="el-icon-zoom-in"
                 circle
                 size="mini"
                 style="float: right"
@@ -46,12 +45,11 @@
         </el-timeline>
 
         <el-dialog :visible.sync="dialogVisible" :title="this.title" center>
-          <v-textarea filled auto-grow :value="content"></v-textarea>
-          <div slot="footer" class="dialog-footer">
+          <v-textarea filled auto-grow :value="content" disabled></v-textarea>
+          <div slot="footer">
             <el-button type="primary" @click="dialogVisible = false"
               >确定</el-button
             >
-            <el-button @click="dialogVisible = false">取消</el-button>
           </div>
         </el-dialog>
         <el-dialog :visible.sync="dialogAddVisible" title="新增公告" center>
@@ -78,7 +76,7 @@
               <el-input v-model="formAnn.content" type="textarea"></el-input>
             </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
+          <div slot="footer">
             <el-button @click="dialogAddVisible = false">取消</el-button>
             <el-button type="primary" @click="addAnn()">确定</el-button>
           </div>
@@ -97,6 +95,7 @@ export default {
       c_id: "",
       title: "",
       content: "",
+      contentRe: "",
       dialogVisible: false,
       dialogAddVisible: false,
       annList: [],
@@ -163,10 +162,11 @@ export default {
       var jsons = {
         class_id: this.c_id,
         title: this.formAnn.title,
-        content: this.formAnn.content
+        content: this.formAnn.content,
+        /*content: this.formAnn.content
           .replace(/\r\n/g, "<br/>")
           .replace(/\n/g, "<br/>")
-          .replace(/\s/g, "&nbsp;"),
+          .replace(/\s/g, "&nbsp;"),*/
         token: sessionStorage.getItem("token"),
       };
       console.log("新增公告");
@@ -211,8 +211,8 @@ export default {
     getParams: function () {
       this.id = sessionStorage.getItem("id");
       this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-          "class_id"
-          ];
+        "class_id"
+      ];
       console.log("cid===" + this.c_id);
     },
   },
@@ -222,3 +222,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.el-button--danger {
+  color: white;
+}
+.el-button--primary {
+  color: white;
+}
+</style>
