@@ -52,7 +52,7 @@ export default {
   methods: {
     toCourse(index) {
       this.$router.push({
-        path: "/studentHome/concreteCourse",
+        path: "/studentHome/concreteCourse/Ann",
         query: {
           info: this.$Base64.encode(
             JSON.stringify({ class_id: index.class_id })

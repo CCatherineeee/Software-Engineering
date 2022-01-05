@@ -96,3 +96,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.el-button--primary {
+  color: white;
+}
+</style>

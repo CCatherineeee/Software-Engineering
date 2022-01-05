@@ -1,5 +1,5 @@
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-main>
       <el-card
         style="
@@ -61,3 +61,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.el-button--primary {
+  color: white;
+}
+</style>

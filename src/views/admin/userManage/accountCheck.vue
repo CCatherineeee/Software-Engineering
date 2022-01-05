@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pagesize: 10,
+      pagesize: 6,
       tableData: [],
     };
   },
@@ -151,5 +151,8 @@ export default {
 }
 .button:hover {
   color: yellow;
+}
+.el-button--danger {
+  color: white;
 }
 </style>

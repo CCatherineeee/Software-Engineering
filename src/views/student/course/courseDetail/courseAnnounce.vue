@@ -84,3 +84,8 @@ export default {
   },
 };
 </script>
+<style>
+.el-button--primary {
+  color: white;
+}
+</style>

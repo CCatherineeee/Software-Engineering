@@ -2,20 +2,13 @@
   <div>
     <el-scrollbar>
       <el-card>
-        <el-button type="danger" @click="handleCheckCancelS"
-          >批量注销</el-button
-        >
-        <el-button @click="toggleSelection()">取消选择</el-button>
-
         <el-table
           ref="multipleTable"
           :data="
             userData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
           "
           style="width: 100%"
-          @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column prop="name" label="姓名" sortable />
           <el-table-column prop="id" label="学号/工号" sortable />
           <el-table-column
@@ -94,7 +87,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pagesize: 10,
+      pagesize: 6,
       multipleSelection: [],
       userData: [],
     };
@@ -187,18 +180,6 @@ export default {
       this.getUserData();
     },
 
-    cancelSomeAccount() {
-      //注销多个账户
-      axios
-        .post("", JSON.stringify(this.multipleSelection))
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-
     handleCheckCancelO(row) {
       this.$confirm("确认注销账户吗?", "提示", {
         confirmButtonText: "确定",
@@ -269,5 +250,11 @@ export default {
 .el-scrollbar__wrap {
   overflow-x: hidden;
   overflow-y: hidden;
+}
+.el-button--danger {
+  color: white;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

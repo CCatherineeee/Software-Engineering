@@ -12,7 +12,7 @@
       >
         <template slot="extra">
           <el-row :gutter="20">
-            <el-col :span="7" v-if="ex_info.status == '未截止'"
+            <el-col :span="10" v-if="ex_info.status == '未截止'"
               ><v-btn
                 dark
                 v-if="ex_info.ex_type == '在线提交'"
@@ -27,8 +27,8 @@
                 上传
               </v-btn></el-col
             >
-            <el-col :span="7"><v-btn dark> 导出 </v-btn></el-col>
-            <el-col :span="7"><v-btn dark @click="back">返回</v-btn></el-col>
+
+            <el-col :span="14"><v-btn dark @click="back">返回</v-btn></el-col>
           </el-row>
         </template>
         <el-descriptions-item label="实验名称">{{
@@ -128,6 +128,7 @@ export default {
         path: "/studentHome/concreteCourse/FillExper",
         query: {
           info: this.$Base64.encode(JSON.stringify(this.ex_info.ex_id)),
+          title: this.$Base64.encode(JSON.stringify(this.ex_info.title)),
         },
       });
     },

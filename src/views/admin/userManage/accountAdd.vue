@@ -279,7 +279,7 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-size="pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="total,  prev, pager, next, jumper"
         :total="userData.length"
       >
       </el-pagination>
@@ -326,7 +326,7 @@ export default {
       fileListA: [],
 
       currentPage: 1,
-      pagesize: 10,
+      pagesize: 6,
       userData: [],
 
       nameRules: [

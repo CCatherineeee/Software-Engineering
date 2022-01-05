@@ -1,61 +1,19 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="所有人" name="first">
-      <el-input
-        placeholder="请输入学号或姓名"
-        :v-model="searchP"
-        style="width: 20%"
-        clearable
-      />
-      <el-table
-        :data="
-          stuList.filter(
-            (data) =>
-              !searchP ||
-              data.name.toLowerCase().includes(searchP.toLowerCase()) ||
-              data.id.toLowerCase().includes(searchP.toLowerCase()) ||
-              data.role.toLowerCase().includes(searchP.toLowerCase())
-          )
-        "
-        style="width: 100%"
-      >
-        <el-table-column prop="s_id" label="学号" sortable />
-        <el-table-column prop="name" label="姓名" sortable />
-      </el-table>
-    </el-tab-pane>
-    <el-tab-pane label="小组" name="second">
-      <el-input
-        placeholder="请输入学号或姓名"
-        v-model="searchG"
-        style="width: 20%"
-        clearable
-      />
-
-      <div v-for="(data, index) in groupData" :key="index">
-        <el-card shadow="hover" class="box-card">
-          <el-collapse>
-            <el-collapse-item :title="data.leader">
-              <div v-for="(data, index) in data.member" :key="index">
-                {{ data.name }}
-              </div>
-            </el-collapse-item>
-          </el-collapse>
-        </el-card>
-      </div>
-      <v-expansion-panels focusable>
-        <v-expansion-panel v-for="(data, index) in groupData" :key="index">
-          <v-expansion-panel-header>
-            {{ data.leader }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div v-for="(data, index) in data.member" :key="index">
-              {{ data.name }}
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </el-tab-pane>
-  </el-tabs>
+  <el-table
+    :data="
+      stuList.filter(
+        (data) =>
+          !searchP ||
+          data.name.toLowerCase().includes(searchP.toLowerCase()) ||
+          data.id.toLowerCase().includes(searchP.toLowerCase()) ||
+          data.role.toLowerCase().includes(searchP.toLowerCase())
+      )
+    "
+    style="width: 100%"
+  >
+    <el-table-column prop="s_id" label="学号" sortable />
+    <el-table-column prop="name" label="姓名" sortable />
+  </el-table>
 </template>
 
 <script>

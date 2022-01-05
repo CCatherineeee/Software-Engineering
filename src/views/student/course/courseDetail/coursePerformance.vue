@@ -17,30 +17,29 @@ export default {
     };
   },
   methods: {
-    getAllScore() {
-      var json = {
-        class_id: this.class_id,
-        s_id: sessionStorage.getItem("id"),
-      };
-      return this.axios
-        .post("/api/Ex/getClassAllScore", JSON.stringify(json))
-        .then((response) => {
-          if (response.data["code"] === 400) {
-            this.$message("该课程不存在");
-          } else {
-            var data = response.data["data"];
-            this.allScore = data;
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     getParams: function () {
       this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
         "class_id"
       ];
     },
+    getAllScore() {
+      var json = {
+        class_id: this.class_id,
+        s_id: sessionStorage.getItem("id"),
+      };
+      this.axios
+        .post("/api/Ex/getClassAllScore", JSON.stringify(json))
+        .then((response) => {
+          console.log("getAllScore", response);
+
+          var data = response.data["data"];
+          this.allScore = data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
     initChart() {
       var echarts = require("echarts");
       let myChart = echarts.init(document.getElementById("myChart"));
@@ -61,14 +60,6 @@ export default {
           trigger: "item",
         },
 
-        visualMap: {
-          show: false,
-          min: 0,
-          max: 20,
-          inRange: {
-            colorLightness: [0, 1],
-          },
-        },
         series: [
           {
             name: "实验名称",
@@ -90,25 +81,6 @@ export default {
               length2: 20,
             },
             itemStyle: {
-              normal: {
-                color: function (colors) {
-                  var colorList = [
-                    "#003300",
-                    "#6666CC",
-                    "#336699",
-                    "#666699",
-                    "#663366",
-                    "#666666",
-                    "#999966",
-                    "#993333",
-                    "#CC3333",
-                    "#CC99CC",
-                    "#CCCC99",
-                    "#663333",
-                  ];
-                  return colorList[colors.dataIndex];
-                },
-              },
               shadowBlur: 300,
               shadowColor: "rgba(0, 0, 0, 0.5)",
             },
@@ -132,14 +104,13 @@ export default {
     },
   },
   mounted() {
-    let _this = this;
     this.getParams();
     this.getAllScore();
     setTimeout(() => {
-      _this.initChart();
+      this.initChart();
     }, 760);
     setTimeout(() => {
-      _this.getNowScore();
+      this.getNowScore();
     }, 760);
   },
 };

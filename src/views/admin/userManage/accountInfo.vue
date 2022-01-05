@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-main>
       <el-card>
         <el-descriptions title="账户信息" :column="2" border size="medium">
@@ -183,5 +183,9 @@ export default {
 .demo-border .line div {
   width: 100%;
   height: 0;
+}
+
+.el-button--primary {
+  color: white;
 }
 </style>

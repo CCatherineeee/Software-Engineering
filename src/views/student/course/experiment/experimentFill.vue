@@ -10,7 +10,8 @@
       <v-col cols="12" md="6">
         <br />
         <br />
-        <h2>实验名称</h2>
+        <h2>{{ ex_title }}</h2>
+
         <br />
         <br />
       </v-col>
@@ -80,15 +81,17 @@ export default {
       dialog: false,
       fileList: [],
       ex_id: "",
-      ex_info: {},
+      ex_title: "",
+      report_info: {},
     };
   },
   methods: {
     getParams: function () {
       // 取到路由带过来的参数
       this.ex_id = JSON.parse(this.$Base64.decode(this.$route.query.info));
+      this.ex_title = JSON.parse(this.$Base64.decode(this.$route.query.title));
     },
-    getExInfo() {
+    getMyReport() {
       var jsons = {
         ex_id: this.ex_id,
       };
@@ -97,15 +100,8 @@ export default {
         .then((response) => {
           //这里使用了ES6的语法
           //this.tableData = response.data
-          console.log("getExInfo");
+          console.log("getMyReport");
           console.log(response);
-          if (response.data.data.status == 0)
-            response.data.data.status = "未发布";
-          if (response.data.data.status == 1)
-            response.data.data.status = "未截止";
-          if (response.data.data.status == 3)
-            response.data.data.status = "已截止";
-          this.ex_info = response.data.data;
         });
     },
     back() {
@@ -114,7 +110,7 @@ export default {
   },
   mounted() {
     this.getParams();
-    this.getExInfo();
+    this.getMyReport();
   },
 };
 </script>

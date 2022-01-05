@@ -1,8 +1,7 @@
 <template>
   <div>
-    <el-container class="back" >
+    <el-container class="back">
       <el-aside width="15%">
-        <el-button type="primary" @click="getAvatar">显示头像</el-button>
         <div>
           <el-menu class="admin-aside-menu" router>
             <img
@@ -154,8 +153,9 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
-          this.imageUrl = "/api" + response.data.url;
+          console.log("getAvaatar", response);
+          if (response.data.url != "")
+            this.imageUrl = "/api" + response.data.url;
         })
         .catch({});
 
@@ -190,7 +190,7 @@ export default {
     },
   },
   mounted() {
-    if (this.id != "") this.getAvatar();
+    this.getAvatar();
   },
 };
 </script>
@@ -207,7 +207,7 @@ export default {
 }
 .admin-aside-menu {
   box-shadow: 3px 3px 10px #d3d3d3;
-  background: #F0F8FF;
+  background: #f0f8ff;
   border-radius: 10%;
   height: 800px;
 }

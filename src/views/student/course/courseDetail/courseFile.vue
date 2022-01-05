@@ -5,10 +5,8 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.title.toLowerCase().includes(search.toLowerCase()) ||
-            data.upload.toLowerCase().includes(search.toLowerCase()) ||
-            data.modify.toLowerCase().includes(search.toLowerCase()) ||
-            data.author.toLowerCase().includes(search.toLowerCase())
+            data.filename.toLowerCase().includes(search.toLowerCase()) ||
+            data.date.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
@@ -36,7 +34,7 @@
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-size="pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
+      layout="total,  prev, pager, next, jumper"
       :total="tableData.length"
     >
     </el-pagination>

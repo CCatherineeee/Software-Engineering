@@ -8,6 +8,10 @@
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
+            <el-menu-item index="/studentHome/control">
+              <i class="el-icon-reading"></i>
+              <span slot="title">控制面板</span>
+            </el-menu-item>
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-edit"></i>
@@ -42,10 +46,10 @@
 
 <script>
 export default {
-  data(){
-    return{
-    avartar:"<div style='background:#666666'></div>",
-    }
+  data() {
+    return {
+      avartar: "<div style='background:#666666'></div>",
+    };
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -68,11 +72,11 @@ export default {
 }
 .back {
   margin-left: 10px;
-  margin-top:20px;
+  margin-top: 20px;
 }
 .admin-aside-menu {
   box-shadow: 3px 3px 10px #d3d3d3;
-  background: #F0F8FF;
+  background: #f0f8ff;
   border-radius: 10%;
   height: 800px;
   margin-top: 20px;

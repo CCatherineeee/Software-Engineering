@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-aside width="200px"></el-aside>
     <el-main class="back">
       <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15)">
@@ -21,7 +21,7 @@
             {{ name }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> 学号 </template>
+            <template slot="label"> 工号 </template>
             {{ id }}
           </el-descriptions-item>
           <el-descriptions-item>
@@ -73,8 +73,7 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log("getAdminInfo");
-          console.log(response);
+          console.log("getAdminInfo", response);
           this.name = response.data[0].name;
           //this.gender = response.data[0].gender;
           this.phone_number = response.data[0].phone_number;
@@ -117,5 +116,8 @@ export default {
 .demo-border .line div {
   width: 100%;
   height: 0;
+}
+.el-button--primary {
+  color: white;
 }
 </style>
