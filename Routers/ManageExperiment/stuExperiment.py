@@ -264,7 +264,7 @@ def checkFileReport():
     ex_id = data['ex_id']
     s_id = data["s_id"]
     se = StudentExperiment.query.filter(and_(StudentExperiment.s_id == s_id,StudentExperiment.ex_id == ex_id)).first()
-    path = os.path.join(basepath,class_id)
+    path = os.path.join(basepath,'StudentExFile',ex_id)
     filename = se.file_url.split(path+'/')[1]
     response = send_from_directory(path,filename,as_attachment=True)
     return response

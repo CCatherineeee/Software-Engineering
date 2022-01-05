@@ -278,10 +278,9 @@ def GetClassStudentScore():
             if this_ex.course_id != class_id[:-1]:
                 continue
             ex_name = "ex_" + str(ex_item.experiment_id)
-            ex_name_json = {"label":this_ex.experiment_title,"key":ex_name}
+            ex_name_json = {"label":this_ex.experiment_title,"key":ex_name, "type":this_ex.ex_type}
             if ex_name_json not in all_student['experiment']:
                 all_student['experiment'].append(ex_name_json)
-                all_student['type'].append(this_ex.ex_type)
             if not ex_item.score:
                 stu_json[ex_name] = 0
             else:
