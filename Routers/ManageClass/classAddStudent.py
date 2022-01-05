@@ -50,6 +50,7 @@ def classAddTA():
             temp = TAClass.query.filter(TAClass.class_id == class_id).first()
             if temp:
                 temp.ta_id = ta_id
+                dbManage.db.session.commit()
                 return jsonify({'code':200,'message':"更新成功",'data':None})
             tc = TAClass.query.filter(and_(TAClass.ta_id == ta_id,TAClass.class_id == class_id)).first()
             if tc:

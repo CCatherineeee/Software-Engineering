@@ -271,6 +271,16 @@ class Experiment(db.Model):
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+class ExperimentReport(db.Model):
+    __tablename__ = 'experiment_report'
+    report_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id'),primary_key=True)
+    ex_id = db.Column(db.Integer,ForeignKey('experiment.experiment_id'))
+    goal = db.Column(db.Text)
+    device = db.Column(db.Text)
+    step = db.Column(db.Text)
+    process = db.Column(db.Text)
+    result = db.Column(db.Text)
 
 
 class SystemAnnouncement(db.Model):
@@ -359,7 +369,8 @@ class StudentExperiment(db.Model):
     """
     __tablename__ = 'student_experiment'
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
-    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'),primary_key=True)
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id'),primary_key=True)
+    report_id = db.Column(db.Integer,ForeignKey('experiment_report.report_id'))
     file_url = db.Column(db.String(1024))
     score = db.Column(db.Integer)
     grader = db.Column(db.String(64))  #批改人姓名，不是ID

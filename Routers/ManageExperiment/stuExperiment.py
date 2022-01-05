@@ -4,7 +4,7 @@ from flask.globals import current_app
 from flask_cors import CORS
 from flask import Blueprint
 import json
-from Model.Model import Class,StudentClass,Teacher,Student,TeachingAssistant,TAClass, Experiment,StudentExperiment,Course
+from Model.Model import Class,StudentClass,Teacher,Student,TeachingAssistant,TAClass, Experiment,StudentExperiment,Course,ExperimentReport
 import dbManage
 from sqlalchemy import and_, or_
 import os
@@ -67,6 +67,7 @@ def uploadReport():
                 se.file_url = path
             else :
                 se.file_url = path
+            se.upload_time = datetime.datetime.now()
             report.save(path)
             dbManage.db.session.commit()
             return jsonify({'code':200,'message':"提交成功",'data':None})
@@ -121,7 +122,11 @@ def showEx():
             else:
                 status = ex.status
             se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex.experiment_id).first()
-            temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status,"type":ex.ex_type,"online":ex.is_online}
+            if se.submitTime:
+                is_submit = True
+            else:
+                is_submit = False
+            temp = {"ex_id": ex.experiment_id, "experiment_title":ex.experiment_title, "experiment_brief":ex.experiment_brief, "end_time":str(ex.end_time), "weight":ex.weight, "score": se.score,"status": status,"type":ex.ex_type,"online":ex.is_online, 'is_submit':is_submit}
             content.append(temp)
         return jsonify({'code':200,'message':"无法访问页面",'data':content})
     
@@ -155,19 +160,110 @@ def getClassAllScore():
     ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()
     result = []
     for item in ex_list:
-        stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
-        #学生有这个实验
-        if stu_ex_item:
-            if not stu_ex_item.score:
-                score = 0
-            else:
-                score = stu_ex_item.score
-            last_score = item.weight*score
-            result_item = {"name":item.experiment_title,"value":last_score}
-            result.append(result_item)
+        if item.status != 0:
+            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+            #学生有这个实验
+            if stu_ex_item:
+                if not stu_ex_item.score:
+                    score = 0
+                else:
+                    score = stu_ex_item.score
+                last_score = item.weight*score
+                result_item = {"name":item.experiment_title,"value":last_score}
+                result.append(result_item)
     
     return jsonify({'status':200,'message':"获取成功",'data':result})
 
     
+@studentExperimentRoute.route('/Ex/fillEx',methods=['POST'])  
+def submitFilledReport():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    s_id = data["s_id"]
+    goal = data['goal']
+    device = data['device']
+    step = data['step']
+    process = data['process']
+    result = data['result']
+    er = ExperimentReport.query.filter(and_(ExperimentReport.s_id == s_id,ExperimentReport.ex_id == ex_id)).first()
+    if not er:
+        er = ExperimentReport(s_id = s_id, goal = goal, device = device, step = step, process = process, result = result,ex_id = ex_id)
+        dbManage.db.session.add(er)  # 添加数据
+    else:
+        er.goal = goal
+        er.device = device
+        er.step = step
+        er.process = process
+        er.result = result
+        er.ex_id = ex_id
+        er.s_id = s_id
+    dbManage.db.session.commit()
+    se = StudentExperiment.query.filter(StudentExperiment.s_id == s_id, StudentExperiment.experiment_id == ex_id).first()
+    se.report_id = er.report_id
+    se.submitTime = datetime.datetime.now()
+    dbManage.db.session.commit()
+    
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+@studentExperimentRoute.route('/Ex/cacheEx',methods=['POST'])  
+def cacheFilledReport():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    s_id = data["s_id"]
+    goal = data['goal']
+    device = data['device']
+    step = data['step']
+    process = data['process']
+    result = data['result']
+    er = ExperimentReport.query.filter(and_(ExperimentReport.s_id == s_id,ExperimentReport.ex_id == ex_id)).first()
+    if not er:
+        er = ExperimentReport(s_id = s_id, goal = goal, device = device, step = step, process = process, result = result,ex_id = ex_id)
+        dbManage.db.session.add(er)  # 添加数据
+    else:
+        er.goal = goal
+        er.device = device
+        er.step = step
+        er.process = process
+        er.result = result
+        er.ex_id = ex_id
+        er.s_id = s_id
+    dbManage.db.session.commit()
+    
+    return jsonify({'status':200,'message':"获取成功",'data':result})
 
 
+
+@studentExperimentRoute.route('/Ex/getFilledRort',methods=['POST'])  
+def getFilledRort():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    s_id = data["s_id"]
+    er = ExperimentReport.query.filter(and_(ExperimentReport.s_id == s_id,ExperimentReport.ex_id == ex_id)).first()
+    data = {"goal":er.goal, "device":er.device, "step":er.step, "process":er.process, "result":er.result}
+    
+    return jsonify({'status':200,'message':"获取成功",'data':data})
+
+@studentExperimentRoute.route('/Ex/checkFilled',methods=['POST'])  
+def checkFilled():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    s_id = data["s_id"]
+    er = ExperimentReport.query.filter(and_(ExperimentReport.s_id == s_id,ExperimentReport.ex_id == ex_id)).first()
+    title = Experiment.query.filter(Experiment.experiment_id == ex_id).first().experiment_title
+    data = {"goal":er.goal, "device":er.device, "step":er.step, "process":er.process, "result":er.result, "title":title}
+    return jsonify({'status':200,'message':"获取成功",'data':data})
+
+@studentExperimentRoute.route('/Ex/checkFileReport',methods=['POST'])  
+def checkFileReport():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    ex_id = data['ex_id']
+    s_id = data["s_id"]
+    path = os.path.join(basepath,class_id)
+    filename = cf.file_url.split(path+'/')[1]
+    response = send_from_directory(path,filename,as_attachment=True)
+    return response

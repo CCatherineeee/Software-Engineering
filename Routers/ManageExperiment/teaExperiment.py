@@ -60,15 +60,14 @@ def getReportList():
         ses = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id).all()
         content = []
         for se in ses:
-            filename = se.file_url
             status = "否"
-            if filename:
-                filename = se.file_url.split(path+'/')[1]
+            if se.submitTime:
                 status = "是"
             s = Student.query.filter(Student.s_id == se.s_id).first()
-            temp = {"s_id" : se.s_id,"s_name":s.name,"filename":filename,"score":se.score,"grader":se.grader,"submitTime":str(se.submitTime),"status":status}
+            temp = {"s_id" : se.s_id,"s_name":s.name,"score":se.score,"grader":se.grader,"submitTime":str(se.submitTime),"status":status}
             content.append(temp)
         return jsonify({'code':200,'message':"请求成功",'data':content})
+
 
 @teaExperimentRoute.route('/tea/Ex/scoreReport/',methods=['POST'])  
 def scoreReport():
