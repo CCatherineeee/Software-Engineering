@@ -7,7 +7,6 @@
             <img
               :src="imageUrl"
               class="admin-aside-menu-head"
-              @click="handleAvatar"
             />
 
             <el-submenu index="">
@@ -80,7 +79,7 @@ export default {
     return {
       avatarDialog: false,
       id: "",
-      imageUrl: "https://www.w3school.com.cn/i/photo/coffee.jpg",
+      imageUrl: "http://39.107.51.181:5000/static/avatar/管理员头像.png",
     };
   },
   methods: {
