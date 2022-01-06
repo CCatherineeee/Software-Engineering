@@ -6,16 +6,37 @@
         ref="filterTable"
         row-key="deadline"
         :data="
-          experimentList.filter(
-            (data) =>
-              !search || data.name.toLowerCase().includes(search.toLowerCase())
-          )
+          experimentList
+            .filter(
+              (data) =>
+                !search ||
+                data.title.toLowerCase().includes(search.toLowerCase())
+            )
+            .slice((currentPage - 1) * pagesize, currentPage * pagesize)
         "
         style="width: 100%"
       >
         <el-table-column prop="title" label="实验名称" sortable />
         <el-table-column prop="end_time" label="发布日期" sortable />
-        <el-table-column prop="ex_type" label="提交方式" sortable />
+        <el-table-column
+          prop="ex_type"
+          label="提交方式"
+          sortable
+          :filters="[
+            { text: '在线提交', value: '在线提交' },
+            { text: '提交文件', value: '提交文件' },
+          ]"
+          :filter-method="filterTag"
+          filter-placement="bottom-end"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.ex_type === '在线提交' ? 'primary' : 'success'"
+              disable-transitions
+              >{{ scope.row.ex_type }}</el-tag
+            >
+          </template>
+        </el-table-column>
         <el-table-column prop="weight" label="权重" sortable />
 
         <el-table-column>
@@ -24,7 +45,7 @@
           </template>
           <template #default="scope">
             <v-row>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-btn small dark @click="handleCheck(scope.row)">查看</v-btn>
               </v-col>
               <v-col cols="3">
@@ -54,6 +75,7 @@ export default {
   data() {
     return {
       c_id: "",
+      dialogVisible: false,
       search: "",
       currentPage: 1,
       pagesize: 6,
@@ -68,6 +90,20 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
+    resetDateFilter() {
+      this.$refs.filterTable.clearFilter("date");
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    filterTag(value, row) {
+      return row.ex_type === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
+    },
+
     handlePreview(file) {
       console.log(file);
     },
@@ -79,7 +115,7 @@ export default {
     handleChange(file) {
       console.log(file);
       this.fileListS.push(file);
-      console.log(this.fileListS);
+      //console.log(this.fileListS);
     },
 
     beforeRemove(file) {
@@ -106,6 +142,10 @@ export default {
       });
     },
 
+    handleFile() {
+      this.dialogVisible = true;
+    },
+
     getCourseEx() {
       var classID = this.c_id.toString();
       this.axios
@@ -118,7 +158,7 @@ export default {
         )
         .then((response) => {
           //这里使用了ES6的语法
-          console.log(response);
+          console.log("getCourseEx", response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });

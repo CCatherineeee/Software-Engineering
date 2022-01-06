@@ -56,7 +56,7 @@ export default {
           })
         )
         .then((response) => {
-          console.log(response.data["data"]);
+          //console.log(response.data["data"]);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -66,7 +66,7 @@ export default {
           } else {
             //这里使用了ES6的语法
             this.annList = response.data.data;
-            console.log(this.annList);
+            // console.log(this.annList);
           }
         });
     },
@@ -84,3 +84,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.el-button--primary {
+  color: white;
+}
+</style>
