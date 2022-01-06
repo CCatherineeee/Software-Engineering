@@ -243,7 +243,6 @@ class Class(db.Model):
 
     #一对多关联
     # experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
-    exams = db.relationship('Exam', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
     course_announcement = db.relationship('CourseAnnouncement', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
 
     def __repr__(self):
@@ -454,7 +453,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 3为截至
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 

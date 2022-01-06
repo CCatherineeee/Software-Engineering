@@ -67,33 +67,24 @@ def uploadReport():
                 se.file_url = path
             else :
                 se.file_url = path
-            se.upload_time = datetime.datetime.now()
+            se.submitTime = datetime.datetime.now()
             report.save(path)
             dbManage.db.session.commit()
             return jsonify({'code':200,'message':"提交成功",'data':None})
         else:
             return jsonify({'code':501,'message':"实验不存在",'data':None})
 
-@studentExperimentRoute.route('/Ex/getUpload/',methods=['POST'])  
-def getReport():
-    data = request.form
-    s_id = data['s_id']
-    ex_id = data['ex_id']
-    s = Serializer('WEBSITE_SECRET_KEY', 60*30) # 60 secs by 30 mins
-    token = s.dumps({'s_id': s_id,'ex_id':ex_id}).decode('utf-8') # encode user id 
-    return token
-
 @studentExperimentRoute.route('/Ex/showUpload/',methods=['POST'])  
 def showReport():
-    token = request.headers['Authorization']
-    s = Serializer('WEBSITE_SECRET_KEY')
-    try:
-        s_id = s.loads(token)['s_id']
-        ex_id = s.loads(token)['ex_id']
-    except:
-        return "Loss"
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    s_id = data['s_id']
+    ex_id = data['ex_id']
+
     se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
-    path = os.path.join(basepath,'StudentExFile',ex_id)
+    if not se.file_url:
+        return jsonify({'code':500,'message':"未提交",'data':None})
+    path = os.path.join(basepath,'StudentExFile',str(ex_id))
     filename = se.file_url.split(path+'/')[1]    
     return send_from_directory(path,filename,as_attachment=True)
 
@@ -131,7 +122,6 @@ def showEx():
         return jsonify({'code':200,'message':"无法访问页面",'data':content})
     
 #学生下载实验模板
-
 @studentExperimentRoute.route('/Ex/downloadExTemplate',methods=['POST'])  
 def downloadExTemplate():
     data = request.get_data()

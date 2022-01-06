@@ -37,6 +37,8 @@ def getReport():
     s_id = data['s_id']
     ex_id = data['ex_id']
     se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
+    if not se.file_url:
+        return jsonify({'code':500,'message':"未提交",'data':None})
     path = os.path.join(basepath,'StudentExFile',ex_id)
     filename = se.file_url.split(path+'/')[1]
     response = send_from_directory(path,filename,as_attachment=True)
