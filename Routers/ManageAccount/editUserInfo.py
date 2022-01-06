@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Student,TeachingAssistant
+from Model.Model import Admin, Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
 from Routers import Role
@@ -84,6 +84,7 @@ def editTAInfo():
     return "Success"
 
 @editUserInfoRoute.route('/editInfo/Student/changePwd',methods=['POST'])  
+@cross_origin(supports_credentials=True)
 def change_student_pwd():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
@@ -128,6 +129,7 @@ def change_teacher_pwd():
     return jsonify(data)
 
 @editUserInfoRoute.route('/editInfo/TA/changePwd',methods=['POST'])  
+
 def change_ta_pwd():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
@@ -142,6 +144,29 @@ def change_ta_pwd():
     if(ta.check_password(old_pwd)):
         ta.set_password(new_pwd)
         dbManage.db.session.add(ta)
+        dbManage.db.session.commit()
+        data = {'code':200,'message':'修改成功'}
+    else:
+        data = {'code':500,'message':'密码错误','data':None}
+
+    return jsonify(data)
+
+@editUserInfoRoute.route('/editInfo/admin/changePwd',methods=['POST'])  
+
+def change_admin_pwd():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    admin_id = data['admin_id']
+    old_pwd = data['old_password']
+    new_pwd = data['new_password']
+    
+    admin = Admin.query.filter(Admin.admin_id==admin_id).first()
+    if not admin:
+        return "NotExist"
+    if(admin.admin_pwd==old_pwd):
+        admin.admin_pwd = new_pwd
+        dbManage.db.session.add(admin)
         dbManage.db.session.commit()
         data = {'code':200,'message':'修改成功'}
     else:
