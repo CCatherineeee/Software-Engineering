@@ -131,7 +131,7 @@ export default {
           this.$message(msg);
         })
         .catch(function (error) {
-          console(error);
+          console.log(error);
         });
 
       var reader = new FileReader();
@@ -172,7 +172,7 @@ export default {
           }
         })
         .catch(function (error) {
-          console(error);
+          console.log(error);
         });
     },
 

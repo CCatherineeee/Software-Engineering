@@ -93,7 +93,7 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       this.axios
-        .post("/api/getUserInfo/Student/", JSON.stringify(jsons))
+        .get("/api/getUserInfo/Student/", JSON.stringify(jsons))
         .then((response) => {
           console.log("getinfo");
           console.log(response);

@@ -39,6 +39,7 @@
               label="实验名称"
               auto-grow
               height="20px"
+              v-model="ex_info.title"
               :value="ex_info.title"
             ></v-textarea>
 
@@ -48,6 +49,7 @@
               label="实验权重"
               height="20px"
               auto-grow
+              v-model="ex_info.weight"
               :value="ex_info.weight"
             ></v-textarea>
 
@@ -56,6 +58,7 @@
               :disabled="readOnly"
               label="实验简介"
               auto-grow
+              v-model="ex_info.brief"
               :value="ex_info.brief"
             ></v-textarea>
 
@@ -213,6 +216,34 @@ export default {
     },
     editExper() {
       //修改实验信息
+      var jsons = {
+        title: this.ex_info.title,
+        brief: this.ex_info.brief,
+        end_time:this.ex_info.end_time,
+        ex_id: this.ex_info.ex_id,
+        status: this.ex_info.status,
+        weight: this.ex_info.weight,
+        token: sessionStorage.getItem("token"),
+      };
+
+      this.axios
+        .post("/api/course/editEx/", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.$message("修改成功");
+            this.$router.go(0);
+            this.proDialog = false;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   mounted() {

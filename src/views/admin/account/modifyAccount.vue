@@ -20,13 +20,6 @@
         <el-input v-model="userAccount.admin_id" :disabled="true"></el-input>
       </el-form-item>
 
-      <el-form-item label="性别" prop="gender">
-        <el-select v-model="userAccount.gender" style="float: left">
-          <el-option label="男" :value="1"></el-option>
-          <el-option label="女" :value="0"></el-option>
-        </el-select>
-      </el-form-item>
-
       <el-form-item label="手机" prop="phone_number">
         <el-input v-model="userAccount.phone_number"></el-input>
       </el-form-item>
@@ -52,8 +45,7 @@ export default {
       id: "",
       userAccount: {
         name: "",
-        sid: 111,
-        gender: "女",
+        admin_id: 111,
         phone: 111,
         email: "",
       },
@@ -85,7 +77,34 @@ export default {
         });
     },
 
-    save() {},
+    save() {
+      if (this.userAccount.phone_number.length != 11) {
+        this.$message.warning("请输入11位的手机号！");
+        return;
+      }
+
+      var jsons = {
+        name: this.userAccount.name,
+        admin_id: this.userAccount.admin_id,
+        phone_number: this.userAccount.phone_number,
+        email: this.userAccount.email,
+        token: sessionStorage.getItem("token"),
+      };
+      this.axios
+        .post("/api/editInfo/Admin/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log("save");
+          console.log(response);
+
+          if (response.data == "Success")
+            this.$message({
+              message: "修改成功",
+              type: "success",
+            });
+          else this.$message.error("错误");
+        });
+
+    },
     back() {
       this.$router.go(-1);
     },

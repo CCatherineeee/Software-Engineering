@@ -112,7 +112,7 @@
             this.axios
             .post(
               //"/api/users/validateCaptcha"
-              "http://100.67.225.254:5000/editInfo/Teacher/resetPwd",
+              "/api/editInfo/Teacher/resetPwd",
               JSON.stringify({
                 t_id: commitJson.id,
                 new_password: commitJson.newPsw

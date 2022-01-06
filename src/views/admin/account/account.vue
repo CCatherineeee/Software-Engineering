@@ -24,10 +24,7 @@
             <template slot="label"> 工号 </template>
             {{ id }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label"> 性别 </template>
-            {{ gender }}
-          </el-descriptions-item>
+
           <el-descriptions-item>
             <template slot="label"> 手机号 </template>
             {{ phone_number }}
@@ -50,7 +47,6 @@ export default {
     return {
       name: "",
       id: "",
-      gender: "",
       phone_number: "",
       email: "",
       is_active: "",
