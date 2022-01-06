@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
+
+from skimage.util import dtype
 from Model.Model import Admin, Student,TeachingAssistant
 from Model.Model import Teacher
 from sqlalchemy import and_, or_
@@ -12,6 +14,9 @@ from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_cors import cross_origin
 import os
+from skimage import io
+from skimage import transform
+import numpy as np
 
 editUserInfoRoute = Blueprint('editUserInfoRoute', __name__)
 CORS(editUserInfoRoute, resources=r'/*')	
@@ -251,7 +256,7 @@ def reset_ta_pwd():
     ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
     if not ta:
         return "NotExist"
-        
+
     ta.set_password(new_pwd)
     dbManage.db.session.add(ta)
     dbManage.db.session.commit()
@@ -292,6 +297,13 @@ def upload_avatar():
                     teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
                     dbManage.db.session.commit()
                     avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
+                    #修改大小
+                    img = io.imread(UPLOAD_FOLDER+fname+ext)
+                    width = 220
+                    height = 220
+                    dim = (width, height)
+                    resized = transform.resize(img, dim)
+                    io.imsave(UPLOAD_FOLDER+fname+ext, resized)
                     result = {'code':200,'message':'上传头像成功','data':None}
                 else:
                     result = {'code':501,'message':'未找到用户','data':None}
@@ -301,6 +313,19 @@ def upload_avatar():
                         student.avatar = '{}_{}'.format(userID,fname+ext)
                         dbManage.db.session.commit()
                         avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
+                        #修改大小
+                        img = io.imread(UPLOAD_FOLDER+userID+'_'+fname+ext)
+                        width = 220
+                        height = 220
+                        dim = (width, height)
+                        resized = transform.resize(img, dim)
+                        _resz = np.zeros((resized.shape[0],resized.shape[1],resized.shape[2]),dtype=np.uint8)
+                        for i in range(resized.shape[0]):
+                            for j in range(resized.shape[1]):
+                                for k in range(resized.shape[2]):
+                                    _resz[i][j][k] = resized[i][j][k] * 255  
+                        _resz.dtype=np.uint8
+                        io.imsave(UPLOAD_FOLDER+userID+'_'+fname+ext, _resz)
                         result = {'code':200,'message':'上传头像成功','data':None}
                     else:
                         result = {'code':501,'message':'未找到用户','data':None}
