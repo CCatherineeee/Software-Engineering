@@ -4,7 +4,7 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img
+            <img ref="stuAvatar"
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
@@ -57,7 +57,26 @@
 
 <script>
 export default {
-  methods: {},
+  methods: {
+      getUserAvatar: function () {
+      let param = new FormData(); // 创建form对象
+      param.append("t_id", sessionStorage.getItem("id"));
+      this.axios
+        .post("/api/getUserInfo/Teacher/showAvatar", param)
+        .then((response) => {
+          var address = "http://39.107.51.181:5000";
+          var url = response.data.url;
+          this.$refs.stuAvatar.src = address + url;
+          console.log(this.$refs.stuAvatar.src);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
+  mounted(){
+      this.getUserAvatar();
+  },
 };
 </script>
 
