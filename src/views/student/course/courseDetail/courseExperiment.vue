@@ -42,7 +42,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" min-width="110%">
+        <el-table-column label="操作" min-width="120%">
           <template slot-scope="scope">
             <el-button size="small" @click="toExperiment(scope.row)"
               >查看</el-button

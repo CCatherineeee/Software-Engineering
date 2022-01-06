@@ -62,7 +62,6 @@
             .then(function(response) {
               //这里使用了ES6的语法
               // this.checkResponse(response.data); //请求成功返回的数据
-              alert("验证验证码成功");
               result = response.data.message
               console.log(result)
             if (result == "true")
@@ -89,7 +88,6 @@
         }
         else{
 
-        debugger;
         if(commitJson.role=="student" && commitJson.verifySuccess=="ture"){
             this.axios
             .post(
@@ -114,10 +112,10 @@
             this.axios
             .post(
               //"/api/users/validateCaptcha"
-              "/api/editInfoTeacher/resetPwd",
+              "http://100.67.225.254:5000/editInfo/Teacher/resetPwd",
               JSON.stringify({
                 t_id: commitJson.id,
-                new_password: commitJson.new_password
+                new_password: commitJson.newPsw
               })
             )
             .then(function(response) {

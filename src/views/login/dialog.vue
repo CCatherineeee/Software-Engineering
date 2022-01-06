@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" v-show="showMask">
+  <div class="dialog" id="dialog" v-show="showMask">
     <div class="dialog-container">
       <div class="dialog-title">重置密码</div>
       <!-- <div class="content" v-html="content"></div> -->
@@ -32,7 +32,7 @@
       </el-form>
       <div class="btns">
         <div v-if="type != 'confirm'" class="default-btn" @click="closeBtn">
-          取消
+          退出
         </div>
         <div v-if="type == 'danger'" class="danger-btn" @click="dangerBtn">
           提交
@@ -75,7 +75,7 @@ export default {
     },
     cancelText: {
       type: String,
-      default: "取消",
+      default: "退出",
     },
     dangerText: {
       type: String,
@@ -94,6 +94,10 @@ export default {
     };
   },
   methods: {
+    destroyed() {
+      var vm = this;
+      vm._isDestroyed = true
+      },
     sendCaptcha() {
       console.log(this.email);
       this.axios
@@ -108,7 +112,7 @@ export default {
           function (response) {
             //这里使用了ES6的语法
             // this.checkResponse(response.data); //请求成功返回的数据
-            alert("发送验证码成功");
+            // alert("发送验证码成功");
             console.log(response);
           },
           function (err) {
@@ -122,6 +126,12 @@ export default {
     closeBtn() {
       this.$emit("cancel");
       this.closeMask();
+      this.id="";
+      this.newPsw= "";
+      this.confirmNewPsw= "";
+      this.email= "";
+      this.captcha="";
+      this.role= "student";
     },
     //在这里修改
     dangerBtn() {
@@ -147,6 +157,12 @@ export default {
   },
   mounted() {
     this.showMask = this.value;
+    this.id="";
+    this.newPsw= "";
+    this.confirmNewPsw= "";
+    this.email= "";
+    this.captcha="";
+    this.role= "student";
   },
   watch: {
     value(newVal) {
