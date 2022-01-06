@@ -141,3 +141,29 @@ def showAvartar():
     else:
         pass
 
+# show photo
+@getUserInfoRoute.route('/getUserInfo/Teacher/showAvatar', methods=['POST'])
+def showTeacherAvartar():
+    if request.method == 'POST':
+        data = request.form
+        t_id = data['t_id']
+        teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
+        if teacher is None:
+            pic_url = {'url':"",'status':500,'message':"no student"}
+        else:
+            filename = teacher.avatar
+            current_app.logger.debug('filename is %s' % filename)
+            if filename:
+                # image_data = open((current_app.config['AVATAR_UPLOAD_FOLDER']+filename), "rb").read()
+                # response = make_response(image_data)
+                # response.headers['Content-Type'] = 'image/png'
+                # return response
+                pic_url = {'url':'/static/avatar/'+filename,'status':200,'message':"Success"}
+                return jsonify(pic_url)
+            else:
+                pic_url = {'url':"",'status':400,'message':"no avatar"}
+            
+        return jsonify(pic_url)
+    else:
+        pass
+
