@@ -98,7 +98,7 @@ export default {
       this.axios
         .post("/api/getUserInfo/Student/showAvatar", param)
         .then((response) => {
-          var address = "http://100.67.159.209:5000";
+          var address = "http://39.107.51.181:5000";
           var url = response.data.url;
           var imgHtml = "<img src=" + address + url + "></img>";
           console.log(imgHtml);
