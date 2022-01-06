@@ -59,7 +59,7 @@ def getClassFile():
         file_item = {'file_url':"/static/classFile/"+item.file_name,'filename':item.file_name,'date':str(item.upload_time),'id':item.file_id}
         file_result.append(file_item)
 
-    return jsonify({'status':500,'message':'班级不存在','data':file_result})
+    return jsonify({'status':200,'message':'获取成功','data':file_result})
 
 @manageClassFileRoute.route('/manageClassFileRoute/deleteClassFile',methods=['POST'])  
 def deleteClassFile():

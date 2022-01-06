@@ -183,7 +183,7 @@ def stopEx():
         ex.status = 0
         
         dbManage.db.session.commit()
-        return jsonify({'code':200,'message':"发布成功",'data':None})
+        return jsonify({'code':200,'message':"截止成功",'data':None})
 
 @manageExperimentRoute.route('/course/getExById/',methods=['POST'])  
 def getExById():

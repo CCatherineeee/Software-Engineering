@@ -165,7 +165,7 @@ def studentGetClass():
         
         data = {
             'class_id':class_item.class_id,
-            'class_number':this_class.class_number,
+            'uil/':this_class.class_number,
             'prefix':this_course.prefix,
             'semester':this_course.course_semester,
             'year':this_course.course_year,

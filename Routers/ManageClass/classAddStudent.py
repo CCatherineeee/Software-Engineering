@@ -103,7 +103,7 @@ def classAddStudentManually():
 def classAddStudentFile():
     fileList = request.files.getlist('file')
     class_id = request.form['class_id']
-    token = data['token']
+    token = request.form['token']
     res = checkToken(token,Role.TeacherRole)
     if res == 301:
         return jsonify({'code':301,'message':"验证过期",'data':None})
