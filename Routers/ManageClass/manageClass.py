@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Course,Class, Experiment,StudentClass,CourseType, StudentExam, StudentExperiment,Teacher,Student
+from Model.Model import Course,Class, Experiment,StudentClass,CourseType, StudentExam, StudentExperiment,Teacher,Student,TeachingAssistant,TAClass
 import dbManage
 from sqlalchemy import and_, or_
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -256,7 +256,9 @@ def IDGetClassStudent():
         stu = Student.query.filter(Student.s_id == student_item.s_id).first()
         stu_json = {'s_id':stu.s_id,'name':stu.name}
         all_student['data'].append(stu_json)
-
+    ta_id = TAClass.query.filter(TAClass.class_id == class_id).first().ta_id
+    ta_name = TeachingAssistant.query.filter(TeachingAssistant.ta_id == ta_id).first().name
+    all_student.update({'ta_id':ta_id,"ta_name":ta_name})
     return {'code':200,'message':"获取成功",'data':all_student}
 
 #通过班级号获取所有班级内所有学生的所有成绩
@@ -265,7 +267,7 @@ def GetClassStudentScore():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     class_id = data['class_id']  #班级号
-    all_student = {"experiment":[],"score":[]}
+    all_student = {"experiment":[],"score":[],"type":[]}
     student_list = StudentClass.query.filter(StudentClass.class_id == class_id).all()
     for student_item in student_list:
         stu = Student.query.filter(Student.s_id == student_item.s_id).first()
@@ -276,14 +278,14 @@ def GetClassStudentScore():
             if this_ex.course_id != class_id[:-1]:
                 continue
             ex_name = "ex_" + str(ex_item.experiment_id)
-            ex_name_json = {"label":this_ex.experiment_title,"key":ex_name}
+            ex_name_json = {"label":this_ex.experiment_title,"key":ex_name, "type":this_ex.ex_type}
             if ex_name_json not in all_student['experiment']:
                 all_student['experiment'].append(ex_name_json)
             if not ex_item.score:
                 stu_json[ex_name] = 0
             else:
                 stu_json[ex_name] = ex_item.score
-            
+
         all_student['score'].append(stu_json)
         
 

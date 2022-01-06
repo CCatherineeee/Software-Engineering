@@ -243,7 +243,6 @@ class Class(db.Model):
 
     #一对多关联
     # experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
-    exams = db.relationship('Exam', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
     course_announcement = db.relationship('CourseAnnouncement', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
 
     def __repr__(self):
@@ -271,6 +270,16 @@ class Experiment(db.Model):
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 
+class ExperimentReport(db.Model):
+    __tablename__ = 'experiment_report'
+    report_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id'),primary_key=True)
+    ex_id = db.Column(db.Integer,ForeignKey('experiment.experiment_id'))
+    goal = db.Column(db.Text)
+    device = db.Column(db.Text)
+    step = db.Column(db.Text)
+    process = db.Column(db.Text)
+    result = db.Column(db.Text)
 
 
 class SystemAnnouncement(db.Model):
@@ -359,7 +368,8 @@ class StudentExperiment(db.Model):
     """
     __tablename__ = 'student_experiment'
     experiment_id = db.Column(db.Integer, ForeignKey('experiment.experiment_id',ondelete='CASCADE'), primary_key=True)  
-    s_id = db.Column(db.String(64), ForeignKey('student.s_id',ondelete='CASCADE'),primary_key=True)
+    s_id = db.Column(db.String(64), ForeignKey('student.s_id'),primary_key=True)
+    report_id = db.Column(db.Integer,ForeignKey('experiment_report.report_id'))
     file_url = db.Column(db.String(1024))
     score = db.Column(db.Integer)
     grader = db.Column(db.String(64))  #批改人姓名，不是ID
@@ -443,7 +453,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 3为截至
-    class_id = db.Column(db.String(256),ForeignKey("class.class_id",ondelete='CASCADE'))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 

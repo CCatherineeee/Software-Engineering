@@ -31,7 +31,7 @@ def checkAdminToken(token,role):
 def deleteStudent():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    data = data['s_id']
+    s_id = data['s_id']
     token = data['token']
     res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
@@ -39,7 +39,7 @@ def deleteStudent():
     elif res == 404:
         return jsonify({'code':res,'message':"无法访问页面",'data':None})
     else:
-        student = Student.query.filter(Student.s_id == data).first()    
+        student = Student.query.filter(Student.s_id == s_id).first()    
         if not student:
             return jsonify({'code':302,'message':"用户不存在",'data':None})
         dbManage.db.session.delete(student)
@@ -50,7 +50,7 @@ def deleteStudent():
 def deleteTA():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    data = data['ta_id']
+    ta_id = data['ta_id']
     token = data['token']
     res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
@@ -58,7 +58,7 @@ def deleteTA():
     elif res == 404:
         return jsonify({'code':res,'message':"无法访问页面",'data':None})
     else:
-        ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id == data).first()    
+        ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id == ta_id).first()    
         if not ta:
             return jsonify({'code':302,'message':"用户不存在",'data':None})
         dbManage.db.session.delete(ta)
@@ -69,7 +69,7 @@ def deleteTA():
 def deleteTeacher():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    data = data["t_id"]
+    t_id = data["t_id"]
     token = data['token']
     res = checkAdminToken(token,Role.AdminRole)
     if res == 301:
@@ -77,9 +77,9 @@ def deleteTeacher():
     elif res == 404:
         return jsonify({'code':res,'message':"无法访问页面",'data':None})
     else:
-        teacher = Teacher.query.filter(Teacher.t_id == data).first()
-        courses = Course.query.filter(Course.duty_teacher == data).all()
-        classes = Class.query.filter(Class.t_id == data).all()
+        teacher = Teacher.query.filter(Teacher.t_id == t_id).first()
+        courses = Course.query.filter(Course.duty_teacher == t_id).all()
+        classes = Class.query.filter(Class.t_id == t_id).all()
         for c in classes:
             c.t_id = None
         for c in courses:
