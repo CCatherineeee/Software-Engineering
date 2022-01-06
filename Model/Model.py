@@ -95,6 +95,7 @@ class Teacher(UserMixin,db.Model):
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer,default=0)  # 是否激活，0未激活，1已激活
     department = db.Column(db.String(64))   # 专业
+    avatar = db.Column(db.String(200),default=None)
 
     def __repr__(self):
         return '<User %r>' % self.__tablename__
@@ -227,7 +228,7 @@ class Course(db.Model):
     course_semester = db.Column(db.String(64))  #春季为00  秋季为01
     course_year = db.Column(db.String(64))  #如2019
     duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'))
-    
+
 
 class Class(db.Model):
     """

@@ -294,16 +294,22 @@ def upload_avatar():
             if token_role==Role.TeacherRole:  #是老师
                 teacher = Teacher.query.filter(Teacher.t_id==userID).first()
                 if teacher:
-                    teacher.avatar = '/static/avatar/{}_{}'.format(userID,fname)
+                    teacher.avatar = '{}_{}'.format(userID,fname+ext)
                     dbManage.db.session.commit()
                     avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
                     #修改大小
-                    img = io.imread(UPLOAD_FOLDER+fname+ext)
+                    img = io.imread(UPLOAD_FOLDER+userID+'_'+fname+ext)
                     width = 210
                     height = 210
                     dim = (width, height)
                     resized = transform.resize(img, dim)
-                    io.imsave(UPLOAD_FOLDER+fname+ext, resized)
+                    _resz = np.zeros((resized.shape[0],resized.shape[1],resized.shape[2]),dtype=np.uint8)
+                    for i in range(resized.shape[0]):
+                        for j in range(resized.shape[1]):
+                            for k in range(resized.shape[2]):
+                                _resz[i][j][k] = resized[i][j][k] * 255  
+                    _resz.dtype=np.uint8
+                    io.imsave(UPLOAD_FOLDER+userID+'_'+fname+ext, _resz)
                     result = {'code':200,'message':'上传头像成功','data':None}
                 else:
                     result = {'code':501,'message':'未找到用户','data':None}
