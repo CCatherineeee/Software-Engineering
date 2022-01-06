@@ -33,7 +33,7 @@ def createExam():
     classes = Class.query.filter(Class.course_id == course_id).all()
     for class_ in classes:
         # 找到班级学生，生产测验小组
-        students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+        students = StudentClass.query.filter(StudentClass.class_id == class_.class_id).all()
         while(len(students) > 4):
             sg = random.sample(students,3)
             students.remove(sg[0])
@@ -83,7 +83,7 @@ def getExam():
         else:
             if now_time > e.start_time:
                 e.status = 1
-                pushExam(e.exam_id,class_id)
+                pushExam(e.exam_id,course_id)
             else:
                 e.status = 0
         is_submit = None
