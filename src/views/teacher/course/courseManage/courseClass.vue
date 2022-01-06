@@ -40,8 +40,11 @@
       <el-main>
         <el-scrollbar>
           <el-row>
-            <el-col :span="3">
+            <el-col :span="5">
               <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col
+            >
+            <el-col :span="7">
+              <v-btn dark @click="handleScore">成绩占比</v-btn></el-col
             >
           </el-row>
           <el-descriptions
@@ -61,6 +64,11 @@
             }}</el-descriptions-item>
             <el-descriptions-item label="上课时间">
               {{ year }}年 {{ semester }}
+            </el-descriptions-item>
+            <el-descriptions-item label="各项成绩占比">
+              考试： {{ semester }}<br />
+              实验： {{ semester }}<br />
+              出勤： {{ semester }}
             </el-descriptions-item>
           </el-descriptions>
 
@@ -253,25 +261,41 @@
           </div>
         </el-dialog>
 
-        <el-dialog :visible.sync="fileDialog" title="请选择文件" center>
-          <el-upload
-            class="upload-import"
-            ref="uploadImport"
-            action="https://baidu.com/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-change="handleChange"
-            :before-remove="beforeRemove"
-            :file-list="fileList"
-            :multiple="true"
-            :auto-upload="false"
-            accept=""
-          >
-            <el-button type="primary">选取文件</el-button>
-          </el-upload>
+        <el-dialog
+          :visible.sync="scoreDialog"
+          title="设置成绩占比（以小数形式）"
+          center
+          width="50%"
+        >
+          <v-container>
+            <v-textarea
+              filled
+              label="考试"
+              auto-grow
+              height="20px"
+              v-model="eachScore.exam"
+            ></v-textarea>
+
+            <v-textarea
+              filled
+              label="实验"
+              auto-grow
+              height="20px"
+              v-model="eachScore.report"
+            ></v-textarea>
+
+            <v-textarea
+              filled
+              label="出勤"
+              auto-grow
+              height="20px"
+              v-model="eachScore.attendance"
+            ></v-textarea>
+          </v-container>
+
           <div slot="footer" class="dialog-footer">
-            <el-button @click="fileDialog = false">取消</el-button>
-            <el-button type="success" @click="addFile()">上传</el-button>
+            <el-button @click="scoreDialog = false">取消</el-button>
+            <el-button type="primary" @click="setScore()">确定</el-button>
           </div>
         </el-dialog>
       </el-main>
@@ -290,6 +314,7 @@ export default {
       fileDialog: false,
       classDialog: false,
       exDialog: false,
+      scoreDialog: false,
 
       courseID: "",
       name: "",
@@ -312,6 +337,11 @@ export default {
         weight: "",
         end_time: "",
         status: null,
+      },
+      eachScore: {
+        exam: "",
+        report: "",
+        attendance: "",
       },
       exStatus: [
         {
@@ -466,6 +496,9 @@ export default {
     handleAddEx() {
       this.experiment = {};
       this.exDialog = true;
+    },
+    handleScore() {
+      this.scoreDialog = true;
     },
     handleDeleteClass(row) {
       this.$confirm("确认删除班级吗?", "提示", {
@@ -834,6 +867,14 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    setScore() {
+      //设置成绩占比
+      var exam = this.eachScore.exam * 1;
+      var report = this.eachScore.report * 1;
+      var attendance = this.eachScore.attendance * 1;
+      if (exam + report + attendance != 1)
+        this.$message.warning("所有成绩加合不为1，请重新输入！");
     },
 
     formatDateTime(date) {
