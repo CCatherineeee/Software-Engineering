@@ -66,13 +66,12 @@
                     style="margin-right: 50px"
                     >登陆</el-button
                   >
-                  <el-button @click="toRegister" style="margin-left: 50px"
-                    >注册</el-button
+                  <el-button @click="openMask" style="margin-left: 50px"
+                    >忘记密码</el-button
                   >
                   <br />
                   <br />
                   <el-form-item>
-                    <div @click="openMask">忘记密码</div>
                     <dialog-bar
                       v-model="sendVal"
                       type="danger"
@@ -239,7 +238,7 @@ export default {
   },
   methods: {
     openMask() {
-      this.$store.state.data=""
+      this.$store.state.data = "";
       this.sendVal = true;
     },
     clickCancel() {
@@ -279,7 +278,7 @@ export default {
         });
         sessionStorage.setItem("role", 3);
         //助教先导引到学生页面
-        this.$router.push("/studentHome/control");
+        this.$router.push("/assistHome/control");
       } else if (response["status"] === "Login") {
         this.$message({
           message: "登陆成功",
@@ -377,7 +376,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body > .el-container {
   margin-bottom: 40px;
 }
@@ -454,5 +453,8 @@ body > .el-container {
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

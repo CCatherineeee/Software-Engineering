@@ -79,7 +79,6 @@
           solo
           :counter="200"
         ></quill-editor>
-
       </v-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addAnn">确定</el-button>
@@ -191,6 +190,7 @@ export default {
       console.log(row);
       var jsons = {
         annoucement_id: row.annoucement_id,
+        token: sessionStorage.getItem("token"),
       };
       axios
         .post("/api/sys/delAnn/", JSON.stringify(jsons))
@@ -202,8 +202,11 @@ export default {
           console.log(error);
         });
     },
-    formatImag (content) {
-      return content.replace(/<img/g, "<img style='max-width:50%;height:auto;'")
+    formatImag(content) {
+      return content.replace(
+        /<img/g,
+        "<img style='max-width:50%;height:auto;'"
+      );
     },
   },
   mounted() {

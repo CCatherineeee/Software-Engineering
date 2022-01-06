@@ -5,13 +5,13 @@
       <!-- <div class="content" v-html="content"></div> -->
 
       <el-form style="margin: 40px 100px 0px 50px" label-width="80px">
-        <el-form-item label="您的身份" >
-            <el-radio v-model="role" label="student">学生</el-radio>
-            <el-radio v-model="role" label="teacher">老师</el-radio>
-            <el-radio v-model="role" label="teachingAssistant">助教</el-radio>
+        <el-form-item label="您的身份">
+          <el-radio v-model="role" label="student">学生</el-radio>
+          <el-radio v-model="role" label="teacher">老师</el-radio>
+          <el-radio v-model="role" label="teachingAssistant">助教</el-radio>
         </el-form-item>
         <el-form-item label="学工号" :required="true" status-icon="true">
-          <el-input  v-model="id"></el-input>
+          <el-input v-model="id"></el-input>
         </el-form-item>
         <el-form-item label="新密码" :required="true" status-icon="true">
           <el-input type="password" v-model="newPsw"></el-input>
@@ -21,54 +21,42 @@
           <el-input type="password" v-model="confirmNewPsw"></el-input>
         </el-form-item>
 
-        <el-form-item
-          label="邮箱"
-          :required="true"
-          status-icon="true"
-        >
+        <el-form-item label="邮箱" :required="true" status-icon="true">
           <el-input v-model="email"></el-input>
         </el-form-item>
 
-        <el-form-item
-          label="验证码"
-          :required="true"
-          status-icon="true"
-        >
+        <el-form-item label="验证码" :required="true" status-icon="true">
           <el-input v-model="captcha"></el-input>
         </el-form-item>
         <el-button type="text" @click="sendCaptcha">发送验证码</el-button>
       </el-form>
       <div class="btns">
         <div v-if="type != 'confirm'" class="default-btn" @click="closeBtn">
-          {{ cancelText }}
+          取消
         </div>
         <div v-if="type == 'danger'" class="danger-btn" @click="dangerBtn">
-          {{ dangerText }}
+          提交
         </div>
         <!-- <myconfirm title="确认重置?"  ref="confirmChange">
         </myconfirm>
          -->
       </div>
 
-        <div class="close-btn" @click="closeMask">
-          <i class="iconfont icon-close"></i>
-        </div>
-
-
+      <div class="close-btn" @click="closeMask">
+        <i class="iconfont icon-close"></i>
+      </div>
     </div>
     <div>
-    <myconfirm title="确认重置?"  ref="confirmChange">
-        </myconfirm>
+      <myconfirm title="确认重置?" ref="confirmChange"> </myconfirm>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import confirm from "./confirm.vue";
 
 export default {
-
-  components:{
-    "myconfirm":confirm
+  components: {
+    myconfirm: confirm,
   },
   props: {
     value: {},
@@ -93,42 +81,40 @@ export default {
       type: String,
       default: "提交",
     },
-    confirmText: {
-      type: String,
-      default: "确认",
-    },
   },
   data() {
     return {
       showMask: false,
-      id:"",
-      newPsw:"",
-      confirmNewPsw:"",
-      email:"",
-      captcha:"",
-      role:"student",
+      id: "",
+      newPsw: "",
+      confirmNewPsw: "",
+      email: "",
+      captcha: "",
+      role: "student",
     };
   },
   methods: {
-    sendCaptcha(){
-      console.log(this.email)
+    sendCaptcha() {
+      console.log(this.email);
       this.axios
-      .post(
-        //"/api/users/sendCaptcha"
-        "/api/users/sendCaptcha",
-        JSON.stringify({
-          email: this.email,
-        })
-      )
-      .then(function(response) {
-        //这里使用了ES6的语法
-        // this.checkResponse(response.data); //请求成功返回的数据
-        alert("发送验证码成功")
-        console.log(response)
-      },
-      function(err){
-        console.log(err)
-      });
+        .post(
+          //"/api/users/sendCaptcha"
+          "/api/users/sendCaptcha",
+          JSON.stringify({
+            email: this.email,
+          })
+        )
+        .then(
+          function (response) {
+            //这里使用了ES6的语法
+            // this.checkResponse(response.data); //请求成功返回的数据
+            alert("发送验证码成功");
+            console.log(response);
+          },
+          function (err) {
+            console.log(err);
+          }
+        );
     },
     closeMask() {
       this.showMask = false;
@@ -140,25 +126,24 @@ export default {
     //在这里修改
     dangerBtn() {
       this.$emit("danger");
-    
-      this.$store.state.data={
-                id: this.id,
-                role: this.role,
-                newPsw: this.newPsw,
-                confirmNewPsw: this.confirmNewPsw,
-                email: this.email,
-                captcha: this.captcha,
-                verifySuccess:false
-              }
-      console.log(this.$store.state.data)
-     this.$refs.confirmChange.visible=true;
+
+      this.$store.state.data = {
+        id: this.id,
+        role: this.role,
+        newPsw: this.newPsw,
+        confirmNewPsw: this.confirmNewPsw,
+        email: this.email,
+        captcha: this.captcha,
+        verifySuccess: false,
+      };
+      console.log("this.$store.state.data", this.$store.state.data);
+      this.$refs.confirmChange.visible = true;
       // this.closeMask();
     },
     confirmBtn() {
       this.$emit("confirm");
       this.closeMask();
     },
-    
   },
   mounted() {
     this.showMask = this.value;

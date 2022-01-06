@@ -189,7 +189,7 @@ export default {
         resource: [],
         type: [],
       },
-      class_id: "",
+      course_id: "",
       ex_title: "",
       end_time: null,
       start_time: null,
@@ -233,7 +233,7 @@ export default {
               path: "/teacherHome/concreteCourse/examHome/checkExam",
               query: {
                 info: this.$Base64.encode(
-                  JSON.stringify({ class_id: this.class_id })
+                  JSON.stringify({ course_id: this.course_id })
                 ),
               },
             });
@@ -241,7 +241,7 @@ export default {
         });
     },
     save() {
-      console.log(this.questionList);
+      console.log("questionList", this.questionList);
       if (this.start_time === null) {
         this.$message("请选择起始时间");
         return;
@@ -259,22 +259,22 @@ export default {
         .post(
           "/api/createExam",
           JSON.stringify({
-            class_id: this.class_id,
+            course_id: this.course_id,
             end_time: this.formatDateTime(this.end_time),
             start_time: this.formatDateTime(this.start_time),
             title: this.ex_title,
           })
         )
         .then((res) => {
-          console.log(res);
+          console.log("save()", res);
           if (res.data.code === 200) {
             this.addQue(res.data.data);
           }
         });
     },
     getParams() {
-      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-        "class_id"
+      this.course_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "course_id"
       ];
     },
     formatDateTime(date) {

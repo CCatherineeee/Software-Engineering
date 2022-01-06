@@ -6,7 +6,21 @@
       @click="handleAdd"
       >添加责任教师</el-button
     >
-    <el-table :data="dutyTeaList" style="width: 100%">
+    <el-table
+      :data="
+        dutyTeaList.filter(
+          (data) =>
+            !search ||
+            data.prefix.toLowerCase().includes(search.toLowerCase()) ||
+            data.name.toLowerCase().includes(search.toLowerCase()) ||
+            data.year.toLowerCase().includes(search.toLowerCase()) ||
+            data.semester.toLowerCase().includes(search.toLowerCase()) ||
+            data.t_id.toLowerCase().includes(search.toLowerCase()) ||
+            data.t_name.toLowerCase().includes(search.toLowerCase())
+        )
+      "
+      style="width: 100%"
+    >
       <el-table-column label="课程编号" prop="prefix" sortable />
       <el-table-column label="课程名称" prop="name" sortable />
       <el-table-column label="开课学年" prop="year" sortable />
@@ -214,8 +228,7 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log("getAllCourse");
-          console.log(response);
+          console.log("getAllCourse", response);
           this.courseList = response.data.data;
         })
         .catch(function (error) {

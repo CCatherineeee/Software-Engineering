@@ -1,6 +1,6 @@
 <!-- 个人信息页面-->
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-aside width="200px"></el-aside>
     <el-main class="back">
       <el-card style="box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.15)">
@@ -21,17 +21,10 @@
             {{ name }}
           </el-descriptions-item>
           <el-descriptions-item>
-            <template slot="label"> 工号 </template>
+            <template slot="label"> 学号 </template>
             {{ id }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label"> 性别 </template>
-            {{ gender }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label"> 手机号 </template>
-            {{ phone_number }}
-          </el-descriptions-item>
+
           <el-descriptions-item>
             <template slot="label"> 邮箱 </template>
             {{ email }}
@@ -44,11 +37,6 @@
               ><span v-if="is_active === 1">激活</span>
               <span v-if="is_active === 0">非激活</span></el-tag
             >
-          </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template slot="label"> 学院 </template>
-            {{ department }}
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -77,22 +65,19 @@ export default {
       this.id = sessionStorage.getItem("id");
     },
 
-    getTeaInfo() {
+    getTaInfo() {
       this.axios
-        .get("api//getUserInfo/Teacher/", {
-          params: { t_id: this.id, token: sessionStorage.getItem("token") },
+        .get("/api/getUserInfo/TA/", {
+          params: { ta_id: this.id },
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response);
+          console.log("getTaInfo", response);
 
           this.name = response.data[0].name;
-          this.gender = response.data[0].gender;
-          this.phone_number = response.data[0].phone_number;
+
           this.email = response.data[0].email;
           this.is_active = response.data[0].is_active;
-          //this.role = response.data[0].role;
-          this.department = response.data[0].department;
         })
         .catch(function (error) {
           console.log(error);
@@ -101,13 +86,13 @@ export default {
 
     modifyAccount() {
       this.$router.push({
-        path: "/teacherHome/modifyAccount",
+        path: "/assistHome/modifyAccount",
       });
     },
   },
   mounted() {
     this.getParams();
-    this.getTeaInfo();
+    this.getTaInfo();
   },
 };
 </script>
@@ -124,5 +109,8 @@ export default {
 .demo-border .line div {
   width: 100%;
   height: 0;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

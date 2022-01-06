@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       examList: [],
-      class_id: "",
+      course_id: "",
     };
   },
   methods: {
@@ -57,12 +57,12 @@ export default {
         .post(
           "/api/getExam",
           JSON.stringify({
-            class_id: this.class_id,
+            course_id: this.course_id,
             token: sessionStorage.getItem("token"),
           })
         )
         .then((res) => {
-          console.log("getExamList", res);
+          console.log("getExamList", res, this.course_id);
           if (res.data.code === 200) {
             this.examList = [];
             if (res.data.data.role !== 1) {
@@ -101,9 +101,10 @@ export default {
         });
     },
     getParams() {
-      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+      var class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
         "class_id"
       ];
+      this.course_id = class_id.substring(0, 12);
     },
 
     lookExam(row) {
@@ -111,7 +112,7 @@ export default {
         path: "/studentHome/concreteCourse/examHome/exam",
         query: {
           info: this.$Base64.encode(
-            JSON.stringify({ exam_id: row.exam_id, class_id: this.class_id })
+            JSON.stringify({ exam_id: row.exam_id, course_id: this.course_id })
           ),
         },
       });

@@ -23,13 +23,13 @@ export default {
   name: "examHome",
   data() {
     return {
-      class_id: "",
+      course_id: "",
     };
   },
   methods: {
-    getParams() {
-      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-        "class_id"
+    getParams: function () {
+      this.course_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "course_id"
       ];
     },
     handleSelect(index) {
@@ -37,7 +37,7 @@ export default {
         path: index,
         query: {
           info: this.$Base64.encode(
-            JSON.stringify({ class_id: this.class_id })
+            JSON.stringify({ course_id: this.course_id })
           ),
         },
       });

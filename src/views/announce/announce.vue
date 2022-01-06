@@ -1,5 +1,5 @@
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-main class="background">
       <p
         style="
@@ -92,8 +92,11 @@ export default {
     },
     handleCheck() {},
     checkAnnounce() {},
-    formatImag (content) {
-      return content.replace(/<img/g, "<img style='max-width:60%;height:auto;'")
+    formatImag(content) {
+      return content.replace(
+        /<img/g,
+        "<img style='max-width:60%;height:auto;'"
+      );
     },
   },
   mounted() {
@@ -127,5 +130,8 @@ export default {
 .dialogBack {
   margin: auto;
   font: 18px Microsoft YaHei;
+}
+.el-button--primary {
+  color: white;
 }
 </style>

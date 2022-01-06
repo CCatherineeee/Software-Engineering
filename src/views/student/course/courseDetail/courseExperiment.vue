@@ -20,14 +20,25 @@
         <el-table-column prop="end_time" label="截止日期" sortable />
         <el-table-column prop="status" label="实验状态" sortable />
         <el-table-column prop="score" label="成绩" sortable />
-        <el-table-column prop="is_submit" label="提交状态" sortable >
+        <el-table-column prop="is_submit" label="提交状态" sortable>
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.is_submit === true" key="已提交" type="success" effect="plain"> 已提交
+            <el-tag
+              v-if="scope.row.is_submit === true"
+              key="已提交"
+              type="success"
+              effect="plain"
+            >
+              已提交
             </el-tag>
 
-            <el-tag v-if="scope.row.is_submit === false" key="未提交" type="danger" effect="plain"> 未提交
+            <el-tag
+              v-if="scope.row.is_submit === false"
+              key="未提交"
+              type="danger"
+              effect="plain"
+            >
+              未提交
             </el-tag>
-
           </template>
         </el-table-column>
 
@@ -72,7 +83,7 @@
       >
       </el-pagination>
     </el-card>
-    <el-dialog :visible.sync="fileDialog" title="请选择文件" center>
+    <el-dialog :visible.sync="fileDialog" title="上传实验报告" center>
       <el-upload
         class="upload-import"
         ref="uploadImport"
@@ -165,24 +176,26 @@ export default {
         path: "/studentHome/concreteCourse/FillExper",
         query: {
           info: this.$Base64.encode(row.ex_id),
-          title:this.$Base64.encode(row.experiment_title)
+          title: this.$Base64.encode(row.experiment_title),
         },
       });
     },
     uploadFile() {
+      console.log("uploadFile", this.fileList);
       let param = new FormData();
       this.fileList.forEach((file) => {
-        param.append("files", file.raw);
+        param.append("report", file.raw);
       });
       param.append("s_id", this.sid);
       param.append("ex_id", this.ex_id);
       param.append("token", sessionStorage.getItem("token"));
+
       this.axios
         .post("/api/Ex/stuUpload/", param, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
         })
         .then((res) => {
-          console.log(res);
+          console.log("uploadFile", res);
           if (res.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -190,11 +203,11 @@ export default {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
           } else {
-            if (res.data["status"] === 200) {
+            if (res.data["code"] === 200) {
               this.$message("上传成功");
               this.fileList = [];
               this.fileDialog = false;
-              this.getFileList();
+              this.getEx();
             } else {
               this.$message("上传失败");
             }
@@ -215,12 +228,12 @@ export default {
         .then((response) => {
           //这里使用了ES6的语法
           //this.tableData = response.data
-          console.log("getEx");
+          //console.log("getEx");
           this.checkResponse(response.data); //请求成功返回的数据
         });
     },
     checkResponse(response) {
-      console.log(response);
+      console.log("getEx", response);
       if (response["code"] === 301) {
         this.$message("验证过期");
         this.$router.push({ path: "/login" });
@@ -228,6 +241,7 @@ export default {
         this.$message("找不到页面");
         this.$router.push({ path: "/404" });
       } else {
+        // this.tableData.clear();
         for (var i = 0; i < response.data.length; i++) {
           if (response.data[i].status !== 0) {
             if (response.data[i].status === 1) {
@@ -235,10 +249,11 @@ export default {
             } else {
               response.data[i].status = "已过期";
             }
-            this.tableData.push(response.data[i]);
+            //this.tableData.push(response.data[i]);
           }
-          console.log("thisTable");
-          console.log(this.tableData);
+          this.tableData = response.data;
+          //console.log();
+          //console.log("thisTable", this.tableData);
         }
       }
     },
@@ -255,3 +270,12 @@ export default {
   },
 };
 </script>
+
+<style >
+.el-button--primary {
+  color: white;
+}
+.el-button--success {
+  color: white;
+}
+</style>

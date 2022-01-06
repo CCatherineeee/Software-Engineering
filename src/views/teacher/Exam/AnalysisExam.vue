@@ -130,7 +130,7 @@ export default {
     getParams: function () {
       this.id = sessionStorage.getItem("id");
       this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-        "class_id"
+        "course_id"
       ];
     },
   },

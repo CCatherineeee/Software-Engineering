@@ -8,7 +8,7 @@
         ><v-btn dark @click="handleExcelS">表格导入学生</v-btn></el-col
       ><el-col :span="5" :offset="7">
         <v-text-field
-          v-model="assist"
+          v-model="assist_name"
           filled
           label="助教"
           type="text"
@@ -52,7 +52,7 @@
       center
       width="300px"
     >
-      <el-select v-model="assist">
+      <el-select v-model="assist_id">
         <el-option
           v-for="i in assistList"
           :key="i.ta_id"
@@ -65,53 +65,6 @@
         <el-button @click="dialogAssist = false">取消</el-button>
         <el-button type="primary" @click="setAssist()">确定</el-button>
       </div>
-    </el-dialog>
-    <el-dialog
-      :visible.sync="dialogFormVisibleG"
-      title="请输入小组成员信息"
-      center
-    >
-      <el-form
-        ref="dynamicValidateForm"
-        :model="dynamicValidateForm"
-        style="margin: 40px 65px 0px 25px"
-        label-width="80px"
-      >
-        <el-form-item
-          prop="leader"
-          label="组长"
-          :rules="{
-            required: true,
-            message: 'id can not be null',
-            trigger: 'blur',
-          }"
-        >
-          <el-input v-model="dynamicValidateForm.leader"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-for="(domain, index) in dynamicValidateForm.members"
-          :key="domain.key"
-          :label="'学生' + index"
-          :prop="'members.' + index + '.sid'"
-          :rules="{
-            required: true,
-            message: 'id can not be null',
-            trigger: 'blur',
-          }"
-        >
-          <el-input v-model="domain.sid"></el-input
-          ><el-button @click.prevent="removeDomain(domain)">移除</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            @click="addFromDetailT('dynamicValidateForm')"
-            >确定</el-button
-          >
-          <el-button @click="addDomain">新成员</el-button>
-          <el-button @click="dialogFormVisibleG = false">取消</el-button>
-        </el-form-item>
-      </el-form>
     </el-dialog>
 
     <el-dialog :visible.sync="dialogExcelVisibleS" title="请选择文件" center>
@@ -136,29 +89,6 @@
         <el-button type="success" @click="addFromExcelS()">上传</el-button>
       </div>
     </el-dialog>
-
-    <el-dialog :visible.sync="dialogExcelVisibleG" title="请选择文件" center>
-      <el-upload
-        class="upload-import"
-        ref="uploadImport"
-        action="https://baidu.com/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-change="handleChange"
-        :before-remove="beforeRemove"
-        :file-list="fileListG"
-        :multiple="true"
-        :auto-upload="false"
-        accept="application/vnd.ms-excel,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
-      >
-        <el-button type="primary">选取文件</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
-      </el-upload>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogExcelVisibleG = false">取消</el-button>
-        <el-button type="success" @click="addFromExcelG()">上传</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -169,38 +99,24 @@ export default {
       id: "",
       c_id: "",
 
-      activeName: "first",
       dialogFormVisibleS: false,
       dialogExcelVisibleS: false,
-      dialogFormVisibleG: false,
-      dialogExcelVisibleG: false,
+
       dialogAssist: false,
 
       studentData: [],
       groupData: [],
 
-      assist: "",
+      assist_id: "",
+      assist_name: "",
       assistList: [],
 
       /*手动导入学生数据*/
       formS: {
         s_id: "",
       },
-      /*手动导入小组成员数据*/
-      dynamicValidateForm: {
-        members: [
-          {
-            key: 1,
-            sid: "",
-          },
-        ],
-        leader: "",
-      },
-      fileListS: [],
-      fileListG: [],
 
-      currentPage: 1,
-      pagesize: 6,
+      fileListS: [],
     };
   },
   methods: {
@@ -210,12 +126,7 @@ export default {
     handleExcelS() {
       this.dialogExcelVisibleS = true;
     },
-    handleDetailG() {
-      this.dialogFormVisibleG = true;
-    },
-    handleExcelT() {
-      this.dialogExcelVisibleG = true;
-    },
+
     handleAssist() {
       this.dialogAssist = true;
     },
@@ -299,7 +210,7 @@ export default {
       //设置助教
       var jsons = {
         class_id: this.c_id.toString(),
-        ta_id: this.assist,
+        ta_id: this.assist_id,
         token: sessionStorage.getItem("token"),
       };
 
@@ -321,6 +232,7 @@ export default {
               type: "success",
               message: "设置成功!",
             });
+            this.getStuList();
             this.dialogAssist = false;
           }
         });
@@ -334,8 +246,7 @@ export default {
       this.axios
         .post("/api/manageClass/IDGetClassStudent", JSON.stringify(jsons))
         .then((response) => {
-          console.log("getStu");
-          console.log(response);
+          console.log("getStu", response);
 
           if (response.data["code"] === 301) {
             this.$message("验证过期");
@@ -345,6 +256,8 @@ export default {
             this.$router.push({ path: "/404" });
           } else {
             this.studentData = response.data.data["data"];
+            this.assist_id = response.data.data["ta_id"];
+            this.assist_name = response.data.data["ta_name"];
           }
         });
     },
@@ -355,13 +268,10 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log("获得助教", response);
+          console.log("获得助教列表", response);
 
           this.assistList = response.data;
         });
-    },
-    getAssist() {
-      //查看班级助教
     },
 
     getParams: function () {
@@ -374,7 +284,6 @@ export default {
     this.getParams();
     this.getStuList();
     this.getAssistList();
-    this.getAssist();
   },
 };
 </script>

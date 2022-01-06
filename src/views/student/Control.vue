@@ -175,7 +175,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .el-button--danger {
   color: white;
 }

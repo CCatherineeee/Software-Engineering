@@ -65,10 +65,22 @@
         >
           <!-- 数据的遍历  scope.row就代表数据的每一个对象-->
           <template slot-scope="scope">
-            <el-button type="text" @click="checkReport(scope.row)"
+            <el-button
+              type="text"
+              @click="toReportOnline(scope)"
+              v-if="item.type == '在线提交'"
               >查看</el-button
             >
-            <el-button type="text" @click="downReport(scope.row)"
+            <el-button
+              type="text"
+              @click="checkReport(scope)"
+              v-if="item.type == '提交文件'"
+              >查看</el-button
+            >
+            <el-button
+              type="text"
+              @click="downReport(scope)"
+              v-if="item.type == '提交文件'"
               >下载</el-button
             >
           </template>
@@ -162,15 +174,16 @@ export default {
       this.s_id = sid;
       this.ex_id = ex_id.substring(ex_id.indexOf("_") + 1);
     },
-    getData() {
+    getScoreData() {
       var jsons = {
-        class_id: JSON.stringify(this.c_id),
+        class_id: this.c_id,
         token: sessionStorage.getItem("token"),
       };
+      //console.log("getDatajsons", jsons);
       this.axios
         .post("/api/manageClass/GetClassStudentScore", JSON.stringify(jsons))
         .then((response) => {
-          console.log("getData", response);
+          console.log("getScoreData", response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -178,7 +191,7 @@ export default {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
           } else {
-            console.log("getData", response.data.data);
+            console.log("getScoreData", response.data.data);
             this.headers = response.data.data.experiment;
             this.scoreData = response.data.data.score;
           }
@@ -208,7 +221,7 @@ export default {
             this.$router.push({ path: "/404" });
           } else {
             this.$message.success("打分成功！");
-            this.getData();
+            this.getScoreData();
             this.scoreDialog = false;
           }
         })
@@ -216,14 +229,29 @@ export default {
           console.log(error);
         });
     },
+    toReportOnline(row) {
+      console.log("toReportOnline", row);
+      const { href } = this.$router.resolve({
+        path: "/teacherHome/concreteCourse/stuExperOnline",
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({
+              s_id: row.row.id,
+              ex_id: row.column.property.replace("ex_", ""),
+              score: row.row[row.column.property],
+            })
+          ),
+        },
+      });
+      window.open(href, "_blank");
+    },
     checkReport(row) {
       this.axios
         .post(
-          "/api/manageClassFileRoute/download/",
+          "/api/Ex/showUpload/",
           JSON.stringify({
-            id: row.id,
-            class_id: this.c_id,
-            token: sessionStorage.getItem("token"),
+            s_id: row.row.id,
+            ex_id: row.column.property.replace("ex_", ""),
           }),
           {
             responseType: "blob",
@@ -233,46 +261,43 @@ export default {
           }
         )
         .then((response) => {
-          if (response.data["code"] === 301) {
-            this.$message("验证过期");
-            this.$router.push({ path: "/login" });
-          } else if (response.data["code"] === 404) {
-            this.$message("找不到页面");
-            this.$router.push({ path: "/404" });
+          //var fname = row.filename
+          //fname = decodeURIComponent(fname)
+          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+          console.log("查看文件", response);
+          if (response.data["type"] === "application/json") {
+            this.$message.warning("该学生没有上传实验报告！");
           } else {
-            //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
-
             const blob = new Blob([response.data], {
               type: "application/pdf",
             });
+            //var downloadElement = document.createElement("a");
             var href = window.URL.createObjectURL(blob);
             window.open(href);
           }
         });
     },
     downReport(row) {
+      console.log("downReport", row);
+      console.log(row);
+      let formData = new FormData();
+      formData.append("s_id", row.row.id);
+      formData.append("ex_id", row.column.property.replace("ex_", ""));
+
       this.axios
-        .post(
-          "/api/manageClassFileRoute/download/",
-          JSON.stringify({
-            id: row.id,
-            class_id: this.class_id,
-            token: sessionStorage.getItem("token"),
-          }),
-          {
-            responseType: "blob",
-          }
-        )
+        .post("/api/tea/Ex/getReport/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "blob",
+        })
         .then((response) => {
-          console.log(response);
-          if (response.data["code"] === 301) {
-            this.$message("验证过期");
-            this.$router.push({ path: "/login" });
-          } else if (response.data["code"] === 404) {
-            this.$message("找不到页面");
-            this.$router.push({ path: "/404" });
+          console.log("downReport", response);
+          if (response.data["type"] === "application/json") {
+            this.$message.warning("该学生没有上传实验报告！");
           } else {
-            var fname = row.filename;
+            const fileName = response.headers["content-disposition"];
+            var fname = fileName.split("filename=")[1];
             fname = decodeURIComponent(fname);
             //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
@@ -294,7 +319,13 @@ export default {
   },
   mounted() {
     this.getParams();
-    this.getData();
+    this.getScoreData();
   },
 };
 </script>
+
+<style scoped>
+.el-button--primary {
+  color: white;
+}
+</style>

@@ -27,7 +27,7 @@
                 <el-col :span="16">
                   <p>{{ item.title }}</p>
                 </el-col>
-                <el-col :span="8">
+                <el-col span="8">
                   <p>正确答案为：{{ correct[index] }}</p>
                 </el-col>
               </el-row>

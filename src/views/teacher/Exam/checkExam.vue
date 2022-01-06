@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       examList: [],
-      class_id: "",
+      course_id: "",
       courseName: "",
       dialogVisible: false,
       edit_start_time: null,
@@ -86,16 +86,16 @@ export default {
   },
   methods: {
     getExamList() {
-      console.log(this.class_id);
       this.axios
         .post(
           "/api/getExam",
           JSON.stringify({
-            class_id: this.class_id,
+            course_id: this.course_id,
             token: sessionStorage.getItem("token"),
           })
         )
         .then((res) => {
+          console.log("getExamList()", res, this.course_id);
           if (res.data.code === 200) {
             this.examList = [];
             if (res.data.data.role !== 2) {
@@ -117,13 +117,12 @@ export default {
 
               this.examList.push(res.data.data.data[i]);
             }
-            console.log(res);
           }
         });
     },
-    getParams() {
-      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-        "class_id"
+    getParams: function () {
+      this.course_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "course_id"
       ];
     },
     async pushExamSendMsg(row) {
@@ -186,7 +185,7 @@ export default {
     },
     classGetCourseName() {
       var json = {
-        class_id: this.class_id,
+        course_id: this.course_id,
       };
       return (
         this.axios
@@ -211,7 +210,7 @@ export default {
           "/api/pushExamForce",
           JSON.stringify({
             exam_id: row.exam_id,
-            class_id: this.class_id,
+            course_id: this.course_id,
           })
         )
         .then((res) => {
@@ -227,7 +226,7 @@ export default {
         path: "/teacherHome/concreteCourse/exam",
         query: {
           info: this.$Base64.encode(
-            JSON.stringify({ exam_id: row.exam_id, class_id: this.class_id })
+            JSON.stringify({ exam_id: row.exam_id, course_id: this.course_id })
           ),
         },
       });
@@ -260,7 +259,7 @@ export default {
             exam_id: this.edit_exam_id,
             start_time: this.formatDateTime(this.edit_start_time),
             end_time: this.formatDateTime(this.edit_end_time),
-            class_id: this.class_id,
+            course_id: this.course_id,
           })
         )
         .then((res) => {

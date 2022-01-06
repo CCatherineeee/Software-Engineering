@@ -15,7 +15,7 @@
           (currentPage - 1) * pagesize,
           currentPage * pagesize
         )"
-        :key="item.stu_message_id"
+        :key="item.tea_message_id"
         accordion
       >
         <el-collapse-item
@@ -30,7 +30,7 @@
               type="danger"
               icon="el-icon-delete"
               style="float: right"
-              @click="deleteMsg(item.stu_message_id)"
+              @click="handleDelete(item.tea_message_id)"
               circle
             ></el-button>
           </div>
@@ -40,7 +40,7 @@
           :name="item.seq"
           style="color: #cc0033"
           v-if="item.is_read == 0"
-          @click.native="isRead(item.stu_message_id)"
+          @click.native="isRead(item.tea_message_id)"
         >
           <div>{{ item.content }}</div>
         </el-collapse-item>
@@ -56,7 +56,7 @@ export default {
       value: new Date(),
       activeName: "0",
       msgList: [],
-      lenList: 0,
+
       pagesize: 8,
       currentPage: 1,
       t_id: sessionStorage.getItem("id"),
@@ -67,11 +67,31 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
+    handleDelete(row) {
+      this.$confirm("确认删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.deleteMsg(row);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除",
+          });
+        });
+    },
     getTeadentMsg() {
       var json = {
         t_id: this.t_id,
       };
-      var that = this;
+
       this.axios
         .post(
           //"/api/users/validateCaptcha"
@@ -79,20 +99,16 @@ export default {
           JSON.stringify(json)
         )
         .then(
-          function (response) {
+          (response) => {
             //这里使用了ES6的语法
             // this.checkResponse(response.data); //请求成功返回的数据
-            if (response.data.status === 400) that.$message("找不到老师");
+            if (response.data.status === 400) this.$message("找不到老师");
             else {
               var MsgList = response.data;
-              console.log(MsgList);
-              for (var i = 0; i < MsgList.not_read.length; i++) {
-                that.msgList.push(MsgList.not_read[i]);
-                that.lenList += 1;
-              }
-              for (i = 0; i < MsgList.read.length; i++) {
-                that.msgList.push(MsgList.read[i]);
-                that.lenList += 1;
+              console.log("MsgList", MsgList);
+              this.msgList = MsgList.not_read;
+              for (var i = 0; i < MsgList.read.length; i++) {
+                this.msgList.push(MsgList.read[i]);
               }
             }
           },
@@ -101,27 +117,27 @@ export default {
           }
         );
     },
-    isRead(stu_message_id) {
+    isRead(tea_message_id) {
       var json = {
         t_id: this.t_id,
-        stu_message_id: stu_message_id,
+        tea_message_id: tea_message_id,
       };
-      console.log(json);
+
       this.axios
         .post(
           //"/api/users/validateCaptcha"
-          "",
+          "/api/message/changeTeacherMessage",
           JSON.stringify(json)
         )
         .then(
-          function (response) {
+          (response) => {
             //这里使用了ES6的语法
             // this.checkResponse(response.data); //请求成功返回的数据
-            if (response.data.status === 400) this.$message("找不到学生");
+            if (response.data.status === 400) this.$message("找不到教师");
             else if (response.data.status === 500) {
               this.$message("该条消息不存在或被删除");
             } else {
-              console.log(response.data);
+              this.getTeadentMsg();
             }
           },
           function (err) {
@@ -129,29 +145,27 @@ export default {
           }
         );
     },
-    deleteMsg(stu_message_id) {
+    deleteMsg(tea_message_id) {
       var json = {
         t_id: this.t_id,
-        stu_message_id: stu_message_id,
+        tea_message_id: tea_message_id,
       };
       var that = this;
       this.axios
         .post(
           //"/api/users/validateCaptcha"
-          "",
+          "/api/message/deleteTeacherMessage",
           JSON.stringify(json)
         )
         .then(
-          function (response) {
+          (response) => {
             //这里使用了ES6的语法
             // this.checkResponse(response.data); //请求成功返回的数据
-            if (response.data.status === 400) this.$message("找不到学生");
+            if (response.data.status === 400) this.$message("找不到老师");
             else if (response.data.status === 500) {
               this.$message("该条消息不存在或被删除");
             } else {
-              console.log(response.data);
-              that.$message("删除成功");
-              that.$router.go(0);
+              that.getTeadentMsg();
             }
           },
           function (err) {
@@ -166,5 +180,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.el-button--danger {
+  color: white;
+}
 </style>

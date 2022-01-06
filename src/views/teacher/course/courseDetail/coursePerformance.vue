@@ -13,12 +13,75 @@ export default {
       id: "",
       c_id: "",
 
-      experimentList: [],
+      experimentName: [],
 
-      option: {
+      excellentList: [],
+      goodList: [],
+      middleList: [],
+      passList: [],
+      noPassList: [],
+    };
+  },
+  methods: {
+    getCourseScore() {
+      var classID = this.c_id.toString();
+
+      this.axios
+        .post(
+          "/api/tea/score",
+          JSON.stringify({
+            class_id: classID,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          //这里使用了ES6的语法
+          console.log("getCourseScore", response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.experimentScore = response.data;
+            this.experimentName = response.data.name;
+            //console.log("this.option.xAxis.data",this.option.xAxis.data);
+            for (var j = 0; j < response.data.count.length; j++) {
+              this.excellentList.push(response.data.count[j][0]);
+            }
+            for (var q = 0; q < response.data.count.length; q++) {
+              this.goodList.push(response.data.count[q][1]);
+            }
+            for (var w = 0; w < response.data.count.length; w++) {
+              this.middleList.push(response.data.count[w][2]);
+            }
+            for (var e = 0; e < response.data.count.length; e++) {
+              this.passList.push(response.data.count[e][3]);
+            }
+            for (var r = 0; r < response.data.count.length; r++) {
+              this.noPassList.push(response.data.count[r][4]);
+            }
+            console.log("优", this.excellentList);
+            console.log("良", this.goodList);
+            console.log("中", this.middleList);
+            console.log("及格", this.passList);
+            console.log("不及格", this.noPassList);
+
+            this.drawLine();
+          }
+        });
+    },
+
+    drawLine() {
+      // 基于准备好的dom，初始化echarts实例
+      var echarts = require("echarts");
+      let myChart = echarts.init(this.$refs.experiment);
+      // 绘制图表
+      let option = {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: this.experimentName,
           name: "实验", //x坐标轴的名称
         },
         yAxis: {
@@ -27,7 +90,7 @@ export default {
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.excellentList,
             type: "bar",
             name: "优", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
@@ -42,7 +105,7 @@ export default {
             },
           },
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.goodList,
             type: "bar",
             name: "良", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
@@ -56,7 +119,7 @@ export default {
             },
           },
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.middleList,
             type: "bar",
             name: "中", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
@@ -70,7 +133,7 @@ export default {
             },
           },
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.passList,
             type: "bar",
             name: "及格", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
@@ -84,7 +147,7 @@ export default {
             },
           },
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.noPassList,
             type: "bar",
             name: "不及格", //柱状条顶部标签内容（配合label使用），也可显示为气泡提示的y轴数据字段名
             showBackground: true,
@@ -115,41 +178,8 @@ export default {
           data: ["优", "良", "中", "及格", "不及格"],
           top: 10,
         },
-      },
-    };
-  },
-  methods: {
-    getCourseEx() {
-      var classID = this.c_id.toString();
-      this.axios
-        .post(
-          "/api/course/getEx/",
-          JSON.stringify({
-            c_id: classID.substring(0, 12),
-            token: sessionStorage.getItem("token"),
-          })
-        )
-        .then((response) => {
-          //这里使用了ES6的语法
-          console.log(response);
-          if (response.data["code"] === 301) {
-            this.$message("验证过期");
-            this.$router.push({ path: "/login" });
-          } else if (response.data["code"] === 404) {
-            this.$message("找不到页面");
-            this.$router.push({ path: "/404" });
-          } else {
-            this.experimentList = response.data.data;
-          }
-        });
-    },
-
-    drawLine() {
-      // 基于准备好的dom，初始化echarts实例
-      var echarts = require("echarts");
-      let myChart = echarts.init(this.$refs.experiment);
-      // 绘制图表
-      let option = this.option;
+      };
+      //let option = this.option;
 
       myChart.setOption(option);
     },
@@ -163,8 +193,8 @@ export default {
   },
   mounted() {
     this.getParams();
-    this.getCourseEx();
-    this.drawLine();
+    this.getCourseScore();
+    //this.drawLine();
   },
 };
 </script>
