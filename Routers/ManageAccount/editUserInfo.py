@@ -299,8 +299,8 @@ def upload_avatar():
                     avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
                     #修改大小
                     img = io.imread(UPLOAD_FOLDER+fname+ext)
-                    width = 220
-                    height = 220
+                    width = 100
+                    height = 100
                     dim = (width, height)
                     resized = transform.resize(img, dim)
                     io.imsave(UPLOAD_FOLDER+fname+ext, resized)
@@ -315,8 +315,8 @@ def upload_avatar():
                         avatar.save( '{}{}_{}'.format(UPLOAD_FOLDER,userID,fname+ext))
                         #修改大小
                         img = io.imread(UPLOAD_FOLDER+userID+'_'+fname+ext)
-                        width = 220
-                        height = 220
+                        width = 100
+                        height = 100
                         dim = (width, height)
                         resized = transform.resize(img, dim)
                         _resz = np.zeros((resized.shape[0],resized.shape[1],resized.shape[2]),dtype=np.uint8)
