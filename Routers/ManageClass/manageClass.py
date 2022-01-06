@@ -308,4 +308,43 @@ def courseGetClass():
         result.append(item_json)
 
     return jsonify({'code':200,'message':"获取成功",'data':result})
+
+#根据助教学号获取所在的所有班级,班级信息
+@manageClassRoute.route('/manageClass/TAGetClass',methods=['POST'])  
+def TAGetClass():
+
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    ta_id = data['ta_id']  #助教学号
+    token = data['token']
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except :
+        return jsonify({'code':301,'message':"验证过期",'data':None})
+    
+    if token_role != 3:
+        return jsonify({'code':404,'message':"无法访问",'data':None})
+
+    if ta_id != token_id:
+        return jsonify({'code':404,'message':"无法访问",'data':None})
+
+    class_list = TAClass.query.filter(TAClass.ta_id == ta_id).all()
+    all_class = []
+    for class_item in class_list:
+        this_class = Class.query.filter(Class.class_id == class_item.class_id).first()
+        this_course = Course.query.filter(Course.c_id == this_class.course_id).first()
+        course_type = CourseType.query.filter(CourseType.prefix == this_course.prefix).first()
+        data = {
+            'class_id':class_item.class_id,
+            'class_number':this_class.class_number,
+            'prefix':this_course.prefix,
+            'semester':this_course.course_semester,
+            'year':this_course.course_year,
+            'course_name':course_type.ct_name}
+        all_class.append(data)
+
+    return jsonify({'code':200,'message':"请求成功",'data':all_class})
     

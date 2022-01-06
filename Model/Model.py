@@ -227,6 +227,7 @@ class Course(db.Model):
     course_semester = db.Column(db.String(64))  #春季为00  秋季为01
     course_year = db.Column(db.String(64))  #如2019
     duty_teacher = db.Column(db.String(64),ForeignKey("teacher.t_id",ondelete='CASCADE'))
+    
 
 class Class(db.Model):
     """

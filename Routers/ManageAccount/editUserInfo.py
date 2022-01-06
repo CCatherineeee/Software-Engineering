@@ -83,6 +83,30 @@ def editTAInfo():
     dbManage.db.session.commit()
     return "Success"
 
+    
+@editUserInfoRoute.route('/editInfo/Admin/',methods=['POST'])  
+@cross_origin(supports_credentials=True)
+def editAdminInfo():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    name = data['name']
+    admin_id = data['admin_id']
+    email = data['email']
+    phone_number = data['phone_number']
+
+    # student = dbManage.db.session.query(Student).filter(Student.s_id == s_id)
+    admin = Admin.query.filter(Admin.admin_id==admin_id).first()
+    if not admin:
+        return "NotExist"
+    admin.admin_id = admin_id
+    admin.name = name
+    admin.email = email
+    admin.phone_number = phone_number
+
+    dbManage.db.session.commit()
+    return "Success"
+
 @editUserInfoRoute.route('/editInfo/Student/changePwd',methods=['POST'])  
 @cross_origin(supports_credentials=True)
 def change_student_pwd():
@@ -214,6 +238,27 @@ def reset_teacher_pwd():
     data = {'code':200,'message':'重置成功','data':None}
 
     return jsonify(data)
+
+@editUserInfoRoute.route('/editInfo/TA/resetPwd',methods=['POST'])  
+
+def reset_ta_pwd():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    ta_id = data['ta_id']
+    new_pwd = data['new_password']
+    
+    ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id==ta_id).first()
+    if not ta:
+        return "NotExist"
+        
+    ta.set_password(new_pwd)
+    dbManage.db.session.add(ta)
+    dbManage.db.session.commit()
+    data = {'code':200,'message':'修改成功'}
+
+    return jsonify(data)
+
 
 
 @editUserInfoRoute.route('/editInfo/uploadAvatar',methods=['POST'])  
