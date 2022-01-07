@@ -35,9 +35,11 @@ def confirm(user_ID,token):
         if stud is not None:
             if stud.is_active:  #已经激活了
                 status = {'status':100,'message':'already confirmed'}
+                
             if stud.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
     elif token_role == Role.TeacherRole:   #是老师
@@ -48,6 +50,7 @@ def confirm(user_ID,token):
             if teacher.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
     elif token_role == Role.TARole:   #是助教
@@ -58,6 +61,7 @@ def confirm(user_ID,token):
             if teacher.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
     else:
