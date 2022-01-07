@@ -33216,3 +33216,485 @@ Traceback (most recent call last):
     return jsonify(status)
                          ^
 IndentationError: unindent does not match any outer indentation level
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "app.py", line 23, in <module>
+    from Routers.ManageAccount.auth.authManage import auth
+  File "/root/Software-Engineering/Routers/ManageAccount/auth/authManage.py", line 9, in <module>
+    from Model.Model import Student,Teacher,TeachingAssistance
+ImportError: cannot import name 'TeachingAssistance'
+ * Serving Flask app "app" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+ * Debugger is active!
+ * Debugger PIN: 274-480-109
+2022-01-07 15:46:36,840 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2022-01-07 15:46:36,840 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,872 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2022-01-07 15:46:36,872 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,894 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2022-01-07 15:46:36,894 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,908 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2022-01-07 15:46:36,909 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,921 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2022-01-07 15:46:36,921 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,932 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2022-01-07 15:46:36,932 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,942 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2022-01-07 15:46:36,942 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,971 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2022-01-07 15:46:36,971 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,981 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2022-01-07 15:46:36,981 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:36,993 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2022-01-07 15:46:36,993 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,002 INFO sqlalchemy.engine.base.Engine DESCRIBE `teaching_assistant`
+2022-01-07 15:46:37,002 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,015 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2022-01-07 15:46:37,015 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,029 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2022-01-07 15:46:37,029 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,037 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2022-01-07 15:46:37,037 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,043 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2022-01-07 15:46:37,043 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,052 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment_report`
+2022-01-07 15:46:37,052 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,060 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2022-01-07 15:46:37,060 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,068 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2022-01-07 15:46:37,068 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,077 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_group`
+2022-01-07 15:46:37,077 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,082 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_message`
+2022-01-07 15:46:37,082 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,091 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_message`
+2022-01-07 15:46:37,091 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,099 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_message`
+2022-01-07 15:46:37,099 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,112 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment`
+2022-01-07 15:46:37,112 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,122 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2022-01-07 15:46:37,122 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,155 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2022-01-07 15:46:37,155 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,168 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_class`
+2022-01-07 15:46:37,168 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,177 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_group`
+2022-01-07 15:46:37,177 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,186 INFO sqlalchemy.engine.base.Engine DESCRIBE `auction`
+2022-01-07 15:46:37,186 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,203 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2022-01-07 15:46:37,203 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,213 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2022-01-07 15:46:37,213 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,222 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2022-01-07 15:46:37,222 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,230 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_examquestion`
+2022-01-07 15:46:37,230 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,238 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam_group`
+2022-01-07 15:46:37,238 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:37,271 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:46:37,272 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:46:37,272 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2022-01-07 15:46:37,291 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:46:37,291 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1951567', 'param_1': 1}
+2022-01-07 15:46:37,473 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:46:37] "[37mPOST /studentLogin/ HTTP/1.0[0m" 200 -
+2022-01-07 15:46:44,625 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:46:44,625 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:46:44,625 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1951567', 'param_1': 1}
+2022-01-07 15:46:44,738 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:46:44] "[37mPOST /studentLogin/ HTTP/1.0[0m" 200 -
+2022-01-07 15:46:55,841 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:46:55,842 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:46:55,842 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:55,847 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:46:55,847 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:55,854 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:46:55,854 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:55,860 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.47.68 - - [07/Jan/2022 15:46:55] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2022-01-07 15:46:57,199 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:46:57,200 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:46:57,200 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:57,208 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:46:57,209 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:57,219 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:46:57,219 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:57,232 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.47.68 - - [07/Jan/2022 15:46:57] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2022-01-07 15:46:58,516 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:46:58,517 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:46:58,517 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:58,527 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:46:58,527 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:58,537 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:46:58,538 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:46:58,545 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.47.68 - - [07/Jan/2022 15:46:58] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+111.187.47.68 - - [07/Jan/2022 15:46:59] "[35m[1mPOST /getUserInfo/Student/ HTTP/1.1[0m" 500 -
+2022-01-07 15:47:00,131 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:47:00,132 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:47:00,132 INFO sqlalchemy.engine.base.Engine {'admin_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:47:00,142 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:47:00,142 INFO sqlalchemy.engine.base.Engine {'admin_pwd_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:47:00,150 INFO sqlalchemy.engine.base.Engine ROLLBACK
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py", line 45, in getStuentInfo
+    token = data['token']
+KeyError: 'token'
+120.253.249.84 - - [07/Jan/2022 15:47:00] "[37mPOST /adminLogin/ HTTP/1.1[0m" 200 -
+2022-01-07 15:47:00,341 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:47:00,341 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:47:00,341 INFO sqlalchemy.engine.base.Engine {'s_id_1': '', 'param_1': 1}
+2022-01-07 15:47:00,347 INFO sqlalchemy.engine.base.Engine ROLLBACK
+120.253.249.84 - - [07/Jan/2022 15:47:00] "[37mPOST /getUserInfo/Student/showAvatar HTTP/1.1[0m" 200 -
+2022-01-07 15:47:01,570 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:47:01,571 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:47:01,571 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:47:01,576 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:47:01,576 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:47:01,582 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:47:01,583 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:47:01,587 INFO sqlalchemy.engine.base.Engine ROLLBACK
+120.253.249.84 - - [07/Jan/2022 15:47:01] "[37mGET /getUserInfo/allUser/ HTTP/1.1[0m" 200 -
+2022-01-07 15:47:05,050 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:47:05,050 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:47:05,050 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1951095', 'param_1': 1}
+Success!
+2022-01-07 15:47:06,241 INFO sqlalchemy.engine.base.Engine ROLLBACK
+120.253.249.84 - - [07/Jan/2022 15:47:06] "[37mPOST /users/reActive HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:13] "[35m[1mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2131, in make_response
+    " {rv.__class__.__name__}.".format(rv=rv)
+TypeError: The view function did not return a valid response. The return type must be a string, dict, tuple, Response instance, or WSGI callable, but it was a int.
+120.253.249.84 - - [07/Jan/2022 15:47:13] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:13] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:13] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:14] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:14] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+120.253.249.84 - - [07/Jan/2022 15:47:14] "[37mGET /confirm/1951095/eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTYyNSwiZXhwIjoxNjQxNTQ1MjI1fQ.eyJjb25maXJtIjoiMTk1MTA5NSJ9.KXa9lqpuU_yC54W93DGrcYwfQKb-XiapQuz4bDvMcbc3zezmC4IsqZ0_PVU9J68t_0r1Vv5HIBNluyjJn5lwEA?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+111.187.47.68 - - [07/Jan/2022 15:47:42] "[35m[1mPOST /getUserInfo/Student/ HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py", line 45, in getStuentInfo
+    token = data['token']
+KeyError: 'token'
+111.187.47.68 - - [07/Jan/2022 15:47:44] "[35m[1mPOST /getUserInfo/Student/ HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib64/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py", line 45, in getStuentInfo
+    token = data['token']
+KeyError: 'token'
+ * Detected change in '/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py', reloading
+ * Restarting with stat
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+ * Debugger is active!
+ * Debugger PIN: 274-480-109
+ * Detected change in '/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py', reloading
+ * Restarting with stat
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+ * Debugger is active!
+ * Debugger PIN: 274-480-109
+ * Detected change in '/root/Software-Engineering/Routers/ManageAccount/getUserInfo.py', reloading
+ * Restarting with stat
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+ * Debugger is active!
+ * Debugger PIN: 274-480-109
+2022-01-07 15:48:15,247 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2022-01-07 15:48:15,247 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,253 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'lower_case_table_names'
+2022-01-07 15:48:15,253 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,261 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2022-01-07 15:48:15,261 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,276 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8mb4' and `Collation` = 'utf8mb4_bin'
+2022-01-07 15:48:15,276 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,283 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2022-01-07 15:48:15,283 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,289 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2022-01-07 15:48:15,289 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,296 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8mb4) COLLATE utf8mb4_bin AS anon_1
+2022-01-07 15:48:15,296 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,311 INFO sqlalchemy.engine.base.Engine DESCRIBE `student`
+2022-01-07 15:48:15,311 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,320 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher`
+2022-01-07 15:48:15,320 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,330 INFO sqlalchemy.engine.base.Engine DESCRIBE `admin`
+2022-01-07 15:48:15,330 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,337 INFO sqlalchemy.engine.base.Engine DESCRIBE `teaching_assistant`
+2022-01-07 15:48:15,337 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,343 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_type`
+2022-01-07 15:48:15,343 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,350 INFO sqlalchemy.engine.base.Engine DESCRIBE `course`
+2022-01-07 15:48:15,350 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,356 INFO sqlalchemy.engine.base.Engine DESCRIBE `class`
+2022-01-07 15:48:15,356 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,362 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment`
+2022-01-07 15:48:15,362 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,371 INFO sqlalchemy.engine.base.Engine DESCRIBE `experiment_report`
+2022-01-07 15:48:15,371 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,379 INFO sqlalchemy.engine.base.Engine DESCRIBE `sys_announcement`
+2022-01-07 15:48:15,379 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,387 INFO sqlalchemy.engine.base.Engine DESCRIBE `course_announcement`
+2022-01-07 15:48:15,387 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,395 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_group`
+2022-01-07 15:48:15,395 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,400 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_message`
+2022-01-07 15:48:15,400 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,412 INFO sqlalchemy.engine.base.Engine DESCRIBE `teacher_message`
+2022-01-07 15:48:15,412 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,421 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_message`
+2022-01-07 15:48:15,421 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,430 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_experiment`
+2022-01-07 15:48:15,430 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,438 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_class`
+2022-01-07 15:48:15,438 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,446 INFO sqlalchemy.engine.base.Engine DESCRIBE `class_file`
+2022-01-07 15:48:15,446 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,457 INFO sqlalchemy.engine.base.Engine DESCRIBE `ta_class`
+2022-01-07 15:48:15,457 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,463 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_group`
+2022-01-07 15:48:15,463 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,481 INFO sqlalchemy.engine.base.Engine DESCRIBE `auction`
+2022-01-07 15:48:15,481 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,488 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam`
+2022-01-07 15:48:15,488 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,498 INFO sqlalchemy.engine.base.Engine DESCRIBE `question`
+2022-01-07 15:48:15,498 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,508 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_exam`
+2022-01-07 15:48:15,508 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,513 INFO sqlalchemy.engine.base.Engine DESCRIBE `student_examquestion`
+2022-01-07 15:48:15,513 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,520 INFO sqlalchemy.engine.base.Engine DESCRIBE `exam_group`
+2022-01-07 15:48:15,520 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:15,553 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:15,554 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.name = %(name_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:15,554 INFO sqlalchemy.engine.base.Engine {'name_1': 'admin', 'param_1': 1}
+2022-01-07 15:48:15,565 INFO sqlalchemy.engine.base.Engine ROLLBACK
+111.187.6.169 - - [07/Jan/2022 15:48:15] "[37mGET / HTTP/1.1[0m" 200 -
+2022-01-07 15:48:26,776 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:26,777 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:26,777 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1951567', 'param_1': 1}
+2022-01-07 15:48:26,881 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:26] "[37mPOST /studentLogin/ HTTP/1.0[0m" 200 -
+2022-01-07 15:48:32,915 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:32,915 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:32,915 INFO sqlalchemy.engine.base.Engine {'s_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:48:32,924 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:32] "[37mPOST /studentLogin/ HTTP/1.0[0m" 200 -
+2022-01-07 15:48:36,484 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:36,485 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:36,485 INFO sqlalchemy.engine.base.Engine {'admin_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:48:36,496 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_pwd = %(admin_pwd_1)s AND `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:36,496 INFO sqlalchemy.engine.base.Engine {'admin_pwd_1': 'admin', 'admin_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:48:36,503 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:36] "[37mPOST /adminLogin/ HTTP/1.0[0m" 200 -
+111.187.6.169 - - [07/Jan/2022 15:48:36] "[37mGET /static/avatar/管理员头像.png HTTP/1.1[0m" 200 -
+2022-01-07 15:48:36,579 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:36,580 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:36,580 INFO sqlalchemy.engine.base.Engine {'s_id_1': '', 'param_1': 1}
+2022-01-07 15:48:36,592 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:36] "[37mPOST /getUserInfo/Student/showAvatar HTTP/1.0[0m" 200 -
+2022-01-07 15:48:39,159 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:39,160 INFO sqlalchemy.engine.base.Engine SELECT `admin`.admin_id AS admin_admin_id, `admin`.admin_pwd AS admin_admin_pwd, `admin`.name AS admin_name, `admin`.email AS admin_email, `admin`.phone_number AS admin_phone_number, `admin`.state AS admin_state 
+FROM `admin` 
+WHERE `admin`.admin_id = %(admin_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:39,160 INFO sqlalchemy.engine.base.Engine {'admin_id_1': '0000000', 'param_1': 1}
+2022-01-07 15:48:39,166 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:39] "[37mGET /getAdminInfo/admin/?admin_id=0000000&token=eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0MTU0MTcxNiwiZXhwIjoxNjQxNTQ3NzE2fQ.eyJpZCI6IjAwMDAwMDAiLCJyb2xlIjowLCJpc2FjdGl2ZSI6MX0.fs6T2nT_GTjR_Ojsy8PYgQVHxKIfDKGM4a3YzL-Bsg4YMZKuf5l3KhhaUNVSJOgaX7yf-6aVz4SvGafcLdZxvg HTTP/1.0[0m" 200 -
+2022-01-07 15:48:42,200 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:42,201 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:48:42,201 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:42,210 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:48:42,210 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:42,223 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:48:42,223 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:42,235 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:42] "[37mGET /getUserInfo/allUser/ HTTP/1.0[0m" 200 -
+2022-01-07 15:48:47,041 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:47,042 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:48:47,042 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:47,047 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:48:47,047 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:47,056 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:48:47,057 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:47,070 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:47] "[37mGET /getUserInfo/allUser/ HTTP/1.0[0m" 200 -
+127.0.0.1 - - [07/Jan/2022 15:48:48] "[31m[1mGET /getUserInfo/Student/?s_id=1951567 HTTP/1.0[0m" 405 -
+2022-01-07 15:48:56,338 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:56,339 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student
+2022-01-07 15:48:56,339 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:56,344 INFO sqlalchemy.engine.base.Engine SELECT teacher.t_id AS teacher_t_id, teacher.t_pwd AS teacher_t_pwd, teacher.name AS teacher_name, teacher.email AS teacher_email, teacher.gender AS teacher_gender, teacher.phone_number AS teacher_phone_number, teacher.is_active AS teacher_is_active, teacher.department AS teacher_department, teacher.avatar AS teacher_avatar 
+FROM teacher
+2022-01-07 15:48:56,344 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:56,349 INFO sqlalchemy.engine.base.Engine SELECT teaching_assistant.ta_id AS teaching_assistant_ta_id, teaching_assistant.ta_pwd AS teaching_assistant_ta_pwd, teaching_assistant.name AS teaching_assistant_name, teaching_assistant.email AS teaching_assistant_email, teaching_assistant.is_active AS teaching_assistant_is_active 
+FROM teaching_assistant
+2022-01-07 15:48:56,349 INFO sqlalchemy.engine.base.Engine {}
+2022-01-07 15:48:56,358 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:48:56] "[37mGET /getUserInfo/allUser/ HTTP/1.0[0m" 200 -
+2022-01-07 15:48:59,131 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2022-01-07 15:48:59,131 INFO sqlalchemy.engine.base.Engine SELECT student.s_id AS student_s_id, student.s_pwd AS student_s_pwd, student.name AS student_name, student.email AS student_email, student.gender AS student_gender, student.phone_number AS student_phone_number, student.is_active AS student_is_active, student.department AS student_department, student.avatar AS student_avatar 
+FROM student 
+WHERE student.s_id = %(s_id_1)s 
+ LIMIT %(param_1)s
+2022-01-07 15:48:59,131 INFO sqlalchemy.engine.base.Engine {'s_id_1': '1951567', 'param_1': 1}
+Falied
+2022-01-07 15:49:00,043 INFO sqlalchemy.engine.base.Engine ROLLBACK
+127.0.0.1 - - [07/Jan/2022 15:49:00] "[37mPOST /users/reActive HTTP/1.0[0m" 200 -
