@@ -1,5 +1,5 @@
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-main>
       <el-card
         style="
@@ -39,12 +39,15 @@
             <el-input type="text" v-model="form.captcha"></el-input>
           </el-form-item>
 
-          <el-form-item  :required="true" status-icon="true">
+          <el-form-item :required="true" status-icon="true">
             <el-button type="text" @click="sendCaptcha">发送验证码</el-button>
           </el-form-item>
 
           <el-form-item>
-            <el-button style="margin-left: 30%" @click="validateCaptcha()" type="primary"
+            <el-button
+              style="margin-left: 30%"
+              @click="validateCaptcha()"
+              type="primary"
               >确认修改</el-button
             >
           </el-form-item>
@@ -61,81 +64,89 @@ export default {
       form: {
         password: "",
         passwordC: "",
-        oripassword:"",
-        captcha:"",
-        captchaSuccess:"false",
+        oripassword: "",
+        captcha: "",
+        captchaSuccess: "false",
       },
     };
   },
   methods: {
-      validateCaptcha(){
-        this.form.captchaSuccess = "false";
-        var result = [];
-        this.axios
-            .post(
-              //"/api/users/validateCaptcha"
-              "/api/users/validateCaptcha",
-              JSON.stringify({
-                email: this.form.email,
-                captcha: this.form.captcha
-              })
-            )
-            .then(function(response) {
-              //这里使用了ES6的语法
-              // this.checkResponse(response.data); //请求成功返回的数据
-              result = response.data.message
-              console.log(result)
+    validateCaptcha() {
+      this.form.captchaSuccess = "false";
+      var result = [];
+      this.axios
+        .post(
+          //"/api/users/validateCaptcha"
+          "/api/users/validateCaptcha",
+          JSON.stringify({
+            email: this.form.email,
+            captcha: this.form.captcha,
+          })
+        )
+        .then(
+          function (response) {
+            //这里使用了ES6的语法
+            // this.checkResponse(response.data); //请求成功返回的数据
+            result = response.data.message;
+            console.log(result);
             // if (result == "true")
             // {this.captchaSuccess="ture";}
+          },
+          function (err) {
+            this.$message("网络错误！");
 
-            },function(err){
-              console.log(err)
-            });
-          // if (result == "true")
-          //   {commitJson.verifySuccess=="ture";}
-          setTimeout(()=>{
-             if (result == "true")
-            {this.form.captchaSuccess="true";}
-            this.save(this.form.captchaSuccess,this.form.oripassword,this.form.password)
-          },2500)
-      },
-    save(captchaSuccess,old_password,new_password) {
-
-        if(this.password!=this.passwordC)
-        {
-          //弹出错误提示
-          alert("两次密码输入不一样!")
+            console.log(err);
+          }
+        );
+      // if (result == "true")
+      //   {commitJson.verifySuccess=="ture";}
+      setTimeout(() => {
+        if (result == "true") {
+          this.form.captchaSuccess = "true";
         }
-        else{
-          if(captchaSuccess=="true"){
-            this.axios
-              .post(
-                //"/api/users/validateCaptcha"
-                "/api/editInfo/admin/changePwd",
-                JSON.stringify({
-                  admin_id: sessionStorage.getItem("id"),
-                  old_password: old_password,
-                  new_password: new_password
-                })
-              )
-              .then(function(response) {
+        this.save(
+          this.form.captchaSuccess,
+          this.form.oripassword,
+          this.form.password
+        );
+      }, 2500);
+    },
+    save(captchaSuccess, old_password, new_password) {
+      if (this.password != this.passwordC) {
+        //弹出错误提示
+        alert("两次密码输入不一样!");
+      } else {
+        if (captchaSuccess == "true") {
+          this.axios
+            .post(
+              //"/api/users/validateCaptcha"
+              "/api/editInfo/admin/changePwd",
+              JSON.stringify({
+                admin_id: sessionStorage.getItem("id"),
+                old_password: old_password,
+                new_password: new_password,
+              })
+            )
+            .then(
+              function (response) {
                 //这里使用了ES6的语法
                 // this.checkResponse(response.data); //请求成功返回的数据
                 alert("修改成功");
                 this.$router.go(0);
-                console.log(response)
-
-              }, function(err){
-                console.log(err)
-              });
-            setTimeout(()=>{
-              this.$router.go(0);
-          },1500)
-            }
-            else{
-              this.$message("验证码错误")
-            }
+                console.log(response);
+              },
+              function (err) {
+                console.log(err);
+                this.$message("网络错误！");
+              }
+            );
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1500);
+        } else {
+          this.$message("验证码错误");
         }
+      }
     },
     back() {
       this.$router.push("/studentHome");
@@ -158,6 +169,8 @@ export default {
           },
           function (err) {
             console.log(err);
+
+            this.$message("网络错误！");
           }
         );
     },

@@ -79,8 +79,9 @@ export default {
           //this.department = response.data[0].department;
           //this.major_id;
         })
-        .catch(function (error) {
-          console(error);
+        .catch((error) => {
+          this.$message("网络错误！");
+          console.log(error);
         });
     },
 

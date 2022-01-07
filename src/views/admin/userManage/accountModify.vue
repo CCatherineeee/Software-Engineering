@@ -93,14 +93,13 @@ export default {
 
     getInfo() {
       if (this.userAccount.role == 1) {
+        var jsonS = {
+          s_id: this.userAccount.id,
+        };
         axios
-          .get("/api/getUserInfo/Student/", {
-            params: { s_id: this.userAccount.id },
-            crossDomain: true,
-          })
+          .post("/api/getUserInfo/Student/", JSON.stringify(jsonS))
           .then((response) => {
-            console.log("getInfo");
-            console.log(response);
+            console.log("getInfo", response);
             this.userAccount.name = response.data.data[0].name;
             this.userAccount.gender = response.data.data[0].gender;
             this.userAccount.phone_number = response.data.data[0].phone_number;
@@ -116,8 +115,9 @@ export default {
       } else if (this.userAccount.role == 2) {
         axios
           .get("/api/getUserInfo/Teacher/", {
-            params: { t_id: this.userAccount.id },
-            crossDomain: true,
+            params: {
+              t_id: this.userAccount.id,
+            },
           })
           .then((response) => {
             console.log("拿到的信息" + JSON.stringify(response.data));
@@ -136,8 +136,9 @@ export default {
       } else if (this.userAccount.role == 3) {
         axios
           .get("/api/getUserInfo/TA/", {
-            params: { ta_id: this.userAccount.id },
-            crossDomain: true,
+            params: {
+              ta_id: this.userAccount.id,
+            },
           })
           .then((response) => {
             console.log("拿到的信息" + JSON.stringify(response.data));
