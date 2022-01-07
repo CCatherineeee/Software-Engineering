@@ -33207,3 +33207,12 @@ Traceback (most recent call last):
   File "/root/Software-Engineering/Routers/ManageAccount/auth/authManage.py", line 9, in <module>
     from Model.Model import Student,Teacher,TeachingAssistance
 ImportError: cannot import name 'TeachingAssistance'
+/usr/local/lib/python3.6/site-packages/redis/connection.py:72: UserWarning: redis-py works best with hiredis. Please consider installing
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "app.py", line 23, in <module>
+    from Routers.ManageAccount.auth.authManage import auth
+  File "/root/Software-Engineering/Routers/ManageAccount/auth/authManage.py", line 52
+    return jsonify(status)
+                         ^
+IndentationError: unindent does not match any outer indentation level
