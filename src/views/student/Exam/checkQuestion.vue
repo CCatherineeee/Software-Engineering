@@ -103,10 +103,11 @@ export default {
       this.exam_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
         "exam_id"
       ];
-      this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
-        "class_id"
+      this.course_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "course_id"
       ];
-      this.course_id = this.class_id.substring(0, 12);
+      console.log(this.class_id)
+      this.class_id = this.course_id.substring(0, 12);
     },
     getExam() {
       this.axios
@@ -117,6 +118,7 @@ export default {
           })
         )
         .then((res) => {
+          console.log(res);
           if (res.data.code === 200) {
             this.end_time = res.data.data.end_time;
             this.start_time = res.data.data.start_time;
@@ -130,7 +132,6 @@ export default {
               });
             }
           }
-          console.log(this.questionList);
         });
     },
     save() {
@@ -178,7 +179,8 @@ export default {
     },
     Timer() {
       this.time.timeStr = setInterval(this.timer, 50);
-      this.isClose = setInterval(this.checkClose, 1);
+      setInterval(this.checkClose, 10);
+
     },
     timer() {
       //定义计时函数
@@ -217,7 +219,12 @@ export default {
       let d2 = new Date(); //取今天的日期
       let d1 = new Date(Date.parse(yourtime));
       if (d2 > d1) {
-        return true;
+        this.isClose = true
+        if(this.isClose){
+          this.$message("考试关闭")
+          this.save()
+          return;
+        }
       }
     },
   },
