@@ -9,6 +9,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import datetime
 import random
 from Routers import Role
+from flask_cors import cross_origin
 
 createFightRoute = Blueprint('createFightRoute', __name__)
 
@@ -161,9 +162,9 @@ def pushExamForce():
     exam.start_time = datetime.datetime.now()
     # 找到所有班级
     classes = Class.query.filter(Class.course_id == course_id).all()
-    for class_ in classes:
+    for a_class in classes:
         # 找到班级学生，生产测验小组
-        students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+        students = StudentClass.query.filter(StudentClass.class_id == a_class.class_id).all()
         while(len(students) > 4):
             sg = random.sample(students,3)
             students.remove(sg[0])
@@ -216,6 +217,7 @@ def stopExamForce():
     return jsonify({'code':200,'message':"请求成功",'data':None})
 
 @createFightRoute.route('/addQuestion',methods=['POST']) 
+@cross_origin(supports_credentials=True)
 def addQuestion():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
@@ -237,9 +239,9 @@ def addQuestion():
             answer = answer + c
         qs = Question(title = title, option_a = option_a, option_b = option_b, option_c = option_c, option_d = option_d, answer = answer, exam_id = exam_id, q_type = q_type,q_score = q_score)
         dbManage.db.session.add(qs)
-        all_score += q_score
-    dbManage.db.session.commit()
+        all_score += eval(q_score)
     this_exam.score = all_score
+    dbManage.db.session.commit()
     return jsonify({'code':200,'message':"添加成功",'score':all_score})
 
 
