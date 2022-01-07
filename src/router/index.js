@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import StudentHome from '../views/student/studentHome.vue'
-import AdminHome from '../views/admin/adminHome'
+import AdminHome from '../views/admin/adminHome.vue'
 import TeacherHome from '../views/teacher/teacherHome.vue'
 import AssistHome from '../views/assist/assistHome.vue'
 
@@ -19,11 +19,7 @@ import AssistConcreteCourse from '../views/assist/course/concreteCourse.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/test',
-    name: 'Test',
-    component: () => import('../views/test.vue')
-  },
+
   {
     path: '/login',
     name: 'Login',
@@ -47,7 +43,7 @@ const routes = [
     component: StudentHome,
     children: [
       //学生账户
-      { path: '/studentHome/control', component: () => import('../views/student/Control') },
+      { path: '/studentHome/control', component: () => import('../views/student/Control.vue') },
       { path: '/studentHome/account', component: () => import('../views/student/account/account.vue') },
       { path: '/studentHome/modifyAccount', component: () => import('../views/student/account/modifyAccount.vue') },
       { path: '/studentHome/modifyPassword', component: () => import('../views/student/account/passwordModify.vue') },
@@ -123,7 +119,7 @@ const routes = [
     name: 'TeacherHome',
     component: TeacherHome,
     children: [
-      { path: '/teacherHome/control', component: () => import('../views/teacher/Control') },
+      { path: '/teacherHome/control', component: () => import('../views/teacher/Control.vue') },
       //账户
       { path: '/teacherHome/account', component: () => import('../views/teacher/account/account.vue') },
       { path: '/teacherHome/modifyAccount', component: () => import('../views/teacher/account/modifyAccount.vue') },
@@ -153,7 +149,7 @@ const routes = [
       },
       { path: '/teacherHome/concreteCourse/stuExperOnline', component: () => import('../views/teacher/course/experiment/stuExperOnline.vue') },
       {
-        path: '/teacherHome/duty-course/home', component: () => import('../views/teacher/Exam/examHome.vue'), children: [
+        path: '/teacherHome/duty-course', component: () => import('../views/teacher/Exam/examHome.vue'), children: [
           { path: '/teacherHome/duty-course/exam/checkExam', component: () => import('../views/teacher/Exam/checkExam.vue') },
           { path: '/teacherHome/duty-course/exam/addExam', component: () => import('../views/teacher/Exam/AddExam.vue') },
           { path: '/teacherHome/duty-course/exam/analysisExam', component: () => import('../views/teacher/Exam/AnalysisExam.vue') },

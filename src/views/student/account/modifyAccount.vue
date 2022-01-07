@@ -66,7 +66,7 @@ export default {
     save() {
       var jsons = {
         name: this.userAccount.name,
-        sid: this.userAccount.sid,
+        s_id: this.userAccount.sid,
         gender: this.userAccount.gender,
         phone_number: this.userAccount.phone_number,
         email: this.userAccount.email,
@@ -93,7 +93,7 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       this.axios
-        .get("/api/getUserInfo/Student/", JSON.stringify(jsons))
+        .post("/api/getUserInfo/Student/", JSON.stringify(jsons))
         .then((response) => {
           console.log("getinfo");
           console.log(response);
@@ -126,3 +126,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.el-button--primary {
+  color: white;
+}
+.el-button--success {
+  color: white;
+}
+</style>

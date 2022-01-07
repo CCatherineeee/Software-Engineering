@@ -28,9 +28,9 @@
           <el-input v-model="search" placeholder="Type to search" />
         </template>
         <template slot-scope="scope">
-
           <el-button size="small" @click="handleExam(scope.row)"
-            >管理班级</el-button>
+            >管理班级</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -95,7 +95,7 @@ export default {
     handleExam(row) {
       console.log(row);
       this.$router.push({
-        path: "/teacherHome/duty-course/home",
+        path: "/teacherHome/duty-course",
 
         query: {
           info: this.$Base64.encode(
@@ -104,7 +104,8 @@ export default {
               name: row.name,
               prefix: row.prefix,
               semester: row.semester,
-              year: row.year, })
+              year: row.year,
+            })
           ),
         },
       });

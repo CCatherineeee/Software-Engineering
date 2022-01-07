@@ -1,107 +1,103 @@
 <template>
   <div>
     <el-container>
-
       <el-aside width="40%">
         <el-row>
-          <v-btn
-              dark
-              style="margin-bottom: 1%"
-              @click="handleAddClass">
+          <v-btn dark style="margin-bottom: 1%" @click="handleAddClass">
             新增班级
           </v-btn>
         </el-row>
 
-          <v-row dense>
-            <v-col v-for="item in classList" :key="item.class_id">
-              <v-card color="#385F73" dark>
-                <div>
-                  <v-card-title
-                    v-text="item.class_id"
-                  ></v-card-title>
-                  <v-card-subtitle v-text="item.t_name"></v-card-subtitle>
-                  <v-card-actions>
-                    <v-btn outlined rounded @click="handleTea(item)">
-                      设置教师
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="handleDeleteClass(item)">
-                      删除班级
-                    </v-btn>
-                  </v-card-actions>
-                </div>
-              </v-card>
-            </v-col>
-          </v-row>
+        <v-row dense>
+          <v-col v-for="item in classList" :key="item.class_id">
+            <v-card color="#385F73" dark>
+              <div>
+                <v-card-title v-text="item.class_id"></v-card-title>
+                <v-card-subtitle v-text="item.t_name"></v-card-subtitle>
+                <v-card-actions>
+                  <v-btn outlined rounded @click="handleTea(item)">
+                    设置教师
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="handleDeleteClass(item)">
+                    删除班级
+                  </v-btn>
+                </v-card-actions>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
       </el-aside>
 
       <el-main>
-          <el-row>
-            <el-col :span="5">
-              <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col>
-            <el-col :span="7">
-              <v-btn dark @click="handleScore">成绩占比</v-btn></el-col>
-          </el-row>
+        <el-row>
+          <el-col :span="5">
+            <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col
+          >
+          <el-col :span="7">
+            <v-btn dark @click="handleScore">成绩占比</v-btn></el-col
+          >
+        </el-row>
 
-          <el-row dense>
-            <v-col v-for="item in experList" :key="item.ex_id" >
-              <v-card color="#1F7087" dark>
-                <div>
-                  <v-card-title v-text="item.title"></v-card-title>
-                  <v-card-subtitle
-                    v-text="'实验占比：' + item.weight"
-                  ></v-card-subtitle>
-                  <v-card-subtitle
+        <el-row dense>
+          <v-col v-for="item in experList" :key="item.ex_id">
+            <v-card color="#1F7087" dark>
+              <div>
+                <v-card-title v-text="item.title"></v-card-title>
+                <v-card-subtitle
+                  v-text="'实验占比：' + item.weight"
+                ></v-card-subtitle>
+                <v-card-subtitle
+                  v-if="item.status === 0"
+                  v-text="'实验状态：未发布'"
+                ></v-card-subtitle>
+                <v-card-subtitle
+                  v-if="item.status === 1"
+                  v-text="'实验状态：已发布'"
+                ></v-card-subtitle>
+                <v-card-subtitle
+                  v-if="item.status === 3"
+                  v-text="'实验状态：已过期'"
+                ></v-card-subtitle>
+                <v-card-text
+                  v-text="'截止日期：' + item.end_time"
+                ></v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    text
+                    @click="toExperiment(item)"
+                    v-if="item.status !== 3"
+                  >
+                    详情
+                  </v-btn>
+                  <v-btn
+                    text
+                    @click="handleProportion(item)"
+                    v-if="item.status !== 3"
+                  >
+                    占比
+                  </v-btn>
+                  <v-btn
+                    text
+                    @click="handlePushExper(item)"
                     v-if="item.status === 0"
-                    v-text="'实验状态：未发布'"
-                  ></v-card-subtitle>
-                  <v-card-subtitle
+                  >
+                    发布
+                  </v-btn>
+                  <v-btn
+                    text
+                    @click="handleStopExper(item)"
                     v-if="item.status === 1"
-                    v-text="'实验状态：已发布'"
-                  ></v-card-subtitle>
-                  <v-card-subtitle
-                    v-if="item.status === 3"
-                    v-text="'实验状态：已过期'"
-                  ></v-card-subtitle>
-                  <v-card-text
-                    v-text="'截止日期：' + item.end_time"
-                  ></v-card-text>
-                  <v-card-actions>
-                    <v-btn
-                      text
-                      @click="toExperiment(item)"
-                      v-if="item.status !== 3"
-                    >
-                      详情
-                    </v-btn>
-                    <v-btn
-                      text
-                      @click="handleProportion(item)"
-                      v-if="item.status !== 3"
-                    >
-                      占比
-                    </v-btn>
-                    <v-btn
-                      text
-                      @click="handlePushExper(item)"
-                      v-if="item.status === 0"
-                    >
-                      发布
-                    </v-btn>
-                    <v-btn
-                      text
-                      @click="handleStopExper(item)"
-                      v-if="item.status === 1"
-                    >
-                      终止
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="handleDeleteExper(item)"> 删除 </v-btn>
-                  </v-card-actions>
-                </div>
-              </v-card>
-            </v-col>
-          </el-row>
+                  >
+                    终止
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="handleDeleteExper(item)"> 删除 </v-btn>
+                </v-card-actions>
+              </div>
+            </v-card>
+          </v-col>
+        </el-row>
 
         <el-dialog
           :visible.sync="classDialog"
@@ -238,10 +234,8 @@
           width="50%"
         >
           <v-container>
-            <el-input
-              label="考试"
-              v-model="eachScore.exam"
-            ></el-input>
+            <v-textarea filled label="考试" auto-grow value=""></v-textarea>
+            <el-input label="考试" v-model="eachScore.exam"></el-input>
 
             <el-input
               filled

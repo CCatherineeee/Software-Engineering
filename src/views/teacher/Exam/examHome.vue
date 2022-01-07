@@ -1,7 +1,6 @@
 <template>
   <el-container style="margin-top: 20px">
     <el-header>
-
       <el-menu @select="handleSelect" mode="horizontal">
         <el-menu-item index="/teacherHome/duty-course/courseInfo">
           <span slot="title">课程信息管理</span>
@@ -18,11 +17,6 @@
         <el-menu-item index="/teacherHome/duty-course/exam/addExam">
           <span slot="title">新增测验</span>
         </el-menu-item>
-
-        <el-menu-item index="/teacherHome/duty-course/exam/analysisExam">
-          <span slot="title">测验分析</span>
-        </el-menu-item>
-
       </el-menu>
     </el-header>
     <el-main> <router-view></router-view></el-main>
@@ -35,19 +29,22 @@ export default {
   data() {
     return {
       course_id: "",
-      name:"",
-      year:"",
-      semester:"",
-      id:""
+      name: "",
+      year: "",
+      semester: "",
+      id: "",
     };
   },
   methods: {
     getParams: function () {
-
-      this.course_id = JSON.parse(this.$Base64.decode(this.$route.query.info)).course_id;
+      this.course_id = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      ).course_id;
       this.name = JSON.parse(this.$Base64.decode(this.$route.query.info)).name;
       this.year = JSON.parse(this.$Base64.decode(this.$route.query.info)).year;
-      this.semester = JSON.parse(this.$Base64.decode(this.$route.query.info)).semester;
+      this.semester = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      ).semester;
       this.id = sessionStorage.getItem("id");
     },
     handleSelect(index) {
@@ -55,7 +52,12 @@ export default {
         path: index,
         query: {
           info: this.$Base64.encode(
-            JSON.stringify({ course_id: this.course_id, name:this.name, year:this.year, semester:this.semester })
+            JSON.stringify({
+              course_id: this.course_id,
+              name: this.name,
+              year: this.year,
+              semester: this.semester,
+            })
           ),
         },
       });
