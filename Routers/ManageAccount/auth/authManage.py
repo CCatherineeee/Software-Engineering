@@ -40,7 +40,7 @@ def confirm(user_ID,token):
             if stud.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return render_template('activeSuccess.html')
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -53,7 +53,7 @@ def confirm(user_ID,token):
             if teacher.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return render_template('activeSuccess.html')
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -66,14 +66,14 @@ def confirm(user_ID,token):
             if ta.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return render_template('activeSuccess.html')
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
     else:
         status = {'status':400,'message':'Error user'}
         return jsonify(status)
-    return render_template('activeSuccess.html')
+    return False
 
 
 # @auth.route('/confirm')
