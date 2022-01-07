@@ -7,6 +7,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask_login import LoginManager
 from flask_login import UserMixin
+from Routers import Role
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong' #安全等级
@@ -67,9 +68,9 @@ class Student(UserMixin,db.Model):
         return result
 
     #生成确认令牌，过期时间为1h
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=36000):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.s_id})
+        return s.dumps({'confirm': self.s_id,'role':Role.StudentRole})
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
@@ -124,9 +125,9 @@ class Teacher(UserMixin,db.Model):
         return result
 
     #生成确认令牌，过期时间为1h
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=36000):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.t_id})
+        return s.dumps({'confirm': self.t_id,'role':Role.TeacherRole})
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
@@ -194,9 +195,9 @@ class TeachingAssistant(db.Model):
         return result
 
     #生成确认令牌，过期时间为1h
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=36000):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.ta_id})
+        return s.dumps({'confirm': self.ta_id,'role':Role.TARole})
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
