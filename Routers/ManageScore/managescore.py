@@ -75,7 +75,19 @@ def setWeight():
         sw = ScoreWeight(course_id = course_id, exam_weight = exam_weight, experiment_weight = experiment_weight, attendence_weight = attendence_weight)
         db.session.add(sw)
     db.session.commit()
-    return jsonify({'code':200,'message':"请求成功",data : None})
+    return jsonify({'code':200,'message':"请求成功",'data' : None})
+
+@manageScoreRoute.route('/weight/get',methods=['POST'])
+def getWeight():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data['course_id']
+    sw = ScoreWeight.query.filter(ScoreWeight.course_id == course_id).first()
+    if sw:
+        return jsonify({'code':200,'message':"请求成功",'data' : {"exam_weight":sw.exam_weight, "experiment_weight":sw.experiment_weight, "attendence_weight":sw.attendence_weight}})
+    else:
+        return jsonify({'code':500,'message':"课程不存在",data : None})
+    
 #学生获得实验报告分
 @manageScoreRoute.route('/student/getAllExScore',methods=['POST'])  
 def getAllExScore():
