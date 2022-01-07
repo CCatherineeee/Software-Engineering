@@ -127,7 +127,7 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.stuScore,
-        t_id: sessionStorage.getItem("id"),
+
         token: sessionStorage.getItem("token"),
       };
       console.log(jsons);

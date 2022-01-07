@@ -20,7 +20,7 @@
               text-align: center;
             "
           >
-            注册账号
+            激活账号
           </p>
           <el-form
             style="margin: 40px 65px 0px 25px"
@@ -50,40 +50,13 @@
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
 
-            <el-form-item label="再次输入" :required="true" status-icon="true">
-              <el-input type="password" v-model="form.passwordC"></el-input>
-            </el-form-item>
-
-            <el-form-item label="学院" :required="true" status-icon="true">
-              <el-select
-                v-model="form.college"
-                style="width: 100%"
-                placeholder="请选择学院"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="手机" style="color: white">
+            <el-form-item label="邮件" style="color: white" :required="true">
               <el-input v-model="form.phone"></el-input>
-            </el-form-item>
-
-            <el-form-item label="性别">
-              <el-radio-group v-model="form.gender">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
-              </el-radio-group>
             </el-form-item>
 
             <el-form-item style="text-align: center">
               <el-button type="primary" @click="submitLoginForm()"
-                >注册</el-button
+                >激活</el-button
               >
               <el-button style="margin-left: 100px" @click="back"
                 >返回</el-button

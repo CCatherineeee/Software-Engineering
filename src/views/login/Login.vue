@@ -60,16 +60,16 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button
-                    type="primary"
-                    @click="submitForm()"
-                    style="margin-right: 50px"
+                  <el-button type="primary" @click="submitForm()"
                     >登陆</el-button
                   >
-                  <el-button @click="openMask" style="margin-left: 50px"
+                  <el-button @click="openMask" style="margin-left: 10%"
                     >忘记密码</el-button
                   >
+
                   <br />
+                  <br />
+
                   <br />
                   <el-form-item>
                     <dialog-bar
@@ -241,7 +241,7 @@ export default {
       this.$store.state.data = "";
       this.sendVal = true;
     },
-    clickCancel() {
+    /*clickCancel() {
       console.log("点击了取消");
     },
     clickDanger() {
@@ -249,36 +249,55 @@ export default {
     },
     clickConfirm() {
       console.log("点击了confirm");
-    },
+    },*/
     // AdminLogin() {
     //   this.$router.push("/AdminLogin");
     // },
     checkResponse(response) {
+      console.log("checkResponse", response);
       sessionStorage.setItem("id", this.ruleForm.id);
       sessionStorage.setItem("token", response["token"]);
 
       if (response["status"] === "TSuccess") {
-        this.$message({
-          message: "登陆成功",
-          type: "success",
-        });
-        sessionStorage.setItem("role", 2);
-        this.$router.push("/teacherHome/control");
+        if (response["is_active"] === 1) {
+          this.$message({
+            message: "登陆成功",
+            type: "success",
+          });
+          sessionStorage.setItem("role", 2);
+          this.$router.push("/teacherHome/control");
+        } else {
+          this.$message.warning(
+            "请先激活您的账户，如果未收到激活邮件请联系管理员！"
+          );
+        }
       } else if (response["status"] === "SSuccess") {
-        this.$message({
-          message: "登陆成功",
-          type: "success",
-        });
-        sessionStorage.setItem("role", 1);
-        this.$router.push("/studentHome/control");
+        if (response["is_active"] === 1) {
+          this.$message({
+            message: "登陆成功",
+            type: "success",
+          });
+          sessionStorage.setItem("role", 1);
+          this.$router.push("/studentHome/control");
+        } else {
+          this.$message.warning(
+            "请先激活您的账户，如果未收到激活邮件请联系管理员！！"
+          );
+        }
       } else if (response["status"] === "TASuccess") {
-        this.$message({
-          message: "登陆成功",
-          type: "success",
-        });
-        sessionStorage.setItem("role", 3);
-        //助教先导引到学生页面
-        this.$router.push("/assistHome/control");
+        if (response["is_active"] === 1) {
+          this.$message({
+            message: "登陆成功",
+            type: "success",
+          });
+          sessionStorage.setItem("role", 3);
+          //助教先导引到学生页面
+          this.$router.push("/assistHome/control");
+        } else {
+          this.$message.warning(
+            "请先激活您的账户，如果未收到激活邮件请联系管理员！！"
+          );
+        }
       } else if (response["status"] === "Login") {
         this.$message({
           message: "登陆成功",
@@ -455,6 +474,9 @@ body > .el-container {
   background-color: #d3dce6;
 }
 .el-button--primary {
+  color: white;
+}
+.el-button--success {
   color: white;
 }
 </style>
