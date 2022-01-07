@@ -9,6 +9,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import datetime
 import random
 from Routers import Role
+from sqlalchemy import and_, or_
 
 manageScoreRoute = Blueprint('manageScoreRoute', __name__)
 CORS(manageScoreRoute, resources=r'/*')	
@@ -75,3 +76,142 @@ def setWeight():
         db.session.add(sw)
     db.session.commit()
     return jsonify({'code':200,'message':"请求成功",data : None})
+#学生获得实验报告分
+@manageScoreRoute.route('/student/getAllExScore',methods=['POST'])  
+def getAllExScore():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    #class_id = data['class_id']   #课程号
+    course_id = data["course_id"]
+    s_id = data["s_id"]
+    #course_id = class_id[:-1]
+    this_course = Course.query.filter(Course.c_id==course_id).first()
+    if not this_course:
+        return jsonify({'status':400,'message':"该课程不存在"})
+
+    ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()
+    result = []
+    seq = 1
+    for item in ex_list:
+        if item.status != 0:
+            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+            #学生有这个实验
+            if stu_ex_item:
+                if not stu_ex_item.score:
+                    score = 0
+                else:
+                    score = stu_ex_item.score
+                last_score = item.weight*score
+                #result_item = {"name":item.experiment_title,"value":last_score}
+                result_item = {"seq":seq,"title":item.experiment_title,"weight":item.weight,"score":score}
+                result.append(result_item)
+                seq += 1
+    
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+
+#学生获得出勤分
+@manageScoreRoute.route('/student/getSubmitEx',methods=['POST'])  
+def getSubmitEx():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data["course_id"]
+    s_id = data["s_id"]
+    this_course = Course.query.filter(Course.c_id==course_id).first()
+    this_student = Student.query.filter(Student.s_id==s_id).first()
+
+    if not this_student:
+        return jsonify({'status':400,'message':"该学生不存在"})
+    if not this_course:
+        return jsonify({'status':400,'message':"该课程不存在"})
+
+    ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()   #获得该课程的所有实验报告数量
+    all_ex_num = len(ex_list)
+
+    result = []
+    seq = 1
+    for item in ex_list:
+        if item.status != 0:
+            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+            #学生有这个实验,并提交了报告
+            if stu_ex_item.submitTime:    #存在提交时间
+
+                result_item = {"seq":seq,"title":item.experiment_title,"is_submit":1} #已提交
+                result.append(result_item)
+                seq += 1
+            else:   #学生并没有提交这个报告
+                result_item = {"seq":seq,"title":item.experiment_title,"is_submit":0} #未提交
+                result.append(result_item)
+                seq += 1
+
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+
+#学生获得考试分
+@manageScoreRoute.route('/student/getExamScore',methods=['POST'])  
+def getExamScore():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data["course_id"]
+    s_id = data["s_id"]
+    this_course = Course.query.filter(Course.c_id==course_id).first()
+    this_student = Student.query.filter(Student.s_id==s_id).first()
+    
+    if not this_student:
+        return jsonify({'status':400,'message':"该学生不存在"})
+    if not this_course:
+        return jsonify({'status':400,'message':"该课程不存在"})
+
+    exam_list = Exam.query.filter(and_(Exam.course_id == course_id,Exam.status == 1)).all()   #寻找所有该课程可以参加的考试
+
+    seq = 1
+    result = []
+    for exam_item in exam_list:
+        stu_exam = StudentExam.query.filter(StudentExam.exam_id == exam_item.exam_id).first()
+        if stu_exam:   #学生参与了该考试，得到分数
+
+            result_item = {"seq":seq,"title":exam_item.title,"stu_score":stu_exam.score,"all_score":exam_item.score}
+            result.append(result_item)
+            seq += 1
+        else:   #学生并未参与考试
+            result_item = {"seq":seq,"title":exam_item.title,"stu_score":0,"all_score":exam_item.score}
+            result.append(result_item)
+            seq += 1
+
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+
+
+#学生获得课程总评
+@manageScoreRoute.route('/student/getCourseScore',methods=['POST'])  
+def getCourseScore():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data["course_id"]
+    s_id = data["s_id"]
+    this_course = Course.query.filter(Course.c_id==course_id).first()
+    this_student = Student.query.filter(Student.s_id==s_id).first()
+    #this_weight = Scoreweight
+    if not this_student:
+        return jsonify({'status':400,'message':"该学生不存在"})
+    if not this_course:
+        return jsonify({'status':400,'message':"该课程不存在"})
+
+    ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()   #获得该课程的所有实验报告数量
+    ex_score = 0
+    duty_score = 0
+    exam_score = 0
+    all_ex_num = len(ex_list)
+    take_ex_num = 0
+
+    for item in ex_list:
+        if item.status != 0:
+            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+            #学生有这个实验,并提交了报告
+            if stu_ex_item.submitTime:    #存在提交时间
+                take_ex_num += 1
+
+    #计算出勤占比
+    duty_score = take_ex_num/all_ex_num
+
+    
