@@ -6,7 +6,7 @@ from ..myemail.sendEmail import send_email
 from flask import current_app
 from flask_restful import Api
 from flask import jsonify
-from Model.Model import Student,Teacher,TeachingAssistance
+from Model.Model import Student,Teacher,TeachingAssistant
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
    
