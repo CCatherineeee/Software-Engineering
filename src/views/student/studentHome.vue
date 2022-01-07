@@ -4,7 +4,7 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img
+            <img ref="stuAvatar"
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
@@ -52,12 +52,35 @@ export default {
     };
   },
   methods: {
+
+      getUserAvatar: function () {
+      let param = new FormData(); // 创建form对象
+      param.append("s_id", sessionStorage.getItem("id"));
+      this.axios
+        .post("/api/getUserInfo/Student/showAvatar", param)
+        .then((response) => {
+          var address = "http://39.107.51.181:5000";
+          var url = response.data.url;
+          this.$refs.stuAvatar.src = address + url;
+          console.log(this.$refs.stuAvatar.src);
+          // var imgHtml = "<img src=" + address + url + "></img>";
+          // console.log(imgHtml);
+          
+          // this.avatar = imgHtml;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+  },
+    mounted(){
+      this.getUserAvatar();
   },
 };
 </script>

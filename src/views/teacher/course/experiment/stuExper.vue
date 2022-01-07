@@ -92,6 +92,7 @@ export default {
         .post(
           "/api/tea/Ex/scoreReport/",
           JSON.stringify({
+            t_id: sessionStorage.getItem("id"),
             s_id: this.s_id,
             ex_id: this.ex_id,
             score: this.score,
