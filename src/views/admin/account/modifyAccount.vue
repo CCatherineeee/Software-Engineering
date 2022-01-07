@@ -102,8 +102,11 @@ export default {
               type: "success",
             });
           else this.$message.error("错误");
+        })
+        .catch((error) => {
+          this.$message("网络错误！");
+          console.log(error);
         });
-
     },
     back() {
       this.$router.go(-1);

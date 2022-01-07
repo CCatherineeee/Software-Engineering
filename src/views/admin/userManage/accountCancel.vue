@@ -72,7 +72,7 @@
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-size="pagesize"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total,prev, pager, next, jumper"
           :total="userData.length"
         >
         </el-pagination>
@@ -206,27 +206,6 @@ export default {
       this.getUserData();
     },
 
-    handleCheckCancelS() {
-      this.$confirm("确认注销账户吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.cancelSomeAccount();
-
-          this.$message({
-            type: "success",
-            message: "注销成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消注销操作",
-          });
-        });
-    },
     getUserData() {
       //获取所有用户所有信息
       axios

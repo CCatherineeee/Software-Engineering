@@ -87,14 +87,13 @@ export default {
 
     getInfo() {
       if (this.role == 1) {
+        var jsons = {
+          s_id: this.id,
+        };
         this.axios
-          .get("/api/getUserInfo/Student/", {
-            params: { s_id: this.id },
-            crossDomain: true,
-          })
+          .post("/api/getUserInfo/Student/", JSON.stringify(jsons))
           .then((response) => {
-            console.log("getInfo");
-            console.log(response);
+            console.log("getInfo", response);
             this.name = response.data.data[0].name;
             this.gender = response.data.data[0].gender;
             this.phone_number = response.data.data[0].phone_number;
@@ -108,10 +107,14 @@ export default {
             console.log(error);
           });
       } else if (this.role == 2) {
+        /*var json = {
+          t_id: this.id,
+        };*/
         this.axios
           .get("/api/getUserInfo/Teacher/", {
-            params: { t_id: this.id },
-            crossDomain: true,
+            params: {
+              t_id: this.id,
+            },
           })
           .then((response) => {
             console.log("getInfo");
@@ -129,10 +132,14 @@ export default {
             console.log(error);
           });
       } else if (this.role == 3) {
+        /* var jso = {
+          ta_id: this.id,
+        };*/
         this.axios
           .get("/api/getUserInfo/TA/", {
-            params: { ta_id: this.id },
-            crossDomain: true,
+            params: {
+              ta_id: this.id,
+            },
           })
           .then((response) => {
             console.log("getInfo");
