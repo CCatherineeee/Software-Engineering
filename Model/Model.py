@@ -240,9 +240,9 @@ class Class(db.Model):
     __tablename__ = 'class'
 
     class_id = db.Column(db.String(256),primary_key=True) 
-    course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
     class_number = db.Column(db.Integer)
-    t_id = db.Column(db.String(64), ForeignKey('teacher.t_id',ondelete='CASCADE')) 
+    t_id = db.Column(db.String(64), ForeignKey('teacher.t_id')) 
 
     #一对多关联
     # experiments = db.relationship('Experiment', backref='class', lazy='dynamic', cascade='all, delete-orphan', passive_deletes = True)
@@ -513,3 +513,10 @@ class ExamGroup(db.Model):
     s_id_1 = db.Column(db.String(64))
     s_id_2 = db.Column(db.String(64))
     s_id_3 = db.Column(db.String(64))
+
+class ScoreWeight(db.Model):
+    __tablename__ = 'score_weight'
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id"),primary_key=True)
+    exam_weight = db.Column(db.Float)
+    experiment_weight = db.Column(db.Float)
+    attendence_weight = db.Column(db.Float)

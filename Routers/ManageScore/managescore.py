@@ -56,3 +56,22 @@ def teaScore():
         temp.append(n)
         t.append(temp)
     return jsonify({'code':200,'message':"请求成功",'name':name, 'count':t})
+
+@manageScoreRoute.route('/weight/set',methods=['POST'])
+def setWeight():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+    course_id = data['course_id']
+    exam_weight = data['exam_weight']
+    experiment_weight = data['experiment_weight']
+    attendence_weight = data['attendence_weight']
+    sw = ScoreWeight.query.filter(ScoreWeight.course_id == course_id).first()
+    if sw:
+        sw.exam_weight = exam_weight
+        sw.experiment_weight = experiment_weight
+        sw.attendence_weight = attendence_weight
+    else:
+        sw = ScoreWeight(course_id = course_id, exam_weight = exam_weight, experiment_weight = experiment_weight, attendence_weight = attendence_weight)
+        db.session.add(sw)
+    db.session.commit()
+    return jsonify({'code':200,'message':"请求成功",data : None})
