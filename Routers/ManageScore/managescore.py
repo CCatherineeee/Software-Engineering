@@ -191,7 +191,7 @@ def getCourseScore():
     s_id = data["s_id"]
     this_course = Course.query.filter(Course.c_id==course_id).first()
     this_student = Student.query.filter(Student.s_id==s_id).first()
-    #this_weight = Scoreweight
+    this_weight = ScoreWeight.query.filter(ScoreWeight.course_id == course_id).first()
     if not this_student:
         return jsonify({'status':400,'message':"该学生不存在"})
     if not this_course:
@@ -200,9 +200,11 @@ def getCourseScore():
     ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()   #获得该课程的所有实验报告数量
     ex_score = 0
     duty_score = 0
-    exam_score = 0
+    stu_exam_score = 0
     all_ex_num = len(ex_list)
     take_ex_num = 0
+    ex_all_score = 0
+    
 
     for item in ex_list:
         if item.status != 0:
@@ -212,6 +214,41 @@ def getCourseScore():
                 take_ex_num += 1
 
     #计算出勤占比
-    duty_score = take_ex_num/all_ex_num
+    duty_score = (take_ex_num/all_ex_num) * (this_weight.attendence_weight * 100)
+
+    for item in ex_list:
+        if item.status != 0:
+            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+            #学生有这个实验
+            if stu_ex_item and stu_ex_item.submitTime:
+                if not stu_ex_item.score:
+                    score = 0
+                else:
+                    score = stu_ex_item.score
+                last_score = item.weight*score    #实验权重*实验得分=该实验最终总分 
+                ex_score += last_score
+    #计算实验分数
+    ex_score = (ex_score / (100*all_ex_num)) *100 * this_weight.experiment_weight
+
+    exam_list = Exam.query.filter(and_(Exam.course_id == course_id,Exam.status == 1)).all()   #寻找所有该课程可以参加的考试
+
+    for exam_item in exam_list:
+        stu_exam = StudentExam.query.filter(StudentExam.exam_id == exam_item.exam_id).first()
+        if stu_exam:   #学生参与了该考试，得到分数
+            stu_score = stu_exam.score
+            stu_exam_score += stu_score
+        else:   #学生并未参与考试
+            stu_score = 0
+            stu_exam_score += stu_score
+        ex_all_score += exam_item.score  #每次考试的总分加起来
+
+    exam_score = (stu_exam_score/ex_all_score) * 100 * this_weight.exam_weight
+    result = {"attendence_score":duty_score,"ex_score":ex_score,"exam_score":exam_score}
+
+    return jsonify({'status':200,'message':"获取成功",'data':result})
+
+
+
+    
 
     
