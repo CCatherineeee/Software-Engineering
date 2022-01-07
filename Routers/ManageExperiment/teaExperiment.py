@@ -76,22 +76,21 @@ def getReportList():
 def scoreReport():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    # t_id = data['t_id']  #批改的老师的id
+    t_id = data['t_id']  #批改的老师的id
     s_id = data['s_id']
     ex_id = data['ex_id']
     score = data['score']
     token = data['token']
-    res1 = checkToken(token,Role.TeacherRole)
-    res2 = checkToken(token,Role.TARole)
-    if res1 == 301 or res2 == 301:
+    res = checkToken(token,Role.TeacherRole)
+    if res == 301:
         return jsonify({'code':301,'message':"验证过期",'data':None})
-    elif res1 == 404 and res2 == 404:
+    elif res == 404:
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
         se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
         se.score = score
-        # teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
-        # se.grader = teacher.name
+        teacher = Teacher.query.filter(Teacher.t_id==t_id).first()
+        se.grader = teacher.name
         dbManage.db.session.commit()
         return jsonify({'code':200,'message':"请求成功",'data':None})
 
