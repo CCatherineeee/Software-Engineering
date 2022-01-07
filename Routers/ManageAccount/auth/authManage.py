@@ -23,13 +23,9 @@ def init_api(current_app):
 @auth.route('/confirm/<user_ID>/<token>')  #生成的route没有区别！
 # @login_required
 def confirm(user_ID,token):
-    try:
-        s = Serializer('WEBSITE_SECRET_KEY')
+
         token_id = s.loads(token)['id']
         token_role = s.loads(token)['role']
-    except:
-        return 301
-
     if token_role == Role.StudentRole:   #是学生
         stud = Student.query.filter(Student.s_id==user_ID).first()
         if stud is not None:
@@ -40,8 +36,8 @@ def confirm(user_ID,token):
             if stud.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return jsonify(status)
-                #return render_template('activeSuccess.html',userID=token_id)
+                #return jsonify(status)
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -54,8 +50,8 @@ def confirm(user_ID,token):
             if teacher.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return jsonify(status)
-                #return render_template('activeSuccess.html',userID=token_id)
+                #return jsonify(status)
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -68,8 +64,8 @@ def confirm(user_ID,token):
             if ta.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
-                return jsonify(status)
-                #return render_template('activeSuccess.html',userID=token_id)
+                #return jsonify(status)
+                return render_template('activeSuccess.html',userID=token_id)
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
