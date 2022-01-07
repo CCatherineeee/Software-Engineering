@@ -457,6 +457,7 @@ class Exam(db.Model):
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 3为截至
     course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
+    score = db.Column(db.Float)
     def __repr__(self):
         return '<User %r>' % self.__tablename__
 

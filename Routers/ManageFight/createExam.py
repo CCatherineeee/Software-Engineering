@@ -221,6 +221,8 @@ def addQuestion():
     data = json.loads(data.decode("utf-8"))
     exam_id = data['exam_id']
     questions = data['questions']
+    all_score = 0
+    this_exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     for q in questions:
         title = q['title']
         option_a = q['option_a']
@@ -235,8 +237,10 @@ def addQuestion():
             answer = answer + c
         qs = Question(title = title, option_a = option_a, option_b = option_b, option_c = option_c, option_d = option_d, answer = answer, exam_id = exam_id, q_type = q_type,q_score = q_score)
         dbManage.db.session.add(qs)
+        all_score += q_score
     dbManage.db.session.commit()
-    return jsonify({'code':200,'message':"添加成功"})
+    this_exam.score = all_score
+    return jsonify({'code':200,'message':"添加成功",'score':all_score})
 
 
 @createFightRoute.route('/editExamTime',methods=['POST']) 
