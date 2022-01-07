@@ -354,12 +354,16 @@ export default {
           role:usertype-1
         }
          axios
-        .post("http://100.67.162.180:5000/users/reActive", jsons)
+        .post("/api/users/reActive", jsons)
         .then((response) => {
           console.log(response);
         })
         .catch(function (error) {
           console(error);
+        });
+        this.$message({
+          message: '已发送激活邮件',
+          type: 'success'
         });
     }
     },
