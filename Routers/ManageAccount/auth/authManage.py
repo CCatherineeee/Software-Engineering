@@ -6,7 +6,7 @@ from ..myemail.sendEmail import send_email
 from flask import current_app
 from flask_restful import Api
 from flask import jsonify
-from Model.Model import Student,Teacher
+from Model.Model import Student,Teacher,TeachingAssistance
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from Routers import Role
    
@@ -35,6 +35,7 @@ def confirm(user_ID,token):
         if stud is not None:
             if stud.is_active:  #已经激活了
                 status = {'status':100,'message':'already confirmed'}
+                return jsonify(status)
                 
             if stud.confirm(token):
                 db.session.commit()
@@ -42,28 +43,33 @@ def confirm(user_ID,token):
                 return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
+            return jsonify(status)
     elif token_role == Role.TeacherRole:   #是老师
         teacher = Teacher.query.filter(Teacher.t_id==user_ID).first()
         if teacher is not None:
             if teacher.is_active:  #已经激活了
                 status = {'status':100,'message':'already confirmed'}
+                return jsonify(status)
             if teacher.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
                 return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
+            return jsonify(status)
     elif token_role == Role.TARole:   #是助教
-        teacher = Teacher.query.filter(Teacher.t_id==user_ID).first()
-        if teacher is not None:
-            if teacher.is_active:  #已经激活了
+        ta = TeachingAssistance.query.filter(TeachingAssistance.ta_id==user_ID).first()
+        if ta is not None:
+            if ta.is_active:  #已经激活了
                 status = {'status':100,'message':'already confirmed'}
-            if teacher.confirm(token):
+                return jsonify(status)
+            if ta.confirm(token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
                 return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
+            return jsonify(status)
     else:
         status = {'status':400,'message':'Error user'}
         return jsonify(status)
