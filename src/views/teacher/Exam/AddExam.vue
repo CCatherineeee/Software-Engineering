@@ -230,7 +230,7 @@ export default {
         .then((res) => {
           if (res.data.code === 200) {
             this.$router.push({
-              path: "/teacherHome/concreteCourse/examHome/checkExam",
+              path: "/teacherHome/duty-course/exam/checkExam",
               query: {
                 info: this.$Base64.encode(
                   JSON.stringify({ course_id: this.course_id })
