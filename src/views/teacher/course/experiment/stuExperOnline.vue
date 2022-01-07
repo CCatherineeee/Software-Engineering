@@ -71,31 +71,6 @@ export default {
       );
     },
 
-    confirm() {
-      this.axios
-        .post(
-          "/api/tea/Ex/scoreReport/",
-          JSON.stringify({
-            s_id: this.s_id,
-            ex_id: this.ex_id,
-            score: this.score,
-            token: sessionStorage.getItem("token"),
-          })
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.data["code"] === 301) {
-            this.$message("验证过期");
-            this.$router.push({ path: "/login" });
-          } else if (response.data["code"] === 404) {
-            this.$message("找不到页面");
-            this.$router.push({ path: "/404" });
-          } else {
-            this.$message.success("成功打分！");
-          }
-        });
-    },
-
     back() {
       this.$router.go(-1);
     },
