@@ -25,7 +25,7 @@ def init_api(current_app):
 def confirm(user_ID,token):
 
     s = Serializer(current_app.config['SECRET_KEY'])
-    token_id = s.loads(token)['id']
+    #token_id = s.loads(token)['id']
     token_role = s.loads(token)['role']
     if token_role == Role.StudentRole:   #是学生
         stud = Student.query.filter(Student.s_id==user_ID).first()
@@ -38,7 +38,7 @@ def confirm(user_ID,token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
                 #return jsonify(status)
-                return render_template('activeSuccess.html',userID=token_id)
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -52,7 +52,7 @@ def confirm(user_ID,token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
                 #return jsonify(status)
-                return render_template('activeSuccess.html',userID=token_id)
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
@@ -66,7 +66,7 @@ def confirm(user_ID,token):
                 db.session.commit()
                 status = {'status':200,'message':'now have confirmed'}
                 #return jsonify(status)
-                return render_template('activeSuccess.html',userID=token_id)
+                return render_template('activeSuccess.html')
         else:
             status = {'status':400,'message':'confirmed failed'}
             return jsonify(status)
