@@ -103,7 +103,6 @@ export default {
       this.$router.go(-1);
     },
     cache(){
-
       var jsons = this.report_info
       jsons["ex_id"] = this.ex_id
       jsons["s_id"] = sessionStorage.getItem('id')
@@ -123,6 +122,10 @@ export default {
       });
     },
     submit(){
+      if(this.report_info.goal === "" || this.report_info.device === "" || this.report_info.step === "" || this.report_info.process === "" || this.report_info.result === ""){
+        this.$message("请填写完整！")
+        return;
+      }
       var jsons = this.report_info
       jsons["ex_id"] = this.ex_id
       jsons["s_id"] = sessionStorage.getItem('id')
