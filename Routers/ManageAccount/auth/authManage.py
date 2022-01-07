@@ -24,8 +24,9 @@ def init_api(current_app):
 # @login_required
 def confirm(user_ID,token):
 
-        token_id = s.loads(token)['id']
-        token_role = s.loads(token)['role']
+    s = Serializer(current_app.config['SECRET_KEY'])
+    token_id = s.loads(token)['id']
+    token_role = s.loads(token)['role']
     if token_role == Role.StudentRole:   #是学生
         stud = Student.query.filter(Student.s_id==user_ID).first()
         if stud is not None:
