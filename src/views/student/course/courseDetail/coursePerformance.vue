@@ -1,23 +1,77 @@
 <template>
   <div>
-    <v-card style="display: flex; justify-content: center">
-      <div id="scoreChart" style="width: 800px; height: 500px" />
+    <h3
+      style="
+        display: flex;
+        align-items: center;
+        color: #ef5350;
+        margin-bottom: 5px;
+      "
+    >
+      各项占总成绩比例： 实验:50% ；测验:40% ；出勤:10%
+    </h3>
+
+    <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
+      <div
+        id="myChart"
+        style="width: 800px; height: 500px; display: flex; align-items: center"
+      />
       <h3 style="display: flex; align-items: center">
         所得成绩占比:{{ now_score }}/100
       </h3>
     </v-card>
-    <v-card style="display: flex; justify-content: center">
-      <div id="myChart" style="width: 800px; height: 500px" />
-      <h3 style="display: flex; align-items: center">
-        所得成绩占比:{{ now_score }}/100
-      </h3>
-    </v-card>
-    <v-card style="display: flex; justify-content: center">
-      <div id="examChart" style="width: 800px; height: 500px" />
-      <h3 style="display: flex; align-items: center">
-        所得成绩占比:{{ now_score }}/100
-      </h3>
-    </v-card>
+
+    <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
+      <v-card-title>
+        <h3 style="color: #6666cc">详细出勤情况:100</h3>
+      </v-card-title>
+      <br />
+      <el-table
+        :data="tableData"
+        :stripe="true"
+        style="width: 100%; margin-left: 7%; margin-right: 10%"
+      >
+        <el-table-column prop="date" label="序号" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="实验" width="180">
+        </el-table-column>
+        <el-table-column prop="address" label="是否提交">
+        </el-table-column> </el-table
+    ></v-card>
+    <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
+      <v-card-title>
+        <h3 style="color: #6666cc">报告得分与权重:100</h3>
+      </v-card-title>
+      <br />
+      <el-table
+        :data="tableData"
+        :stripe="true"
+        style="width: 100%; margin-left: 5%; margin-right: 10%"
+      >
+        <el-table-column prop="date" label="序号" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="实验" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="权重" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="分数"> </el-table-column> </el-table
+    ></v-card>
+    <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
+      <v-card-title>
+        <h3 style="color: #6666cc">测验得分:100</h3>
+      </v-card-title>
+      <br />
+      <el-table
+        :data="tableData"
+        :stripe="true"
+        style="width: 100%; margin-left: 11%; margin-right: 10%"
+      >
+        <el-table-column prop="date" label="序号" width="180" />
+
+        <el-table-column prop="name" label="测验" width="180" />
+        <el-table-column prop="name" label="得分" width="180" />
+        <el-table-column prop="name" label="总分" /> </el-table
+    ></v-card>
   </div>
 </template>
 
@@ -28,6 +82,28 @@ export default {
       allScore: [],
       class_id: null,
       now_score: 0,
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+      ],
     };
   },
   methods: {
@@ -62,7 +138,7 @@ export default {
         backgroundColor: "#FFFFFF",
 
         title: {
-          text: "实验成绩",
+          text: "您的成绩",
           left: "center",
           top: 20,
           textStyle: {
@@ -110,7 +186,7 @@ export default {
       myChart.setOption(option);
       myChart.resize();
     },
-    examChart() {
+    /*examChart() {
       var echarts = require("echarts");
       let myChart = echarts.init(document.getElementById("examChart"));
       myChart.clear();
@@ -258,7 +334,7 @@ export default {
       };
       myChart.setOption(option);
       myChart.resize();
-    },
+    },*/
     getNowScore() {
       for (var i = 0; i < this.allScore.length; i++) {
         this.now_score += this.allScore[i].value;
@@ -272,12 +348,12 @@ export default {
     setTimeout(() => {
       this.exChart();
     }, 760);
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.examChart();
     }, 760);
     setTimeout(() => {
       this.scoreChart();
-    }, 760);
+    }, 760);*/
     setTimeout(() => {
       this.getNowScore();
     }, 760);
