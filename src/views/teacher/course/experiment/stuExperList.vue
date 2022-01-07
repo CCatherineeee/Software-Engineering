@@ -33,7 +33,7 @@
                   >查看</v-btn
                 >
               </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
+              <v-col cols="4" v-if="ex_type == '提交文件'">
                 <v-btn
                   small
                   dark
@@ -42,13 +42,18 @@
                   >查看</v-btn
                 >
               </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
+              <v-col cols="4" v-if="ex_type == '提交文件'">
                 <v-btn
                   small
                   dark
                   @click="download(scope.row)"
                   v-if="scope.row.status == '是'"
                   >下载</v-btn
+                >
+              </v-col>
+              <v-col cols="4" v-if="ex_type == '提交文件'">
+                <v-btn small dark @click="handleScoreDown(scope.row)"
+                  >打分</v-btn
                 >
               </v-col>
             </v-row>
@@ -121,6 +126,7 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.stuScore,
+        t_id: sessionStorage.getItem("id"),
         token: sessionStorage.getItem("token"),
       };
       console.log(jsons);

@@ -205,12 +205,12 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.score,
-        //t_id: this.id,
+        ta_id: this.id,
         token: sessionStorage.getItem("token"),
       };
-      console.log(jsons);
+
       this.axios
-        .post("/api/tea/Ex/scoreReport/", JSON.stringify(jsons))
+        .post("/api/tea/Ex/taScoreReport/", JSON.stringify(jsons))
         .then((response) => {
           console.log("setScore", response);
           if (response.data["code"] === 301) {
@@ -279,7 +279,7 @@ export default {
     },
     downReport(row) {
       console.log("downReport", row);
-      console.log(row);
+
       let formData = new FormData();
       formData.append("s_id", row.row.id);
       formData.append("ex_id", row.column.property.replace("ex_", ""));

@@ -30,33 +30,6 @@
         }}</el-descriptions-item>
       </el-descriptions>
     </div>
-
-    <el-dialog
-      :visible.sync="dialogVisible"
-      title="请选择文件"
-      center
-      border-radius="4px"
-    >
-      <el-upload
-        ref="uploadImport"
-        action=""
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-change="handleChange"
-        :before-remove="beforeRemove"
-        :file-list="fileList"
-        :multiple="true"
-        :auto-upload="false"
-        accept=""
-      >
-        <el-button type="primary" style="float: center">选取文件</el-button>
-        <div slot="tip" class="el-upload__tip"></div>
-      </el-upload>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="success">上传</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 

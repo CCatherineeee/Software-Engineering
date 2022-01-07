@@ -15,7 +15,6 @@
         "
         style="width: 100%"
       >
-        <el-table-column type="selection" width="55" />
         <el-table-column prop="s_id" label="学号" sortable />
         <el-table-column prop="s_name" label="姓名" sortable />
         <el-table-column prop="status" label="是否提交" sortable />
@@ -33,7 +32,7 @@
                   >查看</v-btn
                 >
               </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
+              <v-col cols="4" v-if="ex_type == '提交文件'">
                 <v-btn
                   small
                   dark
@@ -42,13 +41,18 @@
                   >查看</v-btn
                 >
               </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
+              <v-col cols="4" v-if="ex_type == '提交文件'">
                 <v-btn
                   small
                   dark
                   @click="download(scope.row)"
                   v-if="scope.row.status == '是'"
                   >下载</v-btn
+                >
+              </v-col>
+              <v-col cols="4" v-if="ex_type == '提交文件'">
+                <v-btn small dark @click="handleScoreDown(scope.row)"
+                  >打分</v-btn
                 >
               </v-col>
             </v-row>
@@ -121,11 +125,12 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.stuScore,
+        ta_id: sessionStorage.getItem("id"),
         token: sessionStorage.getItem("token"),
       };
       console.log(jsons);
       this.axios
-        .post("/api/tea/Ex/scoreReport/", JSON.stringify(jsons))
+        .post("/api/tea/Ex/taScoreReport/", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
           if (response.data["code"] === 301) {
@@ -145,7 +150,7 @@ export default {
 
     giveScoreOnline(row) {
       this.$router.push({
-        path: "/teacherHome/concreteCourse/stuExper",
+        path: "/assistHome/concreteCourse/stuExper",
         query: {
           info: this.$Base64.encode(
             JSON.stringify({
