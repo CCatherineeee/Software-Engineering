@@ -3,22 +3,6 @@
     <div
       style="margin: auto auto; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15)"
     >
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <v-textarea
-            label="score"
-            auto-grow
-            outlined
-            rows="1"
-            row-height="15"
-            v-model="score"
-          ></v-textarea
-        ></el-col>
-        <el-col :span="2" :offset="14"
-          ><v-btn dark @click="confirm"> 确认 </v-btn></el-col
-        >
-        <el-col :span="2"><v-btn dark @click="back">返回</v-btn></el-col>
-      </el-row>
       <el-descriptions
         direction="vertical"
         :column="1"
@@ -90,17 +74,16 @@ export default {
     confirm() {
       this.axios
         .post(
-          "/api/tea/Ex/taScoreReport/",
+          "/api/tea/Ex/scoreReport/",
           JSON.stringify({
             s_id: this.s_id,
             ex_id: this.ex_id,
             score: this.score,
-            ta_id: sessionStorage.getItem("id"),
             token: sessionStorage.getItem("token"),
           })
         )
         .then((response) => {
-          console.log("confirm", response);
+          console.log(response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -122,7 +105,7 @@ export default {
         ex_id: this.ex_id,
         s_id: this.s_id,
       };
-
+      console.log("getExReportJsons", jsons);
       this.axios
         .post("/api/Ex/checkFilled", JSON.stringify(jsons))
         .then((response) => {

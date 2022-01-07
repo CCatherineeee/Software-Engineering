@@ -15,7 +15,6 @@
         "
         style="width: 100%"
       >
-        <el-table-column type="selection" width="55" />
         <el-table-column prop="s_id" label="学号" sortable />
         <el-table-column prop="s_name" label="姓名" sortable />
         <el-table-column prop="status" label="是否提交" sortable />
@@ -30,16 +29,31 @@
             <v-row>
               <v-col cols="3" v-if="ex_type == '在线提交'">
                 <v-btn small dark @click="giveScoreOnline(scope.row)"
-                  >打分</v-btn
+                  >查看</v-btn
                 >
               </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
+              <v-col cols="4" v-if="ex_type == '提交文件'">
+                <v-btn
+                  small
+                  dark
+                  @click="check(scope.row)"
+                  v-if="scope.row.status == '是'"
+                  >查看</v-btn
+                >
+              </v-col>
+              <v-col cols="4" v-if="ex_type == '提交文件'">
+                <v-btn
+                  small
+                  dark
+                  @click="download(scope.row)"
+                  v-if="scope.row.status == '是'"
+                  >下载</v-btn
+                >
+              </v-col>
+              <v-col cols="4" v-if="ex_type == '提交文件'">
                 <v-btn small dark @click="handleScoreDown(scope.row)"
                   >打分</v-btn
                 >
-              </v-col>
-              <v-col cols="3" v-if="ex_type == '提交文件'">
-                <v-btn small dark @click="download(scope.row)">下载</v-btn>
               </v-col>
             </v-row>
           </template>
@@ -111,11 +125,12 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.stuScore,
+        ta_id: sessionStorage.getItem("id"),
         token: sessionStorage.getItem("token"),
       };
       console.log(jsons);
       this.axios
-        .post("/api/tea/Ex/scoreReport/", JSON.stringify(jsons))
+        .post("/api/tea/Ex/taScoreReport/", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
           if (response.data["code"] === 301) {
@@ -148,14 +163,49 @@ export default {
       });
     },
 
-    releaseGrade() {
-      //发布成绩
-    },
-    downloadSelect() {
-      //批量下载学生的pdf
+    check(row) {
+      //console.log("checkjson", row, this.ex_id);
+      this.axios
+        .post(
+          "/api/Ex/showUpload/",
+          JSON.stringify({
+            s_id: row.s_id,
+            ex_id: this.ex_id.toString(),
+          }),
+          {
+            responseType: "blob",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          //var fname = row.filename
+          //fname = decodeURIComponent(fname)
+          //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
+
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            console.log("查看文件", response);
+            //const fileName = response.headers["content-disposition"];
+            //var fname = fileName.split("filename=")[1];
+            //fname = decodeURIComponent(fname);
+            const blob = new Blob([response.data], {
+              type: "application/pdf",
+            });
+            //var downloadElement = document.createElement("a");
+            var href = window.URL.createObjectURL(blob);
+            window.open(href);
+          }
+        });
     },
     download(row) {
-      console.log(row);
+      //console.log(row);
       let formData = new FormData();
       formData.append("s_id", row.s_id);
       formData.append("ex_id", this.ex_id);
@@ -168,15 +218,15 @@ export default {
           responseType: "blob",
         })
         .then((response) => {
-          console.log(response);
+          console.log("download", response);
 
           const fileName = response.headers["content-disposition"];
-          var fname = fileName.split("filename*=UTF-8''")[1];
+          var fname = fileName.split("filename=")[1];
           fname = decodeURIComponent(fname);
           //const title = fileName && (fileName.indexOf('filename=') !== -1) ? fileName.split('=')[1] : 'download';
 
           const blob = new Blob([response.data], {
-            type: "text/plain,charset=UTF-8",
+            type: "application/pdf",
           });
           var downloadElement = document.createElement("a");
           var href = window.URL.createObjectURL(blob);
@@ -205,8 +255,7 @@ export default {
           })
         )
         .then((response) => {
-          console.log("stuEx");
-          console.log(response);
+          console.log("stuEx", response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });

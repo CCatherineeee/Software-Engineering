@@ -49,15 +49,13 @@ export default {
     },
     getClass() {
       var jsons = {
-        t_id: this.id,
+        ta_id: this.id,
         token: sessionStorage.getItem("token"),
       };
-      console.log("获得班级");
-      console.log(jsons);
       this.axios
-        .post("/api/manageClass/teacherGetClass", JSON.stringify(jsons))
+        .post("/api/manageClass/TAGetClass", JSON.stringify(jsons))
         .then((response) => {
-          console.log(response);
+          console.log("获得班级", response);
           if (response.data["code"] == 404) {
             this.$message("找不到页面");
             this.$router.push({ path: "/404" });
@@ -70,16 +68,20 @@ export default {
     },
 
     toClass(index) {
-      console.log(index);
+      console.log("toClass", index);
       this.$router.push({
-        path: "/assistHome/concreteCourse",
-        query: { c_id: this.$Base64.encode(index.class_id) },
+        path: "/assistHome/concreteCourse/Ann",
+        query: {
+          info: this.$Base64.encode(
+            JSON.stringify({ class_id: index.class_id })
+          ),
+        },
       });
     },
   },
   mounted() {
     this.getParams();
-    //this.getClass();
+    this.getClass();
   },
 };
 </script>

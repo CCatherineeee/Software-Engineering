@@ -145,12 +145,13 @@ const routes = [
 
           { path: '/teacherHome/concreteCourse/ConExper', component: () => import('../views/teacher/course/experiment/experiment.vue') },
           { path: '/teacherHome/concreteCourse/stuExper', component: () => import('../views/teacher/course/experiment/stuExper.vue') },
-          { path: '/teacherHome/concreteCourse/stuExperOnline', component: () => import('../views/teacher/course/experiment/stuExperOnline.vue') },
+
           { path: '/teacherHome/concreteCourse/stuExperList', component: () => import('../views/teacher/course/experiment/stuExperList.vue') },
 
 
         ]
       },
+      { path: '/teacherHome/concreteCourse/stuExperOnline', component: () => import('../views/teacher/course/experiment/stuExperOnline.vue') },
       {
         path: '/teacherHome/concreteCourse/examHome', component: () => import('../views/teacher/Exam/examHome.vue'), children: [
           { path: '/teacherHome/concreteCourse/examHome/checkExam', component: () => import('../views/teacher/Exam/checkExam.vue') },
@@ -185,11 +186,13 @@ const routes = [
           { path: '/assistHome/concreteCourse/stuExperList', component: () => import('../views/assist/course/experiment/stuExperList.vue') },
           { path: '/assistHome/concreteCourse/stuExper', component: () => import('../views/assist/course/experiment/stuExper.vue') },
           { path: '/assistHome/concreteCourse/Score', component: () => import('../views/assist/course/courseDetail/courseScore.vue') },
+
           { path: '/assistHome/concreteCourse/Peo', component: () => import('../views/assist/course/courseDetail/coursePeople.vue') },
           { path: '/assistHome/concreteCourse/File', component: () => import('../views/assist/course/courseDetail/courseFile.vue') },
 
         ]
       },
+      { path: '/assistHome/concreteCourse/stuExperOnline', component: () => import('../views/assist/course/experiment/stuExperOnline.vue') },
       { path: '/assistHome/accounce', component: () => import('../views/announce/announce.vue') },
     ]
   },

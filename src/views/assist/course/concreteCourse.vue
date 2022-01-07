@@ -63,18 +63,20 @@ export default {
   },
   methods: {
     getParams: function () {
-      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.c_id));
+      this.c_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
+        "class_id"
+      ];
       console.log("cid====" + this.c_id);
     },
     getClassInfo() {
       var jsons = {
-        class_id: this.c_id,
+        class_id: this.c_id.toString(),
         token: sessionStorage.getItem("token"),
       };
       this.axios
         .post("/api/manageClass/IDGetClass", JSON.stringify(jsons))
         .then((response) => {
-          console.log(response);
+          console.log("getClassInfo", response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });
@@ -100,7 +102,7 @@ export default {
   },
   mounted() {
     this.getParams();
-    //this.getClassInfo();
+    this.getClassInfo();
   },
 };
 </script>
