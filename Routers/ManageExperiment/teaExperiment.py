@@ -52,10 +52,11 @@ def getReportList():
     data = json.loads(data.decode("utf-8"))
     ex_id = data['ex_id']
     token = data['token']
-    res = checkToken(token,Role.TeacherRole)
-    if res == 301:
+    res1 = checkToken(token,Role.TeacherRole)
+    res2 = checkToken(token,Role.TARole)
+    if res1 == 301 or res2 == 301:
         return jsonify({'code':301,'message':"验证过期",'data':None})
-    elif res == 404:
+    elif res1 == 404 and res2 == 404:
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
         path = os.path.join(basepath,'StudentExFile',str(ex_id))
@@ -80,10 +81,11 @@ def scoreReport():
     ex_id = data['ex_id']
     score = data['score']
     token = data['token']
-    res = checkToken(token,Role.TeacherRole)
-    if res == 301:
+    res1 = checkToken(token,Role.TeacherRole)
+    res2 = checkToken(token,Role.TARole)
+    if res1 == 301 or res2 == 301:
         return jsonify({'code':301,'message':"验证过期",'data':None})
-    elif res == 404:
+    elif res1 == 404 and res2 == 404:
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
         se = StudentExperiment.query.filter(StudentExperiment.experiment_id == ex_id,StudentExperiment.s_id == s_id).first()
