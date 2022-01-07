@@ -1,23 +1,22 @@
 <template>
   <div>
-    <el-container style="margin-top: 20px">
-      <el-aside width="50%">
-        <v-btn
-          color="primary"
-          dark
-          style="margin-left: 1%; margin-top: 1%; margin-bottom: 1%"
-          @click="handleAddClass"
-        >
-          新增班级
-        </v-btn>
+    <el-container>
 
-        <el-scrollbar>
+      <el-aside width="40%">
+        <el-row>
+          <v-btn
+              dark
+              style="margin-bottom: 1%"
+              @click="handleAddClass">
+            新增班级
+          </v-btn>
+        </el-row>
+
           <v-row dense>
-            <v-col v-for="item in classList" :key="item.class_id" cols="12">
+            <v-col v-for="item in classList" :key="item.class_id">
               <v-card color="#385F73" dark>
                 <div>
                   <v-card-title
-                    class="text-h5"
                     v-text="item.class_id"
                   ></v-card-title>
                   <v-card-subtitle v-text="item.t_name"></v-card-subtitle>
@@ -34,46 +33,18 @@
               </v-card>
             </v-col>
           </v-row>
-        </el-scrollbar>
       </el-aside>
 
       <el-main>
-        <el-scrollbar>
           <el-row>
             <el-col :span="5">
-              <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col
-            >
+              <v-btn dark @click="handleAddEx">新增实验</v-btn></el-col>
             <el-col :span="7">
-              <v-btn dark @click="handleScore">成绩占比</v-btn></el-col
-            >
+              <v-btn dark @click="handleScore">成绩占比</v-btn></el-col>
           </el-row>
-          <el-descriptions
-            :column="1"
-            border
-            style="margin-bottom: 10px; margin-top: 10px"
-            title="课程信息"
-          >
-            <el-descriptions-item label="课程id">{{
-              courseID
-            }}</el-descriptions-item>
-            <el-descriptions-item label="课程名称">{{
-              name
-            }}</el-descriptions-item>
-            <el-descriptions-item label="责任教师" :span="2">{{
-              id
-            }}</el-descriptions-item>
-            <el-descriptions-item label="上课时间">
-              {{ year }}年 {{ semester }}
-            </el-descriptions-item>
-            <el-descriptions-item label="各项成绩占比">
-              考试： {{ semester }}<br />
-              实验： {{ semester }}<br />
-              出勤： {{ semester }}
-            </el-descriptions-item>
-          </el-descriptions>
 
-          <v-row dense>
-            <v-col v-for="item in experList" :key="item.ex_id" cols="6">
+          <el-row dense>
+            <v-col v-for="item in experList" :key="item.ex_id" >
               <v-card color="#1F7087" dark>
                 <div>
                   <v-card-title v-text="item.title"></v-card-title>
@@ -81,15 +52,15 @@
                     v-text="'实验占比：' + item.weight"
                   ></v-card-subtitle>
                   <v-card-subtitle
-                    v-if="item.status == 0"
+                    v-if="item.status === 0"
                     v-text="'实验状态：未发布'"
                   ></v-card-subtitle>
                   <v-card-subtitle
-                    v-if="item.status == 1"
+                    v-if="item.status === 1"
                     v-text="'实验状态：已发布'"
                   ></v-card-subtitle>
                   <v-card-subtitle
-                    v-if="item.status == 3"
+                    v-if="item.status === 3"
                     v-text="'实验状态：已过期'"
                   ></v-card-subtitle>
                   <v-card-text
@@ -99,28 +70,28 @@
                     <v-btn
                       text
                       @click="toExperiment(item)"
-                      v-if="item.status != 3"
+                      v-if="item.status !== 3"
                     >
                       详情
                     </v-btn>
                     <v-btn
                       text
                       @click="handleProportion(item)"
-                      v-if="item.status != 3"
+                      v-if="item.status !== 3"
                     >
                       占比
                     </v-btn>
                     <v-btn
                       text
                       @click="handlePushExper(item)"
-                      v-if="item.status == 0"
+                      v-if="item.status === 0"
                     >
                       发布
                     </v-btn>
                     <v-btn
                       text
                       @click="handleStopExper(item)"
-                      v-if="item.status == 1"
+                      v-if="item.status === 1"
                     >
                       终止
                     </v-btn>
@@ -130,8 +101,7 @@
                 </div>
               </v-card>
             </v-col>
-          </v-row>
-        </el-scrollbar>
+          </el-row>
 
         <el-dialog
           :visible.sync="classDialog"
@@ -268,29 +238,26 @@
           width="50%"
         >
           <v-container>
-            <v-textarea
-              filled
+            <el-input
               label="考试"
-              auto-grow
-              height="20px"
               v-model="eachScore.exam"
-            ></v-textarea>
+            ></el-input>
 
-            <v-textarea
+            <el-input
               filled
               label="实验"
               auto-grow
               height="20px"
               v-model="eachScore.report"
-            ></v-textarea>
+            ></el-input>
 
-            <v-textarea
+            <el-input
               filled
               label="出勤"
               auto-grow
               height="20px"
               v-model="eachScore.attendance"
-            ></v-textarea>
+            ></el-input>
           </v-container>
 
           <div slot="footer" class="dialog-footer">
