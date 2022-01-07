@@ -25,52 +25,113 @@
       <v-card-title>
         <h3 style="color: #6666cc">详细出勤情况:100</h3>
       </v-card-title>
-      <br />
-      <el-table
-        :data="tableData"
-        :stripe="true"
-        style="width: 100%; margin-left: 7%; margin-right: 10%"
-      >
-        <el-table-column prop="date" label="序号" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="实验" width="180">
-        </el-table-column>
-        <el-table-column prop="address" label="是否提交">
-        </el-table-column> </el-table
-    ></v-card>
+
+      <el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-table
+              :data="
+                tableData.slice(
+                  (currentPageA - 1) * pagesize,
+                  currentPageA * pagesize
+                )
+              "
+              :stripe="true"
+              style="width: 100%; margin-left: 7%; margin-right: 10%"
+            >
+              <el-table-column prop="date" label="序号" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="实验" width="180" />
+
+              <el-table-column
+                prop="name"
+                label="是否提交"
+              /> </el-table></el-col
+        ></el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-pagination
+              @current-change="handleCurrentChangeA"
+              :current-page="currentPageA"
+              :page-size="pagesize"
+              layout="total, prev, pager, next, jumper"
+              :total="tableData.length"
+            >
+            </el-pagination></el-col></el-row
+      ></el-row>
+    </v-card>
     <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
       <v-card-title>
         <h3 style="color: #6666cc">报告得分与权重:100</h3>
       </v-card-title>
-      <br />
-      <el-table
-        :data="tableData"
-        :stripe="true"
-        style="width: 100%; margin-left: 5%; margin-right: 10%"
-      >
-        <el-table-column prop="date" label="序号" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="实验" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="权重" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="分数"> </el-table-column> </el-table
-    ></v-card>
+
+      <el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-table
+              :data="
+                tableData.slice(
+                  (currentPageR - 1) * pagesize,
+                  currentPageR * pagesize
+                )
+              "
+              :stripe="true"
+              style="width: 100%; margin-left: 7%; margin-right: 10%"
+            >
+              <el-table-column prop="date" label="序号" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="实验" width="180" />
+              <el-table-column prop="name" label="权重" width="180" />
+
+              <el-table-column prop="name" label="得分" /> </el-table></el-col
+        ></el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-pagination
+              @current-change="handleCurrentChangeR"
+              :current-page="currentPageR"
+              :page-size="pagesize"
+              layout="total, prev, pager, next, jumper"
+              :total="tableData.length"
+            >
+            </el-pagination></el-col></el-row
+      ></el-row>
+    </v-card>
     <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
       <v-card-title>
         <h3 style="color: #6666cc">测验得分:100</h3>
       </v-card-title>
-      <br />
-      <el-table
-        :data="tableData"
-        :stripe="true"
-        style="width: 100%; margin-left: 11%; margin-right: 10%"
-      >
-        <el-table-column prop="date" label="序号" width="180" />
 
-        <el-table-column prop="name" label="测验" width="180" />
-        <el-table-column prop="name" label="得分" width="180" />
-        <el-table-column prop="name" label="总分" /> </el-table
+      <el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-table
+              :data="
+                tableData.slice(
+                  (currentPageE - 1) * pagesize,
+                  currentPageE * pagesize
+                )
+              "
+              :stripe="true"
+              style="width: 100%; margin-left: 7%; margin-right: 10%"
+            >
+              <el-table-column prop="date" label="序号" width="180">
+              </el-table-column>
+              <el-table-column prop="name" label="测验" width="180" />
+              <el-table-column prop="name" label="总分" width="180" />
+
+              <el-table-column prop="name" label="得分" /> </el-table></el-col
+        ></el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-pagination
+              @current-change="handleCurrentChangeE"
+              :current-page="currentPageE"
+              :page-size="pagesize"
+              layout="total, prev, pager, next, jumper"
+              :total="tableData.length"
+            >
+            </el-pagination></el-col></el-row></el-row
     ></v-card>
   </div>
 </template>
@@ -79,6 +140,10 @@
 export default {
   data() {
     return {
+      currentPageA: 1,
+      currentPageR: 1,
+      currentPageE: 1,
+      pagesize: 6,
       allScore: [],
       class_id: null,
       now_score: 0,
@@ -107,6 +172,17 @@ export default {
     };
   },
   methods: {
+    handleCurrentChangeA: function (currentPage) {
+      this.currentPageA = currentPage;
+    },
+
+    handleCurrentChangeR: function (currentPage) {
+      this.currentPageR = currentPage;
+    },
+
+    handleCurrentChangeE: function (currentPage) {
+      this.currentPageE = currentPage;
+    },
     getParams: function () {
       this.class_id = JSON.parse(this.$Base64.decode(this.$route.query.info))[
         "class_id"
