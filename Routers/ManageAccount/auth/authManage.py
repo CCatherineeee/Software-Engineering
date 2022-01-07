@@ -7,6 +7,8 @@ from flask import current_app
 from flask_restful import Api
 from flask import jsonify
 from Model.Model import Student,Teacher
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Routers import Role
    
 
 auth = Blueprint('auth', __name__)
@@ -21,8 +23,14 @@ def init_api(current_app):
 @auth.route('/confirm/<user_ID>/<token>')  #生成的route没有区别！
 # @login_required
 def confirm(user_ID,token):
+    try:
+        s = Serializer('WEBSITE_SECRET_KEY')
+        token_id = s.loads(token)['id']
+        token_role = s.loads(token)['role']
+    except:
+        return 301
 
-    if len(user_ID)==7:   #是学生
+    if token_role == Role.StudentRole:   #是学生
         stud = Student.query.filter(Student.s_id==user_ID).first()
         if stud is not None:
             if stud.is_active:  #已经激活了
@@ -32,7 +40,7 @@ def confirm(user_ID,token):
                 status = {'status':200,'message':'now have confirmed'}
         else:
             status = {'status':400,'message':'confirmed failed'}
-    else:   #是老师
+    elif token_role == Role.TeacherRole:   #是老师
         teacher = Teacher.query.filter(Teacher.t_id==user_ID).first()
         if teacher is not None:
             if teacher.is_active:  #已经激活了
@@ -42,7 +50,20 @@ def confirm(user_ID,token):
                 status = {'status':200,'message':'now have confirmed'}
         else:
             status = {'status':400,'message':'confirmed failed'}
-    return jsonify(status)
+    elif token_role == Role.TARole:   #是助教
+        teacher = Teacher.query.filter(Teacher.t_id==user_ID).first()
+        if teacher is not None:
+            if teacher.is_active:  #已经激活了
+                status = {'status':100,'message':'already confirmed'}
+            if teacher.confirm(token):
+                db.session.commit()
+                status = {'status':200,'message':'now have confirmed'}
+        else:
+            status = {'status':400,'message':'confirmed failed'}
+    else:
+        status = {'status':400,'message':'Error user'}
+        return jsonify(status)
+    return render_template('activeSuccess.html')
 
 
 # @auth.route('/confirm')
