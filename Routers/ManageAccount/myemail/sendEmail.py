@@ -1,6 +1,8 @@
 import smtplib
 from email.mime.text import MIMEText
-from email.header import Header              # Header 用来构建邮件头
+from email.header import Header
+
+from Model.Model import Student, Teacher, TeachingAssistant              # Header 用来构建邮件头
 from . import redis_captcha 
 import random
 from .redis_captcha import redis_get                                       # 导入验证码模块
@@ -71,6 +73,9 @@ def send_email(receiver,code,user,usertype):    #这里增加一个标志位！
         new_content = render_template("confirm.html",user = user,s_id=user.s_id,token = token)
     elif usertype==1: #是老师
         new_content = render_template("confirm_t.html",user = user,t_id=user.t_id,token = token)
+    elif usertype==2: #是助教
+        new_content = render_template("confirm_ta.html",user = user,ta_id=user.ta_id,token = token)
+
     msg = MIMEText(new_content,_subtype='html',_charset='gb2312')    #创建一个实例，这里设置为html格式邮件
     msg["Subject"] = Header(subject).encode()
 
@@ -84,9 +89,10 @@ def send_email(receiver,code,user,usertype):    #这里增加一个标志位！
             if len(_to)>1:
                 for item in _to:
                     redis_captcha.redis_set(key=item, value=captcha)        # redis中都是键值对类型，存储验证码
+                return jsonify({"code":200,"message":"发送验证码成功"})
             else:
                 redis_captcha.redis_set(key=_to[0], value=captcha)        # redis中都是键值对类型，存储验证码
-        return True
+                return jsonify({"code":200,"message":"发送验证码成功"})
     except (smtplib.SMTPException):
         print ("Falied")
         return False
@@ -149,3 +155,43 @@ def send_captcha():
     except (smtplib.SMTPException):
         status = {'status':400,'message':'Failed'}
         return jsonify(status)
+
+'''
+重新激活
+输入：发送人学号/工号,发送人角色(0学生，1老师，2助教)
+输出：json
+'''
+@email.route('/users/reActive',methods=['POST'])  
+def reActive():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    id = data["id"]
+    usertype = data["role"]
+
+    #是学生
+    if usertype == 0:
+        student = Student.query.filter(Student.s_id==id).first()
+        if student:
+            send_email(student.email,0,student,0)
+            return jsonify({"code":200,"message":"发送激活邮件成功"})
+        else:
+            return jsonify({"code":404,"message":"找不到用户","data":None})
+    #是老师
+    elif usertype == 1:
+        teacher = Teacher.query.filter(Teacher.t_id==id).first()
+        if teacher:
+            send_email(teacher.email,0,teacher,1)
+            return jsonify({"code":200,"message":"发送激活邮件成功"})
+        else:
+            return jsonify({"code":404,"message":"找不到用户","data":None})
+    #是助教
+    elif usertype == 2:
+        ta = TeachingAssistant.query.filter(TeachingAssistant.ta_id == id).first()
+        if ta:
+            send_email(ta.email,0,ta,2)
+            return jsonify({"code":200,"message":"发送激活邮件成功"})
+        else:
+            return jsonify({"code":404,"message":"找不到用户","data":None})
+    else:
+        return jsonify({"code":500,"message":"输入有误","data":None})
