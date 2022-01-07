@@ -205,7 +205,7 @@ export default {
         s_id: this.s_id,
         ex_id: this.ex_id,
         score: this.score,
-        //t_id: this.id,
+        t_id: this.id,
         token: sessionStorage.getItem("token"),
       };
       console.log(jsons);

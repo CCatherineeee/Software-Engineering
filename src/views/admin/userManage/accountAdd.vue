@@ -272,6 +272,13 @@
             >
           </template>
         </el-table-column>
+
+        <el-table-column  label="手动激活"  >
+          <template #default="scope">
+            <el-button plain @click="handleActive(scope.row.is_active,scope.row.id,scope.row.role)">重新激活</el-button>
+          </template>
+        </el-table-column>
+        
       </el-table>
 
       <el-pagination
@@ -336,6 +343,27 @@ export default {
     };
   },
   methods: {
+    //重新手动激活用户
+    handleActive(is_active,id,usertype){
+      if(is_active === 1){
+        this.$message("该用户已被激活，不可重新激活")
+      }
+      else{     
+        var jsons = {
+          id:id,
+          role:usertype-1
+        }
+         axios
+        .post("http://100.67.162.180:5000/users/reActive", jsons)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console(error);
+        });
+    }
+    },
+
     //获取所有用户所有信息
     getUserData() {
       axios
