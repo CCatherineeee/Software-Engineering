@@ -475,32 +475,6 @@ export default {
           });
     },
 
-    updateTea(row) {
-      var jsons = {
-        class_id: row.class_id,
-        t_id: row.t_id,
-        token: sessionStorage.getItem("token"),
-      };
-      console.log("更新教师");
-      console.log(jsons);
-      this.axios
-          .post("/api/manageClass/changeTeacher", JSON.stringify(jsons))
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.getClasses();
-              this.teaDialog = false;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    },
     setPro(row) {
       var jsons = {
         title: row.title,
@@ -565,28 +539,6 @@ export default {
             }
           });
     },
-    deleteClass(row) {
-      var jsons = {
-        classID: row.class_id,
-        token: sessionStorage.getItem("token"),
-      };
-      this.axios
-          .post("/api/manageClass/deleteClass", JSON.stringify(jsons))
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.getClasses();
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    },
 
     classGetStudent() {
       //获取所有学生
@@ -632,6 +584,7 @@ export default {
         token: sessionStorage.getItem("token"),
         is_online: this.is_online,
       };
+      console.log(jsons)
 
       return (
           this.axios
@@ -646,7 +599,7 @@ export default {
                   this.$message("找不到页面");
                   this.$router.push({ path: "/404" });
                 } else {
-                  if (response.data.data === "WeightUnreasonable") {
+                  if (response.data.code === 501) {
                     this.$message("权重不合理！");
                   } else {
                     this.$message("添加成功！");
@@ -805,7 +758,7 @@ export default {
       var exam = this.eachScore.exam * 1;
       var report = this.eachScore.report * 1;
       var attendance = this.eachScore.attendance * 1;
-      if (exam + report + attendance != 1)
+      if (exam + report + attendance !== 1)
         this.$message.warning("所有成绩加合不为1，请重新输入！");
     },
 

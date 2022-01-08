@@ -41,6 +41,10 @@
           <el-button type="primary" @click="lookExam(scope.row)"
             >查看</el-button
           >
+
+          <el-button type="primary" @click="deleteExam(scope.row)"
+          >删除</el-button
+          >
         </div>
 
         <el-dialog title="修改起始、截至日期" :visible.sync="dialogVisible">
@@ -297,6 +301,23 @@ export default {
       second = second < 10 ? "0" + second : second;
       return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
     },
+    deleteExam(row){
+      this.axios.post("/api/delExam",JSON.stringify({
+        exam_id:row.exam_id,
+        token:sessionStorage.getItem('token')
+      })).then((res)=>{
+        if(res.data.code === 200){
+          this.$message("删除成功")
+          this.getExamList()
+        }
+        else{
+          this.$message("没有权限")
+        }
+      }).catch((err)=>{
+        console.log(err)
+        this.$message("网络错误")
+      })
+    }
   },
   mounted() {
     this.getParams();

@@ -63,7 +63,7 @@
         <el-option
             v-for="i in teaList"
             :key="i.id"
-            :label="i.id"
+            :label="i.id + '  ' + i.name"
             :value="i.id"
         >
         </el-option>
