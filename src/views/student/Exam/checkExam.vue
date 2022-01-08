@@ -1,45 +1,48 @@
 <template>
-  <el-table :data="examList">
-    <el-table-column prop="title" label="名称" width="170"> </el-table-column>
-    <el-table-column prop="start_time" label="起始时间" width="180">
-    </el-table-column>
-    <el-table-column prop="end_time" label="截止时间" width="180">
-    </el-table-column>
-    <el-table-column width="80" prop="status" label="状态">
-      <template #default="scope">
-        <el-tag :key="scope.row.status" :type="scope.row.type" effect="plain">
-          {{ scope.row.status }}
-        </el-tag>
-        <el-tag
-          :key="scope.row.submitStauts"
-          :type="scope.row.submitType"
-          effect="plain"
-        >
-          {{ scope.row.submitStauts }}
-        </el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column prop="score" label="分数" width="180"> </el-table-column>
-    <el-table-column label="操作">
-      <template #default="scope">
-        <div v-if="scope.row.submitStauts === '已提交'">
-          <el-button type="primary" @click="lookCloseExam(scope.row)"
-            >查看</el-button
+  <div>
+    <el-table :data="examList">
+      <el-table-column prop="title" label="名称" width="170"> </el-table-column>
+      <el-table-column prop="start_time" label="起始时间" width="180">
+      </el-table-column>
+      <el-table-column prop="end_time" label="截止时间" width="180">
+      </el-table-column>
+      <el-table-column width="80" prop="status" label="状态">
+        <template #default="scope">
+          <el-tag :key="scope.row.status" :type="scope.row.type" effect="plain">
+            {{ scope.row.status }}
+          </el-tag>
+          <el-tag
+              :key="scope.row.submitStauts"
+              :type="scope.row.submitType"
+              effect="plain"
           >
-        </div>
-        <div v-else-if="scope.row.status === '进行中'">
-          <el-button type="primary" @click="lookExam(scope.row)"
+            {{ scope.row.submitStauts }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="score" label="分数" width="180"> </el-table-column>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <div v-if="scope.row.submitStauts === '已提交'">
+            <el-button type="primary" @click="lookCloseExam(scope.row)"
+            >查看</el-button
+            >
+          </div>
+          <div v-else-if="scope.row.status === '进行中'">
+            <el-button type="primary" @click="lookExam(scope.row)"
             >进入</el-button
-          >
-        </div>
-        <div v-else-if="scope.row.status === '已截至'">
-          <el-button type="primary" @click="lookCloseExam(scope.row)"
+            >
+          </div>
+          <div v-else-if="scope.row.status === '已截至'">
+            <el-button type="primary" @click="lookCloseExam(scope.row)"
             >查看</el-button
-          >
-        </div>
-      </template>
-    </el-table-column>
-  </el-table>
+            >
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+
+  </div>
 </template>
 
 <script>
@@ -108,14 +111,22 @@ export default {
     },
 
     lookExam(row) {
-      this.$router.push({
-        path: "/studentHome/concreteCourse/examHome/exam",
-        query: {
-          info: this.$Base64.encode(
-            JSON.stringify({ exam_id: row.exam_id, course_id: this.course_id })
-          ),
-        },
+      this.$alert('系统会随机对班级成员进行分组，以2-3人为一组，组内进行对抗。对抗练习的分数计算规则为：总得分*排名权重，第一名为1，第二名为0.9，第三名为0.8。', '对抗练习须知', {
+        confirmButtonText: '确定',
+        callback: action => {
+          console.log(action)
+          this.$router.push({
+            path: "/studentHome/concreteCourse/examHome/exam",
+            query: {
+              info: this.$Base64.encode(
+                  JSON.stringify({ exam_id: row.exam_id, course_id: this.course_id })
+              ),
+            },
+          });
+        }
       });
+
+
     },
     lookCloseExam(row) {
       this.$router.push({
