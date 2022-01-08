@@ -510,9 +510,9 @@ class ExamGroup(db.Model):
     __tablename__ = 'exam_group'
     group_id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     exam_id = db.Column(db.Integer,ForeignKey("exam.exam_id",ondelete='CASCADE'))
-    s_id_1 = db.Column(db.String(64))
-    s_id_2 = db.Column(db.String(64))
-    s_id_3 = db.Column(db.String(64))
+    s_id_1 = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
+    s_id_2 = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
+    s_id_3 = db.Column(db.String(64),ForeignKey("student.s_id",ondelete='CASCADE'))
 
 class ScoreWeight(db.Model):
     __tablename__ = 'score_weight'

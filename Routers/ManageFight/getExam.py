@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # 解决跨域的问题
 from flask import Blueprint
 import json
-from Model.Model import Course,Class,Exam,Question,StudentExamQuestion,StudentExam,ExamGroup
+from Model.Model import Course,Class,Exam,Question,StudentExamQuestion,StudentExam,ExamGroup,Student
 import dbManage
 from Routers import Role
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -128,3 +128,38 @@ def getCloseExam():
         answer = {'sq_id':q.question_id,'answer':s_answer,'checkList':s_checkList}
         answerList.append(answer)
     return jsonify({'code':200,'message':"请求成功",'data':{'questionList':content,'answerList':answerList,'ex_title':exam.title,'ex_score':total_score,'score':se.score,'start_time':str(exam.start_time),'end_time':str(exam.end_time),}})
+
+
+@getExamRoute.route('/getExamGroupById',methods=['POST']) 
+def getExamGroupById():
+    data = request.get_data()
+    data = json.loads(data.decode("utf-8"))
+
+    exam_id = data['exam_id']
+    s_id = data['s_id']
+
+    ag = ExamGroup.query.filter(ExamGroup.exam_id == exam_id).filter(or_(ExamGroup.s_id_1 == s_id, ExamGroup.s_id_2 == s_id, ExamGroup.s_id_3 == s_id)).first()
+    group = []
+    s1 = Student.query.filter(Student.s_id == ag.s_id_1).first()
+    se1 = StudentExam.query.filter(StudentExam.exam_id == exam_id, StudentExam.s_id == s1.s_id).first()
+    if se1:
+        score = se1.score
+    else:
+        score = None
+    group.append({"id":ag.s_id_1,"name":s1.name,"score":score})
+    s2 = Student.query.filter(Student.s_id == ag.s_id_2).first()
+    se2 = StudentExam.query.filter(StudentExam.exam_id == exam_id, StudentExam.s_id==s2.s_id).first()
+    if se2:
+        score = se2.score
+    else:
+        score = None
+    group.append({"id":ag.s_id_2,"name":s2.name,"score":score})
+    if ag.s_id_3:
+        s3 = Student.query.filter(Student.s_id == ag.s_id_3).first()
+        se3 = StudentExam.query.filter(StudentExam.exam_id == exam_id, StudentExam.s_id==s3.s_id).first()
+        if se3:
+            score = se3.score
+        else:
+            score = None
+        group.append({"id":ag.s_id_3,"name":s3.name,"score":score})
+    return jsonify({'code':200,'message':"请求成功",'data':group})
