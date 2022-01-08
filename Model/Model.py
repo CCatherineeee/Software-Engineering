@@ -38,7 +38,7 @@ class Student(UserMixin,db.Model):
     phone_number = db.Column(db.String(11))   # 11位电话号码（选填）
     is_active = db.Column(db.Integer,default = 0)  # 是否激活，0未激活，1已激活
     department = db.Column(db.String(64))  # 学院
-    avatar = db.Column(db.String(200),default=None)
+    avatar = db.Column(db.String(200),default="1951567_@3SH814VVOON]3`$KP)2{EO.png")
     # major = db.Column(db.String(64))  # 专业
 
     def __repr__(self):
@@ -456,7 +456,7 @@ class Exam(db.Model):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.Integer)     # 0为未开始 1为进行中 3为截至
-    course_id = db.Column(db.String(256),ForeignKey("course.c_id"))
+    course_id = db.Column(db.String(256),ForeignKey("course.c_id",ondelete='CASCADE'))
     score = db.Column(db.Float)
     def __repr__(self):
         return '<User %r>' % self.__tablename__

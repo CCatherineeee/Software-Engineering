@@ -252,7 +252,7 @@ def editExamRime():
     exam_id = data['exam_id']
     start_time = data['start_time']
     end_time = data['end_time']
-    class_id = data['class_id']
+    course_id = data['course_id']
 
     end_time = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     start_time = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
@@ -267,7 +267,7 @@ def editExamRime():
         classes = Class.query.filter(Class.course_id == course_id).all()
         for class_ in classes:
             # 找到班级学生，生产测验小组
-            students = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+            students = StudentClass.query.filter(StudentClass.class_id == class_.class_id).all()
             while(len(students) > 4):
                 sg = random.sample(students,3)
                 students.remove(sg[0])
@@ -327,5 +327,6 @@ def delExam():
         return jsonify({'code':500,'message':"请求失败",'data':{'data':None,'role':None}})
     exam = Exam.query.filter(Exam.exam_id == exam_id).first()
     dbManage.db.session.delete(exam)
+    dbManage.db.session.commit()
     return jsonify({'code':200,'message':"删除成功"})
         
