@@ -152,10 +152,10 @@ export default {
           if (res.data.code === 200) {
             this.$message("提交成功");
             this.$router.push({
-              path: "/studentHome/concreteCourse/examHome/checkExam",
+              path: "/studentHome/concreteCourse/examHome/submit",
               query: {
                 info: this.$Base64.encode(
-                  JSON.stringify({ class_id: this.class_id })
+                  JSON.stringify({ class_id: this.class_id, exam_id:this.exam_id,score:res.data.data.score, rank:res.data.data.rank })
                 ),
               },
             });

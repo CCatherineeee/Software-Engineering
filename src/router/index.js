@@ -60,13 +60,10 @@ const routes = [
           { path: '/studentHome/concreteCourse/FillExper', component: () => import('../views/student/course/experiment/experimentFill.vue') },
           { path: '/studentHome/concreteCourse/File', component: () => import('../views/student/course/courseDetail/courseFile.vue') },
           { path: '/studentHome/concreteCourse/onlineExp', component: () => import('../views/student/course/experiment/onlineExperiment.vue') },
-          {
-            path: '/studentHome/concreteCourse/examHome', component: () => import('../views/student/Exam/examHome.vue'), children: [
-              { path: '/studentHome/concreteCourse/examHome/checkExam', component: () => import('../views/student/Exam/checkExam.vue') },
-            ]
-          },
+          { path: '/studentHome/concreteCourse/examHome/checkExam', component: () => import('../views/student/Exam/checkExam.vue') },
           { path: '/studentHome/concreteCourse/examHome/exam', component: () => import('../views/student/Exam/checkQuestion.vue') },
           { path: '/studentHome/concreteCourse/examHome/closeExam', component: () => import('../views/student/Exam/closeExam.vue') },
+          { path: '/studentHome/concreteCourse/examHome/submit', component: () => import('../views/student/Exam/submit.vue') },
 
 
         ]

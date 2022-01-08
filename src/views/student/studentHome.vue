@@ -6,7 +6,6 @@
           <el-menu class="admin-aside-menu" router>
             <img
               ref="stuAvatar"
-              src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
             <el-menu-item index="/studentHome/control">
