@@ -3,58 +3,58 @@
     <el-container>
       <el-main>
         <el-row>
-            <v-btn dark @click="handleAddEx">新增实验</v-btn>
+          <v-btn dark @click="handleAddEx">新增实验</v-btn>
         </el-row>
 
-        <el-row gutter="4">
-          <el-col v-for="item in experList" :key="item.ex_id" span="8">
+        <el-row :gutter="4">
+          <el-col v-for="item in experList" :key="item.ex_id" :span="8">
             <v-card color="#1F7087" dark>
               <div>
                 <v-card-title v-text="item.title"></v-card-title>
                 <v-card-subtitle
-                    v-text="'实验占比：' + item.weight"
+                  v-text="'实验占比：' + item.weight"
                 ></v-card-subtitle>
                 <v-card-subtitle
-                    v-if="item.status === 0"
-                    v-text="'实验状态：未发布'"
+                  v-if="item.status === 0"
+                  v-text="'实验状态：未发布'"
                 ></v-card-subtitle>
                 <v-card-subtitle
-                    v-if="item.status === 1"
-                    v-text="'实验状态：已发布'"
+                  v-if="item.status === 1"
+                  v-text="'实验状态：已发布'"
                 ></v-card-subtitle>
                 <v-card-subtitle
-                    v-if="item.status === 3"
-                    v-text="'实验状态：已过期'"
+                  v-if="item.status === 3"
+                  v-text="'实验状态：已过期'"
                 ></v-card-subtitle>
                 <v-card-text
-                    v-text="'截止日期：' + item.end_time"
+                  v-text="'截止日期：' + item.end_time"
                 ></v-card-text>
                 <v-card-actions>
                   <v-btn
-                      text
-                      @click="toExperiment(item)"
-                      v-if="item.status !== 3"
+                    text
+                    @click="toExperiment(item)"
+                    v-if="item.status !== 3"
                   >
                     详情
                   </v-btn>
                   <v-btn
-                      text
-                      @click="handleProportion(item)"
-                      v-if="item.status !== 3"
+                    text
+                    @click="handleProportion(item)"
+                    v-if="item.status !== 3"
                   >
                     占比
                   </v-btn>
                   <v-btn
-                      text
-                      @click="handlePushExper(item)"
-                      v-if="item.status === 0"
+                    text
+                    @click="handlePushExper(item)"
+                    v-if="item.status === 0"
                   >
                     发布
                   </v-btn>
                   <v-btn
-                      text
-                      @click="handleStopExper(item)"
-                      v-if="item.status === 1"
+                    text
+                    @click="handleStopExper(item)"
+                    v-if="item.status === 1"
                   >
                     终止
                   </v-btn>
@@ -68,17 +68,17 @@
         </el-row>
 
         <el-dialog
-            :visible.sync="classDialog"
-            title="新增班级"
-            center
-            width="300px"
+          :visible.sync="classDialog"
+          title="新增班级"
+          center
+          width="300px"
         >
           <el-select v-model="tid">
             <el-option
-                v-for="item in teaList"
-                :key="item.id"
-                :label="item.id"
-                :value="item.id"
+              v-for="item in teaList"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -90,39 +90,39 @@
         </el-dialog>
 
         <el-dialog
-            :visible.sync="teaDialog"
-            title="选择教师"
-            center
-            width="300px"
+          :visible.sync="teaDialog"
+          title="选择教师"
+          center
+          width="300px"
         >
           <el-select v-model="changeTemp.t_id">
             <el-option
-                v-for="i in teaList"
-                :key="i.id"
-                :label="i.id"
-                :value="i.id"
+              v-for="i in teaList"
+              :key="i.id"
+              :label="i.id"
+              :value="i.id"
             >
             </el-option>
           </el-select>
           <div slot="footer" class="dialog-footer">
             <el-button @click="teaDialog = false">取消</el-button>
             <el-button type="primary" @click="updateTea(changeTemp)"
-            >确定</el-button
+              >确定</el-button
             >
           </div>
         </el-dialog>
 
         <el-dialog
-            :visible.sync="proDialog"
-            title="设置实验占比"
-            center
-            width="300px"
+          :visible.sync="proDialog"
+          title="设置实验占比"
+          center
+          width="300px"
         >
           <el-input v-model="changeTemp.weight"></el-input>
           <div slot="footer" class="dialog-footer">
             <el-button @click="proDialog = false">取消</el-button>
             <el-button type="primary" @click="setPro(changeTemp)"
-            >确定</el-button
+              >确定</el-button
             >
           </div>
         </el-dialog>
@@ -132,60 +132,60 @@
             <v-row style="margin-bottom: 5px">
               <v-col cols="6">
                 <el-date-picker
-                    v-model="experiment.end_time"
-                    type="datetime"
-                    placeholder="选择实验截止日期时间"
-                    :picker-options="pickerOptions"
-                    style="margin-bottom: 15px; width: 100%"
+                  v-model="experiment.end_time"
+                  type="datetime"
+                  placeholder="选择实验截止日期时间"
+                  :picker-options="pickerOptions"
+                  style="margin-bottom: 15px; width: 100%"
                 >
                 </el-date-picker>
               </v-col>
               <v-col cols="6">
                 <el-select
-                    v-model="experiment.status"
-                    placeholder="请选择实验提交方式"
-                    style="margin-bottom: 15px; width: 100%"
+                  v-model="experiment.status"
+                  placeholder="请选择实验提交方式"
+                  style="margin-bottom: 15px; width: 100%"
                 >
                   <el-option
-                      v-for="item in exStatus"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                    v-for="item in exStatus"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   >
                   </el-option>
                 </el-select>
               </v-col>
               <v-col cols="6">
                 <el-cascader
-                    v-model="is_online"
-                    placeholder="是否在线模拟"
-                    :options="online_op"
-                    @change="handleExChange"
+                  v-model="is_online"
+                  placeholder="是否在线模拟"
+                  :options="online_op"
+                  @change="handleExChange"
                 ></el-cascader>
               </v-col>
             </v-row>
 
             <v-textarea
-                filled
-                label="实验名称"
-                auto-grow
-                height="20px"
-                v-model="experiment.title"
+              filled
+              label="实验名称"
+              auto-grow
+              height="20px"
+              v-model="experiment.title"
             ></v-textarea>
 
             <v-textarea
-                filled
-                label="实验简介"
-                auto-grow
-                v-model="experiment.brief"
+              filled
+              label="实验简介"
+              auto-grow
+              v-model="experiment.brief"
             ></v-textarea>
 
             <v-textarea
-                filled
-                label="实验占比"
-                auto-grow
-                height="20px"
-                v-model="experiment.weight"
+              filled
+              label="实验占比"
+              auto-grow
+              height="20px"
+              v-model="experiment.weight"
             ></v-textarea>
           </v-container>
 
@@ -196,31 +196,28 @@
         </el-dialog>
 
         <el-dialog
-            :visible.sync="scoreDialog"
-            title="设置成绩占比（以小数形式）"
-            center
-            width="50%"
+          :visible.sync="scoreDialog"
+          title="设置成绩占比（以小数形式）"
+          center
+          width="50%"
         >
           <v-container>
+            <el-input label="考试" v-model="eachScore.exam"></el-input>
+
             <el-input
-                label="考试"
-                v-model="eachScore.exam"
+              filled
+              label="实验"
+              auto-grow
+              height="20px"
+              v-model="eachScore.report"
             ></el-input>
 
             <el-input
-                filled
-                label="实验"
-                auto-grow
-                height="20px"
-                v-model="eachScore.report"
-            ></el-input>
-
-            <el-input
-                filled
-                label="出勤"
-                auto-grow
-                height="20px"
-                v-model="eachScore.attendance"
+              filled
+              label="出勤"
+              auto-grow
+              height="20px"
+              v-model="eachScore.attendance"
             ></el-input>
           </v-container>
 
@@ -338,61 +335,65 @@ export default {
       console.log(this.is_online);
     },
     getParams: function () {
-      this.courseID = JSON.parse(this.$Base64.decode(this.$route.query.info)).course_id;
+      this.courseID = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      ).course_id;
       this.name = JSON.parse(this.$Base64.decode(this.$route.query.info)).name;
       this.year = JSON.parse(this.$Base64.decode(this.$route.query.info)).year;
-      this.semester = JSON.parse(this.$Base64.decode(this.$route.query.info)).semester;
+      this.semester = JSON.parse(
+        this.$Base64.decode(this.$route.query.info)
+      ).semester;
       this.id = sessionStorage.getItem("id");
       this.experiment.courseID = this.courseID;
-      console.log(this.courseID)
+      console.log(this.courseID);
     },
     handlePushExper(item) {
       this.axios
-          .post(
-              "/api/course/pushEx/",
-              JSON.stringify({
-                ex_id: item.ex_id,
-                token: sessionStorage.getItem("token"),
-              })
-          )
-          .then((response) => {
-            console.log("publish");
-            console.log(response);
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.$message("发布成功！");
-              this.getExperiment();
-            }
-          });
+        .post(
+          "/api/course/pushEx/",
+          JSON.stringify({
+            ex_id: item.ex_id,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          console.log("publish");
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.$message("发布成功！");
+            this.getExperiment();
+          }
+        });
     },
     handleStopExper(item) {
       this.axios
-          .post(
-              "/api/course/stopEx/",
-              JSON.stringify({
-                ex_id: item.ex_id,
-                token: sessionStorage.getItem("token"),
-              })
-          )
-          .then((response) => {
-            console.log("publish");
-            console.log(response);
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.$message("发布成功！");
-              this.getExperiment();
-            }
-          });
+        .post(
+          "/api/course/stopEx/",
+          JSON.stringify({
+            ex_id: item.ex_id,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          console.log("publish");
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.$message("发布成功！");
+            this.getExperiment();
+          }
+        });
     },
     handlePreview(file) {
       console.log(file);
@@ -438,20 +439,20 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.deleteClass(row);
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            document.execCommand("Refresh");
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "取消删除操作",
-            });
+        .then(() => {
+          this.deleteClass(row);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
           });
+          document.execCommand("Refresh");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除操作",
+          });
+        });
     },
     handleDeleteExper(item) {
       this.$confirm("确认删除实验吗?", "提示", {
@@ -459,20 +460,47 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.deleteEx(item);
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            document.execCommand("Refresh");
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "取消删除操作",
-            });
+        .then(() => {
+          this.deleteEx(item);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
           });
+          document.execCommand("Refresh");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除操作",
+          });
+        });
+    },
+
+    updateTea(row) {
+      var jsons = {
+        class_id: row.class_id,
+        t_id: row.t_id,
+        token: sessionStorage.getItem("token"),
+      };
+      console.log("更新教师");
+      console.log(jsons);
+      this.axios
+        .post("/api/manageClass/changeTeacher", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.getClasses();
+            this.teaDialog = false;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
 
     setPro(row) {
@@ -489,22 +517,22 @@ export default {
       console.log(jsons);
 
       this.axios
-          .post("/api/course/editEx/", JSON.stringify(jsons))
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.getExperiment();
-              this.proDialog = false;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        .post("/api/course/editEx/", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.getExperiment();
+            this.proDialog = false;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       this.getExperiment();
     },
     toExperiment(row) {
@@ -517,27 +545,50 @@ export default {
     },
     createClass() {
       this.axios
-          .post(
-              "/api/manageClass/addClass",
-              JSON.stringify({
-                courseID: this.courseID,
-                t_id: this.tid,
-                token: sessionStorage.getItem("token"),
-              })
-          )
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.classDialog = false;
-              this.tid = "";
-              this.getClasses();
-            }
-          });
+        .post(
+          "/api/manageClass/addClass",
+          JSON.stringify({
+            courseID: this.courseID,
+            t_id: this.tid,
+            token: sessionStorage.getItem("token"),
+          })
+        )
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.classDialog = false;
+            this.tid = "";
+            this.getClasses();
+          }
+        });
+    },
+
+    deleteClass(row) {
+      var jsons = {
+        classID: row.class_id,
+        token: sessionStorage.getItem("token"),
+      };
+      this.axios
+        .post("/api/manageClass/deleteClass", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.getClasses();
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
 
     classGetStudent() {
@@ -548,21 +599,21 @@ export default {
         };
         console.log(this.classList[i]["class_id"]);
         return (
-            this.axios
-                //.post("/api/course/addEx/", JSON.stringify(jsons))
-                .post("/api/manageClass/IDGetClassStudent", JSON.stringify(json3))
-                .then((response) => {
-                  if (response.data["code"] === 400) {
-                    this.$message("班级不存在");
-                  } else {
-                    var class_student = response.data["data"];
-                    //求并集
-                    console.log(class_student);
-                    for (var t = 0; t < class_student.data.length; t++) {
-                      this.stu_list.push(class_student.data[t]);
-                    }
-                  }
-                })
+          this.axios
+            //.post("/api/course/addEx/", JSON.stringify(jsons))
+            .post("/api/manageClass/IDGetClassStudent", JSON.stringify(json3))
+            .then((response) => {
+              if (response.data["code"] === 400) {
+                this.$message("班级不存在");
+              } else {
+                var class_student = response.data["data"];
+                //求并集
+                console.log(class_student);
+                for (var t = 0; t < class_student.data.length; t++) {
+                  this.stu_list.push(class_student.data[t]);
+                }
+              }
+            })
         );
       }
     },
@@ -611,6 +662,7 @@ export default {
                   }
                 }
               })
+
       );
     },
     sendStuMessage() {
@@ -621,14 +673,14 @@ export default {
       if (this.addSuccess == true) {
         for (var i = 0; i < this.stu_list.length; i++) {
           var content =
-              this.name +
-              "已发布实验" +
-              this.experiment.title +
-              ",成绩占比" +
-              this.experiment.weight +
-              ",请在" +
-              this.formatDateTime(this.experiment.end_time) +
-              "前完成";
+            this.name +
+            "已发布实验" +
+            this.experiment.title +
+            ",成绩占比" +
+            this.experiment.weight +
+            ",请在" +
+            this.formatDateTime(this.experiment.end_time) +
+            "前完成";
           var json4 = {
             s_id: this.stu_list[i]["s_id"],
             title: "实验——" + this.experiment.title + "已新增",
@@ -636,15 +688,15 @@ export default {
             deadline: this.formatDateTime(this.experiment.end_time),
           };
           this.axios
-              //.post("/api/course/addEx/", JSON.stringify(jsons))
-              .post("/api/message/addStuMessage", JSON.stringify(json4))
-              .then((response) => {
-                if (response.data["code"] === 400) {
-                  this.$message("找不到学生");
-                } else {
-                  console.log(response.data["message"]);
-                }
-              });
+            //.post("/api/course/addEx/", JSON.stringify(jsons))
+            .post("/api/message/addStuMessage", JSON.stringify(json4))
+            .then((response) => {
+              if (response.data["code"] === 400) {
+                this.$message("找不到学生");
+              } else {
+                console.log(response.data["message"]);
+              }
+            });
         }
       }
     },
@@ -654,21 +706,21 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       this.axios
-          .post("/api/course/delEx/", JSON.stringify(jsons))
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.getExperiment();
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        .post("/api/course/delEx/", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.getExperiment();
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
 
     getClasses() {
@@ -677,21 +729,21 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       this.axios
-          .post("/api/manageClass/showClass/", JSON.stringify(jsons))
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.classList = response.data.data;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        .post("/api/manageClass/showClass/", JSON.stringify(jsons))
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.classList = response.data.data;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       /*this.axios({
         method: "get",
@@ -713,45 +765,45 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       this.axios
-          .post("/api/course/getEx/", JSON.stringify(jsons))
-          .then((response) => {
-            console.log("exList");
-            console.log(response);
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.experList = response.data.data;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        .post("/api/course/getEx/", JSON.stringify(jsons))
+        .then((response) => {
+          console.log("exList");
+          console.log(response);
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.experList = response.data.data;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     getTeaList() {
       //获得所有教师
       this.axios
-          .get("/api/course/getAllTeacher/", {
-            params: { token: sessionStorage.getItem("token") },
-            crossDomain: true,
-          })
-          .then((response) => {
-            if (response.data["code"] === 301) {
-              this.$message("验证过期");
-              this.$router.push({ path: "/login" });
-            } else if (response.data["code"] === 404) {
-              this.$message("找不到页面");
-              this.$router.push({ path: "/404" });
-            } else {
-              this.teaList = response.data.data;
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        .get("/api/course/getAllTeacher/", {
+          params: { token: sessionStorage.getItem("token") },
+          crossDomain: true,
+        })
+        .then((response) => {
+          if (response.data["code"] === 301) {
+            this.$message("验证过期");
+            this.$router.push({ path: "/login" });
+          } else if (response.data["code"] === 404) {
+            this.$message("找不到页面");
+            this.$router.push({ path: "/404" });
+          } else {
+            this.teaList = response.data.data;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     setScore() {
       //设置成绩占比

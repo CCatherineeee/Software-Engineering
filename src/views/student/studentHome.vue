@@ -4,7 +4,8 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img ref="stuAvatar"
+            <img
+              ref="stuAvatar"
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
@@ -52,8 +53,7 @@ export default {
     };
   },
   methods: {
-
-      getUserAvatar: function () {
+    getUserAvatar: function () {
       let param = new FormData(); // 创建form对象
       param.append("s_id", sessionStorage.getItem("id"));
       this.axios
@@ -65,7 +65,7 @@ export default {
           console.log(this.$refs.stuAvatar.src);
           // var imgHtml = "<img src=" + address + url + "></img>";
           // console.log(imgHtml);
-          
+
           // this.avatar = imgHtml;
         })
         .catch(function (error) {
@@ -79,8 +79,8 @@ export default {
       console.log(key, keyPath);
     },
   },
-    mounted(){
-      this.getUserAvatar();
+  mounted() {
+    this.getUserAvatar();
   },
 };
 </script>
