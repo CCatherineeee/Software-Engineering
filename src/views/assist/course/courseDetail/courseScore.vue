@@ -201,6 +201,10 @@ export default {
         });
     },
     setScore() {
+      if (this.score > 100 || this.score < 0) {
+        this.$message.warning("分数必须在0-100之间！");
+        return;
+      }
       var jsons = {
         s_id: this.s_id,
         ex_id: this.ex_id,

@@ -88,6 +88,10 @@ export default {
     },
 
     confirm() {
+      if (this.score > 100 || this.score < 0) {
+        this.$message.warning("分数必须在0-100之间！");
+        return;
+      }
       this.axios
         .post(
           "/api/tea/Ex/taScoreReport/",
