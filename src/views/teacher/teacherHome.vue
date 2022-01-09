@@ -95,8 +95,8 @@ export default {
   background-color: #ffffff;
   color: #333;
   text-align: left;
-  height: 650px;
   border-radius: 20px;
+  height: 900px;
 }
 .back {
   margin-left: 10px;

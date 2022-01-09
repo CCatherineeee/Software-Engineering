@@ -194,7 +194,7 @@ export default {
 
       fdParams.append("class_id", this.c_id);
       fdParams.append("token", sessionStorage.getItem("token"));
-      console.log("addFromExcelS", this.fileListS);
+      //console.log("addFromExcelS", this.fileListS);
       this.axios
         .post("/api/classAddStudentFile", fdParams, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
@@ -205,6 +205,7 @@ export default {
           this.$message.success("添加成功");
           this.fileListS = [];
           this.dialogExcelVisibleS = false;
+          this.getStuList();
         })
         .catch({});
     },
