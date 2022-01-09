@@ -103,60 +103,9 @@ export default {
       activeName: "first",
       currentPage: 1,
       pagesize: 10,
-      scoreData: [
-        {
-          name: "lyw",
-          id: "1951095",
-          ex_1: "100",
-          ex_2: "200",
-          ex_3: "300",
-          test: "400",
-        },
-        {
-          name: "xzq",
-          id: "1951104",
-          ex_1: "100",
-          ex_2: "200",
-          ex_3: "300",
-          test: "0",
-        },
-      ],
-      headers: [
-        {
-          label: "实验1", //实验名字
-          key: "ex_1", //实验id
-        },
-        {
-          label: "实验2",
-          key: "ex_2",
-        },
-        {
-          label: "实验3",
-          key: "ex_3",
-        },
-        {
-          label: "实验4",
-          key: "test",
-        },
-      ],
-      reportData: [
-        {
-          name: "lyw",
-          id: "1951095",
-          ex_1: "100",
-          ex_2: "200",
-          ex_3: "300",
-          test: "400",
-        },
-        {
-          name: "xzq",
-          id: "1951104",
-          ex_1: "100",
-          ex_2: "200",
-          ex_3: "300",
-          test: "0",
-        },
-      ],
+      scoreData: [],
+      headers: [],
+      reportData: [],
     };
   },
   methods: {
