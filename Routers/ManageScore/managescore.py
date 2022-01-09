@@ -209,7 +209,7 @@ def getCourseScore():
     if not this_course:
         return jsonify({'status':400,'message':"该课程不存在"})
 
-    ex_list = Experiment.query.filter(Experiment.course_id==course_id).all()   #获得该课程的所有实验报告数量
+    ex_list = Experiment.query.filter(and_(Experiment.course_id==course_id,Experiment.status == 1)).all()   #获得该课程的所有实验报告数量
     ex_score = 0
     duty_score = 0
     stu_exam_score = 0
@@ -240,7 +240,7 @@ def getCourseScore():
                 last_score = item.weight*score    #实验权重*实验得分=该实验最终总分 
                 ex_score += last_score
     #计算实验分数
-    ex_score = (ex_score / (100*all_ex_num)) *100 * this_weight.experiment_weight
+    ex_score = ex_score* this_weight.experiment_weight
 
     exam_list = Exam.query.filter(and_(Exam.course_id == course_id,Exam.status == 1)).all()   #寻找所有该课程可以参加的考试
 
