@@ -21,6 +21,10 @@ def teaScore():
 
     class_id = data['class_id']
     class_ = Class.query.filter(Class.class_id == class_id).first()
+    sc = StudentClass.query.filter(StudentClass.class_id == class_id).all()
+    s_list = []
+    for sc_item in sc:
+        s_list.append(sc_item.s_id)
     exs = Experiment.query.filter(Experiment.course_id == class_.course_id).all()
     t = []
     name = []
@@ -36,6 +40,8 @@ def teaScore():
         n = 0
         temp = []
         for s in se:
+            if s.s_id not in s_list:
+                pass
             if not s.score:
                 n += 1
             else:
@@ -209,7 +215,7 @@ def getCourseScore():
     if not this_course:
         return jsonify({'status':400,'message':"该课程不存在"})
 
-    ex_list = Experiment.query.filter(and_(Experiment.course_id==course_id,Experiment.status == 1)).all()   #获得该课程的所有实验报告数量
+    ex_list = Experiment.query.filter(and_(Experiment.course_id==course_id,Experiment.status != 0)).all()   #获得该课程的所有实验报告数量
     ex_score = 0
     duty_score = 0
     stu_exam_score = 0
@@ -229,18 +235,17 @@ def getCourseScore():
     duty_score = (take_ex_num/all_ex_num) * (this_weight.attendence_weight * 100)
 
     for item in ex_list:
-        if item.status != 0:
-            stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
-            #学生有这个实验
-            if stu_ex_item and stu_ex_item.submitTime:
-                if not stu_ex_item.score:
-                    score = 0
-                else:
-                    score = stu_ex_item.score
-                last_score = item.weight*score    #实验权重*实验得分=该实验最终总分 
-                ex_score += last_score
+        stu_ex_item = StudentExperiment.query.filter(and_(StudentExperiment.experiment_id==item.experiment_id,StudentExperiment.s_id==s_id)).first()
+        #学生有这个实验
+        if stu_ex_item:
+            if not stu_ex_item.score:
+                score = 0
+            else:
+                score = stu_ex_item.score
+            last_score = item.weight*score    #实验权重*实验得分=该实验最终总分 
+            ex_score += last_score
     #计算实验分数
-    ex_score = ex_score* this_weight.experiment_weight
+    ex_score = ex_score * this_weight.experiment_weight
 
     exam_list = Exam.query.filter(and_(Exam.course_id == course_id,Exam.status == 1)).all()   #寻找所有该课程可以参加的考试
 

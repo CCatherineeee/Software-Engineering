@@ -146,7 +146,7 @@ def delCourse():
 def setDuty():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
-    courseID = data['courseID']
+    c_id = data['c_id']
     t_id = data['t_id']
     token = data['token']
     res = checkToken(token,Role.AdminRole)
@@ -155,7 +155,7 @@ def setDuty():
     elif res == 404:
         return jsonify({'code':404,'message':"无法访问页面",'data':None})
     else:
-        course = Course.query.filter(Course.c_id == courseID).first()
+        course = Course.query.filter(Course.c_id == c_id).first()
         if not course:
             return jsonify({'code':500,'message':"课程不存在",'data':None})
         course.duty_teacher = t_id

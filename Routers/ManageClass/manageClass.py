@@ -256,9 +256,11 @@ def IDGetClassStudent():
         stu = Student.query.filter(Student.s_id == student_item.s_id).first()
         stu_json = {'s_id':stu.s_id,'name':stu.name}
         all_student['data'].append(stu_json)
-    ta_id = TAClass.query.filter(TAClass.class_id == class_id).first().ta_id
-    ta_name = TeachingAssistant.query.filter(TeachingAssistant.ta_id == ta_id).first().name
-    all_student.update({'ta_id':ta_id,"ta_name":ta_name})
+    ta = TAClass.query.filter(TAClass.class_id == class_id).first()
+    if ta:
+        ta_id = ta.ta_id
+        ta_name = TeachingAssistant.query.filter(TeachingAssistant.ta_id == ta_id).first().name
+        all_student.update({'ta_id':ta_id,"ta_name":ta_name})
     return {'code':200,'message':"获取成功",'data':all_student}
 
 #通过班级号获取所有班级内所有学生的所有成绩

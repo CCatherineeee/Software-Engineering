@@ -79,10 +79,8 @@ def getTAnfo():
 def getAllTA():
     TAList = TeachingAssistant.query.all()
     result = []
-    num = 0
     for item in TAList:
-        TAdata = {'num':num,'ta_id':item.ta_id}
-        num+=1
+        TAdata = {'ta_id':item.ta_id,'name':item.name}
         result.append(TAdata)
 
     return jsonify(result)

@@ -47,27 +47,95 @@ def manageFile(uploadPath):
             dbManage.db.session.add(student)
             dbManage.db.session.commit()
             send_email(rowData[2],0,student,0)
+
+def manageTeacher(uploadPath):
+    workbook = xlrd.open_workbook(uploadPath)
+    get_sheet_name = workbook.sheet_names()[0]
+    sheet = workbook.sheet_by_name(get_sheet_name)
+    ncols = sheet.ncols
+    nrows = sheet.nrows
+    for i in range(1, nrows):
+        rowData = sheet.row_values(i)
+        t_id = str(int(rowData[0]))
+        if not Model.Teacher.query.filter(Model.Teacher.t_id == t_id).first():
+            teacher = Model.Teacher(t_id=t_id, t_pwd=t_id, name=rowData[1], email=rowData[2])
+            dbManage.db.session.add(teacher)
+            send_email(rowData[2],0,teacher,1)
+    dbManage.db.session.commit()
+
+
+def manageTA(uploadPath):
+    workbook = xlrd.open_workbook(uploadPath)
+    get_sheet_name = workbook.sheet_names()[0]
+    sheet = workbook.sheet_by_name(get_sheet_name)
+    ncols = sheet.ncols
+    nrows = sheet.nrows
+    for i in range(1, nrows):
+        rowData = sheet.row_values(i)
+        s_id = str(int(rowData[0]))
+        if not Model.TeachingAssistant.query.filter(Model.TeachingAssistant.ta_id == s_id).first():
+            student = Model.TeachingAssistant(ta_id=s_id, ta_pwd=s_id, name=rowData[1], email=rowData[2])
+            dbManage.db.session.add(student)
+            dbManage.db.session.commit()
+            send_email(rowData[2],0,student,2)
     
 
 
 @addUserRoute.route('/Register/addStudent/',methods=['POST'])  
-def addUser():
+def addStudent():
     fileList = request.files.getlist('file')
+    basepath = os.path.dirname(__file__)
 
     for file in fileList:
 
-        basepath = os.path.dirname(__file__)
         ext = os.path.splitext(file.filename)[1]
         filename = os.path.splitext(file.filename)[0]
 
         newFileName = filename + "_" + str(uuid.uuid1())  + ext
 
-        uploadPath = os.path.join(basepath, 'userFile', newFileName)
+        uploadPath = os.path.join(basepath, newFileName)
 
         file.save(uploadPath)
         manageFile(uploadPath)
+        # os.remove(uploadPath)
+    return jsonify({'code':200,'message':"添加成功",'data':None})
+
+@addUserRoute.route('/Register/addTeacher/',methods=['POST'])  
+def addTeacher():
+    fileList = request.files.getlist('file')
+    basepath = os.path.dirname(__file__)
+
+    for file in fileList:
+        ext = os.path.splitext(file.filename)[1]
+        filename = os.path.splitext(file.filename)[0]
+
+        newFileName = filename + "_" + str(uuid.uuid1())  + ext
+
+        uploadPath = os.path.join(basepath, newFileName)
+
+        file.save(uploadPath)
+        manageTeacher(uploadPath)
         os.remove(uploadPath)
-    return "ok"
+    return jsonify({'code':200,'message':"添加成功",'data':None})
+
+@addUserRoute.route('/Register/addTA/',methods=['POST'])  
+def addTA():
+    fileList = request.files.getlist('file')
+    basepath = os.path.dirname(__file__)
+
+    for file in fileList:
+
+        ext = os.path.splitext(file.filename)[1]
+        filename = os.path.splitext(file.filename)[0]
+
+        newFileName = filename + "_" + str(uuid.uuid1())  + ext
+
+        uploadPath = os.path.join(basepath, newFileName)
+
+        file.save(uploadPath)
+        manageTA(uploadPath)
+        os.remove(uploadPath)
+    return jsonify({'code':200,'message':"添加成功",'data':None})
 
 @addUserRoute.route('/Register/addSM/',methods=['POST'])  
 def addStudentManually():

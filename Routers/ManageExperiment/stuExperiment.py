@@ -232,7 +232,10 @@ def getFilledRort():
     ex_id = data['ex_id']
     s_id = data["s_id"]
     er = ExperimentReport.query.filter(and_(ExperimentReport.s_id == s_id,ExperimentReport.ex_id == ex_id)).first()
-    data = {"goal":er.goal, "device":er.device, "step":er.step, "process":er.process, "result":er.result}
+    if er:
+        data = {"goal":er.goal, "device":er.device, "step":er.step, "process":er.process, "result":er.result}
+    else:
+        data = {"goal":"", "device":"", "step":"", "process":"", "result":""}
     
     return jsonify({'status':200,'message':"获取成功",'data':data})
 
