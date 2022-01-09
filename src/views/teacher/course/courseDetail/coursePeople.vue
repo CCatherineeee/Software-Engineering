@@ -56,7 +56,7 @@
         <el-option
           v-for="i in assistList"
           :key="i.ta_id"
-          :label="i.ta_id"
+          :label="i.ta_id + i.name"
           :value="i.ta_id"
         >
         </el-option>
@@ -186,24 +186,27 @@ export default {
     },
 
     addFromExcelS() {
-      /*let fdParams = new FormData();
+      let fdParams = new FormData();
       this.fileListS.forEach((file) => {
-        console.log(file);
+        //console.log(file);
         fdParams.append("file", file.raw);
       });
-      fdParams.append("userID", "123");
 
+      fdParams.append("class_id", this.c_id);
+      fdParams.append("token", sessionStorage.getItem("token"));
+      console.log("addFromExcelS", this.fileListS);
       this.axios
-        .post("/api/file/addUser/", fdParams, {
+        .post("/api/classAddStudentFile", fdParams, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-          timeout: 20000,
+          //timeout: 20000,
         })
         .then((response) => {
-          console.log(response);
+          console.log("addFromExcelS", response);
+          this.$message.success("添加成功");
+          this.fileListS = [];
+          this.dialogExcelVisibleS = false;
         })
         .catch({});
-
-      this.dialogExcelVisibleS = false;*/
     },
 
     setAssist() {
