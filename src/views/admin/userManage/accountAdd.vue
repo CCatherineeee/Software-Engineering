@@ -154,15 +154,19 @@
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="dialogExcelVisibleS" title="请选择文件" center>
+      <el-dialog
+        :visible.sync="dialogExcelVisibleS"
+        title="请选择导入的学生文件"
+        center
+      >
         <el-upload
           class="upload-import"
           ref="uploadImport"
           action="https://baidu.com/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-change="handleChange"
-          :before-remove="beforeRemove"
+          :on-preview="handlePreviewS"
+          :on-remove="handleRemoveS"
+          :on-change="handleChangeS"
+          :before-remove="beforeRemoveS"
           :file-list="fileListS"
           :multiple="true"
           :auto-upload="false"
@@ -182,10 +186,10 @@
           class="upload-import"
           ref="uploadImport"
           action="https://baidu.com/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-change="handleChange"
-          :before-remove="beforeRemove"
+          :on-preview="handlePreviewT"
+          :on-remove="handleRemoveT"
+          :on-change="handleChangeT"
+          :before-remove="beforeRemoveT"
           :file-list="fileListT"
           :multiple="true"
           :auto-upload="false"
@@ -205,10 +209,10 @@
           class="upload-import"
           ref="uploadImport"
           action="https://baidu.com/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-change="handleChange"
-          :before-remove="beforeRemove"
+          :on-preview="handlePreviewTA"
+          :on-remove="handleRemoveTA"
+          :on-change="handleChangeTA"
+          :before-remove="beforeRemoveTA"
           :file-list="fileListA"
           :multiple="true"
           :auto-upload="false"
@@ -273,12 +277,17 @@
           </template>
         </el-table-column>
 
-        <el-table-column  label="手动激活"  >
+        <el-table-column label="手动激活">
           <template #default="scope">
-            <el-button plain @click="handleActive(scope.row.is_active,scope.row.id,scope.row.role)">重新激活</el-button>
+            <el-button
+              plain
+              @click="
+                handleActive(scope.row.is_active, scope.row.id, scope.row.role)
+              "
+              >重新激活</el-button
+            >
           </template>
         </el-table-column>
-        
       </el-table>
 
       <el-pagination
@@ -344,28 +353,27 @@ export default {
   },
   methods: {
     //重新手动激活用户
-    handleActive(is_active,id,usertype){
-      if(is_active === 1){
-        this.$message("该用户已被激活，不可重新激活")
-      }
-      else{     
+    handleActive(is_active, id, usertype) {
+      if (is_active === 1) {
+        this.$message("该用户已被激活，不可重新激活");
+      } else {
         var jsons = {
-          id:id,
-          role:usertype-1
-        }
-         axios
-        .post("/api/users/reActive", jsons)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console(error);
-        });
+          id: id,
+          role: usertype - 1,
+        };
+        axios
+          .post("/api/users/reActive", jsons)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console(error);
+          });
         this.$message({
-          message: '已发送激活邮件',
-          type: 'success'
+          message: "已发送激活邮件",
+          type: "success",
         });
-    }
+      }
     },
 
     //获取所有用户所有信息
@@ -376,7 +384,7 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
-          console.log(response);
+          console.log("getUserData", response);
           this.userData = response.data;
           //location.reload();
         })
@@ -408,21 +416,57 @@ export default {
       this.dialogExcelVisibleA = true;
     },
 
-    handlePreview(file) {
+    handlePreviewS(file) {
       console.log(file);
     },
 
-    handleRemove(file, fileListS) {
+    handleRemoveS(file, fileListS) {
       console.log(file, fileListS);
     },
 
-    handleChange(file) {
+    handleChangeS(file) {
       console.log(file);
       this.fileListS.push(file);
       console.log(this.fileListS);
     },
 
-    beforeRemove(file) {
+    beforeRemoveS(file) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    handlePreviewT(file) {
+      console.log(file);
+    },
+
+    handleRemoveT(file, fileListT) {
+      console.log(file, fileListT);
+    },
+
+    handleChangeT(file) {
+      console.log(file);
+      this.fileListT.push(file);
+      console.log(this.fileListT);
+    },
+
+    beforeRemoveT(file) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    handlePreviewTA(file) {
+      console.log(file);
+    },
+
+    handleRemoveTA(file, fileListA) {
+      console.log(file, fileListA);
+    },
+
+    handleChangeTA(file) {
+      console.log(file);
+      this.fileListA.push(file);
+      console.log(this.fileListA);
+    },
+
+    beforeRemoveTA(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
 
@@ -442,8 +486,7 @@ export default {
         axios
           .post("/api/Register/addSM/", JSON.stringify(jsons))
           .then((response) => {
-            console.log(" addFromDetailS");
-            console.log(response);
+            console.log(" addFromDetailS", response);
             this.checkData(response.data);
             //location.reload();
           });
@@ -507,8 +550,7 @@ export default {
           email: this.formA.email,
           token: sessionStorage.getItem("token"),
         };
-        console.log("添加助教");
-        console.log(jsons);
+
         this.axios
           .post("/api/Register/addTAManually", JSON.stringify(jsons))
           .then((response) => {
@@ -529,66 +571,72 @@ export default {
     },
 
     addFromExcelS() {
-      /*let fdParams = new FormData();
+      let fdParams = new FormData();
       this.fileListS.forEach((file) => {
-        console.log(file);
+        //console.log(file);
         fdParams.append("file", file.raw);
       });
-      fdParams.append("userID", "123");
+      //fdParams.append("userID", "123");
 
       this.axios
-        .post("/api/file/addUser/", fdParams, {
+        .post("/api/Register/addStudent/", fdParams, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-          timeout: 20000,
+          //timeout: 20000,
         })
         .then((response) => {
-          console.log(response);
+          console.log("addFromExcelS", response);
+          this.$message.success("添加成功!");
+          this.fileListS = [];
+          this.getUserData();
+          this.dialogExcelVisibleS = false;
         })
         .catch({});
-
-      this.dialogExcelVisibleS = false;*/
     },
 
     addFromExcelT() {
-      /*let fdParams = new FormData();
+      let fdParams = new FormData();
       this.fileListT.forEach((file) => {
         console.log(file);
         fdParams.append("file", file.raw);
       });
-      fdParams.append("userID", "123");
-
+      //fdParams.append("userID", "123");
+      console.log("addFromExcelTjson", this.fileListT);
       this.axios
-        .post("/api/file/addUser/", fdParams, {
+        .post("/api/Register/addTeacher/", fdParams, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-          timeout: 20000,
+          //timeout: 20000,
         })
         .then((response) => {
-          console.log(response);
+          console.log("addFromExcelT", response);
+          this.$message.success("添加成功!");
+          this.fileListT = [];
+          this.getUserData();
+          this.dialogExcelVisibleT = false;
         })
         .catch({});
-
-      this.dialogExcelVisibleT = false;*/
     },
 
     addFromExcelA() {
-      /*let fdParams = new FormData();
-      this.fileListT.forEach((file) => {
+      let fdParams = new FormData();
+      this.fileListA.forEach((file) => {
         console.log(file);
         fdParams.append("file", file.raw);
       });
-      fdParams.append("userID", "123");
+      //fdParams.append("userID", "123");
 
       this.axios
-        .post("/api/file/addUser/", fdParams, {
+        .post("/api/Register/addTA/", fdParams, {
           headers: { "Content-Type": "multipart/form-data" }, //定义内容格式,很重要
-          timeout: 20000,
+          //timeout: 20000,
         })
         .then((response) => {
           console.log(response);
+          this.$message.success("添加成功!");
+          this.fileListA = [];
+          this.getUserData();
+          this.dialogExcelVisibleA = false;
         })
         .catch({});
-
-      this.dialogExcelVisibleT = false;*/
     },
 
     handleSizeChange: function (val) {

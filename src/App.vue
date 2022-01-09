@@ -6,12 +6,7 @@
       ></el-col>
     </el-row>
     <div id="nav">
-      <router-link to="/studentHome/account">Stuent-Home</router-link> |
-      <router-link to="/teacherHome">Teacher-Home</router-link> |
-      <router-link to="/adminHome">Admin-Home</router-link> |
-      <router-link to="/assistHome">assist-Home</router-link> |
-      <router-link to="/test">在线编译器test</router-link> |
-      <router-link to="/login">Login-test</router-link>
+      <a href="/"><img src="@/assets/SystemLogo.png" /></a>
     </div>
     <router-view />
   </div>
@@ -44,6 +39,6 @@
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #f8f8f8;
 }
 </style>

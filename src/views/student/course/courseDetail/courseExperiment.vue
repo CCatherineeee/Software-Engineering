@@ -247,16 +247,18 @@ export default {
         this.$message("找不到页面");
         this.$router.push({ path: "/404" });
       } else {
-        // this.tableData.clear();
+        this.tableData = [];
         for (var i = 0; i < response.data.length; i++) {
           if (response.data[i].status === 1) {
             response.data[i].status = "未过期";
-          } else {
+            this.tableData.push(response.data[i]);
+          } else if (response.data[i].status === 3) {
             response.data[i].status = "已过期";
+            this.tableData.push(response.data[i]);
           }
           //this.tableData.push(response.data[i]);
 
-          this.tableData = response.data;
+          //this.tableData = response.data;
           //console.log();
           //console.log("thisTable", this.tableData);
         }

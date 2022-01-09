@@ -4,10 +4,7 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img
-              ref="stuAvatar"
-              class="admin-aside-menu-head"
-            />
+            <img ref="stuAvatar" class="admin-aside-menu-head" />
             <el-menu-item index="/studentHome/control">
               <i class="el-icon-reading"></i>
               <span slot="title">控制面板</span>
@@ -34,6 +31,10 @@
               <i class="el-icon-reading"></i>
               <span slot="title">系统公告</span>
             </el-menu-item>
+            <el-menu-item index="/" @click="Logout()">
+              <i class="el-icon-reading"></i>
+              <span slot="title">退出登录</span>
+            </el-menu-item>
           </el-menu>
         </div>
       </el-aside>
@@ -52,6 +53,11 @@ export default {
     };
   },
   methods: {
+    Logout() {
+      sessionStorage.removeItem("role");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("token");
+    },
     getUserAvatar: function () {
       let param = new FormData(); // 创建form对象
       param.append("s_id", sessionStorage.getItem("id"));

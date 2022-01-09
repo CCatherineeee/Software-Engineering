@@ -4,10 +4,7 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img
-              :src="imageUrl"
-              class="admin-aside-menu-head"
-            />
+            <img :src="imageUrl" class="admin-aside-menu-head" />
 
             <el-submenu index="">
               <template slot="title">
@@ -34,6 +31,10 @@
             <el-menu-item index="/adminHome/annManage">
               <i class="el-icon-postcard"></i>
               <span slot="title">公告管理</span>
+            </el-menu-item>
+            <el-menu-item index="/" @click="Logout()">
+              <i class="el-icon-reading"></i>
+              <span slot="title">退出登录</span>
             </el-menu-item>
           </el-menu>
         </div>
@@ -186,6 +187,11 @@ export default {
       });*/
       this.dialogFormVisibleS = false;
       //location.reload();
+    },
+    Logout() {
+      sessionStorage.removeItem("role");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("token");
     },
   },
   mounted() {

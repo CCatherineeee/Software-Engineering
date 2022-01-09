@@ -110,7 +110,7 @@
             <el-option
               v-for="item in teaList"
               :key="item.id"
-              :label="item.id"
+              :label="item.id + item.name"
               :value="item.id"
             >
             </el-option>
@@ -168,7 +168,7 @@ export default {
         token: sessionStorage.getItem("token"),
       };
       axios
-        .post("", JSON.stringify(jsons))
+        .post("/api/course/setDuty/", JSON.stringify(jsons))
         .then((response) => {
           console.log(response);
           this.updataTeaDialog = false;

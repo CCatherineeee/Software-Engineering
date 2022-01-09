@@ -27,7 +27,7 @@
 
     <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
       <v-card-title>
-        <h3 style="color: #6666cc">出勤得分与情况:{{ attendScore }}</h3>
+        <h3 style="color: #6666cc">出勤次数:{{ attendScore }}</h3>
       </v-card-title>
 
       <el-row>
@@ -47,11 +47,18 @@
               </el-table-column>
               <el-table-column prop="title" label="实验" width="180" />
 
-              <el-table-column
-                prop="is_submit"
-                label="是否提交"
-              /> </el-table></el-col
-        ></el-row>
+              <el-table-column prop="is_submit" label="是否提交">
+                <template slot-scope="scope"
+                  ><el-tag
+                    :type="scope.row.is_submit === '是' ? 'success' : 'primary'"
+                    disable-transitions
+                    >{{ scope.row.is_submit }}</el-tag
+                  ></template
+                ></el-table-column
+              >
+            </el-table></el-col
+          ></el-row
+        >
         <el-row>
           <el-col :span="24">
             <el-pagination
@@ -289,7 +296,7 @@ export default {
           this.examScore = 0;
           for (var i = 0; i < this.examData.length; i++) {
             this.examScore +=
-              this.examData[i].stu_score / this.examData[i].all_score;
+              (this.examData[i].stu_score / this.examData[i].all_score) * 100;
           }
         })
         .catch(function (error) {
@@ -331,6 +338,7 @@ export default {
         .then((response) => {
           console.log("getAttend", response);
 
+          this.attendScore = 0;
           this.attendData = response.data.data;
           for (var i = 0; i < this.attendData.length; i++) {
             if (this.attendData[i].is_submit == 1) {

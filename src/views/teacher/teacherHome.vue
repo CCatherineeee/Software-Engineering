@@ -4,7 +4,8 @@
       <el-aside width="15%">
         <div>
           <el-menu class="admin-aside-menu" router>
-            <img ref="stuAvatar"
+            <img
+              ref="stuAvatar"
               src="https://www.w3school.com.cn/i/photo/coffee.jpg"
               class="admin-aside-menu-head"
             />
@@ -45,6 +46,10 @@
               <i class="el-icon-reading"></i>
               <span slot="title">系统公告</span>
             </el-menu-item>
+            <el-menu-item index="/" @click="Logout">
+              <i class="el-icon-reading"></i>
+              <span slot="title">退出登录</span>
+            </el-menu-item>
           </el-menu>
         </div>
       </el-aside>
@@ -58,7 +63,12 @@
 <script>
 export default {
   methods: {
-      getUserAvatar: function () {
+    Logout() {
+      sessionStorage.removeItem("role");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("token");
+    },
+    getUserAvatar: function () {
       let param = new FormData(); // 创建form对象
       param.append("t_id", sessionStorage.getItem("id"));
       this.axios
@@ -74,8 +84,8 @@ export default {
         });
     },
   },
-  mounted(){
-      this.getUserAvatar();
+  mounted() {
+    this.getUserAvatar();
   },
 };
 </script>
@@ -90,11 +100,11 @@ export default {
 }
 .back {
   margin-left: 10px;
-  margin-top:20px;
+  margin-top: 20px;
 }
 .admin-aside-menu {
   box-shadow: 3px 3px 10px #d3d3d3;
-  background: #F0F8FF;
+  background: #f0f8ff;
   border-radius: 10%;
   height: 800px;
   margin-top: 20px;
