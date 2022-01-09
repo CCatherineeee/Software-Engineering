@@ -47,7 +47,7 @@
             <el-option
               v-for="item in courseList"
               :key="item.prefix"
-              :label="item.title"
+              :label="item.prefix + item.name"
               :value="item.prefix"
             >
             </el-option>
@@ -72,7 +72,7 @@
             <el-option
               v-for="item in teaList"
               :key="item.id"
-              :label="item.id"
+              :label="item.id + item.name"
               :value="item.id"
             >
             </el-option>
