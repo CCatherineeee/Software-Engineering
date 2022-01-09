@@ -1,10 +1,10 @@
 <template>
-  <el-container style="margin-top:20px;">
+  <el-container style="margin-top: 20px">
     <el-header>
       <el-menu
         mode="horizontal"
         router
-        background-color="#009688"
+        background-color="#5C6BC0"
         text-color="#fff"
         active-text-color="#FFA000"
         :default-active="activeIndex"

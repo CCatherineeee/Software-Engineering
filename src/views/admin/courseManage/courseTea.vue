@@ -1,11 +1,6 @@
 <template>
   <el-card>
-    <el-button
-      type="info"
-      style="background: #7986cb; color: white"
-      @click="handleAdd"
-      >添加责任教师</el-button
-    >
+    <v-btn @click="handleAdd" dark> 添加责任教师</v-btn>
     <el-table
       :data="
         dutyTeaList.filter(

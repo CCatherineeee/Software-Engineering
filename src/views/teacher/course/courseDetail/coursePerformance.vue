@@ -25,7 +25,7 @@ export default {
   methods: {
     getCourseScore() {
       var classID = this.c_id.toString();
-
+      console.log("cid==" + classID);
       this.axios
         .post(
           "/api/tea/score",
