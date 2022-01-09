@@ -121,11 +121,11 @@
       <el-carousel
         :interval="4000"
         type="card"
-        height="600px"
+        height="500px"
         style="padding-left: 50px; padding-right: 50px; padding-top: 25px"
       >
-        <el-carousel-item v-for="item in 6" :key="item">
-          <h3 class="medium">{{ item }}</h3>
+        <el-carousel-item v-for="item in imageList" :key="item.id">
+          <img :src="item.su" />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -178,6 +178,22 @@ export default {
       }
     };
     return {
+      imageList: [
+        {
+          id: 0,
+          su: require("../../assets/2.jpg"),
+        },
+
+        {
+          id: 1,
+          su: require("../../assets/3.jpg"),
+        },
+        {
+          id: 2,
+          su: require("../../assets/4.jpg"),
+        },
+      ],
+
       ruleForm: {
         id: "",
         password: "",
