@@ -12,9 +12,9 @@
             {{ scope.row.status }}
           </el-tag>
           <el-tag
-              :key="scope.row.submitStauts"
-              :type="scope.row.submitType"
-              effect="plain"
+            :key="scope.row.submitStauts"
+            :type="scope.row.submitType"
+            effect="plain"
           >
             {{ scope.row.submitStauts }}
           </el-tag>
@@ -25,23 +25,22 @@
         <template #default="scope">
           <div v-if="scope.row.submitStauts === '已提交'">
             <el-button type="primary" @click="lookCloseExam(scope.row)"
-            >查看</el-button
+              >查看</el-button
             >
           </div>
           <div v-else-if="scope.row.status === '进行中'">
             <el-button type="primary" @click="lookExam(scope.row)"
-            >进入</el-button
+              >进入</el-button
             >
           </div>
           <div v-else-if="scope.row.status === '已截至'">
             <el-button type="primary" @click="lookCloseExam(scope.row)"
-            >查看</el-button
+              >查看</el-button
             >
           </div>
         </template>
       </el-table-column>
     </el-table>
-
   </div>
 </template>
 
@@ -75,8 +74,7 @@ export default {
             }
             for (var i = 0; i < res.data.data.data.length; i++) {
               if (res.data.data.data[i].status === 0) {
-                res.data.data.data[i].status = "未开放";
-                res.data.data.data[i].type = "warning";
+                continue;
               } else if (res.data.data.data[i].status === 1) {
                 res.data.data.data[i].status = "进行中";
                 res.data.data.data[i].type = "success";
@@ -111,22 +109,27 @@ export default {
     },
 
     lookExam(row) {
-      this.$alert('系统会随机对班级成员进行分组，以2-3人为一组，组内进行对抗。对抗练习的分数计算规则为：总得分*排名权重，第一名为1，第二名为0.9，第三名为0.8。', '对抗练习须知', {
-        confirmButtonText: '确定',
-        callback: action => {
-          console.log(action)
-          this.$router.push({
-            path: "/studentHome/concreteCourse/examHome/exam",
-            query: {
-              info: this.$Base64.encode(
-                  JSON.stringify({ exam_id: row.exam_id, course_id: this.course_id })
-              ),
-            },
-          });
+      this.$alert(
+        "系统会随机对班级成员进行分组，以2-3人为一组，组内进行对抗。对抗练习的分数计算规则为：总得分*排名权重，第一名为1，第二名为0.9，第三名为0.8。",
+        "对抗练习须知",
+        {
+          confirmButtonText: "确定",
+          callback: (action) => {
+            console.log(action);
+            this.$router.push({
+              path: "/studentHome/concreteCourse/examHome/exam",
+              query: {
+                info: this.$Base64.encode(
+                  JSON.stringify({
+                    exam_id: row.exam_id,
+                    course_id: this.course_id,
+                  })
+                ),
+              },
+            });
+          },
         }
-      });
-
-
+      );
     },
     lookCloseExam(row) {
       this.$router.push({
