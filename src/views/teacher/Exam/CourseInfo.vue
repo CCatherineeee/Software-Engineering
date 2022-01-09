@@ -119,9 +119,9 @@ export default {
     },
     setPercent() {
       //设置成绩占比
-      var exam = this.eachScore.exam;
-      var report = this.eachScore.report;
-      var attendance = this.eachScore.attendance;
+      var exam = this.eachScore.exam * 1;
+      var report = this.eachScore.report * 1;
+      var attendance = this.eachScore.attendance * 1;
       console.log("percent", exam + report + attendance);
       if (
         exam + report + attendance < 0.9999999999999999 ||

@@ -34,7 +34,7 @@
         <el-option
           v-for="item in teaList"
           :key="item.id"
-          :label="item.id"
+          :label="item.id + ' ' + item.name"
           :value="item.id"
         >
         </el-option>
@@ -49,12 +49,11 @@
     <el-dialog :visible.sync="teaDialog" title="选择教师" center width="300px">
       <el-select v-model="changeTemp.t_id">
         <el-option
-            v-for="i in teaList"
-            :key="i.id"
-            :label="i.id + '  ' + i.name"
-            :value="i.id"
+          v-for="i in teaList"
+          :key="i.id"
+          :label="i.id + i.name"
+          :value="i.id"
         >
-
         </el-option>
       </el-select>
       <div slot="footer" class="dialog-footer">
@@ -171,11 +170,12 @@ export default {
     },
 
     createClass() {
+      console.log("createClass", this.course_id);
       this.axios
         .post(
           "/api/manageClass/addClass",
           JSON.stringify({
-            courseID: this.courseID,
+            courseID: this.course_id,
             t_id: this.tid,
             token: sessionStorage.getItem("token"),
           })
@@ -236,6 +236,7 @@ export default {
           crossDomain: true,
         })
         .then((response) => {
+          console.log("getTeaList", response);
           if (response.data["code"] === 301) {
             this.$message("验证过期");
             this.$router.push({ path: "/login" });

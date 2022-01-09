@@ -95,7 +95,7 @@ export default {
     handleExam(row) {
       console.log(row);
       this.$router.push({
-        path: "/teacherHome/duty-course",
+        path: "/teacherHome/duty-course/courseInfo",
 
         query: {
           info: this.$Base64.encode(
