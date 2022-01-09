@@ -51,21 +51,25 @@
             <el-button
               size="small"
               @click="toExFill(scope.row)"
-              v-if="scope.row.type === '在线提交'"
+              v-if="
+                scope.row.type === '在线提交' && scope.row.status === '未过期'
+              "
               >在线填写</el-button
             >
             <el-button
               size="small"
               @click="handleUpload(scope.row)"
-              v-if="scope.row.type === '提交文件'"
+              v-if="
+                scope.row.type === '提交文件' && scope.row.status === '未过期'
+              "
               >上传文件</el-button
             >
             <el-button
               type="primary"
               plain
               size="small"
-              @click="goToOnline(scope.row.ex_id,scope.row.end_time)"
-              v-if="scope.row.online === 1"
+              @click="goToOnline(scope.row.ex_id, scope.row.end_time)"
+              v-if="scope.row.online === 1 && scope.row.status === '未过期'"
               >在线模拟</el-button
             >
           </template>
@@ -128,13 +132,13 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-    goToOnline(ex_id,end_time) {
+    goToOnline(ex_id, end_time) {
       this.$router.push({
         path: "/studentHome/concreteCourse/onlineExp",
         query: {
           sid: this.sid,
-          ex_id:ex_id,
-          stop_time:end_time
+          ex_id: ex_id,
+          stop_time: end_time,
         },
       });
     },
@@ -245,14 +249,13 @@ export default {
       } else {
         // this.tableData.clear();
         for (var i = 0; i < response.data.length; i++) {
-          if (response.data[i].status !== 0) {
-            if (response.data[i].status === 1) {
-              response.data[i].status = "未过期";
-            } else {
-              response.data[i].status = "已过期";
-            }
-            //this.tableData.push(response.data[i]);
+          if (response.data[i].status === 1) {
+            response.data[i].status = "未过期";
+          } else {
+            response.data[i].status = "已过期";
           }
+          //this.tableData.push(response.data[i]);
+
           this.tableData = response.data;
           //console.log();
           //console.log("thisTable", this.tableData);

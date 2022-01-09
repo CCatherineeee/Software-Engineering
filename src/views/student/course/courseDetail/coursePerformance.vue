@@ -66,7 +66,7 @@
     </v-card>
     <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
       <v-card-title>
-        <h3 style="color: #6666cc">报告得分与权重:100</h3>
+        <h3 style="color: #6666cc">报告得分与权重:{{ reportScore }}</h3>
       </v-card-title>
 
       <el-row>
@@ -103,7 +103,7 @@
     </v-card>
     <v-card style="display: flex; justify-content: center; margin-bottom: 5px">
       <v-card-title>
-        <h3 style="color: #6666cc">测验得分:100</h3>
+        <h3 style="color: #6666cc">测验得分:{{ examScore }}</h3>
       </v-card-title>
 
       <el-row>
@@ -163,6 +163,8 @@ export default {
         attendance: 0,
       },
       attendScore: 0,
+      examScore: 0,
+      reportScore: 0,
     };
   },
   methods: {
@@ -266,10 +268,10 @@ export default {
       myChart.resize();
     },
     getNowScore() {
-      for (var i = 0; i < this.allScore.length; i++) {
-        this.now_score += this.allScore[i].value;
-      }
-      this.now_score = this.now_score.toFixed(2);
+      this.getAllScore();
+      this.getExam();
+      this.getAttend();
+      this.getAttend();
     },
     getExam() {
       var json = {
@@ -282,8 +284,13 @@ export default {
         .post("/api/student/getExamScore", JSON.stringify(json))
         .then((response) => {
           console.log("getEXam", response);
-
           this.examData = response.data.data;
+
+          this.examScore = 0;
+          for (var i = 0; i < this.examData.length; i++) {
+            this.examScore +=
+              this.examData[i].stu_score / this.examData[i].all_score;
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -302,6 +309,11 @@ export default {
           console.log("getReport", response);
 
           this.reportData = response.data.data;
+          this.reportScore = 0;
+          for (var i = 0; i < this.reportData.length; i++) {
+            this.reportScore +=
+              this.reportData[i].score * this.reportData[i].weight;
+          }
         })
         .catch(function (error) {
           console.log(error);

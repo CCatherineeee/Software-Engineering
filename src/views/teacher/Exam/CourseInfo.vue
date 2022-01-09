@@ -127,7 +127,7 @@ export default {
         exam + report + attendance < 0.9999999999999999 ||
         exam + report + attendance > 1
       ) {
-        this.$message.warning("所有成绩加合不为1，请重新输入！");
+        this.$message.warning("所有成绩占比加合不为1，请重新输入！");
       } else {
         var json = {
           course_id: this.course_id,
