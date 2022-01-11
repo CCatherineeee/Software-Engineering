@@ -123,7 +123,7 @@ def classAddStudentFile():
 
             newFileName = filename + "_" + str(uuid.uuid1())  + ext
 
-            uploadPath = os.path.join(basepath, 'userFile', newFileName)
+            uploadPath = os.path.join(basepath,newFileName)
 
             file.save(uploadPath)
             result = manageStudentFile(uploadPath,class_id)
@@ -136,19 +136,31 @@ def manageStudentFile(path,class_id):
     sheet = workbook.sheet_by_name(get_sheet_name)
     ncols = sheet.ncols
     nrows = sheet.nrows
+    s_list = []
     for i in range(1, nrows):
         rowData = sheet.row_values(i)
         s_id = str(int(rowData[0]))
         if Student.query.filter(Student.s_id == s_id).first():  #学生存在
             student_class_item = StudentClass(class_id =class_id, s_id=s_id)
-            dbManage.db.session.add(student_class_item)
-            if (i==nrows-1):
+            try:
+                dbManage.db.session.add(student_class_item)
                 dbManage.db.session.commit()
-                result = {'code':200,'message':'添加完毕','data':None}
+                s_list.append(student_class_item)
+            except:
+                dbManage.db.session.rollback()
         else:
-            result = {'code':400,'message':s_id+'不存在','data':None}
-            break
-    return jsonify(result)
+            pass
+    course_id = class_id[0:12]
+    Exs = Experiment.query.filter(Experiment.course_id == course_id).all()
+    selist = []
+    for ex in Exs:
+        for s in s_list:
+            se = StudentExperiment(experiment_id = ex.experiment_id,s_id = s.s_id)
+            selist.append(se)
+    dbManage.db.session.add_all(selist)
+    dbManage.db.session.commit()
+    result = {'code':200,'message':'添加完毕','data':None}
+    return result
     
         
 

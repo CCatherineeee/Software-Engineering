@@ -50,7 +50,7 @@ def addSysAnn():
 
 @manageAnnRoute.route('/sys/getAnn/',methods=['GET'])
 def getSysAnn():
-    annS = dbManage.db.session.query(SystemAnnouncement).all()
+    annS = dbManage.db.session.query(SystemAnnouncement).order_by(SystemAnnouncement.create_time.desc()).all()
     content = []
     for ann in annS:
         temp = {'title':ann.title,'content':ann.content,'date':str(ann.create_time),'annoucement_id':ann.annoucement_id}
@@ -98,7 +98,7 @@ def getCourseAnn():
     data = request.get_data()
     data = json.loads(data.decode("utf-8"))
     class_id = data['class_id']
-    annS = CourseAnnouncement.query.filter(CourseAnnouncement.class_id == class_id).all()
+    annS = CourseAnnouncement.query.filter(CourseAnnouncement.class_id == class_id).order_by(CourseAnnouncement.create_time.desc()).all()
     content = []
     for ann in annS:
         temp = {'title':ann.title,'content':ann.content,'date':str(ann.create_time),'ann_id' : ann.annoucement_id}

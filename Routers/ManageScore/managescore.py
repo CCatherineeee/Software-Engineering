@@ -24,7 +24,7 @@ def teaScore():
     sc = StudentClass.query.filter(StudentClass.class_id == class_id).all()
     s_list = []
     for sc_item in sc:
-        s_list.append(sc_item.s_id)
+        s_list.append(sc_item)
     exs = Experiment.query.filter(Experiment.course_id == class_.course_id).all()
     t = []
     name = []
@@ -40,21 +40,25 @@ def teaScore():
         n = 0
         temp = []
         for s in se:
-            if s.s_id not in s_list:
-                pass
-            if not s.score:
-                n += 1
-            else:
-                if s.score >= 90:
-                    e += 1
-                elif s.score >= 80:
-                    g += 1
-                elif s.score >= 70:
-                    m += 1
-                elif s.score >=60:
-                    p += 1
+            flag = False
+            for sc_item in s_list:
+                if sc_item.s_id == s.s_id:
+                    flag = True
+                    break
+            if flag:
+                if not s.score:
+                    n += 1
                 else:
-                    f += 1
+                    if s.score >= 90:
+                        e += 1
+                    elif s.score >= 80:
+                        g += 1
+                    elif s.score >= 70:
+                        m += 1
+                    elif s.score >=60:
+                        p += 1
+                    else:
+                        f += 1
         temp.append(e)
         temp.append(g)
         temp.append(m)
